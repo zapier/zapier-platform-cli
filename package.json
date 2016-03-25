@@ -1,0 +1,28 @@
+{
+  "name": "@bryanhelmig/zapier-platform-cli",
+  "version": "1.0.17",
+  "description": "The CLI for the Zapier platform.",
+  "repository": "zapier/zapier-platform-cli",
+  "homepage": "https://zapier.com/",
+  "author": "Bryan Helmig <bryan@zapier.com>",
+  "license": "UNLICENSED",
+  "main": "zapier.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha",
+    "zapier": "zapier.js"
+  },
+  "dependencies": {
+    "archiver": "0.21.0",
+    "easy-table": "1.0.0",
+    "es6-promise": "3.1.2",
+    "fs-extra": "0.26.7",
+    "node-fetch": "1.3.3"
+  },
+  "devDependencies": {
+    "mocha": "2.4.5",
+    "should": "8.2.2"
+  },
+  "bin": {
+    "zapier": "zapier.js"
+  }
+}
