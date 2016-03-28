@@ -1,11 +1,11 @@
 {
   "name": "@bryanhelmig/zapier-platform-cli",
-  "version": "1.0.21",
+  "version": "1.0.23",
   "description": "The CLI for the Zapier platform.",
   "repository": "zapier/zapier-platform-cli",
   "homepage": "https://zapier.com/",
   "author": "Bryan Helmig <bryan@zapier.com>",
-  "license": "UNLICENSED",
+  "license": "BSD",
   "main": "zapier.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha",
