@@ -284,7 +284,7 @@ var listApps = function() {
     });
 };
 
-var listEndoint = function(endpoint) {
+var listEndoint = function(endpoint, key) {
   return checkCredentials()
     .then(getCurrentApp)
     .then(function(app) {
@@ -297,7 +297,7 @@ var listEndoint = function(endpoint) {
       var out = {
         app: values[0]
       };
-      out[endpoint] = values[1].objects;
+      out[key || endpoint] = values[1].objects;
       return out;
     });
 };
@@ -306,12 +306,18 @@ var listVersions = function() {
   return listEndoint('versions');
 };
 
-var listDeployments = function() {
-  return listEndoint('deployments');
-};
-
 var listHistory = function() {
   return listEndoint('history');
+};
+
+var listEnv = function(env) {
+  var endpoint;
+  if (env === 'app') {
+    endpoint = 'environment';
+  } else {
+    endpoint = 'versions/' + env + '/environment';
+  }
+  return listEndoint(endpoint, 'environment');
 };
 
 var build = function(zipPath) {
@@ -529,9 +535,10 @@ var versionsCmd = function() {
       printTable(data.versions, [
         ['Version', 'version'],
         ['Date', 'date'],
-        ['Package SHA1', 'sha1'],
+        ['Users', 'user_count'],
         ['Platform', 'platform_version'],
-        ['Deployments', 'deployments'],
+        ['Deployment', 'deployment'],
+        ['Package SHA1', 'sha1'],
       ]);
     });
 };
@@ -561,13 +568,19 @@ uploadCmd.docs = 'Just upload the last build - does not deploy.';
 uploadCmd.example = 'zapier upload';
 
 var deploymentsCmd = function() {
-  return listDeployments()
+  return listVersions()
     .then(function(data) {
-      console.log('All deployment slots of your app "' + data.app.title + '" listed below.\n');
-      printTable(data.deployments, [
+      console.log('All deployed versions of your app "' + data.app.title + '" listed below.\n');
+      var deployments = data.versions.filter(function(version) {
+        return version.user_count
+          || version.deployment === 'production'
+          || version.deployment === 'canary'
+          || version.deployment === 'staging';
+      });
+      printTable(deployments, [
         ['Deployment', 'deployment'],
         ['Version', 'version'],
-        ['Last Change', 'last_update'],
+        ['Users', 'user_count'],
       ]);
     });
 };
@@ -584,13 +597,11 @@ var deployCmd = function(deployment, version) {
     .then(getCurrentApp)
     .then(function(app) {
       console.log('Preparing to deploy version ' + version + ' your app "' + app.title + '" in ' + deployment + '.\n');
-      var url = '/apps/' + app.id + '/deployments/' + deployment;
+      var url = '/apps/' + app.id + '/versions/' + version + '/deploy/' + deployment;
       printStarting('  Deploying ' + version + ' to ' + deployment);
       return callAPI(url, {
         method: 'PUT',
-        body: {
-          version: version
-        }
+        body: {}
       });
     })
     .then(function() {
@@ -616,6 +627,52 @@ var historyCmd = function() {
 historyCmd.docs = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
 
+var envCmd = function(env, key, value) {
+  if (!env) {
+    console.log('Error: No env provided - provide either a version like "1.0.0" or "app"...\n');
+    return Promise.resolve(true);
+  }
+  if (value !== undefined) {
+    key = key.toUpperCase();
+    return checkCredentials()
+      .then(getCurrentApp)
+      .then(function(app) {
+        var url;
+        if (env === 'app') {
+          url = '/apps/' + app.id + '/environment';
+        } else {
+          url = '/apps/' + app.id + '/versions/' + env + '/environment';
+        }
+        console.log('Preparing to set environment ' + key + ' for your ' + env + ' "' + app.title + '".\n');
+        printStarting('  Setting ' + key + ' to "' + value + '"');
+        return callAPI(url, {
+          method: 'PUT',
+          body: {
+            key: key,
+            value: value
+          }
+        });
+      })
+      .then(function() {
+        printDone();
+        console.log('  Environment updated!');
+        console.log('');
+        return envCmd(env);
+      });
+  }
+  return listEnv(env)
+    .then(function(data) {
+      console.log('The env of your ' + env + ' "' + data.app.title + '" listed below.\n');
+      printTable(data.environment, [
+        ['Key', 'key'],
+        ['Value', 'value'],
+        ['From', 'from'],
+      ]);
+    });
+};
+envCmd.docs = 'Read and write environment variables.';
+envCmd.example = 'zapier env app CLIENT_SECRET 1234567890';
+
 commands = {
   help: helpCmd,
   config: configCmd,
@@ -628,6 +685,7 @@ commands = {
   deploy: deployCmd,
   deployments: deploymentsCmd,
   history: historyCmd,
+  env: envCmd,
 };
 
 
