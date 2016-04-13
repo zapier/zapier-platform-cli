@@ -8,7 +8,6 @@ var readline = require('readline');
 var path = require('path');
 
 var archiver = require('archiver');
-require('es6-promise').polyfill();
 var fse = require('fs-extra');
 var fetch = require('node-fetch');
 var Table = require('easy-table');
@@ -24,34 +23,34 @@ var PLATFORM_VERSION = process.env.ZAPIER_PLATFORM_VERSION || '3.0.0';
 var DEF_PATH = 'build/definition.json';
 var BUILD_PATH = 'build/build.zip';
 
-var ART = '\
-                zzzzzzzz                \n\
-      zzz       zzzzzzzz       zzz      \n\
-    zzzzzzz     zzzzzzzz     zzzzzzz    \n\
-   zzzzzzzzzz   zzzzzzzz   zzzzzzzzzz   \n\
-      zzzzzzzzz zzzzzzzz zzzzzzzzz      \n\
-        zzzzzzzzzzzzzzzzzzzzzzzz        \n\
-          zzzzzzzzzzzzzzzzzzzz          \n\
-zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz\n\
-zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz\n\
-zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz\n\
-zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz\n\
-          zzzzzzzzzzzzzzzzzzzz          \n\
-        zzzzzzzzzzzzzzzzzzzzzzzz        \n\
-      zzzzzzzzz zzzzzzzz zzzzzzzzz      \n\
-   zzzzzzzzzz   zzzzzzzz   zzzzzzzzzz   \n\
-    zzzzzzz     zzzzzzzz     zzzzzzz    \n\
-      zzz       zzzzzzzz       zzz      \n\
-                zzzzzzzz                ';
+var ART = `\
+                zzzzzzzz
+      zzz       zzzzzzzz       zzz
+    zzzzzzz     zzzzzzzz     zzzzzzz
+   zzzzzzzzzz   zzzzzzzz   zzzzzzzzzz
+      zzzzzzzzz zzzzzzzz zzzzzzzzz
+        zzzzzzzzzzzzzzzzzzzzzzzz
+          zzzzzzzzzzzzzzzzzzzz
+zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
+zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
+zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
+zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
+          zzzzzzzzzzzzzzzzzzzz
+        zzzzzzzzzzzzzzzzzzzzzzzz
+      zzzzzzzzz zzzzzzzz zzzzzzzzz
+   zzzzzzzzzz   zzzzzzzz   zzzzzzzzzz
+    zzzzzzz     zzzzzzzz     zzzzzzz
+      zzz       zzzzzzzz       zzz
+                zzzzzzzz`;
 
 
 // Wraps the easy-table library. Rows is an array of objects,
 // columnDefs an ordered sub-array [[label, key], ...].
-var printTable = function(rows, columnDefs) {
+var printTable = (rows, columnDefs) => {
   var t = new Table();
 
-  rows.forEach(function(row) {
-    columnDefs.forEach(function(columnDef) {
+  rows.forEach((row) => {
+    columnDefs.forEach((columnDef) => {
       var label = columnDef[0], key = columnDef[1];
       t.cell(label, row[key]);
     });
@@ -61,31 +60,31 @@ var printTable = function(rows, columnDefs) {
   console.log(t.toString().trim());
 };
 
-var prettyJSONstringify = function(obj) {
+var prettyJSONstringify = (obj) => {
   return JSON.stringify(obj, null, '  ');
 };
 
-var printStarting = function(msg) {
+var printStarting = (msg) => {
   process.stdout.write(msg + '... ');
 };
 
-var printDone = function() {
+var printDone = () => {
   console.log('done!');
 };
 
-var fixHome = function(dir) {
+var fixHome = (dir) => {
   var home = process.env.HOME || process.env.USERPROFILE;
   return dir.replace('~', home);
 };
 
 // Get input from a user.
-var getInput = function(question) {
+var getInput = (question) => {
   var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
-  return new Promise(function(resolve) {
-    rl.question(question, function(answer) {
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
       rl.close();
       resolve(answer);
     });
@@ -93,9 +92,9 @@ var getInput = function(question) {
 };
 
 // Returns a promise that reads a file and returns a buffer.
-var readFile = function(fileName) {
-  return new Promise(function(resolve, reject) {
-    fs.readFile(fixHome(fileName), function(err, buf) {
+var readFile = (fileName) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(fixHome(fileName), (err, buf) => {
       if (err) {
         reject(err);
       } else {
@@ -106,9 +105,9 @@ var readFile = function(fileName) {
 };
 
 // Returns a promise that writes a file.
-var writeFile = function(fileName, data) {
-  return new Promise(function(resolve, reject) {
-    fs.writeFile(fixHome(fileName), data, function(err) {
+var writeFile = (fileName, data) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(fixHome(fileName), data, (err) => {
       if (err) {
         reject(err);
       } else {
@@ -119,15 +118,16 @@ var writeFile = function(fileName, data) {
 };
 
 // Returns a promise that copies a directory.
-var copyDir = function(src, dest, options) {
+var copyDir = (src, dest, options) => {
   options = options || {};
-  options.filter = options.filter || function(dir) {
+  var defaultFilter = (dir) => {
     var isntPackage = dir.indexOf('node_modules') === -1;
     var isntBuild = dir.indexOf('.zip') === -1;
     return isntPackage && isntBuild;
   };
-  return new Promise(function(resolve, reject) {
-    fse.copy(src, dest, options, function(err) {
+  options.filter = options.filter || defaultFilter;
+  return new Promise((resolve, reject) => {
+    fse.copy(src, dest, options, (err) => {
       if (err) {
         reject(err);
       }
@@ -137,9 +137,9 @@ var copyDir = function(src, dest, options) {
 };
 
 // Returns a promise that ensures a directory exists.
-var ensureDir = function(dir) {
-  return new Promise(function(resolve, reject) {
-    fse.ensureDir(dir, function(err) {
+var ensureDir = (dir) => {
+  return new Promise((resolve, reject) => {
+    fse.ensureDir(dir, (err) => {
       if (err) {
         reject(err);
       }
@@ -149,20 +149,20 @@ var ensureDir = function(dir) {
 };
 
 // Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
-var readCredentials = function(credentials) {
+var readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
     readFile(CONFIG_LOCATION)
-      .then(function(buf) {
+      .then((buf) => {
         return JSON.parse(buf.toString());
       })
   );
 };
 
 // Delete a directory.
-var removeDir = function(dir) {
-  return new Promise(function(resolve, reject) {
-    fse.remove(dir, function(err) {
+var removeDir = (dir) => {
+  return new Promise((resolve, reject) => {
+    fse.remove(dir, (err) => {
       if (err) {
         reject(err);
       }
@@ -172,10 +172,10 @@ var removeDir = function(dir) {
 };
 
 // Run a command with a promise.
-var runCommand = function(command, options) {
+var runCommand = (command, options) => {
   options = options || {};
-  return new Promise(function(resolve, reject) {
-    cp.exec(command, options, function(err, stdout, stderr) {
+  return new Promise((resolve, reject) => {
+    cp.exec(command, options, (err, stdout, stderr) => {
       if (err) {
         reject(err);
       }
@@ -187,11 +187,11 @@ var runCommand = function(command, options) {
   });
 };
 
-var makeZip = function(dir, zipPath) {
+var makeZip = (dir, zipPath) => {
   var output = fs.createWriteStream(zipPath);
   var archive = archiver('zip');
-  return new Promise(function(resolve, reject) {
-    output.on('close', function() {
+  return new Promise((resolve, reject) => {
+    output.on('close', () => {
       resolve(); // archive.pointer()
     });
     archive.on('error', reject);
@@ -208,10 +208,10 @@ var makeZip = function(dir, zipPath) {
 };
 
 // Calls the underlying platform REST API with proper authentication.
-var callAPI = function(route, options) {
+var callAPI = (route, options) => {
   options = options || {};
   return readCredentials()
-    .then(function(credentials) {
+    .then((credentials) => {
       var _options = {
         method: options.method || 'GET',
         body: options.body ? JSON.stringify(options.body) : null,
@@ -223,13 +223,13 @@ var callAPI = function(route, options) {
       };
       return fetch(ENDPOINT + route, _options);
     })
-    .then(function(res) {
+    .then((res) => {
       return Promise.all([
         res,
         res.text()
       ]);
     })
-    .then(function(values) {
+    .then((values) => {
       var res = values[0], text = values[1];
       if (res.status >= 400) {
         var errors;
@@ -245,38 +245,38 @@ var callAPI = function(route, options) {
 };
 
 // Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
-var getCurrentAppConfig = function() {
+var getCurrentAppConfig = () => {
   return readFile(CURRENT_APP_FILE)
-    .then(function(buf) {
+    .then((buf) => {
       return JSON.parse(buf.toString()).id;
     });
 };
 
 // Loads the current app from the API.
-var getCurrentApp = function() {
+var getCurrentApp = () => {
   return getCurrentAppConfig()
-    .then(function(appId) {
+    .then((appId) => {
       return callAPI('/apps/' + appId);
     });
 };
 
-var checkCredentials = function() {
+var checkCredentials = () => {
   return callAPI('/check');
 };
 
-var listApps = function() {
+var listApps = () => {
   return checkCredentials()
-    .then(function() {
+    .then(() => {
       return Promise.all([
         getCurrentApp(),
         callAPI('/apps')
       ]);
     })
-    .then(function(values) {
+    .then((values) => {
       var currentApp = values[0], data = values[1];
       return {
         app: currentApp,
-        apps: data.objects.map(function(app) {
+        apps: data.objects.map((app) => {
           app.current = app.id === currentApp.id ? '✔' : '';
           return app;
         })
@@ -284,16 +284,16 @@ var listApps = function() {
     });
 };
 
-var listEndoint = function(endpoint, key) {
+var listEndoint = (endpoint, key) => {
   return checkCredentials()
     .then(getCurrentApp)
-    .then(function(app) {
+    .then((app) => {
       return Promise.all([
         app,
-        callAPI('/apps/' + app.id + '/' + endpoint)
+        callAPI(`/apps/${app.id}/${endpoint}`)
       ]);
     })
-    .then(function(values) {
+    .then((values) => {
       var out = {
         app: values[0]
       };
@@ -302,97 +302,97 @@ var listEndoint = function(endpoint, key) {
     });
 };
 
-var listVersions = function() {
+var listVersions = () => {
   return listEndoint('versions');
 };
 
-var listHistory = function() {
+var listHistory = () => {
   return listEndoint('history');
 };
 
-var listEnv = function(env) {
+var listEnv = (env) => {
   var endpoint;
   if (env === 'app') {
     endpoint = 'environment';
   } else {
-    endpoint = 'versions/' + env + '/environment';
+    endpoint = `versions/${env}/environment`;
   }
   return listEndoint(endpoint, 'environment');
 };
 
-var build = function(zipPath) {
+var build = (zipPath) => {
   var wdir = process.cwd();
   zipPath = zipPath || BUILD_PATH;
   var tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
   return ensureDir(tmpDir)
-    .then(function() {
+    .then(() => {
       printStarting('  Copying project to temp directory');
       return copyDir(wdir, tmpDir);
     })
-    .then(function() {
+    .then(() => {
       printDone();
       printStarting('  Installing project dependencies');
       return runCommand('npm install --production', {cwd: tmpDir});
     })
     // tries to make a more reproducible zip build!
-    .then(function() {
+    .then(() => {
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
       return runCommand('find . -exec touch -t 201601010000 {} +', {cwd: tmpDir});
       // the next two break require('') if omitted :-/
       // if we browserify --list the next two can drop
-      // .then(function() {
+      // .then(() => {
       //   // npm package.json has weird _args and _shasum style stuff
       //   return runCommand('find node_modules -name "package.json" -delete', {cwd: tmpDir});
       // })
-      // .then(function() {
+      // .then(() => {
       //   // Makefile self edits
       //   return runCommand('find node_modules -name "Makefile" -delete', {cwd: tmpDir});
       // });
     })
-    .then(function() {
+    .then(() => {
       printDone();
       printStarting('  Building app definition (TODO!)');
       return Promise.resolve('TODO!');
     })
-    .then(function() {
+    .then(() => {
       printDone();
       printStarting('  Zipping project and dependencies');
       return makeZip(tmpDir, wdir + '/' + zipPath);
     })
-    .then(function() {
+    .then(() => {
       printDone();
       printStarting('  Cleaning up temp directory');
       return removeDir(tmpDir);
     })
-    .then(function() {
+    .then(() => {
       printDone();
       return zipPath;
     });
 };
 
-var upload = function(zipPath, defPath) {
+var upload = (zipPath, defPath) => {
   zipPath = zipPath || BUILD_PATH;
   defPath = defPath || DEF_PATH;
   return getCurrentApp()
-    .then(function(app) {
+    .then((app) => {
       var definition = readFile(defPath)
-        .then(function(buf) {
+        .then((buf) => {
           return JSON.parse(buf.toString());
         });
       var zipFile = readFile(zipPath)
-        .then(function(buf) {
+        .then((buf) => {
           return buf.toString('base64');
         });
       return Promise.all([definition, zipFile, app]);
     })
-    .then(function(values) {
+    .then((values) => {
       var definition = values[0];
       var zipFile = values[1];
       var app = values[2];
 
       printStarting('  Uploading version ' + definition.version);
-      return callAPI('/apps/' + app.id + '/versions/' + definition.version, {
+      return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {
           platform_version: PLATFORM_VERSION || definition.platformVersion,
@@ -401,18 +401,18 @@ var upload = function(zipPath, defPath) {
         }
       });
     })
-    .then(function() {
+    .then(() => {
       printDone();
     });
 };
 
-var buildAndUploadCurrentDir = function(zipPath) {
+var buildAndUploadCurrentDir = (zipPath) => {
   zipPath = zipPath || BUILD_PATH;
   return checkCredentials()
-    .then(function() {
+    .then(() => {
       return build(zipPath);
     })
-    .then(function() {
+    .then(() => {
       return upload(zipPath);
     });
 };
@@ -422,11 +422,11 @@ var buildAndUploadCurrentDir = function(zipPath) {
 
 var commands;
 
-var helpCmd = function() {
+var helpCmd = () => {
   return Promise.resolve({})
-    .then(function() {
+    .then(() => {
       console.log('All commands listed below.\n');
-      var allCommands = Object.keys(commands).map(function(command) {
+      var allCommands = Object.keys(commands).map((command) => {
         return {
           name: command,
           docs: commands[command].docs,
@@ -443,46 +443,46 @@ var helpCmd = function() {
 helpCmd.docs = 'Lists all the commands you can use.';
 helpCmd.example = 'zapier help';
 
-var configCmd = function() {
+var configCmd = () => {
   return getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
-    .then(function(answer) {
+    .then((answer) => {
       return writeFile(CONFIG_LOCATION, prettyJSONstringify({
         deployKey: answer
       }));
     })
     .then(checkCredentials)
-    .then(function() {
+    .then(() => {
       console.log('\nSaved key to ' + CONFIG_LOCATION);
     });
 };
-configCmd.docs = 'Configure your ' + CONFIG_LOCATION + ' with a deploy key for using the CLI.';
+configCmd.docs = `Configure your ${CONFIG_LOCATION} with a deploy key for using the CLI.`;
 configCmd.example = 'zapier config';
 
-var createCmd = function(title) {
+var createCmd = (title) => {
   return checkCredentials()
-    .then(function() {
+    .then(() => {
       console.log('Welcome to the Zapier Platform! :-D');
       console.log();
       console.log(ART);
       console.log();
-      console.log('Let\'s create your app "' + title + '"!');
+      console.log(`Let's create your app "${title}"!`);
       console.log();
       printStarting('  Cloning starter app from ' + STARTER_REPO);
       // var cmd = 'git clone https://github.com/' + STARTER_REPO + '.git .';
-      var cmd = 'git clone git@github.com:' + STARTER_REPO + '.git .';
+      var cmd = `git clone git@github.com:${STARTER_REPO}.git .`;
       return runCommand(cmd);
     })
-    .then(function() {
+    .then(() => {
       return removeDir('.git');
     })
-    .then(function() {
+    .then(() => {
       printDone();
       printStarting('  Installing project dependencies');
       return runCommand('npm install');
     })
-    .then(function() {
+    .then(() => {
       printDone();
-      printStarting('  Creating a new app named "' + title + '"');
+      printStarting(`  Creating a new app named "${title}"`);
       return callAPI('/apps', {
         method: 'POST',
         body: {
@@ -490,15 +490,15 @@ var createCmd = function(title) {
         }
       });
     })
-    .then(function(app) {
+    .then((app) => {
       printDone();
-      printStarting('  Setting up ' + CURRENT_APP_FILE + ' file');
+      printStarting(`  Setting up ${CURRENT_APP_FILE} file`);
       return writeFile(CURRENT_APP_FILE, prettyJSONstringify({
         id: app.id,
         key: app.key
       }));
     })
-    .then(function() {
+    .then(() => {
       printDone();
       console.log('\nFinished! You can `zapier push` now - or make tweaks!');
     });
@@ -506,9 +506,9 @@ var createCmd = function(title) {
 createCmd.docs = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
 
-var appsCmd = function() {
+var appsCmd = () => {
   return listApps()
-    .then(function(data) {
+    .then((data) => {
       console.log('All apps listed below.\n');
       printTable(data.apps, [
         ['Title', 'title'],
@@ -521,17 +521,17 @@ var appsCmd = function() {
 appsCmd.docs = 'Lists all the apps in your account.';
 appsCmd.example = 'zapier apps';
 
-var buildCmd = function(zipPath) {
+var buildCmd = (zipPath) => {
   console.log('Building project.\n');
   return build(zipPath);
 };
 buildCmd.docs = 'Builds a deployable zip from the current directory.';
 buildCmd.example = 'zapier build';
 
-var versionsCmd = function() {
+var versionsCmd = () => {
   return listVersions()
-    .then(function(data) {
-      console.log('All versions of your app "' + data.app.title + '" listed below.\n');
+    .then((data) => {
+      console.log(`All versions of your app "${data.app.title}" listed below.\n`);
       printTable(data.versions, [
         ['Version', 'version'],
         ['Date', 'date'],
@@ -545,33 +545,33 @@ var versionsCmd = function() {
 versionsCmd.docs = 'Lists all the versions of the current app.';
 versionsCmd.example = 'zapier versions';
 
-var pushCmd = function() {
+var pushCmd = () => {
   var zipPath = zipPath || BUILD_PATH;
   console.log('Preparing to build and upload a new version.\n');
   return buildAndUploadCurrentDir(zipPath)
-    .then(function() {
+    .then(() => {
       console.log('\nBuild and upload complete!');
     });
 };
 pushCmd.docs = 'Build and upload a new version of the current app - does not deploy.';
 pushCmd.example = 'zapier push';
 
-var uploadCmd = function() {
+var uploadCmd = () => {
   var zipPath = zipPath || BUILD_PATH;
   console.log('Preparing to upload a new version.\n');
   return upload(zipPath)
-    .then(function() {
+    .then(() => {
       console.log('\nUpload complete!');
     });
 };
 uploadCmd.docs = 'Just upload the last build - does not deploy.';
 uploadCmd.example = 'zapier upload';
 
-var deploymentsCmd = function() {
+var deploymentsCmd = () => {
   return listVersions()
-    .then(function(data) {
-      console.log('All deployed versions of your app "' + data.app.title + '" listed below.\n');
-      var deployments = data.versions.filter(function(version) {
+    .then((data) => {
+      console.log(`All deployed versions of your app "${data.app.title}" listed below.\n`);
+      var deployments = data.versions.filter((version) => {
         return version.user_count
           || version.deployment === 'production'
           || version.deployment === 'canary'
@@ -587,7 +587,7 @@ var deploymentsCmd = function() {
 deploymentsCmd.docs = 'Lists all the deployments of the current app.';
 deploymentsCmd.example = 'zapier deployments';
 
-var deployCmd = function(deployment, version) {
+var deployCmd = (deployment, version) => {
   if (!deployment || !version) {
     console.log('Error: No deploment/version selected...\n');
     return deploymentsCmd();
@@ -595,16 +595,16 @@ var deployCmd = function(deployment, version) {
 
   return checkCredentials()
     .then(getCurrentApp)
-    .then(function(app) {
-      console.log('Preparing to deploy version ' + version + ' your app "' + app.title + '" in ' + deployment + '.\n');
-      var url = '/apps/' + app.id + '/versions/' + version + '/deploy/' + deployment;
-      printStarting('  Deploying ' + version + ' to ' + deployment);
+    .then((app) => {
+      console.log(`Preparing to deploy version ${version} your app "${app.title}" in ${deployment}.\n`);
+      var url = `/apps/${app.id}/versions/${version}/deploy/${deployment}`;
+      printStarting(`  Deploying ${version} to ${deployment}`);
       return callAPI(url, {
         method: 'PUT',
         body: {}
       });
     })
-    .then(function() {
+    .then(() => {
       printDone();
       console.log('  Deploy successful! :-D');
       console.log('');
@@ -614,10 +614,10 @@ var deployCmd = function(deployment, version) {
 deployCmd.docs = 'Deploys a specific version to a specific deployment.';
 deployCmd.example = 'zapier deploy staging 1.0.0';
 
-var historyCmd = function() {
+var historyCmd = () => {
   return listHistory()
-    .then(function(data) {
-      console.log('The history of your app "' + data.app.title + '" listed below.\n');
+    .then((data) => {
+      console.log(`The history of your app "${data.app.title}" listed below.\n`);
       printTable(data.history, [
         ['Message', 'message'],
         ['Date', 'date'],
@@ -627,7 +627,7 @@ var historyCmd = function() {
 historyCmd.docs = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
 
-var envCmd = function(env, key, value) {
+var envCmd = (env, key, value) => {
   if (!env) {
     console.log('Error: No env provided - provide either a version like "1.0.0" or "app"...\n');
     return Promise.resolve(true);
@@ -636,15 +636,15 @@ var envCmd = function(env, key, value) {
     key = key.toUpperCase();
     return checkCredentials()
       .then(getCurrentApp)
-      .then(function(app) {
+      .then((app) => {
         var url;
         if (env === 'app') {
           url = '/apps/' + app.id + '/environment';
         } else {
           url = '/apps/' + app.id + '/versions/' + env + '/environment';
         }
-        console.log('Preparing to set environment ' + key + ' for your ' + env + ' "' + app.title + '".\n');
-        printStarting('  Setting ' + key + ' to "' + value + '"');
+        console.log(`Preparing to set environment ${key} for your ${env} "${app.title}".\n`);
+        printStarting(`  Setting ${key} to "${value}"`);
         return callAPI(url, {
           method: 'PUT',
           body: {
@@ -653,7 +653,7 @@ var envCmd = function(env, key, value) {
           }
         });
       })
-      .then(function() {
+      .then(() => {
         printDone();
         console.log('  Environment updated!');
         console.log('');
@@ -661,8 +661,8 @@ var envCmd = function(env, key, value) {
       });
   }
   return listEnv(env)
-    .then(function(data) {
-      console.log('The env of your ' + env + ' "' + data.app.title + '" listed below.\n');
+    .then((data) => {
+      console.log(`The env of your ${env} "${data.app.title}" listed below.\n`);
       printTable(data.environment, [
         ['Key', 'key'],
         ['Value', 'value'],
@@ -691,7 +691,7 @@ commands = {
 
 // entry point
 
-var main = function(argv) {
+var main = (argv) => {
   if (DEBUG) {
     console.log('running in:', process.cwd());
     console.log('raw argv:', argv);
@@ -709,10 +709,10 @@ var main = function(argv) {
   }
 
   commandFunc.apply(commands, args)
-    .then(function() {
+    .then(() => {
       console.log('');
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log('\n');
       console.log('Error ' + err.message);
       console.log('\nFailed!');
