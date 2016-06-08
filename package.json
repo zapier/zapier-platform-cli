@@ -1,5 +1,5 @@
 {
-  "name": "@bryanhelmig/zapier-platform-cli",
+  "name": "@zapier/zapier-platform-cli",
   "version": "1.2.30",
   "description": "The CLI for the Zapier platform.",
   "repository": "zapier/zapier-platform-cli",
