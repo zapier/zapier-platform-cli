@@ -564,7 +564,7 @@ var uploadCmd = () => {
       console.log('\nUpload complete!');
     });
 };
-uploadCmd.docs = 'Just upload the last build - does not deploy.';
+uploadCmd.docs = 'Just upload the last build.';
 uploadCmd.example = 'zapier upload';
 
 var deployCmd = (version) => {
@@ -664,9 +664,9 @@ commands = {
   create: createCmd,
   build: buildCmd, // debug only?
   apps: appsCmd,
-  push: pushCmd,
-  upload: uploadCmd, // debug only?
   versions: versionsCmd,
+  upload: uploadCmd,
+  push: pushCmd,
   deploy: deployCmd,
   migrate: migrateCmd,
   history: historyCmd,
