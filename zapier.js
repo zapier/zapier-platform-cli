@@ -567,8 +567,8 @@ var uploadCmd = () => {
 uploadCmd.docs = 'Just upload the last build - does not deploy.';
 uploadCmd.example = 'zapier upload';
 
-var deployCmd = (deployment, version) => {
-  if (!deployment || !version) {
+var deployCmd = (version) => {
+  if (!version) {
     console.log('Error: No deploment/version selected...\n');
     return Promise.resolve();
   }
@@ -576,9 +576,9 @@ var deployCmd = (deployment, version) => {
   return checkCredentials()
     .then(getCurrentApp)
     .then((app) => {
-      console.log(`Preparing to deploy version ${version} your app "${app.title}" in ${deployment}.\n`);
-      var url = `/apps/${app.id}/versions/${version}/deploy/${deployment}`;
-      printStarting(`  Deploying ${version} to ${deployment}`);
+      console.log(`Preparing to deploy version ${version} your app "${app.title}"..\n`);
+      var url = `/apps/${app.id}/versions/${version}/deploy`;
+      printStarting(`  Deploying ${version}}`);
       return callAPI(url, {
         method: 'PUT',
         body: {}
@@ -590,8 +590,8 @@ var deployCmd = (deployment, version) => {
       console.log('');
     });
 };
-deployCmd.docs = 'Deploys a specific version to a specific deployment.';
-deployCmd.example = 'zapier deploy staging 1.0.0';
+deployCmd.docs = 'Deploys a specific version to a production.';
+deployCmd.example = 'zapier deploy 1.0.0';
 
 var migrateCmd = (oldVersion, newVersion, optionalPercent) => {
   return Promise.resolve(`todo ${oldVersion} ${newVersion} ${optionalPercent}`);
