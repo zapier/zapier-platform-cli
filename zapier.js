@@ -567,30 +567,10 @@ var uploadCmd = () => {
 uploadCmd.docs = 'Just upload the last build - does not deploy.';
 uploadCmd.example = 'zapier upload';
 
-var deploymentsCmd = () => {
-  return listVersions()
-    .then((data) => {
-      console.log(`All deployed versions of your app "${data.app.title}" listed below.\n`);
-      var deployments = data.versions.filter((version) => {
-        return version.user_count
-          || version.deployment === 'production'
-          || version.deployment === 'canary'
-          || version.deployment === 'staging';
-      });
-      printTable(deployments, [
-        ['Deployment', 'deployment'],
-        ['Version', 'version'],
-        ['Users', 'user_count'],
-      ]);
-    });
-};
-deploymentsCmd.docs = 'Lists all the deployments of the current app.';
-deploymentsCmd.example = 'zapier deployments';
-
 var deployCmd = (deployment, version) => {
   if (!deployment || !version) {
     console.log('Error: No deploment/version selected...\n');
-    return deploymentsCmd();
+    return Promise.resolve();
   }
 
   return checkCredentials()
@@ -608,11 +588,16 @@ var deployCmd = (deployment, version) => {
       printDone();
       console.log('  Deploy successful! :-D');
       console.log('');
-      return deploymentsCmd();
     });
 };
 deployCmd.docs = 'Deploys a specific version to a specific deployment.';
 deployCmd.example = 'zapier deploy staging 1.0.0';
+
+var migrateCmd = (oldVersion, newVersion, optionalPercent) => {
+  return Promise.resolve(`todo ${oldVersion} ${newVersion} ${optionalPercent}`);
+};
+migrateCmd.docs = 'Migrate users from one version to another.';
+migrateCmd.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
 
 var historyCmd = () => {
   return listHistory()
@@ -683,7 +668,7 @@ commands = {
   upload: uploadCmd, // debug only?
   versions: versionsCmd,
   deploy: deployCmd,
-  deployments: deploymentsCmd,
+  migrate: migrateCmd,
   history: historyCmd,
   env: envCmd,
 };
