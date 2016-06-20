@@ -92,14 +92,23 @@ var getInput = (question) => {
 };
 
 // Returns a promise that reads a file and returns a buffer.
-var readFile = (fileName) => {
+var readFile = (fileName, errMsg) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(fixHome(fileName), (err, buf) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(buf);
+    fs.exists(fileName, (exists) => {
+      if (!exists) {
+        var msg = `: file ${fileName} not found.`;
+        if (errMsg) {
+          msg += ` ${errMsg}`;
+        }
+        return reject(new Error(msg));
       }
+      fs.readFile(fixHome(fileName), (err, buf) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(buf);
+        }
+      });
     });
   });
 };
@@ -152,7 +161,7 @@ var ensureDir = (dir) => {
 var readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
-    readFile(CONFIG_LOCATION)
+    readFile(CONFIG_LOCATION, 'Please run "zapier config".')
       .then((buf) => {
         return JSON.parse(buf.toString());
       })
