@@ -163,7 +163,6 @@ var ensureDir = (dir) => {
 
 // Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
 var readCredentials = (credentials) => {
-  console.log('reading credentials:', credentials);
   return Promise.resolve(
     credentials ||
     readFile(CONFIG_LOCATION, 'Please run "zapier config".')
