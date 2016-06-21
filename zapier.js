@@ -94,9 +94,9 @@ var getInput = (question) => {
 // Returns a promise that reads a file and returns a buffer.
 var readFile = (fileName, errMsg) => {
   return new Promise((resolve, reject) => {
-    fs.exists(fileName, (exists) => {
+    fs.exists(fixHome(fileName), (exists) => {
       if (!exists) {
-        var msg = `: file ${fileName} not found.`;
+        var msg = `: File ${fileName} not found.`;
         if (errMsg) {
           msg += ` ${errMsg}`;
         }
@@ -115,11 +115,15 @@ var readFile = (fileName, errMsg) => {
 
 // Returns a promise that writes a file.
 var writeFile = (fileName, data) => {
+  console.log('writing file', fileName);
   return new Promise((resolve, reject) => {
     fs.writeFile(fixHome(fileName), data, (err) => {
+      console.log('wrote file', fileName, 'err:', err);
       if (err) {
+        console.log('rejected!');
         reject(err);
       } else {
+        console.log('resolved');
         resolve();
       }
     });
@@ -159,10 +163,12 @@ var ensureDir = (dir) => {
 
 // Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
 var readCredentials = (credentials) => {
+  console.log('reading credentials:', credentials);
   return Promise.resolve(
     credentials ||
     readFile(CONFIG_LOCATION, 'Please run "zapier config".')
       .then((buf) => {
+        console.log('got buf', buf.toString());
         return JSON.parse(buf.toString());
       })
   );
@@ -219,6 +225,7 @@ var makeZip = (dir, zipPath) => {
 // Calls the underlying platform REST API with proper authentication.
 var callAPI = (route, options) => {
   options = options || {};
+  console.log('in callAPI, readCredentials');
   return readCredentials()
     .then((credentials) => {
       var _options = {
@@ -270,6 +277,7 @@ var getCurrentApp = () => {
 };
 
 var checkCredentials = () => {
+  console.log('checking credentials');
   return callAPI('/check');
 };
 
@@ -455,6 +463,7 @@ helpCmd.example = 'zapier help';
 var configCmd = () => {
   return getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
     .then((answer) => {
+      console.log('answer', answer);
       return writeFile(CONFIG_LOCATION, prettyJSONstringify({
         deployKey: answer
       }));
