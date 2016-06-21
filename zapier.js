@@ -168,7 +168,6 @@ var readCredentials = (credentials) => {
     credentials ||
     readFile(CONFIG_LOCATION, 'Please run "zapier config".')
       .then((buf) => {
-        console.log('got buf', buf.toString());
         return JSON.parse(buf.toString());
       })
   );
