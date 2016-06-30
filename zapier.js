@@ -102,25 +102,38 @@ var getInput = (question) => {
 };
 
 // Returns a promise that reads a file and returns a buffer.
-var readFile = (fileName) => {
+var readFile = (fileName, errMsg) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(fixHome(fileName), (err, buf) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(buf);
+    fs.exists(fixHome(fileName), (exists) => {
+      if (!exists) {
+        var msg = `: File ${fileName} not found.`;
+        if (errMsg) {
+          msg += ` ${errMsg}`;
+        }
+        return reject(new Error(msg));
       }
+      fs.readFile(fixHome(fileName), (err, buf) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(buf);
+        }
+      });
     });
   });
 };
 
 // Returns a promise that writes a file.
 var writeFile = (fileName, data) => {
+  console.log('writing file', fileName);
   return new Promise((resolve, reject) => {
     fs.writeFile(fixHome(fileName), data, (err) => {
+      console.log('wrote file', fileName, 'err:', err);
       if (err) {
+        console.log('rejected!');
         reject(err);
       } else {
+        console.log('resolved');
         resolve();
       }
     });
@@ -162,7 +175,7 @@ var ensureDir = (dir) => {
 var readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
-    readFile(CONFIG_LOCATION)
+    readFile(CONFIG_LOCATION, 'Please run "zapier config".')
       .then((buf) => {
         return JSON.parse(buf.toString());
       })
@@ -285,6 +298,7 @@ var getCurrentApp = () => {
 };
 
 var checkCredentials = () => {
+  console.log('checking credentials');
   return callAPI('/check');
 };
 
@@ -478,6 +492,7 @@ helpCmd.example = 'zapier help';
 var configCmd = () => {
   return getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
     .then((answer) => {
+      console.log('answer', answer);
       return writeFile(CONFIG_LOCATION, prettyJSONstringify({
         deployKey: answer
       }));
