@@ -15,7 +15,7 @@ var Table = require('easy-table');
 var DEBUG = false;
 var ENDPOINT = 'http://localhost:8000/api/platform/v3';
 
-var STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/platform-example-app';
+var STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
 var CONFIG_LOCATION = process.env.ZAPIER_CONFIG_LOCATION || '~/.zapier-platform';
 var CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapier-current-app';
 // TODO: || is temp hack
@@ -49,13 +49,23 @@ zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
 var printTable = (rows, columnDefs) => {
   var t = new Table();
 
-  rows.forEach((row) => {
+  if (rows && rows.length) {
+    rows.forEach((row) => {
+      columnDefs.forEach((columnDef) => {
+        var label = columnDef[0], key = columnDef[1];
+        t.cell(label, row[key]);
+      });
+      t.newRow();
+    });
+  } else {
+    // write an empty row so we can get the headers
+    // follow up trim will nuke the line of whitespace
     columnDefs.forEach((columnDef) => {
-      var label = columnDef[0], key = columnDef[1];
-      t.cell(label, row[key]);
+      var label = columnDef[0];
+      t.cell(label, '');
     });
     t.newRow();
-  });
+  }
 
   console.log(t.toString().trim());
 };
@@ -210,10 +220,12 @@ var makeZip = (dir, zipPath) => {
 // Calls the underlying platform REST API with proper authentication.
 var callAPI = (route, options) => {
   options = options || {};
+  var requestOptions;
   return readCredentials()
     .then((credentials) => {
-      var _options = {
+      requestOptions = {
         method: options.method || 'GET',
+        url: ENDPOINT + route,
         body: options.body ? JSON.stringify(options.body) : null,
         headers: {
           Accept: 'application/json',
@@ -221,7 +233,7 @@ var callAPI = (route, options) => {
           'X-Deploy-Key': credentials.deployKey
         }
       };
-      return fetch(ENDPOINT + route, _options);
+      return fetch(requestOptions.url, requestOptions);
     })
     .then((res) => {
       return Promise.all([
@@ -231,6 +243,12 @@ var callAPI = (route, options) => {
     })
     .then((values) => {
       var res = values[0], text = values[1];
+      if (DEBUG) {
+        console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
+        if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
+        console.log(`<< ${res.status}`);
+        console.log(`<< ${(text || '').substring(0, 250)}\n`);
+      }
       if (res.status >= 400) {
         var errors;
         try {
@@ -256,7 +274,13 @@ var getCurrentAppConfig = () => {
 var getCurrentApp = () => {
   return getCurrentAppConfig()
     .then((appId) => {
+      if (!appId) {
+        throw new Error('No appId found.');
+      }
       return callAPI('/apps/' + appId);
+    })
+    .catch(() => {
+      throw new Error(`Warning! /${CURRENT_APP_FILE} seems to be incorrect. Try running \`zapier config\` again.`);
     });
 };
 
@@ -310,12 +334,12 @@ var listHistory = () => {
   return listEndoint('history');
 };
 
-var listEnv = (env) => {
+var listEnv = (version) => {
   var endpoint;
-  if (env === 'app') {
-    endpoint = 'environment';
+  if (version) {
+    endpoint = `versions/${version}/environment`;
   } else {
-    endpoint = `versions/${env}/environment`;
+    endpoint = `environment`;
   }
   return listEndoint(endpoint, 'environment');
 };
@@ -423,9 +447,17 @@ var buildAndUploadCurrentDir = (zipPath) => {
 var commands;
 
 var helpCmd = () => {
+  console.log(`
+This Zapier command works off of two files:
+
+ * ${CONFIG_LOCATION}      (home directory identifies the deploy key & user)
+ * ./${CURRENT_APP_FILE}   (current directory identifies the app)
+
+The config and create commands will help manage those files. All commands listed below.
+`.trim());
   return Promise.resolve({})
     .then(() => {
-      console.log('All commands listed below.\n');
+      console.log('');
       var allCommands = Object.keys(commands).map((command) => {
         return {
           name: command,
@@ -500,7 +532,7 @@ var createCmd = (title) => {
     })
     .then(() => {
       printDone();
-      console.log('\nFinished! You can `zapier push` now - or make tweaks!');
+      console.log('\nFinished! You can `zapier push` now to build & upload a version!');
     });
 };
 createCmd.docs = 'Creates a new app in your account.';
@@ -512,10 +544,13 @@ var appsCmd = () => {
       console.log('All apps listed below.\n');
       printTable(data.apps, [
         ['Title', 'title'],
-        ['Date', 'date'],
+        ['Timestamp', 'date'],
         ['Unique Key', 'key'],
         ['Current', 'current'],
       ]);
+      if (!data.apps.length) {
+        console.log('\nTry adding an app with the `zapier create` command.');
+      }
     });
 };
 appsCmd.docs = 'Lists all the apps in your account.';
@@ -523,7 +558,10 @@ appsCmd.example = 'zapier apps';
 
 var buildCmd = (zipPath) => {
   console.log('Building project.\n');
-  return build(zipPath);
+  return build(zipPath)
+    .then(() => {
+      console.log(`\nBuild complete in ${BUILD_PATH}! Try the \`zapier upload\` command now.`);
+    });
 };
 buildCmd.docs = 'Builds a deployable zip from the current directory.';
 buildCmd.example = 'zapier build';
@@ -534,12 +572,15 @@ var versionsCmd = () => {
       console.log(`All versions of your app "${data.app.title}" listed below.\n`);
       printTable(data.versions, [
         ['Version', 'version'],
-        ['Date', 'date'],
+        ['Timestamp', 'date'],
         ['Users', 'user_count'],
         ['Platform', 'platform_version'],
         ['Deployment', 'deployment'],
-        ['Package SHA1', 'sha1'],
+        ['Deprecation Date', 'deprecation_date'],
       ]);
+      if (!data.versions.length) {
+        console.log('\nTry adding an version with the `zapier upload` command.');
+      }
     });
 };
 versionsCmd.docs = 'Lists all the versions of the current app.';
@@ -561,10 +602,10 @@ var uploadCmd = () => {
   console.log('Preparing to upload a new version.\n');
   return upload(zipPath)
     .then(() => {
-      console.log('\nUpload complete!');
+      console.log(`\nUpload of ${BUILD_PATH} complete! Try \`zapier versions\` now!`);
     });
 };
-uploadCmd.docs = 'Just upload the last build.';
+uploadCmd.docs = 'Upload the last build as a version.';
 uploadCmd.example = 'zapier upload';
 
 var deployCmd = (version) => {
@@ -576,9 +617,9 @@ var deployCmd = (version) => {
   return checkCredentials()
     .then(getCurrentApp)
     .then((app) => {
-      console.log(`Preparing to deploy version ${version} your app "${app.title}"..\n`);
-      var url = `/apps/${app.id}/versions/${version}/deploy`;
-      printStarting(`  Deploying ${version}}`);
+      console.log(`Preparing to deploy version ${version} your app "${app.title}".\n`);
+      var url = `/apps/${app.id}/versions/${version}/deploy/production`;
+      printStarting(`  Deploying ${version}`);
       return callAPI(url, {
         method: 'PUT',
         body: {}
@@ -586,8 +627,8 @@ var deployCmd = (version) => {
     })
     .then(() => {
       printDone();
-      console.log('  Deploy successful! :-D');
-      console.log('');
+      console.log(`  Deploy successful!\n`);
+      console.log(`Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.\n`);
     });
 };
 deployCmd.docs = 'Deploys a specific version to a production.';
@@ -605,30 +646,21 @@ var historyCmd = () => {
       console.log(`The history of your app "${data.app.title}" listed below.\n`);
       printTable(data.history, [
         ['Message', 'message'],
-        ['Date', 'date'],
+        ['Timestamp', 'date'],
       ]);
     });
 };
 historyCmd.docs = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
 
-var envCmd = (env, key, value) => {
-  if (!env) {
-    console.log('Error: No env provided - provide either a version like "1.0.0" or "app"...\n');
-    return Promise.resolve(true);
-  }
+var envCmd = (version, key, value) => {
   if (value !== undefined) {
     key = key.toUpperCase();
     return checkCredentials()
       .then(getCurrentApp)
       .then((app) => {
-        var url;
-        if (env === 'app') {
-          url = '/apps/' + app.id + '/environment';
-        } else {
-          url = '/apps/' + app.id + '/versions/' + env + '/environment';
-        }
-        console.log(`Preparing to set environment ${key} for your ${env} "${app.title}".\n`);
+        var url = '/apps/' + app.id + '/versions/' + version + '/environment';
+        console.log(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
         printStarting(`  Setting ${key} to "${value}"`);
         return callAPI(url, {
           method: 'PUT',
@@ -642,33 +674,63 @@ var envCmd = (env, key, value) => {
         printDone();
         console.log('  Environment updated!');
         console.log('');
-        return envCmd(env);
+        return envCmd(version);
       });
   }
-  return listEnv(env)
+  return listEnv(version)
     .then((data) => {
-      console.log(`The env of your ${env} "${data.app.title}" listed below.\n`);
+      console.log(`The env of your "${data.app.title}" listed below.\n`);
       printTable(data.environment, [
+        ['Version', 'app_version'],
         ['Key', 'key'],
         ['Value', 'value'],
-        ['From', 'from'],
       ]);
+      console.log(`\nTry setting an env with the \`${envCmd.example}\` command.`);
     });
 };
 envCmd.docs = 'Read and write environment variables.';
-envCmd.example = 'zapier env app CLIENT_SECRET 1234567890';
+envCmd.example = 'zapier env 1.0.0 API_KEY 1234567890';
+
+
+var deprecateCmd = (version, deprecation_date) => {
+  if (!deprecation_date) {
+    console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2018-01-20"...\n');
+    return Promise.resolve(true);
+  }
+  return checkCredentials()
+    .then(getCurrentApp)
+    .then((app) => {
+      console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
+      var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
+      printStarting(`  Deprecating ${version}`);
+      return callAPI(url, {
+        method: 'PUT',
+        body: {
+          deprecation_date: deprecation_date
+        }
+      });
+    })
+    .then(() => {
+      printDone();
+      console.log('  Deprecation successful!\n');
+      console.log(`We'll let users know that this version is no longer recommended.\n`);
+    });
+};
+deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';
+deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
 
 commands = {
   help: helpCmd,
   config: configCmd,
   create: createCmd,
-  build: buildCmd, // debug only?
   apps: appsCmd,
   versions: versionsCmd,
+  build: buildCmd, // debug only?
   upload: uploadCmd,
   push: pushCmd,
   deploy: deployCmd,
   migrate: migrateCmd,
+  deprecate: deprecateCmd,
   history: historyCmd,
   env: envCmd,
 };
