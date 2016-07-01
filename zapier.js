@@ -298,7 +298,6 @@ var getCurrentApp = () => {
 };
 
 var checkCredentials = () => {
-  console.log('checking credentials');
   return callAPI('/check');
 };
 
