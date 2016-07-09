@@ -178,26 +178,6 @@ var runCommand = (command, options) => {
   });
 };
 
-var makeZip = (dir, zipPath) => {
-  var output = fs.createWriteStream(zipPath);
-  var archive = archiver('zip');
-  return new Promise((resolve, reject) => {
-    output.on('close', () => {
-      resolve(); // archive.pointer()
-    });
-    archive.on('error', reject);
-    archive.pipe(output);
-    archive.bulk([
-      {
-        expand: true,
-        cwd: dir,
-        src: '**/*' // could do browserify --list
-      }
-    ]);
-    archive.finalize();
-  });
-};
-
 // Calls the underlying platform REST API with proper authentication.
 var callAPI = (route, options) => {
   options = options || {};
@@ -325,6 +305,77 @@ var listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
+// given an entry point, return a list of files that uses
+// could probably be done better with module-deps...
+var browserifyFiles = (entryPoint) => {
+  var browserify = require('browserify');
+  var through = require('through2');
+
+  var cwd = process.cwd() + '/';
+  var argv = {
+    noParse: [ undefined ],
+    extensions: [],
+    ignoreTransform: [],
+    entries: [ 'index.js' ],
+    fullPaths: false,
+    builtins: false,
+    commondir: false,
+    bundleExternal: true,
+    basedir: undefined,
+    browserField: false,
+    detectGlobals: true,
+    insertGlobals: false,
+    insertGlobalVars: {
+      process: undefined,
+      global: undefined,
+      'Buffer.isBuffer': undefined,
+      Buffer: undefined
+    },
+    ignoreMissing: false,
+    debug: false,
+    standalone: undefined
+  };
+  var b = browserify(argv);
+  b.add(entryPoint);
+
+  return new Promise((resolve, reject) => {
+    b.on('error', reject);
+
+    var output = [];
+    b.pipeline.get('deps')
+      .push(through.obj((row, enc, next) => {
+        var filePath = row.file || row.id;
+        output.push(filePath.replace(cwd, ''));
+        next();
+      })
+      .on('end', () => {
+        resolve(output);
+      }));
+    b.bundle();
+  });
+};
+
+var makeZip = (dir, zipPath, src) => {
+  var output = fs.createWriteStream(zipPath);
+  var archive = archiver('zip');
+  src = src || '**/*'; // could do browserify --list
+  return new Promise((resolve, reject) => {
+    output.on('close', () => {
+      resolve(); // archive.pointer()
+    });
+    archive.on('error', reject);
+    archive.pipe(output);
+    archive.bulk([
+      {
+        expand: true,
+        cwd: dir,
+        src: src
+      }
+    ]);
+    archive.finalize();
+  });
+};
+
 var build = (zipPath) => {
   var wdir = process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
@@ -443,6 +494,7 @@ module.exports = {
   listVersions: listVersions,
   listHistory: listHistory,
   listEnv: listEnv,
+  browserifyFiles: browserifyFiles,
   build: build,
   upload: upload,
   buildAndUploadCurrentDir: buildAndUploadCurrentDir
