@@ -90,7 +90,7 @@ var createCmd = (title) => {
     })
     .then(() => {
       utils.printDone();
-      console.log('\nFinished! You can `zapier push` now to utils.build & upload a version!');
+      console.log('\nFinished! You can `zapier push` now to build & upload a version!');
     });
 };
 createCmd.docs = 'Creates a new app in your account.';
@@ -122,7 +122,7 @@ var buildCmd = (zipPath) => {
     });
 };
 buildCmd.docs = 'Builds a deployable zip from the current directory.';
-buildCmd.example = 'zapier utils.build';
+buildCmd.example = 'zapier build';
 
 var versionsCmd = () => {
   return utils.listVersions()
@@ -146,7 +146,7 @@ versionsCmd.example = 'zapier versions';
 
 var pushCmd = () => {
   var zipPath = zipPath || constants.BUILD_PATH;
-  console.log('Preparing to utils.build and upload a new version.\n');
+  console.log('Preparing to build and upload a new version.\n');
   return utils.buildAndUploadCurrentDir(zipPath)
     .then(() => {
       console.log('\nBuild and upload complete!');
@@ -163,7 +163,7 @@ var uploadCmd = () => {
       console.log(`\nUpload of ${constants.BUILD_PATH} complete! Try \`zapier versions\` now!`);
     });
 };
-uploadCmd.docs = 'Upload the last utils.build as a version.';
+uploadCmd.docs = 'Upload the last build as a version.';
 uploadCmd.example = 'zapier upload';
 
 var deployCmd = (version) => {
