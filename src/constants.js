@@ -30,6 +30,13 @@ zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
       zzz       zzzzzzzz       zzz
                 zzzzzzzz`;
 
+// TODO: will be replaced by `node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`
+var TEMP_HANDLER_FILE = `
+var zapier = require('@zapier/zapier-platform-core);
+var userApp = require('/index');
+module.exports = {handler: zapier.createAppHandler(userApp)};
+`;
+
 module.exports = {
   DEBUG: DEBUG,
   ENDPOINT: ENDPOINT,
@@ -39,5 +46,6 @@ module.exports = {
   PLATFORM_VERSION: PLATFORM_VERSION,
   DEF_PATH: DEF_PATH,
   BUILD_PATH: BUILD_PATH,
-  ART: ART
+  ART: ART,
+  TEMP_HANDLER_FILE: TEMP_HANDLER_FILE
 };

@@ -1,6 +1,7 @@
 var constants = require('./constants');
 
 var crypto = require('crypto');
+var qs = require('querystring');
 var cp = require('child_process');
 var fs = require('fs');
 var os = require('os');
@@ -324,6 +325,10 @@ var listHistory = () => {
   return listEndoint('history');
 };
 
+var listLogs = (opts) => {
+  return listEndoint(`logs?${qs.stringify(opts)}`);
+};
+
 var listEnv = (version) => {
   var endpoint;
   if (version) {
@@ -336,6 +341,7 @@ var listEnv = (version) => {
 
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
+// TODO: needs to include package.json files too i think
 var browserifyFiles = (entryPoint) => {
   var browserify = require('browserify');
   var through = require('through2');
@@ -418,26 +424,21 @@ var build = (zipPath) => {
       printStarting('  Installing project dependencies');
       return runCommand('npm install --production', {cwd: tmpDir});
     })
-    // tries to make a more reproducible zip build!
     .then(() => {
+      // tries to do a reproducible build at least
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
       return runCommand('find . -exec touch -t 201601010000 {} +', {cwd: tmpDir});
-      // the next two break require('') if omitted :-/
-      // if we browserify --list the next two can drop
-      // .then(() => {
-      //   // npm package.json has weird _args and _shasum style stuff
-      //   return runCommand('find node_modules -name "package.json" -delete', {cwd: tmpDir});
-      // })
-      // .then(() => {
-      //   // Makefile self edits
-      //   return runCommand('find node_modules -name "Makefile" -delete', {cwd: tmpDir});
-      // });
     })
     .then(() => {
       printDone();
       printStarting('  Building app definition (TODO!)');
       return Promise.resolve('TODO!');
+    })
+    .then(() => {
+      printDone();
+      printStarting('  Applying entry point file');
+      return writeFile(tmpDir + '/zapierwrapper.js', constants.TEMP_HANDLER_FILE);
     })
     .then(() => {
       printDone();
@@ -517,6 +518,7 @@ module.exports = {
   listEndoint: listEndoint,
   listVersions: listVersions,
   listHistory: listHistory,
+  listLogs: listLogs,
   listEnv: listEnv,
   build: build,
   upload: upload,

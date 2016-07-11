@@ -320,11 +320,18 @@ historyCmd.docs = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
 
 var logsCmd = () => {
-  console.log('TODO! We will get to it.')
-  return Promise.resolve('TODO!');
+  return utils.listLogs(global.argOpts)
+    .then((data) => {
+      console.log(`The logs of your app "${data.app.title}" listed below.\n`);
+      utils.printTable(data.history, [
+        ['Status', 'response_status_code'],
+        ['URL', 'request_url'],
+        ['Querystring', 'request_params'],
+      ]);
+    });
 };
-logsCmd.docs = 'Prints recent logs.';
-logsCmd.example = 'zapier logs --version=1.0.1 --error';
+logsCmd.docs = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com';
+logsCmd.example = 'zapier logs --version=1.0.1';
 
 
 var envCmd = (version, key, value) => {
