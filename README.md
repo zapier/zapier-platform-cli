@@ -9,7 +9,7 @@ A CLI to test, verify, build and deploy an app to Zapier (both private and publi
 # make sure you have node & npm installed
 # behind the scenes Zapier uses node v0.10.36
 # we recommend using nvm or similar to match!
-npm install -g zapier-cli
+npm install -g @zapier/zapier-platform-cli
 
 # setup zapier's auth with your deploy key
 zapier auth
@@ -24,15 +24,15 @@ Usage: zapier COMMAND [command-specific-options]
 
 This Zapier command works off of two files:
 
- * ~/.zapier-platform      (home directory identifies the deploy key & user)
- * ./.zapier-current-app   (current directory identifies the app)
+ * ~/.zapier-platform-auth      (home directory identifies the deploy key & user)
+ * ./.zapier-platform-current-app   (current directory identifies the app)
 
 The `zapier auth` and `zapier create` commands will help manage those files. All commands listed below.
 
 Command    Example                              Documentation
----------  -----------------------------------  --------------------------------------------------------------------------
+---------  -----------------------------------  ---------------------------------------------------------------------------
 help       zapier help                          Lists all the commands you can use.
-auth       zapier auth                          Configure your ~/.zapier-platform with a deploy key for using the CLI.
+auth       zapier auth                          Configure your ~/.zapier-platform-auth with a deploy key for using the CLI.
 create     zapier create "My Example App"       Creates a new app in your account.
 link       zapier link                          Link the current directory to an app in your account.
 apps       zapier apps                          Lists all the apps in your account.
