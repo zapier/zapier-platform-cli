@@ -1,6 +1,6 @@
 {
   "name": "@zapier/zapier-platform-cli",
-  "version": "1.2.36",
+  "version": "1.2.37",
   "description": "The CLI for the Zapier platform.",
   "repository": "zapier/zapier-platform-cli",
   "homepage": "https://zapier.com/",
@@ -16,13 +16,13 @@
   },
   "dependencies": {
     "archiver": "0.21.0",
+    "babel-polyfill": "6.9.1",
     "easy-table": "1.0.0",
     "fs-extra": "0.30.0",
     "node-fetch": "1.5.3"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",
-    "babel-polyfill": "6.9.1",
     "babel-preset-es2015": "6.9.0",
     "mocha": "2.4.5",
     "should": "8.2.2"
