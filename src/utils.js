@@ -14,7 +14,7 @@ var Table = require('easy-table');
 
 // Wraps the easy-table library. Rows is an array of objects,
 // columnDefs an ordered sub-array [[label, key], ...].
-var printTable = (rows, columnDefs) => {
+var makeTable = (rows, columnDefs) => {
   var t = new Table();
 
   if (rows && rows.length) {
@@ -35,7 +35,11 @@ var printTable = (rows, columnDefs) => {
     t.newRow();
   }
 
-  console.log(t.toString().trim());
+  return t.toString().trim();
+};
+
+var printTable = (rows, columnDefs) => {
+  console.log(makeTable(rows, columnDefs));
 };
 
 var argParse = (argv) => {
@@ -239,16 +243,23 @@ var callAPI = (route, options) => {
 };
 
 // Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
-var getCurrentAppConfig = () => {
+var getLinkedAppConfig = () => {
   return readFile(constants.CURRENT_APP_FILE)
     .then((buf) => {
       return JSON.parse(buf.toString()).id;
     });
 };
 
-// Loads the current app from the API.
-var getCurrentApp = () => {
-  return getCurrentAppConfig()
+var writeLinkedAppConfig = (app) => {
+  return writeFile(constants.CURRENT_APP_FILE, utils.prettyJSONstringify({
+    id: app.id,
+    key: app.key
+  }));
+};
+
+// Loads the linked app from the API.
+var getLinkedApp = () => {
+  return getLinkedAppConfig()
     .then((appId) => {
       if (!appId) {
         throw new Error('No appId found.');
@@ -268,16 +279,16 @@ var listApps = () => {
   return checkCredentials()
     .then(() => {
       return Promise.all([
-        getCurrentApp(),
+        getLinkedApp(),
         callAPI('/apps')
       ]);
     })
     .then((values) => {
-      var currentApp = values[0], data = values[1];
+      var linkedApp = values[0], data = values[1];
       return {
-        app: currentApp,
+        app: linkedApp,
         apps: data.objects.map((app) => {
-          app.current = app.id === currentApp.id ? '✔' : '';
+          app.linked = app.id === linkedApp.id ? '✔' : '';
           return app;
         })
       };
@@ -286,7 +297,7 @@ var listApps = () => {
 
 var listEndoint = (endpoint, key) => {
   return checkCredentials()
-    .then(getCurrentApp)
+    .then(getLinkedApp)
     .then((app) => {
       return Promise.all([
         app,
@@ -445,7 +456,7 @@ var build = (zipPath) => {
 var upload = (zipPath, defPath) => {
   zipPath = zipPath || constants.BUILD_PATH;
   defPath = defPath || constants.DEF_PATH;
-  return getCurrentApp()
+  return getLinkedApp()
     .then((app) => {
       var definition = readFile(defPath)
         .then((buf) => {
@@ -499,7 +510,8 @@ module.exports = {
   removeDir: removeDir,
   runCommand: runCommand,
   callAPI: callAPI,
-  getCurrentApp: getCurrentApp,
+  writeLinkedAppConfig: writeLinkedAppConfig,
+  getLinkedApp: getLinkedApp,
   checkCredentials: checkCredentials,
   listApps: listApps,
   listEndoint: listEndoint,

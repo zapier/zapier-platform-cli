@@ -10,6 +10,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "node_modules/babel-cli/bin/babel.js src -d lib",
+    "watch": "node_modules/babel-cli/bin/babel.js --watch src -d lib",
     "test": "node_modules/mocha/bin/mocha",
     "zapier": "zapier.js"
   },

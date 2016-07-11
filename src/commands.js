@@ -10,7 +10,7 @@ This Zapier command works off of two files:
  * ${constants.CONFIG_LOCATION}      (home directory identifies the deploy key & user)
  * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
 
-The config and create commands will help manage those files. All commands listed below.
+The \`zapier auth\` and \`zapier create\` commands will help manage those files. All commands listed below.
 `.trim());
   return Promise.resolve({})
     .then(() => {
@@ -32,7 +32,8 @@ The config and create commands will help manage those files. All commands listed
 helpCmd.docs = 'Lists all the commands you can use.';
 helpCmd.example = 'zapier help';
 
-var configCmd = () => {
+var authCmd = () => {
+  // TODO: check for file, then hit /check - to offer
   return utils.getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
     .then((answer) => {
       console.log('answer', answer);
@@ -45,8 +46,15 @@ var configCmd = () => {
       console.log('\nSaved key to ' + constants.CONFIG_LOCATION);
     });
 };
-configCmd.docs = `Configure your ${constants.CONFIG_LOCATION} with a deploy key for using the CLI.`;
-configCmd.example = 'zapier config';
+authCmd.docs = `Configure your ${constants.CONFIG_LOCATION} with a deploy key for using the CLI.`;
+authCmd.example = 'zapier auth';
+
+var setupAppFile = (app) => {
+  return utils.writeFile(constants.CURRENT_APP_FILE, utils.prettyJSONstringify({
+    id: app.id,
+    key: app.key
+  }));
+};
 
 var createCmd = (title) => {
   return utils.checkCredentials()
@@ -83,10 +91,7 @@ var createCmd = (title) => {
     .then((app) => {
       utils.printDone();
       utils.printStarting(`  Setting up ${constants.CURRENT_APP_FILE} file`);
-      return utils.writeFile(constants.CURRENT_APP_FILE, utils.prettyJSONstringify({
-        id: app.id,
-        key: app.key
-      }));
+      return setupAppFile(app);
     })
     .then(() => {
       utils.printDone();
@@ -96,6 +101,58 @@ var createCmd = (title) => {
 createCmd.docs = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
 
+var linkCmd = () => {
+  var appMap = {};
+
+  return utils.listApps()
+    .then((data) => {
+      console.log('Which app would you like to link the current directory to?\n');
+      var apps = data.apps.map((app, index) => {
+        app.number = index + 1;
+        appMap[app.number] = app;
+        return app;
+      });
+      utils.printTable(apps, [
+        ['Number', 'number'],
+        ['Title', 'title'],
+        ['Timestamp', 'date'],
+        ['Unique Key', 'key'],
+        ['Linked', 'linked'],
+      ]);
+      console.log('     ...or type any title to create new app!\n');
+      return utils.getInput('Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)\n\n');
+    })
+    .then((answer) => {
+      console.log('');
+      if (answer.toLowerCase() === 'no' || answer.toLowerCase() === 'cancel') {
+        throw new Error('Cancelled link operation.')
+      } else if (appMap[answer]) {
+        utils.printStarting(`  Selecting existing app ${appMap[answer].title}`);
+        return appMap[answer];
+      } else {
+        var title = answer;
+        utils.printStarting(`  Creating a new app named "${title}"`);
+        return utils.callAPI('/apps', {
+          method: 'POST',
+          body: {
+            title: title
+          }
+        });
+      }
+    })
+    .then((app) => {
+      utils.printDone();
+      utils.printStarting(`  Setting up ${constants.CURRENT_APP_FILE} file`);
+      return setupAppFile(app);
+    })
+    .then(() => {
+      utils.printDone();
+      console.log('\nFinished! You can `zapier push` now to build & upload a version!');
+    });
+};
+linkCmd.docs = 'Link the current directory to an app in your account.';
+linkCmd.example = 'zapier link';
+
 var appsCmd = () => {
   return utils.listApps()
     .then((data) => {
@@ -104,7 +161,7 @@ var appsCmd = () => {
         ['Title', 'title'],
         ['Timestamp', 'date'],
         ['Unique Key', 'key'],
-        ['Current', 'current'],
+        ['Linked', 'linked'],
       ]);
       if (!data.apps.length) {
         console.log('\nTry adding an app with the `zapier create` command.');
@@ -173,7 +230,7 @@ var deployCmd = (version) => {
   }
 
   return utils.checkCredentials()
-    .then(utils.getCurrentApp)
+    .then(utils.getLinkedApp)
     .then((app) => {
       console.log(`Preparing to deploy version ${version} your app "${app.title}".\n`);
       var url = `/apps/${app.id}/versions/${version}/deploy/production`;
@@ -215,7 +272,7 @@ var envCmd = (version, key, value) => {
   if (value !== undefined) {
     key = key.toUpperCase();
     return utils.checkCredentials()
-      .then(utils.getCurrentApp)
+      .then(utils.getLinkedApp)
       .then((app) => {
         var url = '/apps/' + app.id + '/versions/' + version + '/environment';
         console.log(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
@@ -256,7 +313,7 @@ var deprecateCmd = (version, deprecation_date) => {
     return Promise.resolve(true);
   }
   return utils.checkCredentials()
-    .then(utils.getCurrentApp)
+    .then(utils.getLinkedApp)
     .then((app) => {
       console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
       var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
@@ -277,10 +334,12 @@ var deprecateCmd = (version, deprecation_date) => {
 deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
 
+
 module.exports = commands = {
   help: helpCmd,
-  config: configCmd,
+  auth: authCmd,
   create: createCmd,
+  link: linkCmd,
   apps: appsCmd,
   versions: versionsCmd,
   build: buildCmd, // debug only?
