@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+require('babel-polyfill');
 
 var constants = require('./constants');
 var commands = require('./commands');
