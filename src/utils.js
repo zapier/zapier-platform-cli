@@ -345,7 +345,7 @@ var browserifyFiles = (entryPoint) => {
     noParse: [ undefined ],
     extensions: [],
     ignoreTransform: [],
-    entries: [ 'index.js' ],
+    entries: [entryPoint],
     fullPaths: false,
     builtins: false,
     commondir: false,
@@ -365,7 +365,6 @@ var browserifyFiles = (entryPoint) => {
     standalone: undefined
   };
   var b = browserify(argv);
-  b.add(entryPoint);
 
   return new Promise((resolve, reject) => {
     b.on('error', reject);

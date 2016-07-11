@@ -278,6 +278,34 @@ var migrateCmd = (oldVersion, newVersion, optionalPercent) => {
 migrateCmd.docs = 'Migrate users from one version to another.';
 migrateCmd.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
 
+
+var deprecateCmd = (version, deprecation_date) => {
+  if (!deprecation_date) {
+    console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2018-01-20"...\n');
+    return Promise.resolve(true);
+  }
+  return utils.checkCredentials()
+    .then(utils.getLinkedApp)
+    .then((app) => {
+      console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
+      var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
+      utils.printStarting(`  Deprecating ${version}`);
+      return utils.callAPI(url, {
+        method: 'PUT',
+        body: {
+          deprecation_date: deprecation_date
+        }
+      });
+    })
+    .then(() => {
+      utils.printDone();
+      console.log('  Deprecation successful!\n');
+      console.log(`We'll let users know that this version is no longer recommended.`);
+    });
+};
+deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';
+deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
+
 var historyCmd = () => {
   return utils.listHistory()
     .then((data) => {
@@ -290,6 +318,13 @@ var historyCmd = () => {
 };
 historyCmd.docs = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
+
+var logsCmd = () => {
+  console.log('TODO! We will get to it.')
+  return Promise.resolve('TODO!');
+};
+logsCmd.docs = 'Prints recent logs.';
+logsCmd.example = 'zapier logs --version=1.0.1 --error';
 
 
 var envCmd = (version, key, value) => {
@@ -331,34 +366,6 @@ envCmd.docs = 'Read and write environment variables.';
 envCmd.example = 'zapier env 1.0.0 API_KEY 1234567890';
 
 
-var deprecateCmd = (version, deprecation_date) => {
-  if (!deprecation_date) {
-    console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2018-01-20"...\n');
-    return Promise.resolve(true);
-  }
-  return utils.checkCredentials()
-    .then(utils.getLinkedApp)
-    .then((app) => {
-      console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
-      var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
-      utils.printStarting(`  Deprecating ${version}`);
-      return utils.callAPI(url, {
-        method: 'PUT',
-        body: {
-          deprecation_date: deprecation_date
-        }
-      });
-    })
-    .then(() => {
-      utils.printDone();
-      console.log('  Deprecation successful!\n');
-      console.log(`We'll let users know that this version is no longer recommended.`);
-    });
-};
-deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';
-deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
-
-
 module.exports = commands = {
   help: helpCmd,
   auth: authCmd,
@@ -373,5 +380,6 @@ module.exports = commands = {
   migrate: migrateCmd,
   deprecate: deprecateCmd,
   history: historyCmd,
+  logs: logsCmd,
   env: envCmd,
 };
