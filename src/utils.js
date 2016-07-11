@@ -114,12 +114,9 @@ var readFile = (fileName, errMsg) => {
 var writeFile = (fileName, data) => {
   return new Promise((resolve, reject) => {
     fs.writeFile(fixHome(fileName), data, (err) => {
-      console.log('wrote file', fileName, 'err:', err);
       if (err) {
-        console.log('rejected!');
         reject(err);
       } else {
-        console.log('resolved');
         resolve();
       }
     });

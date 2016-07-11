@@ -1,4 +1,4 @@
-var DEBUG = false;
+var DEBUG = (process.env.ZAPIER_DEBUG || 'false') === 'true';
 
 var BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'http://localhost:8000/api/platform/v3';
 var ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + '/api/platform/v3';
