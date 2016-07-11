@@ -20,7 +20,7 @@ var makeTable = (rows, columnDefs) => {
   if (rows && rows.length) {
     rows.forEach((row) => {
       columnDefs.forEach((columnDef) => {
-        var label = columnDef[0], key = columnDef[1];
+        var [label, key] = columnDef;
         t.cell(label, row[key]);
       });
       t.newRow();
@@ -262,12 +262,12 @@ var getLinkedApp = () => {
   return getLinkedAppConfig()
     .then((appId) => {
       if (!appId) {
-        throw new Error('No appId found.');
+        return {};
       }
       return callAPI('/apps/' + appId);
     })
     .catch(() => {
-      throw new Error(`Warning! /${constants.CURRENT_APP_FILE} seems to be incorrect. Try running \`zapier config\` again.`);
+      throw new Error(`Warning! ${constants.CURRENT_APP_FILE} seems to be incorrect. Try running \`zapier link\` or \`zapier create\`.`);
     });
 };
 
@@ -279,16 +279,19 @@ var listApps = () => {
   return checkCredentials()
     .then(() => {
       return Promise.all([
-        getLinkedApp(),
+        getLinkedApp()
+          .catch(() => {
+            return undefined;
+          }),
         callAPI('/apps')
       ]);
     })
     .then((values) => {
-      var linkedApp = values[0], data = values[1];
+      var [linkedApp, data] = values;
       return {
         app: linkedApp,
         apps: data.objects.map((app) => {
-          app.linked = app.id === linkedApp.id ? '✔' : '';
+          app.linked = (linkedApp && app.id === linkedApp.id) ? '✔' : '';
           return app;
         })
       };
@@ -469,10 +472,7 @@ var upload = (zipPath, defPath) => {
       return Promise.all([definition, zipFile, app]);
     })
     .then((values) => {
-      var definition = values[0];
-      var zipFile = values[1];
-      var app = values[2];
-
+      var [definition, zipFile, app] = values;
       printStarting('  Uploading version ' + definition.version);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',

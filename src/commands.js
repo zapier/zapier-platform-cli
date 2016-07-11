@@ -38,7 +38,6 @@ var authCmd = () => {
   // TODO: check for file, then hit /check - to offer
   return utils.getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
     .then((answer) => {
-      console.log('answer', answer);
       return utils.writeFile(constants.AUTH_LOCATION, utils.prettyJSONstringify({
         deployKey: answer
       }));
@@ -122,7 +121,7 @@ var linkCmd = () => {
     .then((answer) => {
       console.log('');
       if (answer.toLowerCase() === 'no' || answer.toLowerCase() === 'cancel') {
-        throw new Error('Cancelled link operation.')
+        throw new Error('Cancelled link operation.');
       } else if (appMap[answer]) {
         utils.printStarting(`  Selecting existing app ${appMap[answer].title}`);
         return appMap[answer];
@@ -163,6 +162,8 @@ var appsCmd = () => {
       ]);
       if (!data.apps.length) {
         console.log('\nTry adding an app with the `zapier create` command.');
+      } else {
+        console.log('\nTry linking a different app with the `zapier link` command.');
       }
     });
 };

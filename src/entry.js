@@ -13,8 +13,7 @@ module.exports = (argv) => {
 
   argv = argv.slice(2); // strip path, zapier.js
 
-  var _r = utils.argParse(argv);
-  var args = _r[0], opts = _r[1];
+  var [args, opts] = utils.argParse(argv);
 
   var command = args[0];
   args = args.slice(1);
