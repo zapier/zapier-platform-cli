@@ -11,7 +11,7 @@ This Zapier command works off of two files:
  * ${constants.AUTH_LOCATION}      (home directory identifies the deploy key & user)
  * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
 
-The \`zapier auth\` and \`zapier create\` commands will help manage those files. All commands listed below.
+The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help manage those files. All commands listed below.
 `.trim());
   return Promise.resolve({})
     .then(() => {
@@ -35,8 +35,25 @@ helpCmd.example = 'zapier help';
 
 
 var authCmd = () => {
-  // TODO: check for file, then hit /check - to offer
-  return utils.getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
+  var checks = [
+    utils.readCredentials()
+      .then(() => true)
+      .catch(() => false),
+    utils.checkCredentials()
+      .then(() => true)
+      .catch(() => false)
+  ];
+  return Promise.all(checks)
+    .then(([credentialsPresent, credentialsGood]) => {
+      if (!credentialsPresent) {
+        console.log(`Your ${constants.AUTH_LOCATION} has not been set up yet.\n`);
+      } else if (!credentialsGood) {
+        console.log(`Your ${constants.AUTH_LOCATION} looks like it has invalid credentials.\n`);
+      } else {
+        console.log(`Your ${constants.AUTH_LOCATION} looks valid. You may update it now though.\n`);
+      }
+      return utils.getInput('What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)\n\n');
+    })
     .then((answer) => {
       return utils.writeFile(constants.AUTH_LOCATION, utils.prettyJSONstringify({
         deployKey: answer
@@ -44,7 +61,8 @@ var authCmd = () => {
     })
     .then(utils.checkCredentials)
     .then(() => {
-      console.log('\nSaved key to ' + constants.AUTH_LOCATION);
+      console.log('');
+      console.log(`Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier create\` or \`zapier link\`.`);
     });
 };
 authCmd.docs = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;

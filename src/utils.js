@@ -507,6 +507,7 @@ module.exports = {
   printDone: printDone,
   getInput: getInput,
   writeFile: writeFile,
+  readCredentials: readCredentials,
   removeDir: removeDir,
   runCommand: runCommand,
   callAPI: callAPI,
