@@ -3,11 +3,12 @@ var utils = require('./utils');
 
 var commands;
 
+
 var helpCmd = () => {
   console.log(`
 This Zapier command works off of two files:
 
- * ${constants.CONFIG_LOCATION}      (home directory identifies the deploy key & user)
+ * ${constants.AUTH_LOCATION}      (home directory identifies the deploy key & user)
  * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
 
 The \`zapier auth\` and \`zapier create\` commands will help manage those files. All commands listed below.
@@ -32,29 +33,24 @@ The \`zapier auth\` and \`zapier create\` commands will help manage those files.
 helpCmd.docs = 'Lists all the commands you can use.';
 helpCmd.example = 'zapier help';
 
+
 var authCmd = () => {
   // TODO: check for file, then hit /check - to offer
   return utils.getInput('What is your Deploy Key from https://zapier.com/platform/?\n\n')
     .then((answer) => {
       console.log('answer', answer);
-      return utils.writeFile(constants.CONFIG_LOCATION, utils.prettyJSONstringify({
+      return utils.writeFile(constants.AUTH_LOCATION, utils.prettyJSONstringify({
         deployKey: answer
       }));
     })
     .then(utils.checkCredentials)
     .then(() => {
-      console.log('\nSaved key to ' + constants.CONFIG_LOCATION);
+      console.log('\nSaved key to ' + constants.AUTH_LOCATION);
     });
 };
-authCmd.docs = `Configure your ${constants.CONFIG_LOCATION} with a deploy key for using the CLI.`;
+authCmd.docs = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
 authCmd.example = 'zapier auth';
 
-var setupAppFile = (app) => {
-  return utils.writeFile(constants.CURRENT_APP_FILE, utils.prettyJSONstringify({
-    id: app.id,
-    key: app.key
-  }));
-};
 
 var createCmd = (title) => {
   return utils.checkCredentials()
@@ -91,7 +87,7 @@ var createCmd = (title) => {
     .then((app) => {
       utils.printDone();
       utils.printStarting(`  Setting up ${constants.CURRENT_APP_FILE} file`);
-      return setupAppFile(app);
+      return utils.writeLinkedAppConfig(app);
     })
     .then(() => {
       utils.printDone();
@@ -100,6 +96,7 @@ var createCmd = (title) => {
 };
 createCmd.docs = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
+
 
 var linkCmd = () => {
   var appMap = {};
@@ -143,7 +140,7 @@ var linkCmd = () => {
     .then((app) => {
       utils.printDone();
       utils.printStarting(`  Setting up ${constants.CURRENT_APP_FILE} file`);
-      return setupAppFile(app);
+      return utils.writeLinkedAppConfig(app);
     })
     .then(() => {
       utils.printDone();
@@ -152,6 +149,7 @@ var linkCmd = () => {
 };
 linkCmd.docs = 'Link the current directory to an app in your account.';
 linkCmd.example = 'zapier link';
+
 
 var appsCmd = () => {
   return utils.listApps()
@@ -171,6 +169,7 @@ var appsCmd = () => {
 appsCmd.docs = 'Lists all the apps in your account.';
 appsCmd.example = 'zapier apps';
 
+
 var buildCmd = (zipPath) => {
   console.log('Building project.\n');
   return utils.build(zipPath)
@@ -180,6 +179,7 @@ var buildCmd = (zipPath) => {
 };
 buildCmd.docs = 'Builds a deployable zip from the current directory.';
 buildCmd.example = 'zapier build';
+
 
 var versionsCmd = () => {
   return utils.listVersions()
@@ -201,6 +201,7 @@ var versionsCmd = () => {
 versionsCmd.docs = 'Lists all the versions of the current app.';
 versionsCmd.example = 'zapier versions';
 
+
 var pushCmd = () => {
   var zipPath = zipPath || constants.BUILD_PATH;
   console.log('Preparing to build and upload a new version.\n');
@@ -212,6 +213,7 @@ var pushCmd = () => {
 pushCmd.docs = 'Build and upload a new version of the current app - does not deploy.';
 pushCmd.example = 'zapier push';
 
+
 var uploadCmd = () => {
   var zipPath = zipPath || constants.BUILD_PATH;
   console.log('Preparing to upload a new version.\n');
@@ -222,6 +224,7 @@ var uploadCmd = () => {
 };
 uploadCmd.docs = 'Upload the last build as a version.';
 uploadCmd.example = 'zapier upload';
+
 
 var deployCmd = (version) => {
   if (!version) {
@@ -249,6 +252,7 @@ var deployCmd = (version) => {
 deployCmd.docs = 'Deploys a specific version to a production.';
 deployCmd.example = 'zapier deploy 1.0.0';
 
+
 var migrateCmd = (oldVersion, newVersion, optionalPercent) => {
   return Promise.resolve(`todo ${oldVersion} ${newVersion} ${optionalPercent}`);
 };
@@ -267,6 +271,7 @@ var historyCmd = () => {
 };
 historyCmd.docs = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
+
 
 var envCmd = (version, key, value) => {
   if (value !== undefined) {

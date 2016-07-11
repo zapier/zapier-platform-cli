@@ -158,11 +158,11 @@ var ensureDir = (dir) => {
   });
 };
 
-// Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
+// Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
 var readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
-    readFile(constants.CONFIG_LOCATION, 'Please run "zapier config".')
+    readFile(constants.AUTH_LOCATION, 'Please run "zapier config".')
       .then((buf) => {
         return JSON.parse(buf.toString());
       })
@@ -242,7 +242,7 @@ var callAPI = (route, options) => {
     });
 };
 
-// Reads the JSON file at ~/.zapier-platform (CONFIG_LOCATION).
+// Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
 var getLinkedAppConfig = () => {
   return readFile(constants.CURRENT_APP_FILE)
     .then((buf) => {
@@ -251,7 +251,7 @@ var getLinkedAppConfig = () => {
 };
 
 var writeLinkedAppConfig = (app) => {
-  return writeFile(constants.CURRENT_APP_FILE, utils.prettyJSONstringify({
+  return writeFile(constants.CURRENT_APP_FILE, prettyJSONstringify({
     id: app.id,
     key: app.key
   }));

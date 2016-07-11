@@ -3,8 +3,8 @@ var DEBUG = (process.env.ZAPIER_DEBUG || 'false') === 'true';
 var BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'http://localhost:8000';
 var ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + '/api/platform/v3';
 var STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
-var CONFIG_LOCATION = process.env.ZAPIER_CONFIG_LOCATION || '~/.zapier-platform';
-var CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapier-current-app';
+var AUTH_LOCATION = process.env.ZAPIER_AUTH_LOCATION || '~/.zapier-platform-auth';
+var CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapier-platform-current-app';
 // TODO: || is temp hack
 var PLATFORM_VERSION = process.env.ZAPIER_PLATFORM_VERSION || '3.0.0';
 var DEF_PATH = 'build/definition.json';
@@ -34,7 +34,7 @@ module.exports = {
   DEBUG: DEBUG,
   ENDPOINT: ENDPOINT,
   STARTER_REPO: STARTER_REPO,
-  CONFIG_LOCATION: CONFIG_LOCATION,
+  AUTH_LOCATION: AUTH_LOCATION,
   CURRENT_APP_FILE: CURRENT_APP_FILE,
   PLATFORM_VERSION: PLATFORM_VERSION,
   DEF_PATH: DEF_PATH,
