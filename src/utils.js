@@ -38,6 +38,25 @@ var printTable = (rows, columnDefs) => {
   console.log(t.toString().trim());
 };
 
+var argParse = (argv) => {
+  var args = [], opts = {};
+  argv.forEach((arg) => {
+    if (arg.startsWith('--')) {
+      var key = arg.split('=', 1)[0].replace('--', '');
+      var val = arg.split('=').slice(1).join('=');
+      if (val === '') {
+        val = true;
+      } else if (val.toLowerCase() === 'false') {
+        val = false;
+      }
+      opts[key] = val;
+    } else {
+      args.push(arg);
+    }
+  });
+  return [args, opts];
+};
+
 var prettyJSONstringify = (obj) => {
   return JSON.stringify(obj, null, '  ');
 };
@@ -475,15 +494,12 @@ var buildAndUploadCurrentDir = (zipPath) => {
 
 module.exports = {
   printTable: printTable,
+  argParse: argParse,
   prettyJSONstringify: prettyJSONstringify,
   printStarting: printStarting,
   printDone: printDone,
   getInput: getInput,
-  readFile: readFile,
   writeFile: writeFile,
-  copyDir: copyDir,
-  ensureDir: ensureDir,
-  readCredentials: readCredentials,
   removeDir: removeDir,
   runCommand: runCommand,
   callAPI: callAPI,
@@ -494,7 +510,6 @@ module.exports = {
   listVersions: listVersions,
   listHistory: listHistory,
   listEnv: listEnv,
-  browserifyFiles: browserifyFiles,
   build: build,
   upload: upload,
   buildAndUploadCurrentDir: buildAndUploadCurrentDir
