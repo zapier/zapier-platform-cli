@@ -186,7 +186,7 @@ var deployCmd = (version) => {
     .then(() => {
       utils.printDone();
       console.log(`  Deploy successful!\n`);
-      console.log(`Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.\n`);
+      console.log(`Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.`);
     });
 };
 deployCmd.docs = 'Deploys a specific version to a production.';
@@ -271,7 +271,7 @@ var deprecateCmd = (version, deprecation_date) => {
     .then(() => {
       utils.printDone();
       console.log('  Deprecation successful!\n');
-      console.log(`We'll let users know that this version is no longer recommended.\n`);
+      console.log(`We'll let users know that this version is no longer recommended.`);
     });
 };
 deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';

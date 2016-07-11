@@ -112,7 +112,6 @@ var readFile = (fileName, errMsg) => {
 
 // Returns a promise that writes a file.
 var writeFile = (fileName, data) => {
-  console.log('writing file', fileName);
   return new Promise((resolve, reject) => {
     fs.writeFile(fixHome(fileName), data, (err) => {
       console.log('wrote file', fileName, 'err:', err);
