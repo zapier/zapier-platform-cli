@@ -311,7 +311,9 @@ var historyCmd = () => {
     .then((data) => {
       console.log(`The history of your app "${data.app.title}" listed below.\n`);
       utils.printTable(data.history, [
+        ['What', 'action'],
         ['Message', 'message'],
+        ['Who', 'customuser'],
         ['Timestamp', 'date'],
       ]);
     });
