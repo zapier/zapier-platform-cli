@@ -438,7 +438,10 @@ var build = (zipPath) => {
     .then(() => {
       printDone();
       printStarting('  Applying entry point file');
-      return writeFile(tmpDir + '/zapierwrapper.js', constants.TEMP_HANDLER_FILE);
+      return readFile(`${tmpDir}/node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`);
+    })
+    .then((zapierWrapperBuf) => {
+      return writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString());
     })
     .then(() => {
       printDone();

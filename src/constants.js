@@ -1,16 +1,16 @@
-var DEBUG = (process.env.ZAPIER_DEBUG || 'false') === 'true';
+const DEBUG = (process.env.ZAPIER_DEBUG || 'false') === 'true';
 
-var BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'http://localhost:8000';
-var ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + '/api/platform/v3';
-var STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
-var AUTH_LOCATION = process.env.ZAPIER_AUTH_LOCATION || '~/.zapier-platform-auth';
-var CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapier-platform-current-app';
+const BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'http://localhost:8000';
+const ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + '/api/platform/v3';
+const STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
+const AUTH_LOCATION = process.env.ZAPIER_AUTH_LOCATION || '~/.zapier-platform-auth';
+const CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapier-platform-current-app';
 // TODO: || is temp hack
-var PLATFORM_VERSION = process.env.ZAPIER_PLATFORM_VERSION || '3.0.0';
-var DEF_PATH = 'build/definition.json';
-var BUILD_PATH = 'build/build.zip';
+const PLATFORM_VERSION = process.env.ZAPIER_PLATFORM_VERSION || '3.0.0';
+const DEF_PATH = 'build/definition.json';
+const BUILD_PATH = 'build/build.zip';
 
-var ART = `\
+const ART = `\
                 zzzzzzzz
       zzz       zzzzzzzz       zzz
     zzzzzzz     zzzzzzzz     zzzzzzz
@@ -30,13 +30,6 @@ zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
       zzz       zzzzzzzz       zzz
                 zzzzzzzz`;
 
-// TODO: will be replaced by `node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`
-var TEMP_HANDLER_FILE = `
-var zapier = require('@zapier/zapier-platform-core');
-var userApp = require('/index');
-module.exports = {handler: zapier.createAppHandler(userApp)};
-`;
-
 module.exports = {
   DEBUG: DEBUG,
   ENDPOINT: ENDPOINT,
@@ -47,5 +40,4 @@ module.exports = {
   DEF_PATH: DEF_PATH,
   BUILD_PATH: BUILD_PATH,
   ART: ART,
-  TEMP_HANDLER_FILE: TEMP_HANDLER_FILE
 };
