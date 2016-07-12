@@ -425,6 +425,12 @@ var build = (zipPath) => {
       return runCommand('npm install --production', {cwd: tmpDir});
     })
     .then(() => {
+      printDone();
+      printStarting('  Applying entry point file');
+      return readFile(`${tmpDir}/node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`)
+        .then(zapierWrapperBuf => writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString()));
+    })
+    .then(() => {
       // tries to do a reproducible build at least
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
@@ -434,14 +440,6 @@ var build = (zipPath) => {
       printDone();
       printStarting('  Building app definition (TODO!)');
       return Promise.resolve('TODO!');
-    })
-    .then(() => {
-      printDone();
-      printStarting('  Applying entry point file');
-      return readFile(`${tmpDir}/node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`);
-    })
-    .then((zapierWrapperBuf) => {
-      return writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString());
     })
     .then(() => {
       printDone();
