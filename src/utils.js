@@ -500,6 +500,7 @@ var buildAndUploadCurrentDir = (zipPath) => {
 };
 
 module.exports = {
+  makeTable: makeTable,
   printTable: printTable,
   argParse: argParse,
   prettyJSONstringify: prettyJSONstringify,
