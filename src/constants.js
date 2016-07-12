@@ -32,7 +32,7 @@ zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
 
 // TODO: will be replaced by `node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`
 var TEMP_HANDLER_FILE = `
-var zapier = require('@zapier/zapier-platform-core);
+var zapier = require('@zapier/zapier-platform-core');
 var userApp = require('/index');
 module.exports = {handler: zapier.createAppHandler(userApp)};
 `;
