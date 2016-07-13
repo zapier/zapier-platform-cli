@@ -8,7 +8,7 @@ var os = require('os');
 var readline = require('readline');
 var path = require('path');
 
-var archiver = require('archiver');
+var AdmZip = require('adm-zip');
 var fse = require('fs-extra');
 var fetch = require('node-fetch');
 var Table = require('easy-table');
@@ -356,6 +356,8 @@ var listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
+var cleanPath = (cwd, filePath) => filePath.replace(cwd, '');
+
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
 // TODO: needs to include package.json files too i think
@@ -396,7 +398,7 @@ var browserifyFiles = (entryPoint) => {
     b.pipeline.get('deps')
       .push(through.obj((row, enc, next) => {
         var filePath = row.file || row.id;
-        output.push(filePath.replace(cwd, ''));
+        output.push(cleanPath(cwd, filePath));
         next();
       })
       .on('end', () => {
@@ -406,25 +408,40 @@ var browserifyFiles = (entryPoint) => {
   });
 };
 
-var makeZip = (dir, zipPath, src) => {
-  var output = fs.createWriteStream(zipPath);
-  var archive = archiver('zip');
-  src = src || '**/*'; // could do browserify --list
+var listFiles = (dir) => {
   return new Promise((resolve, reject) => {
-    output.on('close', () => {
-      resolve(); // archive.pointer()
-    });
-    archive.on('error', reject);
-    archive.pipe(output);
-    archive.bulk([
-      {
-        expand: true,
-        cwd: dir,
-        src: src
-      }
-    ]);
-    archive.finalize();
+    var paths = [];
+    var cwd = dir + '/';
+    fse.walk(dir)
+      .on('data', (item) => {
+        if (!item.stats.isDirectory()) {
+          paths.push(cleanPath(cwd, item.path));
+        }
+      })
+      .on('error', reject)
+      .on('end', () => {
+        paths.sort();
+        resolve(paths);
+      });
   });
+};
+
+var makeZip = (dir, zipPath) => {
+  return listFiles(dir)
+    .then((paths) => {
+      return new Promise((resolve) => {
+        var zip = new AdmZip();
+        paths.forEach((_path) => {
+          var basePath = path.dirname(_path);
+          if (basePath === '.') {
+            basePath = undefined;
+          }
+          zip.addLocalFile(path.join(dir, _path), basePath);
+        });
+        zip.writeZip(zipPath);
+        resolve();
+      });
+    });
 };
 
 var build = (zipPath) => {

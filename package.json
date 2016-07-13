@@ -15,7 +15,7 @@
     "zapier": "zapier.js"
   },
   "dependencies": {
-    "archiver": "0.21.0",
+    "adm-zip": "0.4.7",
     "babel-polyfill": "6.9.1",
     "easy-table": "1.0.0",
     "fs-extra": "0.30.0",
