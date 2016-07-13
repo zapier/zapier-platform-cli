@@ -93,6 +93,23 @@ var getInput = (question) => {
   });
 };
 
+// Returns a promise that assists "callback to promise" conversions.
+var makePromise = () => {
+  let resolve, reject;
+  var promise = new Promise((rs, rj) => {
+    resolve = rs;
+    reject = rj;
+  });
+  promise.callback = (err, ...args) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(...args);
+    }
+  };
+  return promise;
+};
+
 // Returns a promise that reads a file and returns a buffer.
 var readFile = (fileName, errMsg) => {
   return new Promise((resolve, reject) => {
@@ -427,7 +444,8 @@ var build = (zipPath) => {
     .then(() => {
       printDone();
       printStarting('  Applying entry point file');
-      return readFile(`${tmpDir}/node_modules/@zapier/zapier-platform-core/include/zapierwrapper.js`)
+      // TODO: should this routine for include exist elsewhere?
+      return readFile(`${tmpDir}/node_modules/${constants.PLATFORM_PACKAGE}/include/zapierwrapper.js`)
         .then(zapierWrapperBuf => writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString()));
     })
     .then(() => {
@@ -438,12 +456,18 @@ var build = (zipPath) => {
     })
     .then(() => {
       printDone();
-      printStarting('  Building app definition (TODO!)');
-      return Promise.resolve('TODO!');
+      var entry = require(`${tmpDir}/zapierwrapper.js`);
+      var promise = makePromise();
+      entry.handler({command: 'definition'}, {}, promise.callback);
+      printStarting('  Building app definition.json');
+      return promise;
+    })
+    .then((rawDefinition) => {
+      return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition));
     })
     .then(() => {
       printDone();
-      printStarting('  Zipping project and dependencies');
+      printStarting(`  Zipping project and dependencies to ./${zipPath}`);
       return makeZip(tmpDir, wdir + '/' + zipPath);
     })
     .then(() => {
@@ -459,7 +483,7 @@ var build = (zipPath) => {
 
 var upload = (zipPath, defPath) => {
   zipPath = zipPath || constants.BUILD_PATH;
-  defPath = defPath || constants.DEF_PATH;
+  defPath = defPath || constants.DEFINITION_PATH;
   return getLinkedApp()
     .then((app) => {
       var definition = readFile(defPath)
@@ -474,11 +498,12 @@ var upload = (zipPath, defPath) => {
     })
     .then((values) => {
       var [definition, zipFile, app] = values;
+      // TODO: options: read definition.json from zipFile or read version from package.json?
       printStarting('  Uploading version ' + definition.version);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {
-          platform_version: constants.PLATFORM_VERSION || definition.platformVersion,
+          platform_version: '3.0.0' || definition.platformVersion,
           definition: definition,
           zip_file: zipFile
         }

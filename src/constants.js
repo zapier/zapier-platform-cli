@@ -5,9 +5,8 @@ const ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + '/api/platform/v
 const STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
 const AUTH_LOCATION = process.env.ZAPIER_AUTH_LOCATION || '~/.zapier-platform-auth';
 const CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapier-platform-current-app';
-// TODO: || is temp hack
-const PLATFORM_VERSION = process.env.ZAPIER_PLATFORM_VERSION || '3.0.0';
-const DEF_PATH = 'build/definition.json';
+const PLATFORM_PACKAGE = '@zapier/zapier-platform-core';
+const DEFINITION_PATH = 'build/definition.json';
 const BUILD_PATH = 'build/build.zip';
 
 const ART = `\
@@ -31,13 +30,13 @@ zzzzzzzzzzzzzzz          zzzzzzzzzzzzzzz
                 zzzzzzzz`;
 
 module.exports = {
-  DEBUG: DEBUG,
-  ENDPOINT: ENDPOINT,
-  STARTER_REPO: STARTER_REPO,
-  AUTH_LOCATION: AUTH_LOCATION,
-  CURRENT_APP_FILE: CURRENT_APP_FILE,
-  PLATFORM_VERSION: PLATFORM_VERSION,
-  DEF_PATH: DEF_PATH,
-  BUILD_PATH: BUILD_PATH,
-  ART: ART,
+  DEBUG,
+  ENDPOINT,
+  STARTER_REPO,
+  AUTH_LOCATION,
+  CURRENT_APP_FILE,
+  PLATFORM_PACKAGE,
+  DEFINITION_PATH,
+  BUILD_PATH,
+  ART,
 };
