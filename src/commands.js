@@ -198,14 +198,20 @@ var validateCmd = () => {
       entry.handler({command: 'validate'}, {}, promise.callback);
       return promise;
     })
-    .then((response) => {
-      utils.printTable(response.results, [
+    .then(response => response.results)
+    .then((errors) => {
+      utils.printTable(errors, [
         ['Property', 'property'],
         ['Message', 'message'],
       ]);
+      return errors;
     })
-    .then(() => {
-      console.log(`\nMake any changes to your project and rerun this command.`);
+    .then((errors) => {
+      if (errors.length) {
+        console.log(`\nMake any changes to your project and rerun this command.`);
+      } else {
+        console.log(`\nThis project looks good!`);
+      }
     });
 };
 validateCmd.docs = 'Validates the current project.';
