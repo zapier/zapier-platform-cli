@@ -226,7 +226,7 @@ var pushCmd = () => {
   console.log('Preparing to build and upload a new version.\n');
   return utils.buildAndUploadCurrentDir(zipPath)
     .then(() => {
-      console.log('\nBuild and upload complete!');
+      console.log('\nBuild and upload complete! Try loading the Zapier editor now.');
     });
 };
 pushCmd.docs = 'Build and upload a new version of the current app - does not deploy.';

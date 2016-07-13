@@ -356,7 +356,7 @@ var listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
-var cleanPath = (cwd, filePath) => filePath.replace(cwd, '');
+var stripPath = (cwd, filePath) => filePath.replace(cwd, '');
 
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
@@ -398,7 +398,7 @@ var browserifyFiles = (entryPoint) => {
     b.pipeline.get('deps')
       .push(through.obj((row, enc, next) => {
         var filePath = row.file || row.id;
-        output.push(cleanPath(cwd, filePath));
+        output.push(stripPath(cwd, filePath));
         next();
       })
       .on('end', () => {
@@ -415,7 +415,7 @@ var listFiles = (dir) => {
     fse.walk(dir)
       .on('data', (item) => {
         if (!item.stats.isDirectory()) {
-          paths.push(cleanPath(cwd, item.path));
+          paths.push(stripPath(cwd, item.path));
         }
       })
       .on('error', reject)
@@ -431,12 +431,12 @@ var makeZip = (dir, zipPath) => {
     .then((paths) => {
       return new Promise((resolve) => {
         var zip = new AdmZip();
-        paths.forEach((_path) => {
-          var basePath = path.dirname(_path);
+        paths.forEach((filePath) => {
+          var basePath = path.dirname(filePath);
           if (basePath === '.') {
             basePath = undefined;
           }
-          zip.addLocalFile(path.join(dir, _path), basePath);
+          zip.addLocalFile(path.join(dir, filePath), basePath);
         });
         zip.writeZip(zipPath);
         resolve();
