@@ -189,6 +189,28 @@ appsCmd.docs = 'Lists all the apps in your account.';
 appsCmd.example = 'zapier apps';
 
 
+var validateCmd = () => {
+  console.log('Validating project locally.\n');
+  return Promise.resolve()
+    .then(() => {
+      var entry = require(`${process.cwd()}/zapierwrapper.js`);
+      var promise = utils.makePromise();
+      entry.handler({command: 'validate'}, {}, promise.callback);
+      return promise;
+    })
+    .then((response) => {
+      utils.printTable(response.results, [
+        ['Property', 'property'],
+        ['Message', 'message'],
+      ]);
+    })
+    .then(() => {
+      console.log(`\nMake any changes to your project and rerun this command.`);
+    });
+};
+validateCmd.docs = 'Validates the current project.';
+validateCmd.example = 'zapier validate';
+
 var buildCmd = (zipPath) => {
   console.log('Building project.\n');
   return utils.build(zipPath)
@@ -382,6 +404,7 @@ module.exports = commands = {
   link: linkCmd,
   apps: appsCmd,
   versions: versionsCmd,
+  validate: validateCmd,
   build: buildCmd, // debug only?
   upload: uploadCmd,
   push: pushCmd,

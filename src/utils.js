@@ -239,8 +239,7 @@ var callAPI = (route, options) => {
         res.text()
       ]);
     })
-    .then((values) => {
-      var res = values[0], text = values[1];
+    .then(([res, text]) => {
       if (constants.DEBUG) {
         console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
         if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
@@ -325,11 +324,11 @@ var listEndoint = (endpoint, key) => {
         callAPI(`/apps/${app.id}/${endpoint}`)
       ]);
     })
-    .then((values) => {
+    .then(([app, results]) => {
       var out = {
-        app: values[0]
+        app: app
       };
-      out[key || endpoint] = values[1].objects;
+      out[key || endpoint] = results.objects;
       return out;
     });
 };
@@ -533,28 +532,29 @@ var buildAndUploadCurrentDir = (zipPath) => {
 };
 
 module.exports = {
-  makeTable: makeTable,
-  printTable: printTable,
-  argParse: argParse,
-  prettyJSONstringify: prettyJSONstringify,
-  printStarting: printStarting,
-  printDone: printDone,
-  getInput: getInput,
-  writeFile: writeFile,
-  readCredentials: readCredentials,
-  removeDir: removeDir,
-  runCommand: runCommand,
-  callAPI: callAPI,
-  writeLinkedAppConfig: writeLinkedAppConfig,
-  getLinkedApp: getLinkedApp,
-  checkCredentials: checkCredentials,
-  listApps: listApps,
-  listEndoint: listEndoint,
-  listVersions: listVersions,
-  listHistory: listHistory,
-  listLogs: listLogs,
-  listEnv: listEnv,
-  build: build,
-  upload: upload,
-  buildAndUploadCurrentDir: buildAndUploadCurrentDir
+  makeTable,
+  printTable,
+  argParse,
+  prettyJSONstringify,
+  printStarting,
+  printDone,
+  makePromise,
+  getInput,
+  writeFile,
+  readCredentials,
+  removeDir,
+  runCommand,
+  callAPI,
+  writeLinkedAppConfig,
+  getLinkedApp,
+  checkCredentials,
+  listApps,
+  listEndoint,
+  listVersions,
+  listHistory,
+  listLogs,
+  listEnv,
+  build,
+  upload,
+  buildAndUploadCurrentDir
 };
