@@ -480,11 +480,11 @@ var build = (zipPath) => {
       return promise;
     })
     .then((rawDefinition) => {
-      return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition));
+      return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition.results));
     })
     .then(() => {
       printDone();
-      printStarting(`  Zipping project and dependencies to ./${zipPath}`);
+      printStarting('  Zipping project and dependencies');
       return makeZip(tmpDir, wdir + '/' + zipPath);
     })
     .then(() => {
@@ -498,31 +498,21 @@ var build = (zipPath) => {
     });
 };
 
-var upload = (zipPath, defPath) => {
+var upload = (zipPath) => {
   zipPath = zipPath || constants.BUILD_PATH;
-  defPath = defPath || constants.DEFINITION_PATH;
   return getLinkedApp()
     .then((app) => {
-      var definition = readFile(defPath)
-        .then((buf) => {
-          return JSON.parse(buf.toString());
-        });
-      var zipFile = readFile(zipPath)
-        .then((buf) => {
-          return buf.toString('base64');
-        });
-      return Promise.all([definition, zipFile, app]);
-    })
-    .then((values) => {
-      var [definition, zipFile, app] = values;
-      // TODO: options: read definition.json from zipFile or read version from package.json?
+      var zip = new AdmZip(zipPath);
+      var definitionJson = zip.readAsText('definition.json');
+      var definition = JSON.parse(definitionJson);
+
       printStarting('  Uploading version ' + definition.version);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {
           platform_version: '3.0.0' || definition.platformVersion,
           definition: definition,
-          zip_file: zipFile
+          zip_file: zip.toBuffer().toString('base64')
         }
       });
     })
