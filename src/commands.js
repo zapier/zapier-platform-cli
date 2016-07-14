@@ -367,6 +367,7 @@ var logsCmd = () => {
         ['URL', 'request_url'],
         ['Querystring', 'request_params'],
         ['Version', 'app_v3_version'],
+        ['Step', 'step'],
         ['ID', 'id'],
         ['Timestamp', 'timestamp'],
       ];
@@ -374,6 +375,7 @@ var logsCmd = () => {
         columns = [
           ['Log', 'message'],
           ['Version', 'app_v3_version'],
+          ['Step', 'step'],
           ['ID', 'id'],
           ['Timestamp', 'timestamp'],
         ];
