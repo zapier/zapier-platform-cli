@@ -443,6 +443,13 @@ var makeZip = (dir, zipPath) => {
     });
 };
 
+var appCommand = (dir, event) => {
+  var entry = require(`${dir}/zapierwrapper.js`);
+  var promise = makePromise();
+  entry.handler(event, {}, promise.callback);
+  return promise;
+};
+
 var build = (zipPath) => {
   var wdir = process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
@@ -465,21 +472,30 @@ var build = (zipPath) => {
         .then(zapierWrapperBuf => writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString()));
     })
     .then(() => {
+      printDone();
+      printStarting('  Validating project');
+      return appCommand(tmpDir, {command: 'validate'});
+    })
+    .then((resp) => {
+      var errors = resp.results;
+      if (errors.length) {
+        throw new Error('We hit some validation errors, try running `zapier validate` to see them!');
+      } else {
+        printDone();
+      }
+    })
+    .then(() => {
+      printStarting('  Building app definition.json');
+      return appCommand(tmpDir, {command: 'definition'});
+    })
+    .then((rawDefinition) => {
+      return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition.results));
+    })
+    .then(() => {
       // tries to do a reproducible build at least
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
       return runCommand('find . -exec touch -t 201601010000 {} +', {cwd: tmpDir});
-    })
-    .then(() => {
-      printDone();
-      var entry = require(`${tmpDir}/zapierwrapper.js`);
-      var promise = makePromise();
-      entry.handler({command: 'definition'}, {}, promise.callback);
-      printStarting('  Building app definition.json');
-      return promise;
-    })
-    .then((rawDefinition) => {
-      return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition.results));
     })
     .then(() => {
       printDone();

@@ -78,9 +78,15 @@ var createCmd = (title) => {
       console.log();
       console.log(`Let's create your app "${title}"!`);
       console.log();
-      utils.printStarting('  Cloning starter app from ' + constants.STARTER_REPO);
+
+      let repo = constants.STARTER_REPO;
+      if (global.argOpts.style) {
+        repo = `${constants.STARTER_REPO}-${global.argOpts.style}`;
+      }
+
+      utils.printStarting('  Cloning starter app from ' + repo);
       // var cmd = 'git clone https://github.com/' + STARTER_REPO + '.git .';
-      var cmd = `git clone git@github.com:${constants.STARTER_REPO}.git .`;
+      var cmd = `git clone git@github.com:${repo}.git .`;
       return utils.runCommand(cmd);
     })
     .then(() => {
