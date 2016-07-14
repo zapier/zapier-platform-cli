@@ -22,7 +22,7 @@ var makeTable = (rows, columnDefs) => {
     rows.forEach((row) => {
       columnDefs.forEach((columnDef) => {
         var [label, key] = columnDef;
-        t.cell(label, row[key]);
+        t.cell(label, String(row[key]).trim());
       });
       t.newRow();
     });
