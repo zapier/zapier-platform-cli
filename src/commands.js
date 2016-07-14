@@ -193,9 +193,11 @@ var validateCmd = () => {
   console.log('Validating project locally.\n');
   return Promise.resolve()
     .then(() => {
-      var entry = require(`${process.cwd()}/zapierwrapper.js`);
+      var appRaw = require(`${process.cwd()}/index`);
+      var zapier = require(`${process.cwd()}/node_modules/${constants.PLATFORM_PACKAGE}`);
+      var handler = zapier.exposeAppHandler(appRaw);
       var promise = utils.makePromise();
-      entry.handler({command: 'validate'}, {}, promise.callback);
+      handler({command: 'validate'}, {}, promise.callback);
       return promise;
     })
     .then(response => response.results)
