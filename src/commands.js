@@ -249,7 +249,7 @@ var versionsCmd = () => {
         ['Deprecation Date', 'deprecation_date'],
       ]);
       if (!data.versions.length) {
-        console.log('\nTry adding an version with the `zapier upload` command.');
+        console.log('\nTry adding an version with the `zapier push` command.');
       }
     });
 };
@@ -361,11 +361,24 @@ var logsCmd = () => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
       console.log(`The logs of your app "${data.app.title}" listed below.\n`);
-      utils.printTable(data.history, [
+      // http is the default
+      var columns = [
         ['Status', 'response_status_code'],
         ['URL', 'request_url'],
         ['Querystring', 'request_params'],
-      ]);
+        ['Version', 'app_v3_version'],
+        ['ID', 'id'],
+        ['Timestamp', 'timestamp'],
+      ];
+      if (global.argOpts.console) {
+        columns = [
+          ['Log', 'message'],
+          ['Version', 'app_v3_version'],
+          ['ID', 'id'],
+          ['Timestamp', 'timestamp'],
+        ];
+      }
+      utils.printTable(data.logs, columns);
     });
 };
 logsCmd.docs = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com';

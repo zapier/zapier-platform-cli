@@ -342,7 +342,7 @@ var listHistory = () => {
 };
 
 var listLogs = (opts) => {
-  return listEndoint(`logs?${qs.stringify(opts)}`);
+  return listEndoint(`logs?${qs.stringify(opts)}`, 'logs');
 };
 
 var listEnv = (version) => {
