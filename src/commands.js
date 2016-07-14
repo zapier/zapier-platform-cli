@@ -135,8 +135,8 @@ var linkCmd = () => {
       utils.printTable(apps, [
         ['Number', 'number'],
         ['Title', 'title'],
-        ['Timestamp', 'date'],
         ['Unique Key', 'key'],
+        ['Timestamp', 'date'],
         ['Linked', 'linked'],
       ]);
       console.log('     ...or type any title to create new app!\n');
@@ -180,8 +180,8 @@ var appsCmd = () => {
       console.log('All apps listed below.\n');
       utils.printTable(data.apps, [
         ['Title', 'title'],
-        ['Timestamp', 'date'],
         ['Unique Key', 'key'],
+        ['Timestamp', 'date'],
         ['Linked', 'linked'],
       ]);
       if (!data.apps.length) {
@@ -242,11 +242,11 @@ var versionsCmd = () => {
       console.log(`All versions of your app "${data.app.title}" listed below.\n`);
       utils.printTable(data.versions, [
         ['Version', 'version'],
-        ['Timestamp', 'date'],
-        ['Users', 'user_count'],
         ['Platform', 'platform_version'],
+        ['Users', 'user_count'],
         ['Deployment', 'deployment'],
         ['Deprecation Date', 'deprecation_date'],
+        ['Timestamp', 'date'],
       ]);
       if (!data.versions.length) {
         console.log('\nTry adding an version with the `zapier push` command.');
