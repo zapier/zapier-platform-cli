@@ -406,9 +406,9 @@ var envCmd = (version, key, value) => {
       })
       .then(() => {
         utils.printDone();
-        console.log('  Environment updated!');
         console.log('');
-        return envCmd(version);
+        console.log('Environment updated! Try viewing it with `zapier env`.');
+        return;
       });
   }
   return utils.listEnv(version)
