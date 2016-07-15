@@ -228,6 +228,7 @@ var callAPI = (route, options) => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json; charset=utf-8',
+          'X-Requested-With': 'XMLHttpRequest',
           'X-Deploy-Key': credentials.deployKey
         }
       };
