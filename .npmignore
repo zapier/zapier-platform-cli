@@ -1,4 +1,7 @@
 .zapier*
+scratch/*
+src/*
+lib/tests/*
 *.zip
 *.sh
 *.log

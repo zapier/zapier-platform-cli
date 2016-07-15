@@ -1,6 +1,6 @@
 {
   "name": "@zapier/zapier-platform-cli",
-  "version": "1.2.30",
+  "version": "1.2.64",
   "description": "The CLI for the Zapier platform.",
   "repository": "zapier/zapier-platform-cli",
   "homepage": "https://zapier.com/",
@@ -8,18 +8,25 @@
   "license": "BSD",
   "main": "zapier.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha",
+    "prepublish": "npm run build",
+    "build": "rm -rf lib && node_modules/babel-cli/bin/babel.js src -d lib",
+    "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
+    "test": "node_modules/mocha/bin/mocha lib/tests",
     "zapier": "zapier.js"
   },
   "dependencies": {
-    "archiver": "0.21.0",
+    "adm-zip": "0.4.7",
+    "babel-polyfill": "6.9.1",
     "easy-table": "1.0.0",
-    "fs-extra": "0.26.7",
-    "node-fetch": "1.3.3"
+    "fs-extra": "0.30.0",
+    "node-fetch": "1.5.3"
   },
   "devDependencies": {
-    "mocha": "2.4.5",
-    "should": "8.2.2"
+    "babel-cli": "6.10.1",
+    "babel-preset-es2015": "6.9.0",
+    "fetch-mock": "4.6.0",
+    "mocha": "2.5.3",
+    "should": "9.0.2"
   },
   "bin": {
     "zapier": "zapier.js"
