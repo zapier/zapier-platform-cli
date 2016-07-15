@@ -253,7 +253,7 @@ var callAPI = (route, options) => {
         } catch(err) {
           errors = (text || 'Unknown error').slice(0, 250);
         }
-        throw new Error('' + res.status + ' saying ' + errors);
+        throw new Error(`${constants.BASE_ENDPOINT} returned ${res.status} saying ${errors}`);
       }
       return JSON.parse(text);
     });
