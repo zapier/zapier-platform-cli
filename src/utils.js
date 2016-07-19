@@ -361,6 +361,7 @@ var stripPath = (cwd, filePath) => filePath.replace(cwd, '');
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
 // TODO: needs to include package.json files too i think
+//   https://github.com/serverless/serverless-optimizer-plugin?
 var browserifyFiles = (entryPoint) => {
   var browserify = require('browserify');
   var through = require('through2');
