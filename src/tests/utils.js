@@ -1,8 +1,13 @@
 var should = require('should');
 
+var entry = require('../entry'); // must import me to babel polyfill!
+
 var utils = require('../utils');
 
 describe('utils', () => {
+  it('should have babel polyfill set up', () => {
+    global._babelPolyfill.should.eql(true);
+  });
 
   it('should print a nice little table', () => {
     var table = utils.makeTable(
