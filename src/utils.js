@@ -258,7 +258,7 @@ const callAPI = (route, options) => {
         } catch(err) {
           errors = (text || 'Unknown error').slice(0, 250);
         }
-        throw new Error(`${constants.BASE_ENDPOINT} returned ${res.status} saying ${errors}`);
+        throw new Error(`${constants.ENDPOINT} returned ${res.status} saying ${errors}`);
       }
       return JSON.parse(text);
     });
@@ -320,10 +320,11 @@ const listApps = () => {
     });
 };
 
-const listEndoint = (endpoint, key) => {
+const listEndoint = (endpoint, keyOverride) => {
   return checkCredentials()
     .then(getLinkedApp)
     .then((app) => {
+      console.log(`/apps/${app.id}/${endpoint}`);
       return Promise.all([
         app,
         callAPI(`/apps/${app.id}/${endpoint}`)
@@ -333,7 +334,7 @@ const listEndoint = (endpoint, key) => {
       var out = {
         app: app
       };
-      out[key || endpoint] = results.objects;
+      out[keyOverride || endpoint] = results.objects;
       return out;
     });
 };
@@ -344,6 +345,14 @@ const listVersions = () => {
 
 const listHistory = () => {
   return listEndoint('history');
+};
+
+const listCollaborators = () => {
+  return listEndoint('collaborators');
+};
+
+const listInvitees = () => {
+  return listEndoint('invitees');
 };
 
 const listLogs = (opts) => {
@@ -574,6 +583,8 @@ module.exports = {
   listEndoint,
   listVersions,
   listHistory,
+  listCollaborators,
+  listInvitees,
   listLogs,
   listEnv,
   build,
