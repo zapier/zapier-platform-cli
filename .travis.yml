@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "0.10.46"
+  - "0.12.15"
+  - "4.3.2"
+  - "4.4.7"
+  - "5.12.0"
+  - "6.3.0"
+before_install:
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
