@@ -342,6 +342,18 @@ var deprecateCmd = (version, deprecation_date) => {
 deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
 
+var collaboratorsCmd = () => {
+  return Promise.resolve('todo');
+};
+collaboratorsCmd.docs = 'Manage the collaborators on your project.';
+collaboratorsCmd.example = 'zapier collaborators john@example.com';
+
+var inviteesCmd = () => {
+  return Promise.resolve('todo');
+};
+inviteesCmd.docs = 'Manage the invitees/testers on your project.';
+inviteesCmd.example = 'zapier invitees john@example.com';
+
 var historyCmd = () => {
   return utils.listHistory()
     .then((data) => {
@@ -440,6 +452,8 @@ module.exports = commands = {
   deploy: deployCmd,
   migrate: migrateCmd,
   deprecate: deprecateCmd,
+  collaborators: collaboratorsCmd,
+  invitees: inviteesCmd,
   history: historyCmd,
   logs: logsCmd,
   env: envCmd,
