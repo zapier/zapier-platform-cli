@@ -16,13 +16,17 @@ const Table = require('easy-table');
 // Wraps the easy-table library. Rows is an array of objects,
 // columnDefs an ordered sub-array [[label, key], ...].
 const makeTable = (rows, columnDefs) => {
-  var t = new Table();
+  const t = new Table();
 
   if (rows && rows.length) {
     rows.forEach((row) => {
       columnDefs.forEach((columnDef) => {
-        var [label, key] = columnDef;
-        t.cell(label, String(row[key]).trim());
+        const [label, key] = columnDef;
+        let val = row[key];
+        if (val === undefined) {
+          val = '';
+        }
+        t.cell(label, String(val).trim());
       });
       t.newRow();
     });
