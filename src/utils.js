@@ -8,6 +8,7 @@ const os = require('os');
 const readline = require('readline');
 const path = require('path');
 
+const _ = require('lodash');
 const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
 const fetch = require('node-fetch');
@@ -369,7 +370,7 @@ const listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
-const stripPath = (cwd, filePath) => filePath.replace(cwd, '');
+const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
@@ -379,12 +380,12 @@ const browserifyFiles = (entryPoint) => {
   var browserify = require('browserify');
   var through = require('through2');
 
-  var cwd = process.cwd() + '/';
+  var cwd = entryPoint + '/';
   var argv = {
     noParse: [ undefined ],
     extensions: [],
     ignoreTransform: [],
-    entries: [entryPoint],
+    entries: [entryPoint + '/zapierwrapper.js'],
     fullPaths: false,
     builtins: false,
     commondir: false,
@@ -408,15 +409,17 @@ const browserifyFiles = (entryPoint) => {
   return new Promise((resolve, reject) => {
     b.on('error', reject);
 
-    var output = [];
+    var paths = [];
     b.pipeline.get('deps')
       .push(through.obj((row, enc, next) => {
         var filePath = row.file || row.id;
-        output.push(stripPath(cwd, filePath));
+        // why does browserify add /private + filePath?
+        paths.push(stripPath(cwd, filePath));
         next();
       })
       .on('end', () => {
-        resolve(output);
+        paths.sort();
+        resolve(paths);
       }));
     b.bundle();
   });
@@ -441,7 +444,20 @@ const listFiles = (dir) => {
 };
 
 const makeZip = (dir, zipPath) => {
-  return listFiles(dir)
+  return browserifyFiles(dir)
+    .then((smartPaths) => Promise.all([
+      smartPaths,
+      listFiles(dir)
+    ]))
+    .then(([smartPaths, dumbPaths]) => {
+      var finalPaths = smartPaths.concat(dumbPaths.filter((path) => {
+        return path.endsWith('package.json');
+      }))
+      finalPaths = _.uniq(finalPaths);
+      finalPaths.sort();
+      // return dumbPaths;
+      return finalPaths;
+    })
     .then((paths) => {
       return new Promise((resolve) => {
         var zip = new AdmZip();
