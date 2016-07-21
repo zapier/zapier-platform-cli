@@ -133,6 +133,7 @@ const readFile = (fileName, errMsg) => {
           resolve(buf);
         }
       });
+      return true;
     });
   });
 };
@@ -365,7 +366,7 @@ const listEnv = (version) => {
   if (version) {
     endpoint = `versions/${version}/environment`;
   } else {
-    endpoint = `environment`;
+    endpoint = 'environment';
   }
   return listEndoint(endpoint, 'environment');
 };
@@ -450,9 +451,9 @@ const makeZip = (dir, zipPath) => {
       listFiles(dir)
     ]))
     .then(([smartPaths, dumbPaths]) => {
-      var finalPaths = smartPaths.concat(dumbPaths.filter((path) => {
-        return path.endsWith('package.json');
-      }))
+      var finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {
+        return filePath.endsWith('package.json');
+      }));
       finalPaths = _.uniq(finalPaths);
       finalPaths.sort();
       // return dumbPaths;

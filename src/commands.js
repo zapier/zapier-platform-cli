@@ -258,7 +258,7 @@ versionsCmd.example = 'zapier versions';
 
 
 var pushCmd = () => {
-  var zipPath = zipPath || constants.BUILD_PATH;
+  var zipPath = constants.BUILD_PATH;
   console.log('Preparing to build and upload a new version.\n');
   return utils.buildAndUploadCurrentDir(zipPath)
     .then(() => {
@@ -270,7 +270,7 @@ pushCmd.example = 'zapier push';
 
 
 var uploadCmd = () => {
-  var zipPath = zipPath || constants.BUILD_PATH;
+  var zipPath = constants.BUILD_PATH;
   console.log('Preparing to upload a new version.\n');
   return utils.upload(zipPath)
     .then(() => {
@@ -301,7 +301,7 @@ var deployCmd = (version) => {
     .then(() => {
       utils.printDone();
       console.log(`  Deploy successful!\n`);
-      console.log(`Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.`);
+      console.log('Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.');
     });
 };
 deployCmd.docs = 'Deploys a specific version to a production.';
@@ -336,7 +336,7 @@ var deprecateCmd = (version, deprecation_date) => {
     .then(() => {
       utils.printDone();
       console.log('  Deprecation successful!\n');
-      console.log(`We'll let users know that this version is no longer recommended.`);
+      console.log('We\'ll let users know that this version is no longer recommended.');
     });
 };
 deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';

@@ -69,6 +69,6 @@
     "semi-spacing": [2, {"before": false, "after": true}],
     "space-infix-ops": 2,
     "space-unary-ops": [2, {"words": true, "nonwords": false}],
-    "yoda": [2, "never"],
+    "yoda": [2, "never"]
   }
 }
