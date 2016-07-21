@@ -1,28 +1,32 @@
-var constants = require('./constants');
+const constants = require('./constants');
 
-var crypto = require('crypto');
-var qs = require('querystring');
-var cp = require('child_process');
-var fs = require('fs');
-var os = require('os');
-var readline = require('readline');
-var path = require('path');
+const crypto = require('crypto');
+const qs = require('querystring');
+const cp = require('child_process');
+const fs = require('fs');
+const os = require('os');
+const readline = require('readline');
+const path = require('path');
 
-var AdmZip = require('adm-zip');
-var fse = require('fs-extra');
-var fetch = require('node-fetch');
-var Table = require('easy-table');
+const AdmZip = require('adm-zip');
+const fse = require('fs-extra');
+const fetch = require('node-fetch');
+const Table = require('easy-table');
 
 // Wraps the easy-table library. Rows is an array of objects,
 // columnDefs an ordered sub-array [[label, key], ...].
-var makeTable = (rows, columnDefs) => {
-  var t = new Table();
+const makeTable = (rows, columnDefs) => {
+  const t = new Table();
 
   if (rows && rows.length) {
     rows.forEach((row) => {
       columnDefs.forEach((columnDef) => {
-        var [label, key] = columnDef;
-        t.cell(label, String(row[key]).trim());
+        const [label, key] = columnDef;
+        let val = row[key];
+        if (val === undefined) {
+          val = '';
+        }
+        t.cell(label, String(val).trim());
       });
       t.newRow();
     });
@@ -39,11 +43,11 @@ var makeTable = (rows, columnDefs) => {
   return t.toString().trim();
 };
 
-var printTable = (rows, columnDefs) => {
+const printTable = (rows, columnDefs) => {
   console.log(makeTable(rows, columnDefs));
 };
 
-var argParse = (argv) => {
+const argParse = (argv) => {
   var args = [], opts = {};
   argv.forEach((arg) => {
     if (arg.startsWith('--')) {
@@ -62,25 +66,25 @@ var argParse = (argv) => {
   return [args, opts];
 };
 
-var prettyJSONstringify = (obj) => {
+const prettyJSONstringify = (obj) => {
   return JSON.stringify(obj, null, '  ');
 };
 
-var printStarting = (msg) => {
+const printStarting = (msg) => {
   process.stdout.write(msg + '... ');
 };
 
-var printDone = () => {
+const printDone = () => {
   console.log('done!');
 };
 
-var fixHome = (dir) => {
+const fixHome = (dir) => {
   var home = process.env.HOME || process.env.USERPROFILE;
   return dir.replace('~', home);
 };
 
 // Get input from a user.
-var getInput = (question) => {
+const getInput = (question) => {
   var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -94,7 +98,7 @@ var getInput = (question) => {
 };
 
 // Returns a promise that assists "callback to promise" conversions.
-var makePromise = () => {
+const makePromise = () => {
   let resolve, reject;
   var promise = new Promise((rs, rj) => {
     resolve = rs;
@@ -111,7 +115,7 @@ var makePromise = () => {
 };
 
 // Returns a promise that reads a file and returns a buffer.
-var readFile = (fileName, errMsg) => {
+const readFile = (fileName, errMsg) => {
   return new Promise((resolve, reject) => {
     fs.exists(fixHome(fileName), (exists) => {
       if (!exists) {
@@ -133,7 +137,7 @@ var readFile = (fileName, errMsg) => {
 };
 
 // Returns a promise that writes a file.
-var writeFile = (fileName, data) => {
+const writeFile = (fileName, data) => {
   return new Promise((resolve, reject) => {
     fs.writeFile(fixHome(fileName), data, (err) => {
       if (err) {
@@ -146,7 +150,7 @@ var writeFile = (fileName, data) => {
 };
 
 // Returns a promise that copies a directory.
-var copyDir = (src, dest, options) => {
+const copyDir = (src, dest, options) => {
   options = options || {};
   var defaultFilter = (dir) => {
     var isntPackage = dir.indexOf('node_modules') === -1;
@@ -165,7 +169,7 @@ var copyDir = (src, dest, options) => {
 };
 
 // Returns a promise that ensures a directory exists.
-var ensureDir = (dir) => {
+const ensureDir = (dir) => {
   return new Promise((resolve, reject) => {
     fse.ensureDir(dir, (err) => {
       if (err) {
@@ -177,7 +181,7 @@ var ensureDir = (dir) => {
 };
 
 // Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
-var readCredentials = (credentials) => {
+const readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
     readFile(constants.AUTH_LOCATION, 'Please run "zapier config".')
@@ -188,7 +192,7 @@ var readCredentials = (credentials) => {
 };
 
 // Delete a directory.
-var removeDir = (dir) => {
+const removeDir = (dir) => {
   return new Promise((resolve, reject) => {
     fse.remove(dir, (err) => {
       if (err) {
@@ -200,7 +204,7 @@ var removeDir = (dir) => {
 };
 
 // Run a command with a promise.
-var runCommand = (command, options) => {
+const runCommand = (command, options) => {
   options = options || {};
   return new Promise((resolve, reject) => {
     cp.exec(command, options, (err, stdout, stderr) => {
@@ -216,7 +220,7 @@ var runCommand = (command, options) => {
 };
 
 // Calls the underlying platform REST API with proper authentication.
-var callAPI = (route, options) => {
+const callAPI = (route, options) => {
   options = options || {};
   var requestOptions;
   return readCredentials()
@@ -228,6 +232,7 @@ var callAPI = (route, options) => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json; charset=utf-8',
+          'X-Requested-With': 'XMLHttpRequest',
           'X-Deploy-Key': credentials.deployKey
         }
       };
@@ -253,21 +258,21 @@ var callAPI = (route, options) => {
         } catch(err) {
           errors = (text || 'Unknown error').slice(0, 250);
         }
-        throw new Error('' + res.status + ' saying ' + errors);
+        throw new Error(`${constants.ENDPOINT} returned ${res.status} saying ${errors}`);
       }
       return JSON.parse(text);
     });
 };
 
 // Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
-var getLinkedAppConfig = () => {
+const getLinkedAppConfig = () => {
   return readFile(constants.CURRENT_APP_FILE)
     .then((buf) => {
       return JSON.parse(buf.toString()).id;
     });
 };
 
-var writeLinkedAppConfig = (app) => {
+const writeLinkedAppConfig = (app) => {
   return writeFile(constants.CURRENT_APP_FILE, prettyJSONstringify({
     id: app.id,
     key: app.key
@@ -275,7 +280,7 @@ var writeLinkedAppConfig = (app) => {
 };
 
 // Loads the linked app from the API.
-var getLinkedApp = () => {
+const getLinkedApp = () => {
   return getLinkedAppConfig()
     .then((appId) => {
       if (!appId) {
@@ -288,11 +293,11 @@ var getLinkedApp = () => {
     });
 };
 
-var checkCredentials = () => {
+const checkCredentials = () => {
   return callAPI('/check');
 };
 
-var listApps = () => {
+const listApps = () => {
   return checkCredentials()
     .then(() => {
       return Promise.all([
@@ -315,10 +320,11 @@ var listApps = () => {
     });
 };
 
-var listEndoint = (endpoint, key) => {
+const listEndoint = (endpoint, keyOverride) => {
   return checkCredentials()
     .then(getLinkedApp)
     .then((app) => {
+      console.log(`/apps/${app.id}/${endpoint}`);
       return Promise.all([
         app,
         callAPI(`/apps/${app.id}/${endpoint}`)
@@ -328,24 +334,32 @@ var listEndoint = (endpoint, key) => {
       var out = {
         app: app
       };
-      out[key || endpoint] = results.objects;
+      out[keyOverride || endpoint] = results.objects;
       return out;
     });
 };
 
-var listVersions = () => {
+const listVersions = () => {
   return listEndoint('versions');
 };
 
-var listHistory = () => {
+const listHistory = () => {
   return listEndoint('history');
 };
 
-var listLogs = (opts) => {
+const listCollaborators = () => {
+  return listEndoint('collaborators');
+};
+
+const listInvitees = () => {
+  return listEndoint('invitees');
+};
+
+const listLogs = (opts) => {
   return listEndoint(`logs?${qs.stringify(opts)}`, 'logs');
 };
 
-var listEnv = (version) => {
+const listEnv = (version) => {
   var endpoint;
   if (version) {
     endpoint = `versions/${version}/environment`;
@@ -355,12 +369,13 @@ var listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
-var stripPath = (cwd, filePath) => filePath.replace(cwd, '');
+const stripPath = (cwd, filePath) => filePath.replace(cwd, '');
 
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
 // TODO: needs to include package.json files too i think
-var browserifyFiles = (entryPoint) => {
+//   https://github.com/serverless/serverless-optimizer-plugin?
+const browserifyFiles = (entryPoint) => {
   var browserify = require('browserify');
   var through = require('through2');
 
@@ -407,7 +422,7 @@ var browserifyFiles = (entryPoint) => {
   });
 };
 
-var listFiles = (dir) => {
+const listFiles = (dir) => {
   return new Promise((resolve, reject) => {
     var paths = [];
     var cwd = dir + '/';
@@ -425,7 +440,7 @@ var listFiles = (dir) => {
   });
 };
 
-var makeZip = (dir, zipPath) => {
+const makeZip = (dir, zipPath) => {
   return listFiles(dir)
     .then((paths) => {
       return new Promise((resolve) => {
@@ -443,14 +458,14 @@ var makeZip = (dir, zipPath) => {
     });
 };
 
-var appCommand = (dir, event) => {
+const appCommand = (dir, event) => {
   var entry = require(`${dir}/zapierwrapper.js`);
   var promise = makePromise();
   entry.handler(event, {}, promise.callback);
   return promise;
 };
 
-var build = (zipPath) => {
+const build = (zipPath) => {
   var wdir = process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
   var tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
@@ -513,7 +528,7 @@ var build = (zipPath) => {
     });
 };
 
-var upload = (zipPath) => {
+const upload = (zipPath) => {
   zipPath = zipPath || constants.BUILD_PATH;
   return getLinkedApp()
     .then((app) => {
@@ -536,7 +551,7 @@ var upload = (zipPath) => {
     });
 };
 
-var buildAndUploadCurrentDir = (zipPath) => {
+const buildAndUploadCurrentDir = (zipPath) => {
   zipPath = zipPath || constants.BUILD_PATH;
   return checkCredentials()
     .then(() => {
@@ -568,6 +583,8 @@ module.exports = {
   listEndoint,
   listVersions,
   listHistory,
+  listCollaborators,
+  listInvitees,
   listLogs,
   listEnv,
   build,
