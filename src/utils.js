@@ -451,12 +451,14 @@ const makeZip = (dir, zipPath) => {
       listFiles(dir)
     ]))
     .then(([smartPaths, dumbPaths]) => {
+      if (global.argOpts.dumb) {
+        return dumbPaths;
+      }
       var finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {
-        return filePath.endsWith('package.json');
+        return filePath.endsWith('package.json') || filePath.endsWith('definition.json');
       }));
       finalPaths = _.uniq(finalPaths);
       finalPaths.sort();
-      // return dumbPaths;
       return finalPaths;
     })
     .then((paths) => {
@@ -478,6 +480,10 @@ const makeZip = (dir, zipPath) => {
 const appCommand = (dir, event) => {
   var entry = require(`${dir}/zapierwrapper.js`);
   var promise = makePromise();
+  event = Object.assign({}, event, {
+    calledFromCli: true,
+    doNotMonkeyPatchPromises: true // can drop this
+  });
   entry.handler(event, {}, promise.callback);
   return promise;
 };
@@ -551,6 +557,9 @@ const upload = (zipPath) => {
     .then((app) => {
       var zip = new AdmZip(zipPath);
       var definitionJson = zip.readAsText('definition.json');
+      if (!definitionJson) {
+        throw new Error('definition.json in the zip was missing!');
+      }
       var definition = JSON.parse(definitionJson);
 
       printStarting('  Uploading version ' + definition.version);
