@@ -326,7 +326,6 @@ const listEndoint = (endpoint, keyOverride) => {
   return checkCredentials()
     .then(getLinkedApp)
     .then((app) => {
-      console.log(`/apps/${app.id}/${endpoint}`);
       return Promise.all([
         app,
         callAPI(`/apps/${app.id}/${endpoint}`)
