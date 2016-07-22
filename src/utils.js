@@ -12,36 +12,76 @@ const _ = require('lodash');
 const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
 const fetch = require('node-fetch');
-const Table = require('easy-table');
+const Table = require('cli-table2');
 
 // Wraps the easy-table library. Rows is an array of objects,
 // columnDefs an ordered sub-array [[label, key], ...].
 const makeTable = (rows, columnDefs) => {
-  const t = new Table();
+  const table = new Table({
+    head: columnDefs.map(([label]) => label),
+    style: {
+      head: [],
+      // border: []
+    },
+    // chars: {
+    //   'top': '═',
+    //   'top-mid': '╤',
+    //   'top-left': '╔',
+    //   'top-right': '╗',
+    //   'bottom': '═',
+    //   'bottom-mid': '╧',
+    //   'bottom-left': '╚',
+    //   'bottom-right': '╝',
+    //   'left': '║',
+    //   'left-mid': '╟',
+    //   'mid': '─',
+    //   'mid-mid': '┼',
+    //   'right': '║',
+    //   'right-mid': '╢',
+    //   'middle': '│',
+    // }
+  });
 
-  if (rows && rows.length) {
-    rows.forEach((row) => {
-      columnDefs.forEach((columnDef) => {
-        const [label, key] = columnDef;
-        let val = row[key];
-        if (val === undefined) {
-          val = '';
-        }
-        t.cell(label, String(val).trim());
-      });
-      t.newRow();
-    });
-  } else {
-    // write an empty row so we can get the headers
-    // follow up trim will nuke the line of whitespace
+  rows.forEach((row) => {
+    const consumptionRow = [];
     columnDefs.forEach((columnDef) => {
-      var label = columnDef[0];
-      t.cell(label, '');
+      const [label, key] = columnDef;
+      let val = row[key];
+      if (val === undefined) {
+        val = '';
+      }
+      consumptionRow.push(String(val).trim());
     });
-    t.newRow();
-  }
+    table.push(consumptionRow);
+  });
 
-  return t.toString().trim();
+  return table.toString().trim();
+
+  // const t = new Table();
+
+  // if (rows && rows.length) {
+  //   rows.forEach((row) => {
+  //     columnDefs.forEach((columnDef) => {
+  //       const [label, key] = columnDef;
+  //       let val = row[key];
+  //       if (val === undefined) {
+  //         val = '';
+  //       }
+  //       t.cell(label, String(val).trim());
+  //     });
+  //     t.newRow();
+  //   });
+  // } else {
+  //   // write an empty row so we can get the headers
+  //   // follow up trim will nuke the line of whitespace
+  //   columnDefs.forEach((columnDef) => {
+  //     var label = columnDef[0];
+  //     t.cell(label, '');
+  //   });
+  //   t.newRow();
+  // }
+  // 
+  // return t.toString().trim();
 };
 
 const printTable = (rows, columnDefs) => {

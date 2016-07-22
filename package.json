@@ -18,9 +18,9 @@
     "adm-zip": "0.4.7",
     "babel-polyfill": "6.9.1",
     "browserify": "13.0.1",
-    "easy-table": "1.0.0",
-    "lodash": "4.13.1",
+    "cli-table2": "0.2.0",
     "fs-extra": "0.30.0",
+    "lodash": "4.13.1",
     "node-fetch": "1.5.3",
     "through2": "2.0.1"
   },
