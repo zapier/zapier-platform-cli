@@ -23,7 +23,7 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
           example: commands[command].example
         };
       });
-      utils.printTable(allCommands, [
+      utils.printData(allCommands, [
         ['Command', 'name'],
         ['Example', 'example'],
         ['Documentation', 'docs'],
@@ -132,7 +132,7 @@ var linkCmd = () => {
         appMap[app.number] = app;
         return app;
       });
-      utils.printTable(apps, [
+      utils.printData(apps, [
         ['Number', 'number'],
         ['Title', 'title'],
         ['Unique Key', 'key'],
@@ -178,7 +178,7 @@ var appsCmd = () => {
   return utils.listApps()
     .then((data) => {
       console.log('All apps listed below.\n');
-      utils.printTable(data.apps, [
+      utils.printData(data.apps, [
         ['Title', 'title'],
         ['Unique Key', 'key'],
         ['Timestamp', 'date'],
@@ -208,7 +208,7 @@ var validateCmd = () => {
     })
     .then(response => response.results)
     .then((errors) => {
-      utils.printTable(errors, [
+      utils.printData(errors, [
         ['Property', 'property'],
         ['Message', 'message'],
       ]);
@@ -240,7 +240,7 @@ var versionsCmd = () => {
   return utils.listVersions()
     .then((data) => {
       console.log(`All versions of your app "${data.app.title}" listed below.\n`);
-      utils.printTable(data.versions, [
+      utils.printData(data.versions, [
         ['Version', 'version'],
         ['Platform', 'platform_version'],
         ['Users', 'user_count'],
@@ -368,7 +368,7 @@ var collaboratorsCmd = (collaboratorEmail) => {
   return utils.listCollaborators()
     .then((data) => {
       console.log(`The collaborators on your app "${data.app.title}" listed below.\n`);
-      utils.printTable(data.collaborators, [
+      utils.printData(data.collaborators, [
         ['Email', 'email'],
         ['Role', 'role'],
       ]);
@@ -387,7 +387,7 @@ var historyCmd = () => {
   return utils.listHistory()
     .then((data) => {
       console.log(`The history of your app "${data.app.title}" listed below.\n`);
-      utils.printTable(data.history, [
+      utils.printData(data.history, [
         ['What', 'action'],
         ['Message', 'message'],
         ['Who', 'customuser'],
@@ -421,7 +421,7 @@ var logsCmd = () => {
           ['Timestamp', 'timestamp'],
         ];
       }
-      utils.printTable(data.logs, columns);
+      utils.printData(data.logs, columns);
     });
 };
 logsCmd.docs = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com';
@@ -455,7 +455,7 @@ var envCmd = (version, key, value) => {
   return utils.listEnv(version)
     .then((data) => {
       console.log(`The env of your "${data.app.title}" listed below.\n`);
-      utils.printTable(data.environment, [
+      utils.printData(data.environment, [
         ['Version', 'app_version'],
         ['Key', 'key'],
         ['Value', 'value'],

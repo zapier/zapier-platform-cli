@@ -14,6 +14,18 @@ const fse = require('fs-extra');
 const fetch = require('node-fetch');
 const Table = require('cli-table2');
 
+const rewriteLabels = (rows, columnDefs) => {
+  return rows.map((row) => {
+    const consumptionRow = {};
+    columnDefs.forEach((columnDef) => {
+      const [label, key] = columnDef;
+      let val = row[key];
+      consumptionRow[label] = val;
+    });
+    return consumptionRow;
+  });
+};
+
 // Wraps the easy-table library. Rows is an array of objects,
 // columnDefs an ordered sub-array [[label, key], ...].
 const makeTable = (rows, columnDefs) => {
@@ -21,26 +33,8 @@ const makeTable = (rows, columnDefs) => {
     head: columnDefs.map(([label]) => label),
     style: {
       compact: true,
-      head: ['bold'],
-      // border: []
-    },
-    // chars: {
-    //   'top': '═',
-    //   'top-mid': '╤',
-    //   'top-left': '╔',
-    //   'top-right': '╗',
-    //   'bottom': '═',
-    //   'bottom-mid': '╧',
-    //   'bottom-left': '╚',
-    //   'bottom-right': '╝',
-    //   'left': '║',
-    //   'left-mid': '╟',
-    //   'mid': '─',
-    //   'mid-mid': '┼',
-    //   'right': '║',
-    //   'right-mid': '╢',
-    //   'middle': '│',
-    // }
+      head: ['bold']
+    }
   });
 
   rows.forEach((row) => {
@@ -59,8 +53,14 @@ const makeTable = (rows, columnDefs) => {
   return table.toString().trim();
 };
 
-const printTable = (rows, columnDefs) => {
-  console.log(makeTable(rows, columnDefs));
+const printData = (rows, columnDefs) => {
+  if (global.argOpts.json) {
+    console.log(prettyJSONstringify(rewriteLabels(rows, columnDefs)));
+  } else if (global.argOpts['json-raw']) {
+    console.log(prettyJSONstringify(rows));
+  } else {
+    console.log(makeTable(rows, columnDefs));
+  }
 };
 
 const argParse = (argv) => {
@@ -604,7 +604,7 @@ const buildAndUploadCurrentDir = (zipPath) => {
 
 module.exports = {
   makeTable,
-  printTable,
+  printData,
   argParse,
   prettyJSONstringify,
   printStarting,
