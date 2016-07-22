@@ -566,7 +566,7 @@ const upload = (zipPath) => {
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {
-          platform_version: '3.0.0' || definition.platformVersion,
+          platform_version: definition.platformVersion,
           definition: definition,
           zip_file: zip.toBuffer().toString('base64')
         }
