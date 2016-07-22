@@ -262,11 +262,11 @@ const callAPI = (route, options) => {
       ]);
     })
     .then(([res, text]) => {
-      if (constants.DEBUG) {
+      if (constants.DEBUG || global.argOpts.debug) {
         console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
         if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
         console.log(`<< ${res.status}`);
-        console.log(`<< ${(text || '').substring(0, 250)}\n`);
+        console.log(`<< ${(text || '').substring(0, 2500)}\n`);
       }
       if (res.status >= 400) {
         var errors;
