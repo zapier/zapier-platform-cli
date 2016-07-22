@@ -20,6 +20,7 @@ const makeTable = (rows, columnDefs) => {
   const table = new Table({
     head: columnDefs.map(([label]) => label),
     style: {
+      compact: true,
       head: [],
       // border: []
     },
@@ -46,7 +47,7 @@ const makeTable = (rows, columnDefs) => {
     const consumptionRow = [];
     columnDefs.forEach((columnDef) => {
       const [label, key] = columnDef;
-      let val = row[key];
+      let val = row[key || label];
       if (val === undefined) {
         val = '';
       }
@@ -56,32 +57,6 @@ const makeTable = (rows, columnDefs) => {
   });
 
   return table.toString().trim();
-
-  // const t = new Table();
-
-  // if (rows && rows.length) {
-  //   rows.forEach((row) => {
-  //     columnDefs.forEach((columnDef) => {
-  //       const [label, key] = columnDef;
-  //       let val = row[key];
-  //       if (val === undefined) {
-  //         val = '';
-  //       }
-  //       t.cell(label, String(val).trim());
-  //     });
-  //     t.newRow();
-  //   });
-  // } else {
-  //   // write an empty row so we can get the headers
-  //   // follow up trim will nuke the line of whitespace
-  //   columnDefs.forEach((columnDef) => {
-  //     var label = columnDef[0];
-  //     t.cell(label, '');
-  //   });
-  //   t.newRow();
-  // }
-  // 
-  // return t.toString().trim();
 };
 
 const printTable = (rows, columnDefs) => {

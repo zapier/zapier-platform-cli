@@ -409,7 +409,7 @@ var logsCmd = () => {
         ['Querystring', 'request_params'],
         ['Version', 'app_v3_version'],
         ['Step', 'step'],
-        ['ID', 'id'],
+        // ['ID', 'id'],
         ['Timestamp', 'timestamp'],
       ];
       if (global.argOpts.console) {
@@ -417,7 +417,7 @@ var logsCmd = () => {
           ['Log', 'message'],
           ['Version', 'app_v3_version'],
           ['Step', 'step'],
-          ['ID', 'id'],
+          // ['ID', 'id'],
           ['Timestamp', 'timestamp'],
         ];
       }
