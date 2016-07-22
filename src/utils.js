@@ -8,6 +8,7 @@ const os = require('os');
 const readline = require('readline');
 const path = require('path');
 
+const _ = require('lodash');
 const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
 const fetch = require('node-fetch');
@@ -132,6 +133,7 @@ const readFile = (fileName, errMsg) => {
           resolve(buf);
         }
       });
+      return true;
     });
   });
 };
@@ -324,7 +326,6 @@ const listEndoint = (endpoint, keyOverride) => {
   return checkCredentials()
     .then(getLinkedApp)
     .then((app) => {
-      console.log(`/apps/${app.id}/${endpoint}`);
       return Promise.all([
         app,
         callAPI(`/apps/${app.id}/${endpoint}`)
@@ -364,12 +365,12 @@ const listEnv = (version) => {
   if (version) {
     endpoint = `versions/${version}/environment`;
   } else {
-    endpoint = `environment`;
+    endpoint = 'environment';
   }
   return listEndoint(endpoint, 'environment');
 };
 
-const stripPath = (cwd, filePath) => filePath.replace(cwd, '');
+const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 
 // given an entry point, return a list of files that uses
 // could probably be done better with module-deps...
@@ -379,12 +380,12 @@ const browserifyFiles = (entryPoint) => {
   var browserify = require('browserify');
   var through = require('through2');
 
-  var cwd = process.cwd() + '/';
+  var cwd = entryPoint + '/';
   var argv = {
     noParse: [ undefined ],
     extensions: [],
     ignoreTransform: [],
-    entries: [entryPoint],
+    entries: [entryPoint + '/zapierwrapper.js'],
     fullPaths: false,
     builtins: false,
     commondir: false,
@@ -408,15 +409,17 @@ const browserifyFiles = (entryPoint) => {
   return new Promise((resolve, reject) => {
     b.on('error', reject);
 
-    var output = [];
+    var paths = [];
     b.pipeline.get('deps')
       .push(through.obj((row, enc, next) => {
         var filePath = row.file || row.id;
-        output.push(stripPath(cwd, filePath));
+        // why does browserify add /private + filePath?
+        paths.push(stripPath(cwd, filePath));
         next();
       })
       .on('end', () => {
-        resolve(output);
+        paths.sort();
+        resolve(paths);
       }));
     b.bundle();
   });
@@ -441,7 +444,22 @@ const listFiles = (dir) => {
 };
 
 const makeZip = (dir, zipPath) => {
-  return listFiles(dir)
+  return browserifyFiles(dir)
+    .then((smartPaths) => Promise.all([
+      smartPaths,
+      listFiles(dir)
+    ]))
+    .then(([smartPaths, dumbPaths]) => {
+      if (global.argOpts.dumb) {
+        return dumbPaths;
+      }
+      var finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {
+        return filePath.endsWith('package.json') || filePath.endsWith('definition.json');
+      }));
+      finalPaths = _.uniq(finalPaths);
+      finalPaths.sort();
+      return finalPaths;
+    })
     .then((paths) => {
       return new Promise((resolve) => {
         var zip = new AdmZip();
@@ -461,6 +479,10 @@ const makeZip = (dir, zipPath) => {
 const appCommand = (dir, event) => {
   var entry = require(`${dir}/zapierwrapper.js`);
   var promise = makePromise();
+  event = Object.assign({}, event, {
+    calledFromCli: true,
+    doNotMonkeyPatchPromises: true // can drop this
+  });
   entry.handler(event, {}, promise.callback);
   return promise;
 };
@@ -534,13 +556,16 @@ const upload = (zipPath) => {
     .then((app) => {
       var zip = new AdmZip(zipPath);
       var definitionJson = zip.readAsText('definition.json');
+      if (!definitionJson) {
+        throw new Error('definition.json in the zip was missing!');
+      }
       var definition = JSON.parse(definitionJson);
 
       printStarting('  Uploading version ' + definition.version);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {
-          platform_version: '3.0.0' || definition.platformVersion,
+          platform_version: definition.platformVersion,
           definition: definition,
           zip_file: zip.toBuffer().toString('base64')
         }
