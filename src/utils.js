@@ -21,7 +21,7 @@ const makeTable = (rows, columnDefs) => {
     head: columnDefs.map(([label]) => label),
     style: {
       compact: true,
-      head: [],
+      head: ['bold'],
       // border: []
     },
     // chars: {
