@@ -14,6 +14,7 @@ const fse = require('fs-extra');
 const fetch = require('node-fetch');
 const Table = require('cli-table2');
 
+
 const rewriteLabels = (rows, columnDefs) => {
   return rows.map((row) => {
     const consumptionRow = {};

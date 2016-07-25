@@ -8,6 +8,8 @@
   "license": "BSD",
   "main": "zapier.js",
   "scripts": {
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags && npm publish",
     "prepublish": "npm run build",
     "build": "rm -rf lib && node_modules/babel-cli/bin/babel.js src -d lib",
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
