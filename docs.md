@@ -22,6 +22,16 @@ zapier create "Hello World" --style=helloworld
 
 You now have a working Hello World app, private to you and visible in your live [Zapier editor](https://zapier.com/app/editor)!
 
+```bash
+# run the local tests
+npm test
+
+# validate the app
+zapier validate
+```
+
+From this point on, you should feel comfortable to modify and update your app.
+
 
 ## Project Structure
 
@@ -40,6 +50,7 @@ build/
 node_modules/
   ...
 ```
+
 
 ## TODO!
 
