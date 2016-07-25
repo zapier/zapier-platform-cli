@@ -86,12 +86,43 @@ const prettyJSONstringify = (obj) => {
   return JSON.stringify(obj, null, '  ');
 };
 
+let spinner;
+let currentIter = 0;
+const spinSpeed = 150;
+const spinTransitions = [
+  '   ',
+  '.  ',
+  '.. ',
+  '...',
+];
+// const spinTransitions = [
+//   ' \\',
+//   ' |',
+//   ' /',
+//   ' -',
+// ];
+
+const writeNextTick = (final = false) => {
+  readline.moveCursor(process.stdout, -spinTransitions[currentIter].length, 0);
+  currentIter++;
+  if (currentIter >= spinTransitions.length) { currentIter = 0; }
+  process.stdout.write(final ? spinTransitions[spinTransitions.length - 1] : spinTransitions[currentIter]);
+};
+
 const printStarting = (msg) => {
-  process.stdout.write(msg + '... ');
+  process.stdout.write(msg + spinTransitions[currentIter]);
+  process.stdout.write('\x1b[?25l'); // set cursor to black...
+  clearInterval(spinner);
+  spinner = setInterval(() => {
+    writeNextTick();
+  }, spinSpeed);
 };
 
 const printDone = () => {
-  console.log('done!');
+  process.stdout.write('\x1b[?25h'); // set cursor to write...
+  clearInterval(spinner);
+  writeNextTick(true);
+  console.log(' done!');
 };
 
 const fixHome = (dir) => {
