@@ -206,14 +206,26 @@ var validateCmd = () => {
       var zapier = require(`${process.cwd()}/node_modules/${constants.PLATFORM_PACKAGE}`);
       var handler = zapier.exposeAppHandler(appRaw);
       var promise = utils.makePromise();
-      handler({command: 'validate'}, {}, promise.callback);
+      handler({
+        command: 'validate',
+        calledFromCli: true,
+        doNotMonkeyPatchPromises: true // can drop this
+      }, {}, promise.callback);
       return promise;
     })
     .then(response => response.results)
     .then((errors) => {
-      utils.printData(errors, [
+      const newErrors = errors.map(({property, message, docLinks}) => {
+        return {
+          property,
+          message,
+          docLinks: (docLinks || []).join('\n')
+        };
+      });
+      utils.printData(newErrors, [
         ['Property', 'property'],
         ['Message', 'message'],
+        ['Links', 'docLinks'],
       ]);
       return errors;
     })
