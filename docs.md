@@ -7,7 +7,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 The Zapier CLI requires Node `v4.3.2` or higher, we recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
-```
+```bash
 # install the cli globally
 npm install -g @zapier/zapier-platform-cli
 
@@ -30,7 +30,7 @@ In your `helloworld` folder, you should see this general structure:
 ```
 package.json
 index.js
-.zapier-platform-current-app
+.zapierapprc
 README.md
 test/
   basic.js
