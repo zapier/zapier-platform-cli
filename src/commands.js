@@ -114,7 +114,10 @@ var createCmd = (title) => {
     })
     .then(() => {
       utils.printDone();
-      console.log('\nFinished! You can `zapier push` now to build & upload a version!');
+      return utils.buildAndUploadCurrentDir();
+    })
+    .then(() => {
+      console.log('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
     });
 };
 createCmd.docs = 'Creates a new app in your account.';
@@ -225,9 +228,9 @@ var validateCmd = () => {
 validateCmd.docs = 'Validates the current project.';
 validateCmd.example = 'zapier validate';
 
-var buildCmd = (zipPath) => {
+var buildCmd = () => {
   console.log('Building project.\n');
-  return utils.build(zipPath)
+  return utils.build()
     .then(() => {
       console.log(`\nBuild complete in ${constants.BUILD_PATH}! Try the \`zapier upload\` command now.`);
     });
@@ -258,9 +261,8 @@ versionsCmd.example = 'zapier versions';
 
 
 var pushCmd = () => {
-  var zipPath = constants.BUILD_PATH;
   console.log('Preparing to build and upload a new version.\n');
-  return utils.buildAndUploadCurrentDir(zipPath)
+  return utils.buildAndUploadCurrentDir()
     .then(() => {
       console.log('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier migrate` to move users over.');
     });

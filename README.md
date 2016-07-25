@@ -1,5 +1,10 @@
 # Zapier Platform CLI
 
+[![Build Status](https://travis-ci.com/zapier/zapier-platform-cli.svg?token=J7yzswuWzN3zrXDd3zFT&branch=master)](https://travis-ci.org/zapier/zapier-platform-cli)
+[![npm version](https://badge.fury.io/js/zapier-platform-cli.svg)](http://badge.fury.io/js/zapier-platform-cli)
+[![Dependency Status](https://david-dm.org/zapier/zapier-platform-cli.svg)](https://david-dm.org/zapier/zapier-platform-cli)
+[![devDependency Status](https://david-dm.org/zapier/zapier-platform-cli/dev-status.svg)](https://david-dm.org/zapier/zapier-platform-cli#info=devDependencies)
+
 A CLI to test, verify, build and deploy an app to Zapier (both private and public apps).
 
 
