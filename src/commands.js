@@ -8,8 +8,14 @@ const utils = require('./utils');
 var commands;
 
 
-var helpCmd = () => {
+var helpCmd = (cmd) => {
+  if (commands[cmd] && commands[cmd].docs) {
+    console.log(commands[cmd].docs.trim());
+    return Promise.resolve();
+  }
   console.log(`
+Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]
+
 This Zapier command works off of two files:
 
  * ${constants.AUTH_LOCATION}      (home directory identifies the deploy key & user)
@@ -23,18 +29,18 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
       var allCommands = Object.keys(commands).map((command) => {
         return {
           name: command,
-          docs: commands[command].docs,
+          help: commands[command].help,
           example: commands[command].example
         };
       });
       utils.printData(allCommands, [
         ['Command', 'name'],
         ['Example', 'example'],
-        ['Documentation', 'docs'],
+        ['Help', 'help'],
       ]);
     });
 };
-helpCmd.docs = 'Lists all the commands you can use.';
+helpCmd.help = 'Lists all the commands you can use.';
 helpCmd.example = 'zapier help';
 
 
@@ -69,7 +75,7 @@ var authCmd = () => {
       console.log(`Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier create\` or \`zapier link\`.`);
     });
 };
-authCmd.docs = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
+authCmd.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
 authCmd.example = 'zapier auth';
 
 
@@ -124,7 +130,7 @@ var createCmd = (title) => {
       console.log('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
     });
 };
-createCmd.docs = 'Creates a new app in your account.';
+createCmd.help = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
 
 const scaffoldCmd = (type, title) => {
@@ -141,8 +147,8 @@ const scaffoldCmd = (type, title) => {
     write: 'writes',
   };
 
-  const injectFragment = global.argOpts.inject || `${typeMap[type]}/${context.KEY}`;
-  const injectFile = path.join(process.cwd(), injectFragment + '.js');
+  const dest = global.argOpts.dest || `${typeMap[type]}/${context.KEY}`;
+  const destFile = path.join(process.cwd(), dest + '.js');
   const entry = global.argOpts.entry || 'index.js';
   const entryFile = path.join(process.cwd(), entry);
 
@@ -153,8 +159,8 @@ const scaffoldCmd = (type, title) => {
       .then(templateBuf => templateBuf.toString())
       .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(context))
       .then(rendered => {
-        utils.printStarting(`Writing new ${injectFragment}.js`);
-        return utils.writeFile(injectFile, rendered);
+        utils.printStarting(`Writing new ${dest}.js`);
+        return utils.writeFile(destFile, rendered);
       })
       .then(() => utils.printDone())
       .then(() => utils.readFile(entryFile))
@@ -167,13 +173,13 @@ const scaffoldCmd = (type, title) => {
         // we should look at jscodeshift or friends to do this instead
 
         // insert Model = require() line at top
-        const importerLine = `const ${context.CAMEL} = require('./${injectFragment}');`;
+        const importerLine = `const ${context.CAMEL} = require('./${dest}');`;
         lines.splice(0, 0, importerLine);
 
         // insert '[Model.key]: Model,' after 'models:' line
         const injectorLine = `[${context.CAMEL}.key]: ${context.CAMEL},`;
-        const modelsDefIndex = _.findIndex(lines, (line) => line.indexOf(`${typeMap[type]}:`) !== -1);
-        lines.splice(modelsDefIndex + 1, 0, '    ' + injectorLine);
+        const linesDefIndex = _.findIndex(lines, (line) => line.indexOf(`${typeMap[type]}:`) !== -1);
+        lines.splice(linesDefIndex + 1, 0, '    ' + injectorLine);
 
         return utils.writeFile(entryFile, lines.join('\n'));
       })
@@ -186,8 +192,26 @@ const scaffoldCmd = (type, title) => {
       });
   }
 };
-scaffoldCmd.docs = 'Adds a model, trigger, action or search to your app.';
+scaffoldCmd.help = 'Adds a sample model, trigger, action or search to your app.';
 scaffoldCmd.example = 'zapier scaffold model "Contact"';
+scaffoldCmd.docs = `\
+Usage: zapier scaffold {model|trigger|search|write} [--entry|--dest]
+
+${scaffoldCmd.help}
+
+Does two primary things:
+
+  * Creates a new destination file like "models/contact.js"
+  * Imports and registers this inside your entry "index.js"
+
+Examples:
+
+  $ ${scaffoldCmd.example}
+  $ zapier scaffold model "Contact" --entry=index.js
+  $ zapier scaffold model contact --dest=models/contact
+  $ zapier scaffold model contact --entry=index.js --dest=models/contact
+
+`;
 
 
 var linkCmd = () => {
@@ -239,7 +263,7 @@ var linkCmd = () => {
       console.log('\nFinished! You can `zapier push` now to build & upload a version!');
     });
 };
-linkCmd.docs = 'Link the current directory to an app in your account.';
+linkCmd.help = 'Link the current directory to an app in your account.';
 linkCmd.example = 'zapier link';
 
 
@@ -260,7 +284,7 @@ var appsCmd = () => {
       }
     });
 };
-appsCmd.docs = 'Lists all the apps in your account.';
+appsCmd.help = 'Lists all the apps in your account.';
 appsCmd.example = 'zapier apps';
 
 
@@ -303,7 +327,7 @@ var validateCmd = () => {
       }
     });
 };
-validateCmd.docs = 'Validates the current project.';
+validateCmd.help = 'Validates the current project.';
 validateCmd.example = 'zapier validate';
 
 var buildCmd = () => {
@@ -313,7 +337,7 @@ var buildCmd = () => {
       console.log(`\nBuild complete in ${constants.BUILD_PATH}! Try the \`zapier upload\` command now.`);
     });
 };
-buildCmd.docs = 'Builds a deployable zip from the current directory.';
+buildCmd.help = 'Builds a deployable zip from the current directory.';
 buildCmd.example = 'zapier build';
 
 
@@ -334,7 +358,7 @@ var versionsCmd = () => {
       }
     });
 };
-versionsCmd.docs = 'Lists all the versions of the current app.';
+versionsCmd.help = 'Lists all the versions of the current app.';
 versionsCmd.example = 'zapier versions';
 
 
@@ -345,7 +369,7 @@ var pushCmd = () => {
       console.log('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier migrate` to move users over.');
     });
 };
-pushCmd.docs = 'Build and upload a new version of the current app - does not deploy.';
+pushCmd.help = 'Build and upload a new version of the current app - does not deploy.';
 pushCmd.example = 'zapier push';
 
 
@@ -357,7 +381,7 @@ var uploadCmd = () => {
       console.log(`\nUpload of ${constants.BUILD_PATH} complete! Try \`zapier versions\` now!`);
     });
 };
-uploadCmd.docs = 'Upload the last build as a version.';
+uploadCmd.help = 'Upload the last build as a version.';
 uploadCmd.example = 'zapier upload';
 
 
@@ -384,14 +408,14 @@ var deployCmd = (version) => {
       console.log('Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.');
     });
 };
-deployCmd.docs = 'Deploys a specific version to a production.';
+deployCmd.help = 'Deploys a specific version to a production.';
 deployCmd.example = 'zapier deploy 1.0.0';
 
 
 var migrateCmd = (oldVersion, newVersion, optionalPercent) => {
   return Promise.resolve(`todo ${oldVersion} ${newVersion} ${optionalPercent}`);
 };
-migrateCmd.docs = 'Migrate users from one version to another.';
+migrateCmd.help = 'Migrate users from one version to another.';
 migrateCmd.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
 
 
@@ -419,7 +443,7 @@ var deprecateCmd = (version, deprecation_date) => {
       console.log('We\'ll let users know that this version is no longer recommended.');
     });
 };
-deprecateCmd.docs = 'Mark a non-production version of your app as deprecated by a certain date.';
+deprecateCmd.help = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
 
 var collaboratorsCmd = (collaboratorEmail) => {
@@ -454,13 +478,13 @@ var collaboratorsCmd = (collaboratorEmail) => {
       ]);
     });
 };
-collaboratorsCmd.docs = 'Manage the collaborators on your project. Can optionally --delete.';
+collaboratorsCmd.help = 'Manage the collaborators on your project. Can optionally --delete.';
 collaboratorsCmd.example = 'zapier collaborators [john@example.com]';
 
 var inviteesCmd = () => {
   return Promise.resolve('todo');
 };
-inviteesCmd.docs = 'Manage the invitees/testers on your project.';
+inviteesCmd.help = 'Manage the invitees/testers on your project.';
 inviteesCmd.example = 'zapier invitees [john@example.com]';
 
 var historyCmd = () => {
@@ -475,7 +499,7 @@ var historyCmd = () => {
       ]);
     });
 };
-historyCmd.docs = 'Prints all recent history for your app.';
+historyCmd.help = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
 
 var logsCmd = () => {
@@ -504,7 +528,7 @@ var logsCmd = () => {
       utils.printData(data.logs, columns);
     });
 };
-logsCmd.docs = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com';
+logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com';
 logsCmd.example = 'zapier logs --version=1.0.1';
 
 
@@ -543,7 +567,7 @@ var envCmd = (version, key, value) => {
       console.log(`\nTry setting an env with the \`${envCmd.example}\` command.`);
     });
 };
-envCmd.docs = 'Read and write environment variables.';
+envCmd.help = 'Read and write environment variables.';
 envCmd.example = 'zapier env 1.0.0 API_KEY 1234567890';
 
 
