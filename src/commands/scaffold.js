@@ -17,6 +17,8 @@ const scaffoldCmd = (type, name) => {
     NOUN: name,
     LOWER_NOUN: name.toLowerCase()
   };
+
+  // what is the `models: {}` app definition point?
   const typeMap = {
     model: 'models',
     trigger: 'triggers',
@@ -24,19 +26,28 @@ const scaffoldCmd = (type, name) => {
     write: 'writes',
   };
 
+  // where will we write/required the new file?
+  const destMap = {
+    model: `models/${context.KEY}`,
+    trigger: `triggers/${context.KEY}`,
+    search: `searches/${context.KEY}`,
+    write: `writes/${context.KEY}`,
+  };
+
   if (!typeMap[type]) {
     console.log(`Scaffold type "${type}" not found! Please see \`zaper help scaffold\`.`);
     return Promise.resolve();
   }
 
-  const dest = global.argOpts.dest || `${typeMap[type]}/${context.KEY}`;
+  const templateFile = `../scaffold/${type}.template.js`;
+  const dest = global.argOpts.dest || destMap[type];
   const destFile = path.join(process.cwd(), dest + '.js');
   const entry = global.argOpts.entry || 'index.js';
   const entryFile = path.join(process.cwd(), entry);
 
   console.log(`Adding ${type} scaffold to your project.\n`);
 
-  return utils.readFile(`../scaffold/${type}.template.js`)
+  return utils.readFile(templateFile)
     .then(templateBuf => templateBuf.toString())
     .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(context))
     .then(rendered => {
@@ -64,7 +75,7 @@ const scaffoldCmd = (type, name) => {
       const linesDefIndex = _.findIndex(lines, (line) => _.endsWith(line, injectAfter));
       if (linesDefIndex === -1) {
         utils.printDone(false);
-        console.log(`\nOops, we could not rewrite your ${entry}. Please add:`);
+        console.log(`\nOops, we could not reliably rewrite your ${entry}. Please add:`);
         console.log(` * \`${importerLine}\` to the top`);
         console.log(` * \`${injectAfter} ${injectorLine} },\` in your app definition`);
         return Promise.resolve();
