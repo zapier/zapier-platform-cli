@@ -21,6 +21,7 @@
     "babel-polyfill": "6.9.1",
     "browserify": "13.0.1",
     "cli-table2": "0.2.0",
+    "colors": "^1.1.2",
     "fs-extra": "0.30.0",
     "lodash": "4.13.1",
     "node-fetch": "1.5.3",

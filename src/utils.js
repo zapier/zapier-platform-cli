@@ -13,6 +13,7 @@ const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
 const fetch = require('node-fetch');
 const Table = require('cli-table2');
+const colors = require('colors/safe');
 
 
 const rewriteLabels = (rows, columnDefs) => {
@@ -103,7 +104,12 @@ const spinTransitions = [
 //   ' -',
 // ];
 
-const writeNextTick = (final = false) => {
+const clearSpinner = () => {
+  process.stdout.write('\x1b[?25h'); // set cursor to write...
+  clearInterval(spinner);
+};
+
+const writeNextSpinnerTick = (final = false) => {
   readline.moveCursor(process.stdout, -spinTransitions[currentIter].length, 0);
   currentIter++;
   if (currentIter >= spinTransitions.length) { currentIter = 0; }
@@ -112,18 +118,17 @@ const writeNextTick = (final = false) => {
 
 const printStarting = (msg) => {
   process.stdout.write('  ' + msg + spinTransitions[currentIter]);
+  clearSpinner();
   process.stdout.write('\x1b[?25l'); // set cursor to black...
-  clearInterval(spinner);
   spinner = setInterval(() => {
-    writeNextTick();
+    writeNextSpinnerTick();
   }, spinSpeed);
 };
 
-const printDone = () => {
-  process.stdout.write('\x1b[?25h'); // set cursor to write...
-  clearInterval(spinner);
-  writeNextTick(true);
-  console.log(' done!');
+const printDone = (success = true) => {
+  clearSpinner();
+  writeNextSpinnerTick(true);
+  console.log(success ? colors.green(' done!') : colors.red(' fail!'));
 };
 
 const fixHome = (dir) => {
@@ -233,17 +238,6 @@ const ensureDir = (dir) => {
   });
 };
 
-// Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
-const readCredentials = (credentials) => {
-  return Promise.resolve(
-    credentials ||
-    readFile(constants.AUTH_LOCATION, 'Please run "zapier config".')
-      .then((buf) => {
-        return JSON.parse(buf.toString());
-      })
-  );
-};
-
 // Delete a directory.
 const removeDir = (dir) => {
   return new Promise((resolve, reject) => {
@@ -254,6 +248,17 @@ const removeDir = (dir) => {
       resolve();
     });
   });
+};
+
+// Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
+const readCredentials = (credentials) => {
+  return Promise.resolve(
+    credentials ||
+    readFile(constants.AUTH_LOCATION, 'Please run "zapier config".')
+      .then((buf) => {
+        return JSON.parse(buf.toString());
+      })
+  );
 };
 
 // Run a command with a promise.
@@ -644,14 +649,17 @@ module.exports = {
   printData,
   argParse,
   prettyJSONstringify,
+  clearSpinner,
   printStarting,
   printDone,
   makePromise,
   getInput,
   writeFile,
   readFile,
-  readCredentials,
+  copyDir,
+  ensureDir,
   removeDir,
+  readCredentials,
   runCommand,
   callAPI,
   writeLinkedAppConfig,

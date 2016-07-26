@@ -26,9 +26,11 @@ module.exports = (argv) => {
 
   commandFunc.apply(commands, args)
     .then(() => {
+      utils.clearSpinner();
       console.log('');
     })
     .catch((err) => {
+      utils.clearSpinner();
       console.log('\n');
       console.log(err.stack);
       console.log('\nFailed!');
