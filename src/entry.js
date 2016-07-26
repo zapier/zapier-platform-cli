@@ -21,7 +21,6 @@ module.exports = (argv) => {
 
   let commandFunc = commands[command];
   if (!commandFunc) {
-    console.log('Usage: zapier COMMAND [command-specific-options]\n');
     commandFunc = commands.help;
   }
 
