@@ -1,5 +1,9 @@
-var constants = require('./constants');
-var utils = require('./utils');
+const path = require('path');
+
+const _ = require('lodash');
+
+const constants = require('./constants');
+const utils = require('./utils');
 
 var commands;
 
@@ -122,6 +126,54 @@ var createCmd = (title) => {
 };
 createCmd.docs = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
+
+const scaffoldCmd = (type, title) => {
+  const context = {
+    CAMEL: utils.camelCase(title),
+    KEY: utils.snakeCase(title),
+    NOUN: title,
+    LOWER_NOUN: title.toLowerCase()
+  };
+  const typeMap = {
+    model: 'models',
+    trigger: 'triggerss',
+    search: 'searches',
+    write: 'writes',
+  };
+
+  const injectFragment = global.argOpts.inject || `${typeMap[type]}/${context.KEY}`;
+  const injectFile = path.join(process.cwd(), injectFragment + '.js');
+  const entryFile = path.join(process.cwd(), global.argOpts.entry || 'index.js');
+
+  if (typeMap[type]) {
+    return utils.readFile(`../scaffold/${type}.template.js`)
+      .then(templateBuf => templateBuf.toString())
+      .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(context))
+      .then(rendered => utils.writeFile(injectFile, rendered))
+      .then(() => utils.readFile(entryFile))
+      .then(entryBuf => entryBuf.toString())
+      .then(entryJs => {
+        let lines = entryJs.split('\n');
+
+        // this is very dumb and will definitely break, it inserts lines of code
+        const importerLine = `const ${context.CAMEL} = require('./${injectFragment}');`;
+        lines.splice(0, 0, importerLine);
+
+        const injectorLine = `[${context.CAMEL}.key]: ${context.CAMEL},`;
+        const modelsDefIndex = _.findIndex(lines, (line) => line.indexOf(`${typeMap[type]}:`) !== -1);
+        lines.splice(modelsDefIndex + 1, 0, '    ' + injectorLine);
+
+        return utils.writeFile(entryFile, lines.join('\n'));
+      });
+  } else {
+    return Promise.resolve()
+      .then(() => {
+        throw new Error(`Scaffold type "${type}" not found!`);
+      });
+  }
+};
+scaffoldCmd.docs = 'Adds a model, trigger, action or search to your app.';
+scaffoldCmd.example = 'zapier scaffold model "Contact"';
 
 
 var linkCmd = () => {
@@ -485,6 +537,7 @@ module.exports = commands = {
   help: helpCmd,
   auth: authCmd,
   create: createCmd,
+  scaffold: scaffoldCmd,
   link: linkCmd,
   apps: appsCmd,
   versions: versionsCmd,

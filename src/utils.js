@@ -171,16 +171,16 @@ const readFile = (fileName, errMsg) => {
         if (errMsg) {
           msg += ` ${errMsg}`;
         }
-        return reject(new Error(msg));
+        reject(new Error(msg));
+      } else {
+        fs.readFile(fixHome(fileName), (err, buf) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(buf);
+          }
+        });
       }
-      fs.readFile(fixHome(fileName), (err, buf) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(buf);
-        }
-      });
-      return true;
     });
   });
 };
@@ -188,13 +188,17 @@ const readFile = (fileName, errMsg) => {
 // Returns a promise that writes a file.
 const writeFile = (fileName, data) => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(fixHome(fileName), data, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
+    if (!data) {
+      reject(Error('No data provided'));
+    } else {
+      fs.writeFile(fixHome(fileName), data, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    }
   });
 };
 
@@ -632,6 +636,9 @@ const buildAndUploadCurrentDir = (zipPath) => {
     });
 };
 
+const camelCase = (str) => _.capitalize(_.camelCase(str));
+const snakeCase = (str) => _.snakeCase(str);
+
 module.exports = {
   makeTable,
   printData,
@@ -642,6 +649,7 @@ module.exports = {
   makePromise,
   getInput,
   writeFile,
+  readFile,
   readCredentials,
   removeDir,
   runCommand,
@@ -659,5 +667,7 @@ module.exports = {
   listEnv,
   build,
   upload,
-  buildAndUploadCurrentDir
+  buildAndUploadCurrentDir,
+  camelCase,
+  snakeCase,
 };
