@@ -88,7 +88,7 @@ var createCmd = (title) => {
         repo = `${constants.STARTER_REPO}-${global.argOpts.style}`;
       }
 
-      utils.printStarting('  Cloning starter app from ' + repo);
+      utils.printStarting('Cloning starter app from ' + repo);
       // var cmd = 'git clone https://github.com/' + STARTER_REPO + '.git .';
       var cmd = `git clone git@github.com:${repo}.git .`;
       return utils.runCommand(cmd);
@@ -98,12 +98,12 @@ var createCmd = (title) => {
     })
     .then(() => {
       utils.printDone();
-      utils.printStarting('  Installing project dependencies');
+      utils.printStarting('Installing project dependencies');
       return utils.runCommand('npm install');
     })
     .then(() => {
       utils.printDone();
-      utils.printStarting(`  Creating a new app named "${title}"`);
+      utils.printStarting(`Creating a new app named "${title}"`);
       return utils.callAPI('/apps', {
         method: 'POST',
         body: {
@@ -113,7 +113,7 @@ var createCmd = (title) => {
     })
     .then((app) => {
       utils.printDone();
-      utils.printStarting(`  Setting up ${constants.CURRENT_APP_FILE} file`);
+      utils.printStarting(`Setting up ${constants.CURRENT_APP_FILE} file`);
       return utils.writeLinkedAppConfig(app);
     })
     .then(() => {
@@ -143,28 +143,42 @@ const scaffoldCmd = (type, title) => {
 
   const injectFragment = global.argOpts.inject || `${typeMap[type]}/${context.KEY}`;
   const injectFile = path.join(process.cwd(), injectFragment + '.js');
-  const entryFile = path.join(process.cwd(), global.argOpts.entry || 'index.js');
+  const entry = global.argOpts.entry || 'index.js';
+  const entryFile = path.join(process.cwd(), entry);
 
   if (typeMap[type]) {
+    console.log(`Adding ${type} scaffold to your project.\n`);
+
     return utils.readFile(`../scaffold/${type}.template.js`)
       .then(templateBuf => templateBuf.toString())
       .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(context))
-      .then(rendered => utils.writeFile(injectFile, rendered))
+      .then(rendered => {
+        utils.printStarting(`Writing new ${injectFragment}.js`);
+        return utils.writeFile(injectFile, rendered);
+      })
+      .then(() => utils.printDone())
       .then(() => utils.readFile(entryFile))
       .then(entryBuf => entryBuf.toString())
       .then(entryJs => {
+        utils.printStarting(`Rewriting your ${entry}`);
         let lines = entryJs.split('\n');
 
         // this is very dumb and will definitely break, it inserts lines of code
+        // we should look at jscodeshift or friends to do this instead
+
+        // insert Model = require() line at top
         const importerLine = `const ${context.CAMEL} = require('./${injectFragment}');`;
         lines.splice(0, 0, importerLine);
 
+        // insert '[Model.key]: Model,' after 'models:' line
         const injectorLine = `[${context.CAMEL}.key]: ${context.CAMEL},`;
         const modelsDefIndex = _.findIndex(lines, (line) => line.indexOf(`${typeMap[type]}:`) !== -1);
         lines.splice(modelsDefIndex + 1, 0, '    ' + injectorLine);
 
         return utils.writeFile(entryFile, lines.join('\n'));
-      });
+      })
+      .then(() => utils.printDone())
+      .then(() => console.log('\nFinished! We did the best we could, you might gut check your files though.'));
   } else {
     return Promise.resolve()
       .then(() => {
@@ -202,11 +216,11 @@ var linkCmd = () => {
       if (answer.toLowerCase() === 'no' || answer.toLowerCase() === 'cancel') {
         throw new Error('Cancelled link operation.');
       } else if (appMap[answer]) {
-        utils.printStarting(`  Selecting existing app ${appMap[answer].title}`);
+        utils.printStarting(`Selecting existing app ${appMap[answer].title}`);
         return appMap[answer];
       } else {
         var title = answer;
-        utils.printStarting(`  Creating a new app named "${title}"`);
+        utils.printStarting(`Creating a new app named "${title}"`);
         return utils.callAPI('/apps', {
           method: 'POST',
           body: {
@@ -217,7 +231,7 @@ var linkCmd = () => {
     })
     .then((app) => {
       utils.printDone();
-      utils.printStarting(`  Setting up ${constants.CURRENT_APP_FILE} file`);
+      utils.printStarting(`Setting up ${constants.CURRENT_APP_FILE} file`);
       return utils.writeLinkedAppConfig(app);
     })
     .then(() => {
@@ -358,7 +372,7 @@ var deployCmd = (version) => {
     .then((app) => {
       console.log(`Preparing to deploy version ${version} your app "${app.title}".\n`);
       var url = `/apps/${app.id}/versions/${version}/deploy/production`;
-      utils.printStarting(`  Deploying ${version}`);
+      utils.printStarting(`Deploying ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',
         body: {}
@@ -391,7 +405,7 @@ var deprecateCmd = (version, deprecation_date) => {
     .then((app) => {
       console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
       var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
-      utils.printStarting(`  Deprecating ${version}`);
+      utils.printStarting(`Deprecating ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',
         body: {
@@ -416,11 +430,11 @@ var collaboratorsCmd = (collaboratorEmail) => {
         var url = '/apps/' + app.id + '/collaborators/' + collaboratorEmail;
         if (global.argOpts.delete) {
           console.log(`Preparing to remove collaborator ${collaboratorEmail} to your app "${app.title}".\n`);
-          utils.printStarting(`  Removing ${collaboratorEmail}`);
+          utils.printStarting(`Removing ${collaboratorEmail}`);
           return utils.callAPI(url, {method: 'DELETE'});
         } else {
           console.log(`Preparing to add collaborator ${collaboratorEmail} to your app "${app.title}".\n`);
-          utils.printStarting(`  Adding ${collaboratorEmail}`);
+          utils.printStarting(`Adding ${collaboratorEmail}`);
           return utils.callAPI(url, {method: 'POST'});
         }
       })
@@ -502,7 +516,7 @@ var envCmd = (version, key, value) => {
       .then((app) => {
         var url = '/apps/' + app.id + '/versions/' + version + '/environment';
         console.log(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
-        utils.printStarting(`  Setting ${key} to "${value}"`);
+        utils.printStarting(`Setting ${key} to "${value}"`);
         return utils.callAPI(url, {
           method: 'PUT',
           body: {

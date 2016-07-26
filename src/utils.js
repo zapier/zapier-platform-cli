@@ -111,7 +111,7 @@ const writeNextTick = (final = false) => {
 };
 
 const printStarting = (msg) => {
-  process.stdout.write(msg + spinTransitions[currentIter]);
+  process.stdout.write('  ' + msg + spinTransitions[currentIter]);
   process.stdout.write('\x1b[?25l'); // set cursor to black...
   clearInterval(spinner);
   spinner = setInterval(() => {
@@ -544,24 +544,24 @@ const build = (zipPath) => {
   var tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
   return ensureDir(tmpDir)
     .then(() => {
-      printStarting('  Copying project to temp directory');
+      printStarting('Copying project to temp directory');
       return copyDir(wdir, tmpDir);
     })
     .then(() => {
       printDone();
-      printStarting('  Installing project dependencies');
+      printStarting('Installing project dependencies');
       return runCommand('npm install --production', {cwd: tmpDir});
     })
     .then(() => {
       printDone();
-      printStarting('  Applying entry point file');
+      printStarting('Applying entry point file');
       // TODO: should this routine for include exist elsewhere?
       return readFile(`${tmpDir}/node_modules/${constants.PLATFORM_PACKAGE}/include/zapierwrapper.js`)
         .then(zapierWrapperBuf => writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString()));
     })
     .then(() => {
       printDone();
-      printStarting('  Validating project');
+      printStarting('Validating project');
       return appCommand(tmpDir, {command: 'validate'});
     })
     .then((resp) => {
@@ -573,7 +573,7 @@ const build = (zipPath) => {
       }
     })
     .then(() => {
-      printStarting('  Building app definition.json');
+      printStarting('Building app definition.json');
       return appCommand(tmpDir, {command: 'definition'});
     })
     .then((rawDefinition) => {
@@ -587,12 +587,12 @@ const build = (zipPath) => {
     })
     .then(() => {
       printDone();
-      printStarting('  Zipping project and dependencies');
+      printStarting('Zipping project and dependencies');
       return makeZip(tmpDir, wdir + '/' + zipPath);
     })
     .then(() => {
       printDone();
-      printStarting('  Cleaning up temp directory');
+      printStarting('Cleaning up temp directory');
       return removeDir(tmpDir);
     })
     .then(() => {
@@ -612,7 +612,7 @@ const upload = (zipPath) => {
       }
       var definition = JSON.parse(definitionJson);
 
-      printStarting('  Uploading version ' + definition.version);
+      printStarting('Uploading version ' + definition.version);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {

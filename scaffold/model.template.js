@@ -1,4 +1,4 @@
-// gets a single <%= LOWER_NOUN %>
+// get a single <%= LOWER_NOUN %>
 const get<%= CAMEL %> = (z, bundle) => {
   const responsePromise = z.request({
     url: `http://example.com/api/<%= KEY %>s/${bundle.inputData.id}.json`,
