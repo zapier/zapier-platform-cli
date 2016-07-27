@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var createCmd = (title) => {
+var createCmd = (title, location = '.') => {
   return utils.checkCredentials()
     .then(() => {
       console.log('Welcome to the Zapier Platform! :-D');
@@ -17,9 +17,13 @@ var createCmd = (title) => {
       }
 
       utils.printStarting('Cloning starter app from ' + repo);
-      // var cmd = 'git clone https://github.com/' + STARTER_REPO + '.git .';
-      var cmd = `git clone git@github.com:${repo}.git .`;
-      return utils.runCommand(cmd);
+      return utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, location || '.']);
+    })
+    .then(() => {
+      if (location !== '') {
+        return utils.runCommand('cd', [location]);
+      }
+      return Promise.resolve();
     })
     .then(() => {
       return utils.removeDir('.git');
@@ -27,7 +31,7 @@ var createCmd = (title) => {
     .then(() => {
       utils.printDone();
       utils.printStarting('Installing project dependencies');
-      return utils.runCommand('npm install');
+      return utils.runCommand('npm', ['install']);
     })
     .then(() => {
       utils.printDone();

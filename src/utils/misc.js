@@ -1,6 +1,7 @@
 const cp = require('child_process');
 
 const _ = require('lodash');
+const colors = require('colors/safe');
 
 const constants = require('../constants');
 
@@ -44,17 +45,38 @@ const makePromise = () => {
 };
 
 // Run a bash command with a promise.
-const runCommand = (command, options) => {
+const runCommand = (command, args, options) => {
   options = options || {};
+  if (global.argOpts.debug) {
+    console.log('\n');
+    console.log(`Running ${colors.bold(command + args.join(' '))} command in ${colors.bold(options.cwd || process.cwd())}:\n`);
+  }
   return new Promise((resolve, reject) => {
-    cp.exec(command, options, (err, stdout, stderr) => {
-      if (err) {
-        reject(err);
+    const result = cp.spawn(command, args, options);
+
+    let stdout = '';
+    result.stdout.on('data', (data) => {
+      stdout += data.toString();
+      if (global.argOpts.debug) {
+        console.log(colors.green(stdout));
       }
-      resolve({
-        stdout: stdout,
-        stderr: stderr
-      });
+    });
+
+    let stderr = '';
+    result.stderr.on('data', (data) => {
+      stderr += data.toString();
+      if (global.argOpts.debug) {
+        console.log(colors.red(stdout));
+      }
+    });
+
+    result.on('error', reject);
+
+    result.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(stderr));
+      }
+      resolve(stdout);
     });
   });
 };
