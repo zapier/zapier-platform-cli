@@ -12,7 +12,7 @@ const scaffoldCmd = (type, name) => {
   const context = {
     CAMEL: utils.camelCase(name),
     KEY: utils.snakeCase(name),
-    NOUN: name,
+    NOUN: _.capitalize(name),
     LOWER_NOUN: name.toLowerCase()
   };
 
