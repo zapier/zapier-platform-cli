@@ -2,7 +2,6 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-
 const makeAccessCmd = (recordType) => {
   const recordTypePlural = `${recordType}s`;
 
@@ -41,6 +40,5 @@ const makeAccessCmd = (recordType) => {
 
   return accessCmd;
 };
-
 
 module.exports = makeAccessCmd;
