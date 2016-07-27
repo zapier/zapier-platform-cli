@@ -1,8 +1,8 @@
 require('babel-polyfill');
 
-var constants = require('./constants');
-var commands = require('./commands');
-var utils = require('./utils');
+const constants = require('./constants');
+const commands = require('./commands');
+const utils = require('./utils');
 
 module.exports = (argv) => {
   if (constants.DEBUG) {
@@ -13,23 +13,24 @@ module.exports = (argv) => {
 
   argv = argv.slice(2); // strip path, zapier.js
 
-  var [args, argOpts] = utils.argParse(argv);
+  let [args, argOpts] = utils.argParse(argv);
   global.argOpts = argOpts;
 
-  var command = args[0];
+  const command = args[0];
   args = args.slice(1);
 
-  var commandFunc = commands[command];
+  let commandFunc = commands[command];
   if (!commandFunc) {
-    console.log('Usage: zapier COMMAND [command-specific-options]\n');
     commandFunc = commands.help;
   }
 
   commandFunc.apply(commands, args)
     .then(() => {
+      utils.clearSpinner();
       console.log('');
     })
     .catch((err) => {
+      utils.clearSpinner();
       console.log('\n');
       console.log(err.stack);
       console.log('\nFailed!');
