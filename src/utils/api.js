@@ -155,10 +155,6 @@ const listHistory = () => {
   return listEndoint('history');
 };
 
-const listCollaborators = () => {
-  return listEndoint('collaborators');
-};
-
 const listInvitees = () => {
   return listEndoint('invitees');
 };
@@ -211,7 +207,6 @@ module.exports = {
   listEndoint,
   listVersions,
   listHistory,
-  listCollaborators,
   listInvitees,
   listLogs,
   listEnv,
