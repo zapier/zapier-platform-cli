@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var deployCmd = (version) => {
   if (!version) {
     console.log('Error: No deploment/version selected...\n');
@@ -26,6 +25,5 @@ var deployCmd = (version) => {
 };
 deployCmd.help = 'Deploys a specific version to a production.';
 deployCmd.example = 'zapier deploy 1.0.0';
-
 
 module.exports = deployCmd;

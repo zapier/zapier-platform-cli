@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var appsCmd = () => {
   return utils.listApps()
     .then((data) => {
@@ -20,6 +19,5 @@ var appsCmd = () => {
 };
 appsCmd.help = 'Lists all the apps in your account.';
 appsCmd.example = 'zapier apps';
-
 
 module.exports = appsCmd;

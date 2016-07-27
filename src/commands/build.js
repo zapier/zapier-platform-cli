@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var buildCmd = () => {
   console.log('Building project.\n');
   return utils.build()
@@ -11,6 +10,5 @@ var buildCmd = () => {
 };
 buildCmd.help = 'Builds a deployable zip from the current directory.';
 buildCmd.example = 'zapier build';
-
 
 module.exports = buildCmd;

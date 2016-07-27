@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var linkCmd = () => {
   var appMap = {};
 
@@ -53,6 +52,5 @@ var linkCmd = () => {
 };
 linkCmd.help = 'Link the current directory to an app in your account.';
 linkCmd.example = 'zapier link';
-
 
 module.exports = linkCmd;

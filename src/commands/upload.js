@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var uploadCmd = () => {
   var zipPath = constants.BUILD_PATH;
   console.log('Preparing to upload a new version.\n');
@@ -12,6 +11,5 @@ var uploadCmd = () => {
 };
 uploadCmd.help = 'Upload the last build as a version.';
 uploadCmd.example = 'zapier upload';
-
 
 module.exports = uploadCmd;

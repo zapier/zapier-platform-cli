@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var validateCmd = () => {
   console.log('Validating project locally.\n');
   return Promise.resolve()
@@ -43,6 +42,5 @@ var validateCmd = () => {
 };
 validateCmd.help = 'Validates the current project.';
 validateCmd.example = 'zapier validate';
-
 
 module.exports = validateCmd;

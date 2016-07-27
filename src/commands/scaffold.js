@@ -1,9 +1,7 @@
 const path = require('path');
-
 const _ = require('lodash');
 
 const utils = require('../utils');
-
 
 const scaffoldCmd = (type, name) => {
   if (!name) {

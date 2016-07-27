@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var envCmd = (version, key, value) => {
   if (value !== undefined) {
     key = key.toUpperCase();
@@ -38,6 +37,5 @@ var envCmd = (version, key, value) => {
 };
 envCmd.help = 'Read and write environment variables.';
 envCmd.example = 'zapier env 1.0.0 API_KEY 1234567890';
-
 
 module.exports = envCmd;

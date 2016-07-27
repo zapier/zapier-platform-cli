@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var authCmd = () => {
   var checks = [
     utils.readCredentials()
@@ -35,6 +34,5 @@ var authCmd = () => {
 };
 authCmd.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
 authCmd.example = 'zapier auth';
-
 
 module.exports = authCmd;

@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var logsCmd = () => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
@@ -29,6 +28,5 @@ var logsCmd = () => {
 };
 logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com';
 logsCmd.example = 'zapier logs --version=1.0.1';
-
 
 module.exports = logsCmd;

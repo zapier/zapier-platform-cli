@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var pushCmd = () => {
   console.log('Preparing to build and upload a new version.\n');
   return utils.buildAndUploadCurrentDir()
@@ -10,6 +9,5 @@ var pushCmd = () => {
 };
 pushCmd.help = 'Build and upload a new version of the current app - does not deploy.';
 pushCmd.example = 'zapier push';
-
 
 module.exports = pushCmd;

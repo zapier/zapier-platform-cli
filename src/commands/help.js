@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var helpCmd = (cmd) => {
   const commands = require('./index');
 
@@ -38,6 +37,5 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
 };
 helpCmd.help = 'Lists all the commands you can use.';
 helpCmd.example = 'zapier help';
-
 
 module.exports = helpCmd;

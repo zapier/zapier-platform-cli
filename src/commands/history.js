@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var historyCmd = () => {
   return utils.listHistory()
     .then((data) => {
@@ -15,6 +14,5 @@ var historyCmd = () => {
 };
 historyCmd.help = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
-
 
 module.exports = historyCmd;

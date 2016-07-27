@@ -1,7 +1,6 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
 var createCmd = (title) => {
   return utils.checkCredentials()
     .then(() => {
@@ -55,6 +54,5 @@ var createCmd = (title) => {
 };
 createCmd.help = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
-
 
 module.exports = createCmd;

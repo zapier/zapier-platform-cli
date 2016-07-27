@@ -1,6 +1,5 @@
 const utils = require('../utils');
 
-
 var versionsCmd = () => {
   return utils.listVersions()
     .then((data) => {
@@ -20,6 +19,5 @@ var versionsCmd = () => {
 };
 versionsCmd.help = 'Lists all the versions of the current app.';
 versionsCmd.example = 'zapier versions';
-
 
 module.exports = versionsCmd;
