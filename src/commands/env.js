@@ -24,6 +24,10 @@ var envCmd = (version, key, value) => {
         return;
       });
   }
+  if (key) {
+    console.log(`Try viewing your env with \`zapier env\` or setting with \`${envCmd.example}\`.`);
+    return Promise.resolve();
+  }
   return utils.listEnv(version)
     .then((data) => {
       console.log(`The env of your "${data.app.title}" listed below.\n`);

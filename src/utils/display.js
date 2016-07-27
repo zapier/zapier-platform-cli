@@ -95,6 +95,7 @@ const printStarting = (msg) => {
 };
 
 const printDone = (success = true) => {
+  if (!spinner) { return; }
   clearSpinner();
   writeNextSpinnerTick(true);
   console.log(success ? colors.green(' done!') : colors.red(' fail!'));

@@ -1,5 +1,7 @@
 require('babel-polyfill');
 
+const colors = require('colors/safe');
+
 const constants = require('./constants');
 const commands = require('./commands');
 const utils = require('./utils');
@@ -31,9 +33,15 @@ module.exports = (argv) => {
     })
     .catch((err) => {
       utils.clearSpinner();
-      console.log('\n');
-      console.log(err.stack);
-      console.log('\nFailed!');
+      if (constants.DEBUG || global.argOpts.debug) {
+        console.log('');
+        console.log(err.stack);
+        console.log('');
+        console.log(colors.red('Failed!'));
+      } else {
+        console.log('');
+        console.log(colors.red('Failed!') + ' ' + colors.grey('(Use --debug flag and run this command again to get more details.)'));
+      }
       throw err;
     });
 };

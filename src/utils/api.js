@@ -1,3 +1,5 @@
+const colors = require('colors/safe');
+
 const constants = require('../constants');
 
 const qs = require('querystring');
@@ -54,21 +56,31 @@ const callAPI = (route, options) => {
       ]);
     })
     .then(([res, text]) => {
-      if (constants.DEBUG || global.argOpts.debug) {
-        console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
-        if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
-        console.log(`<< ${res.status}`);
-        console.log(`<< ${(text || '').substring(0, 2500)}\n`);
-      }
-      if (res.status >= 400) {
-        var errors;
+      let errors;
+      const hitError = res.status >= 400;
+      if (hitError) {
         try {
           errors = JSON.parse(text).errors.join(', ');
         } catch(err) {
           errors = (text || 'Unknown error').slice(0, 250);
         }
-        throw new Error(`${constants.ENDPOINT} returned ${res.status} saying ${errors}`);
       }
+
+      if (constants.DEBUG || global.argOpts.debug) {
+        console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
+        if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
+        console.log(`<< ${res.status}`);
+        console.log(`<< ${(text || '').substring(0, 2500)}\n`);
+      } else if (hitError) {
+        printDone(false);
+        console.log('');
+        console.log('  ' + colors.red(errors));
+      }
+
+      if (hitError) {
+        throw new Error(`"${requestOptions.url}" returned "${res.status}" saying "${errors}"`);
+      }
+
       return JSON.parse(text);
     });
 };
