@@ -1,22 +1,9 @@
-const constants = require('../constants');
 const utils = require('../utils');
 
-var validateCmd = () => {
+const validateCmd = () => {
   console.log('Validating project locally.\n');
   return Promise.resolve()
-    .then(() => {
-      var appRaw = require(`${process.cwd()}/index`);
-      var zapier = require(`${process.cwd()}/node_modules/${constants.PLATFORM_PACKAGE}`);
-      var handler = zapier.exposeAppHandler(appRaw);
-      var promise = utils.makePromise();
-      handler({
-        command: 'validate',
-        calledFromCli: true,
-        doNotMonkeyPatchPromises: true // can drop this
-      }, {}, promise.callback);
-      return promise;
-    })
-    .then(response => response.results)
+    .then(() => utils.localAppCommand({command: 'validate'}))
     .then((errors) => {
       const newErrors = errors.map(({property, message, docLinks}) => {
         return {

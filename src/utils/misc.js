@@ -2,6 +2,8 @@ const cp = require('child_process');
 
 const _ = require('lodash');
 
+const constants = require('../constants');
+
 const argParse = (argv) => {
   var args = [], opts = {};
   argv.forEach((arg) => {
@@ -41,7 +43,7 @@ const makePromise = () => {
   return promise;
 };
 
-// Run a command with a promise.
+// Run a bash command with a promise.
 const runCommand = (command, options) => {
   options = options || {};
   return new Promise((resolve, reject) => {
@@ -57,10 +59,25 @@ const runCommand = (command, options) => {
   });
 };
 
+// Runs a local app command (./index.js) like {command: 'validate'};
+const localAppCommand = (event) => {
+  var appRaw = require(`${process.cwd()}/index`);
+  var zapier = require(`${process.cwd()}/node_modules/${constants.PLATFORM_PACKAGE}`);
+  var handler = zapier.exposeAppHandler(appRaw);
+  var promise = makePromise();
+  event = _.extend({}, event, {
+    calledFromCli: true,
+    doNotMonkeyPatchPromises: true // can drop this
+  });
+  handler(event, {}, (err, resp) => promise.callback(err, resp.results));
+  return promise;
+};
+
 module.exports = {
   argParse,
   camelCase,
   snakeCase,
-  runCommand,
   makePromise,
+  runCommand,
+  localAppCommand,
 };

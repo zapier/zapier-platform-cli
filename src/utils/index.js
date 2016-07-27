@@ -37,8 +37,9 @@ const {
   argParse,
   camelCase,
   snakeCase,
-  runCommand,
   makePromise,
+  runCommand,
+  localAppCommand,
 } = require('./misc');
 
 const {
@@ -63,6 +64,7 @@ module.exports = {
   removeDir,
   readCredentials,
   runCommand,
+  localAppCommand,
   callAPI,
   writeLinkedAppConfig,
   getLinkedApp,

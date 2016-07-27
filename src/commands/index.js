@@ -3,6 +3,7 @@ module.exports = {
   auth: require('./auth'),
   create: require('./create'),
   scaffold: require('./scaffold'),
+  describe: require('./describe'),
   link: require('./link'),
   apps: require('./apps'),
   versions: require('./versions'),

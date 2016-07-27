@@ -2,6 +2,7 @@ const readline = require('readline');
 
 const Table = require('cli-table2');
 const colors = require('colors/safe');
+const _ = require('lodash');
 
 
 const rewriteLabels = (rows, columnDefs) => {
@@ -16,8 +17,8 @@ const rewriteLabels = (rows, columnDefs) => {
   });
 };
 
-// Wraps the cli-table2 library. Rows is an array of objects,
-// columnDefs an ordered sub-array [[label, key], ...].
+// Wraps the cli-table2 library. Rows is an array of objects, columnDefs
+// an ordered sub-array [[label, key, (optional_default)], ...].
 const makeTable = (rows, columnDefs) => {
   const table = new Table({
     head: columnDefs.map(([label]) => label),
@@ -30,11 +31,8 @@ const makeTable = (rows, columnDefs) => {
   rows.forEach((row) => {
     const consumptionRow = [];
     columnDefs.forEach((columnDef) => {
-      const [label, key] = columnDef;
-      let val = row[key || label];
-      if (val === undefined) {
-        val = '';
-      }
+      const [label, key, _default] = columnDef;
+      const val = _.get(row, key || label, _default || '');
       consumptionRow.push(String(val).trim());
     });
     table.push(consumptionRow);
@@ -43,8 +41,10 @@ const makeTable = (rows, columnDefs) => {
   return table.toString().trim();
 };
 
-const printData = (rows, columnDefs) => {
-  if (global.argOpts.json) {
+const printData = (rows, columnDefs, ifEmptyMessage) => {
+  if (rows && !rows.length) {
+    console.log(ifEmptyMessage);
+  } else if (global.argOpts.json) {
     console.log(prettyJSONstringify(rewriteLabels(rows, columnDefs)));
   } else if (global.argOpts['json-raw']) {
     console.log(prettyJSONstringify(rows));

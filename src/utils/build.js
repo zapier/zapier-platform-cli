@@ -138,7 +138,9 @@ const makeZip = (dir, zipPath) => {
     });
 };
 
-const _appCommand = (dir, event) => {
+// Similar to utils.appCommand, but given a ready to go app
+// with a different location and ready to go zapierwrapper.js.
+const _appCommandZapierWrapper = (dir, event) => {
   var entry = require(`${dir}/zapierwrapper.js`);
   var promise = makePromise();
   event = Object.assign({}, event, {
@@ -173,7 +175,7 @@ const build = (zipPath) => {
     .then(() => {
       printDone();
       printStarting('Validating project');
-      return _appCommand(tmpDir, {command: 'validate'});
+      return _appCommandZapierWrapper(tmpDir, {command: 'validate'});
     })
     .then((resp) => {
       var errors = resp.results;
@@ -185,7 +187,7 @@ const build = (zipPath) => {
     })
     .then(() => {
       printStarting('Building app definition.json');
-      return _appCommand(tmpDir, {command: 'definition'});
+      return _appCommandZapierWrapper(tmpDir, {command: 'definition'});
     })
     .then((rawDefinition) => {
       return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition.results));

@@ -1,13 +1,13 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var linkCmd = () => {
-  var appMap = {};
+const linkCmd = () => {
+  const appMap = {};
 
   return utils.listApps()
     .then((data) => {
       console.log('Which app would you like to link the current directory to?\n');
-      var apps = data.apps.map((app, index) => {
+      const apps = data.apps.map((app, index) => {
         app.number = index + 1;
         appMap[app.number] = app;
         return app;
@@ -27,10 +27,10 @@ var linkCmd = () => {
       if (answer.toLowerCase() === 'no' || answer.toLowerCase() === 'cancel') {
         throw new Error('Cancelled link operation.');
       } else if (appMap[answer]) {
-        utils.printStarting(`Selecting existing app ${appMap[answer].title}`);
+        utils.printStarting(`Selecting existing app "${appMap[answer].title}"`);
         return appMap[answer];
       } else {
-        var title = answer;
+        const title = answer;
         utils.printStarting(`Creating a new app named "${title}"`);
         return utils.callAPI('/apps', {
           method: 'POST',
