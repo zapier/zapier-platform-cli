@@ -23,7 +23,6 @@ const describeCmd = () => {
           ['noun', 'noun'],
           ['display.label', 'display.label'],
           ['operation.model', 'operation.model', colors.grey('n/a')],
-          ['operation.inputFields.length', 'operation.inputFields.length', 0],
           ['operation.perform', 'operation.perform'],
         ];
         const ifEmpty = colors.grey(`Nothing found for ${type}, maybe try the \`zapier scaffold\` command?`);
