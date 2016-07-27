@@ -38,17 +38,19 @@ From this point on, you should feel comfortable to modify and update your app.
 In your `helloworld` folder, you should see this general structure:
 
 ```
-package.json
-index.js
-.zapierapprc
-README.md
-test/
-  basic.js
-  triggers.js
-build/
-  build.zip
-node_modules/
-  ...
+$ tree .
+.
+├── README.md
+├── index.js
+├── package.json
+├── test
+│   ├── basic.js
+│   └── triggers.js
+├── build
+│   └── build.zip
+└── node_modules
+    ├── ...
+    └── ...
 ```
 
 
