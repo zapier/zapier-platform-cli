@@ -1,10 +1,5 @@
 const utils = require('../utils');
 
-const availableShowOptions = {
-  'request.body': ['Request Body', 'request_data'],
-  'response.body': ['Response Body', 'response_content']
-};
-
 var logsCmd = () => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
@@ -29,19 +24,15 @@ var logsCmd = () => {
         ];
       }
 
-      if (global.argOpts.show) {
-        const extraColumns = global.argOpts.show.split(',');
-        extraColumns.forEach((extraColumn) => {
-          if (availableShowOptions[extraColumn]) {
-            columns.push(availableShowOptions[extraColumn]);
-          }
-        });
+      if (global.argOpts.detailed) {
+        columns.push(['Request Body', 'request_data']);
+        columns.push(['Response Body', 'response_content']);
       }
 
       utils.printData(data.logs, columns, '', true);
     });
 };
-logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --show=response.body';
+logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed';
 logsCmd.example = 'zapier logs --version=1.0.1';
 
 module.exports = logsCmd;
