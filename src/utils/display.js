@@ -69,22 +69,31 @@ const prettyJSONstringify = (obj) => {
 
 let spinner;
 let currentIter = 0;
-const spinSpeed = 150;
-const spinTransitions = [
-  '   ',
-  '.  ',
-  '.. ',
-  '...',
-];
+const spinSpeed = 80;
+// const spinTransitions = [
+//   '   ',
+//   '.  ',
+//   '.. ',
+//   '...',
+// ];
 // const spinTransitions = [
 //   ' \\',
 //   ' |',
 //   ' /',
 //   ' -',
 // ];
+const spinTransitions = [
+  ' ⠃',
+  ' ⠉',
+  ' ⠘',
+  ' ⠰',
+  ' ⠤',
+  ' ⠆',
+];
+const finalTransition = ' -'; // spinTransitions[0];
 
 const clearSpinner = () => {
-  process.stdout.write('\x1b[?25h'); // set cursor to write...
+  process.stdout.write('\x1b[?25h'); // set cursor to white...
   clearInterval(spinner);
 };
 
@@ -92,7 +101,7 @@ const writeNextSpinnerTick = (final = false) => {
   readline.moveCursor(process.stdout, -spinTransitions[currentIter].length, 0);
   currentIter++;
   if (currentIter >= spinTransitions.length) { currentIter = 0; }
-  process.stdout.write(final ? spinTransitions[spinTransitions.length - 1] : spinTransitions[currentIter]);
+  process.stdout.write(final ? finalTransition : spinTransitions[currentIter]);
 };
 
 const printStarting = (msg) => {
