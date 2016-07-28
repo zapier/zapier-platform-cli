@@ -21,21 +21,31 @@ const rewriteLabels = (rows, columnDefs) => {
 // an ordered sub-array [[label, key, (optional_default)], ...].
 const makeTable = (rows, columnDefs) => {
   const table = new Table({
-    head: columnDefs.map(([label]) => label),
     style: {
       compact: true,
       head: ['bold']
     }
   });
 
-  rows.forEach((row) => {
-    const consumptionRow = [];
+  const numColumns = columnDefs.length + 1;
+
+  rows.forEach((row, index) => {
+    table.push([{colSpan: 2, content: `= ${index + 1} =`}]);
+
     columnDefs.forEach((columnDef) => {
+      const consumptionRow = {};
       const [label, key, _default] = columnDef;
-      const val = _.get(row, key || label, _default || '');
-      consumptionRow.push(String(val).trim());
+      const val = String(_.get(row, key || label, _default || '')).trim();
+
+      if (val) {
+        consumptionRow['    ' + label] = val;
+        table.push(consumptionRow);
+      }
     });
-    table.push(consumptionRow);
+
+    if (index < rows.length - 1) {
+      table.push([{colSpan: 2, content: '  '}]);
+    }
   });
 
   return table.toString().trim();
