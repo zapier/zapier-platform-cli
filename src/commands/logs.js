@@ -4,16 +4,8 @@ var logsCmd = () => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
       console.log(`The logs of your app "${data.app.title}" listed below.\n`);
-      // http is the default
-      var columns = [
-        ['Status', 'response_status_code'],
-        ['URL', 'request_url'],
-        ['Querystring', 'request_params'],
-        ['Version', 'app_v3_version'],
-        ['Step', 'step'],
-        // ['ID', 'id'],
-        ['Timestamp', 'timestamp'],
-      ];
+
+      let columns;
       if (global.argOpts.console) {
         columns = [
           ['Log', 'message'],
@@ -22,11 +14,22 @@ var logsCmd = () => {
           // ['ID', 'id'],
           ['Timestamp', 'timestamp'],
         ];
-      }
+      } else {
+        // http is the default
+        columns = [
+          ['Status', 'response_status_code'],
+          ['URL', 'request_url'],
+          ['Querystring', 'request_params'],
+          ['Version', 'app_v3_version'],
+          ['Step', 'step'],
+          // ['ID', 'id'],
+          ['Timestamp', 'timestamp'],
+        ];
 
-      if (global.argOpts.detailed) {
-        columns.push(['Request Body', 'request_data']);
-        columns.push(['Response Body', 'response_content']);
+        if (global.argOpts.detailed) {
+          columns.push(['Request Body', 'request_data']);
+          columns.push(['Response Body', 'response_content']);
+        }
       }
 
       utils.printData(data.logs, columns, '', true);
