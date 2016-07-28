@@ -21,13 +21,35 @@ const rewriteLabels = (rows, columnDefs) => {
 // an ordered sub-array [[label, key, (optional_default)], ...].
 const makeTable = (rows, columnDefs) => {
   const table = new Table({
+    head: columnDefs.map(([label]) => label),
     style: {
       compact: true,
       head: ['bold']
     }
   });
 
-  const numColumns = columnDefs.length + 1;
+  rows.forEach((row) => {
+    const consumptionRow = [];
+    columnDefs.forEach((columnDef) => {
+      const [label, key, _default] = columnDef;
+      const val = _.get(row, key || label, _default || '');
+      consumptionRow.push(String(val).trim());
+    });
+    table.push(consumptionRow);
+  });
+
+  return table.toString().trim();
+};
+
+// Wraps the cli-table2 library. Rows is an array of objects,
+// rowDefs is an object
+const makeRowBasedTable = (rows, columnDefs) => {
+  const table = new Table({
+    style: {
+      compact: true,
+      head: ['bold']
+    }
+  });
 
   rows.forEach((row, index) => {
     table.push([{colSpan: 2, content: `= ${index + 1} =`}]);
@@ -51,13 +73,15 @@ const makeTable = (rows, columnDefs) => {
   return table.toString().trim();
 };
 
-const printData = (rows, columnDefs, ifEmptyMessage) => {
+const printData = (rows, columnDefs, ifEmptyMessage = '', useRowBasedTable = false) => {
   if (rows && !rows.length) {
     console.log(ifEmptyMessage);
   } else if (global.argOpts.json) {
     console.log(prettyJSONstringify(rewriteLabels(rows, columnDefs)));
   } else if (global.argOpts['json-raw']) {
     console.log(prettyJSONstringify(rows));
+  } else if (useRowBasedTable) {
+    console.log(makeRowBasedTable(rows, columnDefs));
   } else {
     console.log(makeTable(rows, columnDefs));
   }
@@ -136,6 +160,7 @@ const getInput = (question) => {
 
 module.exports = {
   makeTable,
+  makeRowBasedTable,
   printData,
   prettyJSONstringify,
   clearSpinner,

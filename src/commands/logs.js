@@ -38,7 +38,7 @@ var logsCmd = () => {
         });
       }
 
-      utils.printData(data.logs, columns);
+      utils.printData(data.logs, columns, '', true);
     });
 };
 logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --show=response.body';
