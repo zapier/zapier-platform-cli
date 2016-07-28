@@ -61,12 +61,16 @@ const makeRowBasedTable = (rows, columnDefs) => {
 
       if (val) {
         if (val.length > 80) {
-          // Splice in newlines so that wordwraping works properly
-          var rest = val;
-          val = '';
-          while (rest.length > 0) {
-            val += rest.slice(0, 80) + '\n';
-            rest = rest.slice(80);
+          try {
+            val = prettyJSONstringify(JSON.parse(val));
+          } catch(err) {
+            // Wasn't JSON, so splice in newlines so that word wraping works properly
+            var rest = val;
+            val = '';
+            while (rest.length > 0) {
+              val += rest.slice(0, 80) + '\n';
+              rest = rest.slice(80);
+            }
           }
         }
         consumptionRow['    ' + label] = val;
