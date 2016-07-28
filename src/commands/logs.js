@@ -1,4 +1,5 @@
 const utils = require('../utils');
+const colors = require('colors/safe');
 
 var logsCmd = () => {
   return utils.listLogs(global.argOpts)
@@ -32,7 +33,8 @@ var logsCmd = () => {
         }
       }
 
-      utils.printData(data.logs, columns, '', true);
+      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.console.log()` and doing a `zapier push`!');
+      utils.printData(data.logs, columns, ifEmpty, true);
     });
 };
 logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed';

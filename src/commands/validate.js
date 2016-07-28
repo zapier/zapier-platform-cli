@@ -1,4 +1,5 @@
 const utils = require('../utils');
+const colors = require('colors/safe');
 
 const validateCmd = () => {
   console.log('Validating project locally.\n');
@@ -12,11 +13,12 @@ const validateCmd = () => {
           docLinks: (docLinks || []).join('\n')
         };
       });
+      const ifEmpty = colors.grey('No errors found during validation routine.');
       utils.printData(newErrors, [
         ['Property', 'property'],
         ['Message', 'message'],
         ['Links', 'docLinks'],
-      ]);
+      ], ifEmpty);
       return errors;
     })
     .then((errors) => {
