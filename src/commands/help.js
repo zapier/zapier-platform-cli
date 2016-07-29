@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var helpCmd = (cmd) => {
+var help = (cmd) => {
   const commands = require('./index');
 
   if (commands[cmd] && commands[cmd].docs) {
@@ -35,12 +35,12 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
       ]);
     });
 };
-helpCmd.help = 'Lists all the commands you can use.';
-helpCmd.example = 'zapier help';
-helpCmd.docs = `\
+help.help = 'Lists all the commands you can use.';
+help.example = 'zapier help';
+help.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = helpCmd;
+module.exports = help;

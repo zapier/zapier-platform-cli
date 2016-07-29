@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var deployCmd = (version) => {
+var deploy = (version) => {
   if (!version) {
     console.log('Error: No deploment/version selected...\n');
     return Promise.resolve();
@@ -23,12 +23,12 @@ var deployCmd = (version) => {
       console.log('Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.');
     });
 };
-deployCmd.help = 'Deploys a specific version to a production.';
-deployCmd.example = 'zapier deploy 1.0.0';
-deployCmd.docs = `\
+deploy.help = 'Deploys a specific version to a production.';
+deploy.example = 'zapier deploy 1.0.0';
+deploy.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = deployCmd;
+module.exports = deploy;

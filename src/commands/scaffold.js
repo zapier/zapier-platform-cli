@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-const scaffoldCmd = (type, name) => {
+const scaffold = (type, name) => {
   if (!name) {
     console.log('Missing arguments. Please see `zaper help scaffold`.');
     return Promise.resolve();
@@ -85,12 +85,12 @@ const scaffoldCmd = (type, name) => {
     })
     .then(() => console.log('\nFinished! We did the best we could, you might gut check your files though.'));
 };
-scaffoldCmd.help = 'Adds a sample model, trigger, action or search to your app.';
-scaffoldCmd.example = 'zapier scaffold model "Contact"';
-scaffoldCmd.docs = `\
+scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
+scaffold.example = 'zapier scaffold model "Contact"';
+scaffold.docs = `\
 Usage: zapier scaffold {model|trigger|search|write} [--entry|--dest]
 
-${scaffoldCmd.help}
+${scaffold.help}
 
 Does two primary things:
 
@@ -99,10 +99,10 @@ Does two primary things:
 
 Examples:
 
-  $ ${scaffoldCmd.example}
+  $ ${scaffold.example}
   $ zapier scaffold model "Contact" --entry=index.js
   $ zapier scaffold model contact --dest=models/contact
   $ zapier scaffold model contact --entry=index.js --dest=models/contact
 `;
 
-module.exports = scaffoldCmd;
+module.exports = scaffold;

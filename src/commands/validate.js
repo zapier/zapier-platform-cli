@@ -1,7 +1,7 @@
 const utils = require('../utils');
 const colors = require('colors/safe');
 
-const validateCmd = () => {
+const validate = () => {
   console.log('Validating project locally.\n');
   return Promise.resolve()
     .then(() => utils.localAppCommand({command: 'validate'}))
@@ -29,12 +29,12 @@ const validateCmd = () => {
       }
     });
 };
-validateCmd.help = 'Validates the current project.';
-validateCmd.example = 'zapier validate';
-validateCmd.docs = `\
+validate.help = 'Validates the current project.';
+validate.example = 'zapier validate';
+validate.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = validateCmd;
+module.exports = validate;

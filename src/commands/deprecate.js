@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var deprecateCmd = (version, deprecation_date) => {
+var deprecate = (version, deprecation_date) => {
   if (!deprecation_date) {
     console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2018-01-20"...\n');
     return Promise.resolve(true);
@@ -24,12 +24,12 @@ var deprecateCmd = (version, deprecation_date) => {
       console.log('We\'ll let users know that this version is no longer recommended.');
     });
 };
-deprecateCmd.help = 'Mark a non-production version of your app as deprecated by a certain date.';
-deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
-deprecateCmd.docs = `\
+deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
+deprecate.example = 'zapier deprecate 1.0.0 2018-01-20';
+deprecate.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = deprecateCmd;
+module.exports = deprecate;

@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var appsCmd = () => {
+var apps = () => {
   return utils.listApps()
     .then((data) => {
       console.log('All apps listed below.\n');
@@ -17,12 +17,12 @@ var appsCmd = () => {
       }
     });
 };
-appsCmd.help = 'Lists all the apps in your account.';
-appsCmd.example = 'zapier apps';
-appsCmd.docs = `\
+apps.help = 'Lists all the apps in your account.';
+apps.example = 'zapier apps';
+apps.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = appsCmd;
+module.exports = apps;

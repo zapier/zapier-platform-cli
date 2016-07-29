@@ -4,7 +4,7 @@ const _ = require('lodash');
 const utils = require('../utils');
 
 
-const describeCmd = () => {
+const describe = () => {
   return Promise.resolve()
     .then(() => utils.localAppCommand({command: 'definition'}))
     .then((definition) => {
@@ -32,12 +32,12 @@ const describeCmd = () => {
       console.log('If you\'d like to add more, try the `zapier scaffold` command to kickstart!');
     });
 };
-describeCmd.help = 'Describes the current app.';
-describeCmd.example = 'zapier describe';
-describeCmd.docs = `\
+describe.help = 'Describes the current app.';
+describe.example = 'zapier describe';
+describe.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = describeCmd;
+module.exports = describe;

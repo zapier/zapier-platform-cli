@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var authCmd = () => {
+var auth = () => {
   var checks = [
     utils.readCredentials()
       .then(() => true)
@@ -32,12 +32,12 @@ var authCmd = () => {
       console.log(`Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier create\` or \`zapier link\`.`);
     });
 };
-authCmd.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
-authCmd.example = 'zapier auth';
-authCmd.docs = `\
+auth.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
+auth.example = 'zapier auth';
+auth.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = authCmd;
+module.exports = auth;

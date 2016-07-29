@@ -1,7 +1,7 @@
 const utils = require('../utils');
 const colors = require('colors/safe');
 
-var logsCmd = () => {
+var logs = () => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
       console.log(`The logs of your app "${data.app.title}" listed below.\n`);
@@ -37,12 +37,12 @@ var logsCmd = () => {
       utils.printData(data.logs, columns, ifEmpty, true);
     });
 };
-logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5';
-logsCmd.example = 'zapier logs --version=1.0.1';
-logsCmd.docs = `\
+logs.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5';
+logs.example = 'zapier logs --version=1.0.1';
+logs.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = logsCmd;
+module.exports = logs;

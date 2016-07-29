@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var createCmd = (title, location = '.') => {
+var create = (title, location = '.') => {
   return utils.checkCredentials()
     .then(() => {
       console.log('Welcome to the Zapier Platform! :-D');
@@ -56,12 +56,12 @@ var createCmd = (title, location = '.') => {
       console.log('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
     });
 };
-createCmd.help = 'Creates a new app in your account.';
-createCmd.example = 'zapier create "My Example App"';
-createCmd.docs = `\
+create.help = 'Creates a new app in your account.';
+create.example = 'zapier create "My Example App"';
+create.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = createCmd;
+module.exports = create;

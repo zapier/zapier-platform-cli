@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var historyCmd = () => {
+var history = () => {
   return utils.listHistory()
     .then((data) => {
       console.log(`The history of your app "${data.app.title}" listed below.\n`);
@@ -12,12 +12,12 @@ var historyCmd = () => {
       ]);
     });
 };
-historyCmd.help = 'Prints all recent history for your app.';
-historyCmd.example = 'zapier history';
-historyCmd.docs = `\
+history.help = 'Prints all recent history for your app.';
+history.example = 'zapier history';
+history.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = historyCmd;
+module.exports = history;

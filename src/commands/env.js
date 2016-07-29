@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var envCmd = (version, key, value) => {
+var env = (version, key, value) => {
   if (value !== undefined) {
     key = key.toUpperCase();
     return utils.checkCredentials()
@@ -25,7 +25,7 @@ var envCmd = (version, key, value) => {
       });
   }
   if (key) {
-    console.log(`Try viewing your env with \`zapier env\` or setting with \`${envCmd.example}\`.`);
+    console.log(`Try viewing your env with \`zapier env\` or setting with \`${env.example}\`.`);
     return Promise.resolve();
   }
   return utils.listEnv(version)
@@ -36,15 +36,15 @@ var envCmd = (version, key, value) => {
         ['Key', 'key'],
         ['Value', 'value'],
       ]);
-      console.log(`\nTry setting an env with the \`${envCmd.example}\` command.`);
+      console.log(`\nTry setting an env with the \`${env.example}\` command.`);
     });
 };
-envCmd.help = 'Read and write environment variables.';
-envCmd.example = 'zapier env 1.0.0 API_KEY 1234567890';
-envCmd.docs = `\
+env.help = 'Read and write environment variables.';
+env.example = 'zapier env 1.0.0 API_KEY 1234567890';
+env.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = envCmd;
+module.exports = env;

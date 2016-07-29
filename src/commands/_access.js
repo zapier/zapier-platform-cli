@@ -2,10 +2,10 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-const makeAccessCmd = (recordType) => {
+const makeAccess = (recordType) => {
   const recordTypePlural = `${recordType}s`;
 
-  const accessCmd = (email) => {
+  const access = (email) => {
     if (email) {
       return utils.checkCredentials()
         .then(utils.getLinkedApp)
@@ -38,7 +38,7 @@ const makeAccessCmd = (recordType) => {
     }
   };
 
-  return accessCmd;
+  return access;
 };
 
-module.exports = makeAccessCmd;
+module.exports = makeAccess;

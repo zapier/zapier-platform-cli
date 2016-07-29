@@ -37,10 +37,12 @@ module.exports = (argv) => {
         console.log('');
         console.log(err.stack);
         console.log('');
-        console.log(colors.red('Failed!'));
+        console.log(colors.red('Error!'));
       } else {
         console.log('');
-        console.log(colors.red('Failed!') + ' ' + colors.grey('(Use --debug flag and run this command again to get more details.)'));
+        console.log('');
+        console.log(colors.red('Error!') + ' ' + colors.red(err.message));
+        colors.grey('(Use --debug flag and run this command again to get more details.)');
       }
       throw err;
     });

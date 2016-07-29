@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-const linkCmd = () => {
+const link = () => {
   const appMap = {};
 
   return utils.listApps()
@@ -50,12 +50,12 @@ const linkCmd = () => {
       console.log('\nFinished! You can `zapier push` now to build & upload a version!');
     });
 };
-linkCmd.help = 'Link the current directory to an app in your account.';
-linkCmd.example = 'zapier link';
-linkCmd.docs = `\
+link.help = 'Link the current directory to an app in your account.';
+link.example = 'zapier link';
+link.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = linkCmd;
+module.exports = link;

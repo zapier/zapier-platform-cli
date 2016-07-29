@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var migrateCmd = (oldVersion, newVersion, optionalPercent = '100%') => {
+var migrate = (oldVersion, newVersion, optionalPercent = '100%') => {
   if (!newVersion) {
     console.log('Must provide both old and new version like `zapier migrate 1.0.0 1.0.1`.');
     return Promise.resolve();
@@ -23,12 +23,12 @@ var migrateCmd = (oldVersion, newVersion, optionalPercent = '100%') => {
       console.log('\nDeploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.');
     });
 };
-migrateCmd.help = 'Migrate users from one version to another.';
-migrateCmd.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
-migrateCmd.docs = `\
+migrate.help = 'Migrate users from one version to another.';
+migrate.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
+migrate.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = migrateCmd;
+module.exports = migrate;

@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var versionsCmd = () => {
+var versions = () => {
   return utils.listVersions()
     .then((data) => {
       console.log(`All versions of your app "${data.app.title}" listed below.\n`);
@@ -17,12 +17,12 @@ var versionsCmd = () => {
       }
     });
 };
-versionsCmd.help = 'Lists all the versions of the current app.';
-versionsCmd.example = 'zapier versions';
-versionsCmd.docs = `\
+versions.help = 'Lists all the versions of the current app.';
+versions.example = 'zapier versions';
+versions.docs = `\
 # TODO!
 
 This is markdown documentation.
 `;
 
-module.exports = versionsCmd;
+module.exports = versions;
