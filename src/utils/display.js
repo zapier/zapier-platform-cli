@@ -41,8 +41,8 @@ const makeTable = (rows, columnDefs) => {
   return table.toString().trim();
 };
 
-// Wraps the cli-table2 library. Rows is an array of objects,
-// rowDefs is an object
+// Similar to makeTable, but prints the column headings in the left-hand column
+// and the values in the right-hand column, in rows
 const makeRowBasedTable = (rows, columnDefs) => {
   const table = new Table({
     style: {
@@ -50,6 +50,14 @@ const makeRowBasedTable = (rows, columnDefs) => {
       head: ['bold']
     }
   });
+
+  const maxLabelLength = _.reduce(columnDefs, (maxLength, columnDef) => {
+    if (columnDef[0] && columnDef[0].length > maxLength) {
+      return columnDef[0].length;
+    }
+    return maxLength;
+  }, 1);
+  const widthForValue = process.stdout.columns - maxLabelLength - 15; // The last bit accounts for some padding and borders
 
   rows.forEach((row, index) => {
     table.push([{colSpan: 2, content: `= ${index + 1} =`}]);
@@ -60,7 +68,7 @@ const makeRowBasedTable = (rows, columnDefs) => {
       var val = String(_.get(row, key || label, _default || '')).trim();
 
       if (val) {
-        if (val.length > 80) {
+        if (val.length > widthForValue) {
           try {
             val = prettyJSONstringify(JSON.parse(val));
           } catch(err) {
@@ -68,8 +76,8 @@ const makeRowBasedTable = (rows, columnDefs) => {
             var rest = val;
             val = '';
             while (rest.length > 0) {
-              val += rest.slice(0, 80) + '\n';
-              rest = rest.slice(80);
+              val += rest.slice(0, widthForValue) + '\n';
+              rest = rest.slice(widthForValue);
             }
           }
         }
