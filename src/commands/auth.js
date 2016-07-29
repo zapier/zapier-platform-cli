@@ -34,5 +34,10 @@ var authCmd = () => {
 };
 authCmd.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
 authCmd.example = 'zapier auth';
+authCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = authCmd;

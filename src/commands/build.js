@@ -10,5 +10,10 @@ var buildCmd = () => {
 };
 buildCmd.help = 'Builds a deployable zip from the current directory.';
 buildCmd.example = 'zapier build';
+buildCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = buildCmd;

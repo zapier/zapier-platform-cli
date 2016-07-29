@@ -19,5 +19,10 @@ var appsCmd = () => {
 };
 appsCmd.help = 'Lists all the apps in your account.';
 appsCmd.example = 'zapier apps';
+appsCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = appsCmd;

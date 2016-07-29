@@ -19,5 +19,10 @@ var versionsCmd = () => {
 };
 versionsCmd.help = 'Lists all the versions of the current app.';
 versionsCmd.example = 'zapier versions';
+versionsCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = versionsCmd;

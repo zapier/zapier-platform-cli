@@ -58,5 +58,10 @@ var createCmd = (title, location = '.') => {
 };
 createCmd.help = 'Creates a new app in your account.';
 createCmd.example = 'zapier create "My Example App"';
+createCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = createCmd;

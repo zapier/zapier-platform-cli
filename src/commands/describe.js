@@ -34,5 +34,10 @@ const describeCmd = () => {
 };
 describeCmd.help = 'Describes the current app.';
 describeCmd.example = 'zapier describe';
+describeCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = describeCmd;

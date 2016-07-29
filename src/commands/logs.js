@@ -39,5 +39,10 @@ var logsCmd = () => {
 };
 logsCmd.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5';
 logsCmd.example = 'zapier logs --version=1.0.1';
+logsCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = logsCmd;

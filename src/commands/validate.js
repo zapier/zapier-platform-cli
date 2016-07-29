@@ -31,5 +31,10 @@ const validateCmd = () => {
 };
 validateCmd.help = 'Validates the current project.';
 validateCmd.example = 'zapier validate';
+validateCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = validateCmd;

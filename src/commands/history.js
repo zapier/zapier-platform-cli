@@ -14,5 +14,10 @@ var historyCmd = () => {
 };
 historyCmd.help = 'Prints all recent history for your app.';
 historyCmd.example = 'zapier history';
+historyCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = historyCmd;

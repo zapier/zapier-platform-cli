@@ -26,7 +26,9 @@ var migrateCmd = (oldVersion, newVersion, optionalPercent = '100%') => {
 migrateCmd.help = 'Migrate users from one version to another.';
 migrateCmd.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
 migrateCmd.docs = `\
-Todo!
+# TODO!
+
+This is markdown documentation.
 `;
 
 module.exports = migrateCmd;

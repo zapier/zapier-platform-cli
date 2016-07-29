@@ -25,5 +25,10 @@ var deployCmd = (version) => {
 };
 deployCmd.help = 'Deploys a specific version to a production.';
 deployCmd.example = 'zapier deploy 1.0.0';
+deployCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = deployCmd;

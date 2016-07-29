@@ -37,5 +37,10 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
 };
 helpCmd.help = 'Lists all the commands you can use.';
 helpCmd.example = 'zapier help';
+helpCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = helpCmd;

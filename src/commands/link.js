@@ -52,5 +52,10 @@ const linkCmd = () => {
 };
 linkCmd.help = 'Link the current directory to an app in your account.';
 linkCmd.example = 'zapier link';
+linkCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = linkCmd;

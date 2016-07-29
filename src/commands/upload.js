@@ -11,5 +11,10 @@ var uploadCmd = () => {
 };
 uploadCmd.help = 'Upload the last build as a version.';
 uploadCmd.example = 'zapier upload';
+uploadCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = uploadCmd;

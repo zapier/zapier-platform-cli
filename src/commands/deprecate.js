@@ -26,5 +26,10 @@ var deprecateCmd = (version, deprecation_date) => {
 };
 deprecateCmd.help = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecateCmd.example = 'zapier deprecate 1.0.0 2018-01-20';
+deprecateCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = deprecateCmd;

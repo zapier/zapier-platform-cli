@@ -9,5 +9,10 @@ var pushCmd = () => {
 };
 pushCmd.help = 'Build and upload a new version of the current app - does not deploy.';
 pushCmd.example = 'zapier push';
+pushCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = pushCmd;

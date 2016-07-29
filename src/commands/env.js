@@ -41,5 +41,10 @@ var envCmd = (version, key, value) => {
 };
 envCmd.help = 'Read and write environment variables.';
 envCmd.example = 'zapier env 1.0.0 API_KEY 1234567890';
+envCmd.docs = `\
+# TODO!
+
+This is markdown documentation.
+`;
 
 module.exports = envCmd;
