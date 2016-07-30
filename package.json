@@ -10,7 +10,7 @@
   "scripts": {
     "docs": "node lib/bin/docs.js",
     "preversion": "git pull && npm test",
-    "version": "npm run docs && git add cli.md",
+    "version": "npm run docs && git add docs/*",
     "postversion": "git push && git push --tags && npm publish",
     "prepublish": "npm run build",
     "build": "rm -rf lib && node_modules/babel-cli/bin/babel.js src -d lib",
@@ -33,6 +33,10 @@
     "babel-cli": "6.10.1",
     "babel-preset-es2015": "6.9.0",
     "fetch-mock": "4.6.0",
+    "highlight.js": "^9.5.0",
+    "markdown-toc": "^0.12.15",
+    "marked": "0.3.6",
+    "marked-toc": "^0.3.0",
     "mocha": "2.5.3",
     "should": "9.0.2"
   },

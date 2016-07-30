@@ -1,0 +1,210 @@
+/*
+
+Snagged from node_modules/node-sass/bin/node-sass assets/sassy/app.scss app.css
+
+And customized a smidge to fit in boostrap.
+
+*/
+
+body {
+  font-family: 'Open Sans', Helvetica, arial, sans-serif;
+  background-color: #fff;
+  color: #5F6C72;
+  font-size: 14px;
+  font-weight: 400;
+  width: 100%;
+  height: 100%;
+  position: relative; }
+
+img {
+  max-width: 100%; }
+
+h1 {
+  color: #354147;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.3em;
+  padding: 20px 0; }
+  h1.feature {
+    padding: 20px 0 0; }
+  h1 a:hover {
+    border-bottom: 1px solid;
+    text-decoration: none; }
+
+h2 {
+  color: #354147;
+  font-size: 20px;
+  line-height: 1.4em;
+  font-weight: 600;
+  padding: 1em 0; }
+  h2.feature {
+    font-size: 25px;
+    padding: 20px 0 0; }
+  h2.gray {
+    color: #555; }
+  h2 a:hover {
+    border-bottom: 1px solid;
+    text-decoration: none; }
+
+h3 {
+  color: #354147;
+  font-size: 15px;
+  line-height: 1.5em;
+  font-weight: 600;
+  padding: 0 0 0.5em 0; }
+  h3.orange {
+    color: #ff4a00; }
+
+h4 {
+  color: #354147;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  line-height: 1.2em;
+  font-weight: 600;
+  padding: 0 0 10px;
+  text-transform: uppercase; }
+
+a {
+  color: #499DF3;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
+
+::-webkit-input-placeholder {
+  color: #969EA2; }
+
+:-moz-placeholder {
+  color: #969EA2; }
+
+::-moz-placeholder {
+  color: #969EA2; }
+
+:-ms-input-placeholder {
+  color: #969EA2; }
+
+span.orange {
+  color: #ff4a00; }
+
+p {
+  line-height: 1.6em;
+  margin: 0 0 15px; }
+  p.big {
+    font-size: 16px;
+    font-weight: 300;
+    -webkit-text-stroke-width: 0.4px; }
+  p.small {
+    font-size: 13px;
+    line-height: 1.75em; }
+  p.bottom {
+    margin-bottom: 20px; }
+
+small {
+  font-size: 13px; }
+
+i, em {
+  font-style: italic; }
+
+strong {
+  font-weight: 600; }
+
+sup, sub, .sup {
+  font-size: 13px;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em; }
+  sup.small, sub.small, .sup.small {
+    font-size: 10px; }
+
+sub {
+  top: 0.4em; }
+
+pre {
+  border: none;
+  line-height: 20px;
+  font-family: 'Consolas','Liberation Mono',Courier,monospace; }
+  pre code {
+    display: block;
+    padding: 10px;
+    line-height: 1.7em; }
+
+p code {
+  word-break: break-all;
+  display: inline; }
+
+hr {
+  color: #CCC;
+  background: #CCC;
+  border: 0;
+  height: 1px; }
+
+ul {
+  line-height: 1.75em;
+  margin: 0 0 20px; }
+  ul.default li {
+    margin: 5px 0; }
+  ul.bulleted {
+    margin: 0 0 5px 16px; }
+    ul.bulleted li {
+      margin: 15px 0;
+      list-style-type: disc; }
+      ul.bulleted li:first-child {
+        margin-top: 0; }
+  ul.sidebar {
+    line-height: 1.4em; }
+    ul.sidebar li {
+      font-size: 13px;
+      margin: 10px 0; }
+  ul.big {
+    font-size: 16px;
+    font-weight: 300;
+    -webkit-text-stroke-width: 0.4px; }
+  ul.small {
+    font-size: 13px; }
+
+ol {
+  line-height: 1.75em;
+  list-style-type: decimal;
+  list-style-position: inside;
+  margin: 0 0 20px; }
+  ol.default li {
+    margin: 5px 0; }
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+.col-height {
+  display: table-cell;
+  float: none;
+  height: 100%;
+}
+
+.docs-toc {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  padding: 40px 20px; }
+  .docs-toc ul {
+    list-style-type: none;
+    margin: 0; 
+    padding: 0; }
+    .docs-toc ul ul {
+      padding-left: 10px; }
+
+.docs-main {
+  margin-left: 200px; }
+
+.docs-code {
+  background: #5F6C72;
+  color: #ffffff; }
+  pre {
+    background: #354147;
+    color: #ffffff;
+    line-height: 20px;
+    font-family: 'Consolas','Liberation Mono',Courier,monospace; }
+    pre code {
+      display: block;
+      padding: 10px;
+      line-height: 1.7em; }
