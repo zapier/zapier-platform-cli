@@ -1,9 +1,9 @@
-## Introduction
+# Introduction
 
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
 
-## Getting Started
+# Getting Started
 
 The Zapier CLI requires Node `v4.3.2` or higher, we recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
@@ -33,7 +33,7 @@ zapier validate
 From this point on, you should feel comfortable to modify and update your app.
 
 
-## Project Structure
+# Project Structure
 
 In your `helloworld` folder, you should see this general structure:
 
@@ -54,6 +54,6 @@ $ tree .
 ```
 
 
-## TODO!
+# TODO!
 
 More to come.

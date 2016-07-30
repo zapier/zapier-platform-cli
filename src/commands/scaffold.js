@@ -96,10 +96,14 @@ The scaffold command two *primary* things:
 
 ### Examples
 
-    $ ${scaffold.example}
-    $ zapier scaffold model "Contact" --entry=index.js
-    $ zapier scaffold model contact --dest=models/contact
-    $ zapier scaffold model contact --entry=index.js --dest=models/contact
+You can mix and match several options to customize the created scaffold for your project.
+
+\`\`\`bash
+$ ${scaffold.example}
+$ zapier scaffold model "Contact" --entry=index.js
+$ zapier scaffold model contact --dest=models/contact
+$ zapier scaffold model contact --entry=index.js --dest=models/contact
+\`\`\`
 `;
 
 module.exports = scaffold;
