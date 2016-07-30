@@ -2,8 +2,6 @@
 
 > `zapier help`
 
-`$ zapier help`
-
 Lists all the commands you can use.
 
 You need help using help?
@@ -14,8 +12,6 @@ You need help using help?
 ## `auth`
 
 > `zapier auth`
-
-`$ zapier auth`
 
 Configure your ~/.zapierrc with a deploy key for using the CLI.
 
@@ -28,8 +24,6 @@ This is markdown documentation.
 
 > `zapier create "My Example App"`
 
-`$ zapier create "My Example App"`
-
 Creates a new app in your account.
 
 ### TODO!
@@ -40,8 +34,6 @@ This is markdown documentation.
 ## `scaffold`
 
 > `zapier scaffold {model|trigger|search|write} [--entry|--dest]`
-
-`$ zapier scaffold model "Contact"`
 
 Adds a sample model, trigger, action or search to your app.
 
@@ -62,8 +54,6 @@ The scaffold command two *primary* things:
 
 > `zapier describe`
 
-`$ zapier describe`
-
 Describes the current app.
 
 ### TODO!
@@ -74,8 +64,6 @@ This is markdown documentation.
 ## `link`
 
 > `zapier link`
-
-`$ zapier link`
 
 Link the current directory to an app in your account.
 
@@ -88,8 +76,6 @@ This is markdown documentation.
 
 > `zapier apps`
 
-`$ zapier apps`
-
 Lists all the apps in your account.
 
 ### TODO!
@@ -100,8 +86,6 @@ This is markdown documentation.
 ## `versions`
 
 > `zapier versions`
-
-`$ zapier versions`
 
 Lists all the versions of the current app.
 
@@ -114,8 +98,6 @@ This is markdown documentation.
 
 > `zapier validate`
 
-`$ zapier validate`
-
 Validates the current project.
 
 ### TODO!
@@ -126,8 +108,6 @@ This is markdown documentation.
 ## `build`
 
 > `zapier build`
-
-`$ zapier build`
 
 Builds a deployable zip from the current directory.
 
@@ -140,8 +120,6 @@ This is markdown documentation.
 
 > `zapier upload`
 
-`$ zapier upload`
-
 Upload the last build as a version.
 
 ### TODO!
@@ -152,8 +130,6 @@ This is markdown documentation.
 ## `push`
 
 > `zapier push`
-
-`$ zapier push`
 
 Build and upload a new version of the current app - does not deploy.
 
@@ -166,8 +142,6 @@ This is markdown documentation.
 
 > `zapier deploy 1.0.0`
 
-`$ zapier deploy 1.0.0`
-
 Deploys a specific version to a production.
 
 ### TODO!
@@ -178,8 +152,6 @@ This is markdown documentation.
 ## `migrate`
 
 > `zapier migrate 1.0.0 1.0.1 [10%]`
-
-`$ zapier migrate 1.0.0 1.0.1 [10%]`
 
 Migrate users from one version to another.
 
@@ -192,8 +164,6 @@ This is markdown documentation.
 
 > `zapier deprecate 1.0.0 2018-01-20`
 
-`$ zapier deprecate 1.0.0 2018-01-20`
-
 Mark a non-production version of your app as deprecated by a certain date.
 
 ### TODO!
@@ -204,8 +174,6 @@ This is markdown documentation.
 ## `collaborators`
 
 > `zapier collaborators [john@example.com]`
-
-`$ zapier collaborators [john@example.com]`
 
 Manage the collaborators on your project. Can optionally --delete.
 
@@ -218,8 +186,6 @@ This is markdown documentation.
 
 > `zapier invitees [john@example.com]`
 
-`$ zapier invitees [john@example.com]`
-
 Manage the invitees/testers on your project. Can optionally --delete.
 
 ### TODO!
@@ -230,8 +196,6 @@ This is markdown documentation.
 ## `history`
 
 > `zapier history`
-
-`$ zapier history`
 
 Prints all recent history for your app.
 
@@ -244,8 +208,6 @@ This is markdown documentation.
 
 > `zapier logs --version=1.0.1`
 
-`$ zapier logs --version=1.0.1`
-
 Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
 
 ### TODO!
@@ -256,8 +218,6 @@ This is markdown documentation.
 ## `env`
 
 > `zapier env 1.0.0 API_KEY 1234567890`
-
-`$ zapier env 1.0.0 API_KEY 1234567890`
 
 Read and write environment variables.
 

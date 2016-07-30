@@ -11,8 +11,6 @@ const docs = _.map(commands, (command, name) => {
 
 > \`${command.usage || command.example}\`
 
-\`$ ${command.example}\`
-
 ${command.help}
 
 ${command.docs}
