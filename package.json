@@ -36,7 +36,6 @@
     "highlight.js": "^9.5.0",
     "markdown-toc": "^0.12.15",
     "marked": "0.3.6",
-    "marked-toc": "^0.3.0",
     "mocha": "2.5.3",
     "should": "9.0.2"
   },
