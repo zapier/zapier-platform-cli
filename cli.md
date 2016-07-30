@@ -8,17 +8,19 @@ You need help using help?
 
     (╯°□°）╯︵ ┻━┻
 
+---
 
 ## `auth`
 
 > `zapier auth`
 
-Configure your ~/.zapierrc with a deploy key for using the CLI.
+Configure your `~/.zapierrc` with a deploy key for using the CLI.
 
 ### TODO!
 
 This is markdown documentation.
 
+---
 
 ## `create`
 
@@ -30,6 +32,7 @@ Creates a new app in your account.
 
 This is markdown documentation.
 
+---
 
 ## `scaffold`
 
@@ -49,6 +52,7 @@ The scaffold command two *primary* things:
     $ zapier scaffold model contact --dest=models/contact
     $ zapier scaffold model contact --entry=index.js --dest=models/contact
 
+---
 
 ## `describe`
 
@@ -60,6 +64,7 @@ Describes the current app.
 
 This is markdown documentation.
 
+---
 
 ## `link`
 
@@ -71,6 +76,7 @@ Link the current directory to an app in your account.
 
 This is markdown documentation.
 
+---
 
 ## `apps`
 
@@ -82,6 +88,7 @@ Lists all the apps in your account.
 
 This is markdown documentation.
 
+---
 
 ## `versions`
 
@@ -93,6 +100,7 @@ Lists all the versions of the current app.
 
 This is markdown documentation.
 
+---
 
 ## `validate`
 
@@ -104,6 +112,7 @@ Validates the current project.
 
 This is markdown documentation.
 
+---
 
 ## `build`
 
@@ -115,6 +124,7 @@ Builds a deployable zip from the current directory.
 
 This is markdown documentation.
 
+---
 
 ## `upload`
 
@@ -126,6 +136,7 @@ Upload the last build as a version.
 
 This is markdown documentation.
 
+---
 
 ## `push`
 
@@ -137,6 +148,7 @@ Build and upload a new version of the current app - does not deploy.
 
 This is markdown documentation.
 
+---
 
 ## `deploy`
 
@@ -148,6 +160,7 @@ Deploys a specific version to a production.
 
 This is markdown documentation.
 
+---
 
 ## `migrate`
 
@@ -159,6 +172,7 @@ Migrate users from one version to another.
 
 This is markdown documentation.
 
+---
 
 ## `deprecate`
 
@@ -170,6 +184,7 @@ Mark a non-production version of your app as deprecated by a certain date.
 
 This is markdown documentation.
 
+---
 
 ## `collaborators`
 
@@ -181,6 +196,7 @@ Manage the collaborators on your project. Can optionally --delete.
 
 This is markdown documentation.
 
+---
 
 ## `invitees`
 
@@ -192,6 +208,7 @@ Manage the invitees/testers on your project. Can optionally --delete.
 
 This is markdown documentation.
 
+---
 
 ## `history`
 
@@ -203,6 +220,7 @@ Prints all recent history for your app.
 
 This is markdown documentation.
 
+---
 
 ## `logs`
 
@@ -214,6 +232,7 @@ Prints recent logs. Can filter --{error|success} --{http|console} --user=you@per
 
 This is markdown documentation.
 
+---
 
 ## `env`
 

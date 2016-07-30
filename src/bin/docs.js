@@ -15,6 +15,6 @@ ${command.help}
 
 ${command.docs}
 `.trim();
-}).join('\n\n\n');
+}).join('\n\n---\n\n');
 
 fs.writeFileSync('./cli.md', docs);

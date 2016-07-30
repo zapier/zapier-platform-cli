@@ -32,7 +32,7 @@ var auth = () => {
       console.log(`Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier create\` or \`zapier link\`.`);
     });
 };
-auth.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
+auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for using the CLI.`;
 auth.example = 'zapier auth';
 auth.docs = `\
 ### TODO!
