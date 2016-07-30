@@ -99,10 +99,10 @@ Does two *primary* things:
 
 Examples
 
-  $ ${scaffold.example}
-  $ zapier scaffold model "Contact" --entry=index.js
-  $ zapier scaffold model contact --dest=models/contact
-  $ zapier scaffold model contact --entry=index.js --dest=models/contact
+    $ ${scaffold.example}
+    $ zapier scaffold model "Contact" --entry=index.js
+    $ zapier scaffold model contact --dest=models/contact
+    $ zapier scaffold model contact --entry=index.js --dest=models/contact
 `;
 
 module.exports = scaffold;
