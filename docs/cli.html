@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zapier Platform CLI</title>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/agate.min.css">
+    <style>
+body {
+  font-family: 'Open Sans', Helvetica, arial, sans-serif;
+  background-color: #fff;
+  color: #5F6C72;
+  font-size: 14px;
+  font-weight: 400;
+  width: 100%;
+  height: 100%;
+  position: relative; }
+
+img {
+  max-width: 100%; }
+
+h1 {
+  color: #354147;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.3em;
+  padding: 20px 0; }
+
+h2 {
+  color: #354147;
+  font-size: 20px;
+  line-height: 1.4em;
+  font-weight: 600;
+  padding: 1em 0; }
+
+h3 {
+  color: #354147;
+  font-size: 15px;
+  line-height: 1.5em;
+  font-weight: 600;
+  padding: 0 0 0.5em 0; }
+
+h4 {
+  color: #354147;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  line-height: 1.2em;
+  font-weight: 600;
+  padding: 0 0 10px;
+  text-transform: uppercase; }
+
+a {
+  color: #499DF3;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
+
+::-webkit-input-placeholder {
+  color: #969EA2; }
+
+:-moz-placeholder {
+  color: #969EA2; }
+
+::-moz-placeholder {
+  color: #969EA2; }
+
+:-ms-input-placeholder {
+  color: #969EA2; }
+
+p {
+  line-height: 1.6em;
+  margin: 0 0 15px; }
+
+small {
+  font-size: 13px; }
+
+i, em {
+  font-style: italic; }
+
+strong {
+  font-weight: 600; }
+
+sup, sub, .sup {
+  font-size: 13px;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em; }
+  sup.small, sub.small, .sup.small {
+    font-size: 10px; }
+
+sub {
+  top: 0.4em; }
+
+pre {
+  border: none;
+  line-height: 20px;
+  font-family: 'Consolas','Liberation Mono',Courier,monospace; }
+  pre code {
+    display: block;
+    padding: 10px;
+    line-height: 1.7em; }
+
+p code {
+  word-break: break-all;
+  display: inline; }
+
+hr {
+  color: #DADFE2;
+  background: #DADFE2;
+  border: 0;
+  height: 1px; }
+
+ul {
+  line-height: 1.75em;
+  margin: 0 0 20px; }
+
+ol {
+  line-height: 1.75em;
+  list-style-type: decimal;
+  list-style-position: inside;
+  margin: 0 0 20px; }
+
+blockquote {
+  border-left: 3px solid #ff4a00;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 2em;
+  margin: 30px 0;
+  padding-left: 20px; }
+  blockquote p {
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit; }
+
+.docs-toc {
+  height: 100%;
+  width: 230px;
+  position: fixed;
+  padding: 40px 20px; }
+  .docs-toc ul {
+    list-style-type: none;
+    margin: 0; 
+    padding: 0; }
+    .docs-toc ul ul {
+      padding-left: 10px; }
+
+.generated-by {
+  font-size: 12px;
+  color: #969EA2; }
+
+.docs-main {}
+
+.docs-code {
+  /* see media queries */ }
+  .docs-code pre {
+    background: #354147;
+    color: #ffffff;
+    line-height: 20px;
+    font-family: 'Consolas','Liberation Mono',Courier,monospace; }
+    .docs-code pre code {
+      display: block;
+      padding: 10px;
+      line-height: 1.7em; }
+
+
+/* targets bootstraps md width */
+
+@media (min-width: 992px) {
+  .row-height {
+    display: table;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%; }
+  .col-height {
+    display: table-cell;
+    float: none;
+    height: 100%; }
+
+  .docs-main {
+    margin-left: 230px; }
+
+  .docs-code {
+    background: #5F6C72;
+    color: #ffffff; }
+}
+
+@media (max-width: 992px) {
+  .docs-toc {
+    display: none; }
+  .is-empty {
+    display: none; }
+}
+</style>
+  </head>
+  <body>
+    <div class="docs-toc">
+      <ul>
+<li><a href="#help"><code>help</code></a></li>
+<li><a href="#auth"><code>auth</code></a><ul>
+<li><a href="#todo">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#create"><code>create</code></a><ul>
+<li><a href="#todo-1">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#scaffold"><code>scaffold</code></a><ul>
+<li><a href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a href="#describe"><code>describe</code></a><ul>
+<li><a href="#todo-2">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#link"><code>link</code></a><ul>
+<li><a href="#todo-3">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#apps"><code>apps</code></a><ul>
+<li><a href="#todo-4">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#versions"><code>versions</code></a><ul>
+<li><a href="#todo-5">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#validate"><code>validate</code></a><ul>
+<li><a href="#todo-6">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#build"><code>build</code></a><ul>
+<li><a href="#todo-7">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#upload"><code>upload</code></a><ul>
+<li><a href="#todo-8">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#push"><code>push</code></a><ul>
+<li><a href="#todo-9">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#deploy"><code>deploy</code></a><ul>
+<li><a href="#todo-10">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#migrate"><code>migrate</code></a><ul>
+<li><a href="#todo-11">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#deprecate"><code>deprecate</code></a><ul>
+<li><a href="#todo-12">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#collaborators"><code>collaborators</code></a><ul>
+<li><a href="#todo-13">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#invitees"><code>invitees</code></a><ul>
+<li><a href="#todo-14">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#history"><code>history</code></a><ul>
+<li><a href="#todo-15">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#logs"><code>logs</code></a><ul>
+<li><a href="#todo-16">TODO!</a></li>
+</ul>
+</li>
+<li><a href="#env"><code>env</code></a><ul>
+<li><a href="#todo-17">TODO!</a></li>
+</ul>
+</li>
+</ul>
+
+      <hr />
+      <small><a class="generated-by" href="https://github.com/zapier/litdoc">generated by litdoc</a></small>
+    </div>
+
+    <div class="docs-main container-fluid">
+        <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-help-"><code>help</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Lists all the commands you can use.</p><p>  <code>zapier help</code></p><p>  You need help using help?</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height  docs-code">
+        <pre><code>(&#x256F;&#xB0;&#x25A1;&#xB0;&#xFF09;&#x256F;&#xFE35; &#x253B;&#x2501;&#x253B;
+</code></pre>
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-auth-"><code>auth</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Configure your <code>~/.zapierrc</code> with a deploy key for using the CLI.</p><p>  <code>zapier auth</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-create-"><code>create</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Creates a new app in your account.</p><p>  <code>zapier create &quot;My Example App&quot;</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-scaffold-"><code>scaffold</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Adds a sample model, trigger, action or search to your app.</p><p>  <code>zapier scaffold {model|trigger|search|write} [--entry|--dest]</code></p><p>  The scaffold command two <em>primary</em> things:</p><ul>
+<li>Creates a new destination file like <code>models/contact.js</code></li>
+<li>(Attempts to) import and register it inside your entry <code>index.js</code></li>
+</ul>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="examples">Examples</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>You can mix and match several options to customize the created scaffold for your project.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height  docs-code">
+        <pre><code class="lang-bash">$ zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span>
+$ zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span> --entry=index.js
+$ zapier scaffold model contact --dest=models/contact
+$ zapier scaffold model contact --entry=index.js --dest=models/contact
+</code></pre>
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-describe-"><code>describe</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Describes the current app.</p><p>  <code>zapier describe</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-link-"><code>link</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Link the current directory to an app in your account.</p><p>  <code>zapier link</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-apps-"><code>apps</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Lists all the apps in your account.</p><p>  <code>zapier apps</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-versions-"><code>versions</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Lists all the versions of the current app.</p><p>  <code>zapier versions</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-validate-"><code>validate</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Validates the current project.</p><p>  <code>zapier validate</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-build-"><code>build</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Builds a deployable zip from the current directory.</p><p>  <code>zapier build</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-upload-"><code>upload</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Upload the last build as a version.</p><p>  <code>zapier upload</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-push-"><code>push</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Build and upload a new version of the current app - does not deploy.</p><p>  <code>zapier push</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-deploy-"><code>deploy</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Deploys a specific version to a production.</p><p>  <code>zapier deploy 1.0.0</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-migrate-"><code>migrate</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Migrate users from one version to another.</p><p>  <code>zapier migrate 1.0.0 1.0.1 [10%]</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-deprecate-"><code>deprecate</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Mark a non-production version of your app as deprecated by a certain date.</p><p>  <code>zapier deprecate 1.0.0 2018-01-20</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-collaborators-"><code>collaborators</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Manage the collaborators on your project. Can optionally --delete.</p><p>  <code>zapier collaborators [john@example.com]</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-invitees-"><code>invitees</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Manage the invitees/testers on your project. Can optionally --delete.</p><p>  <code>zapier invitees [john@example.com]</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-history-"><code>history</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Prints all recent history for your app.</p><p>  <code>zapier history</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-logs-"><code>logs</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5</p><p>  <code>zapier logs --version=1.0.1</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h2 id="-env-"><code>env</code></h2>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>  Read and write environment variables.</p><p>  <code>zapier env 1.0.0 API_KEY 1234567890</code></p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <h3 id="todo-">TODO!</h3>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>  <div class="row">
+    <div class="row-height">
+      <div class="col-md-6 col-sm-12 col-height  docs-primary">
+        <p>This is markdown documentation.</p>
+      </div>
+      <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+        
+      </div>
+    </div>
+  </div>
+    </div>
+  </body>
+</html>
