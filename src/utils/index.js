@@ -7,6 +7,7 @@ const {
 } = require('./files');
 
 const {
+  markdownLog,
   makeTable,
   printData,
   prettyJSONstringify,
@@ -48,6 +49,7 @@ const {
 } = require('./build');
 
 module.exports = {
+  markdownLog,
   makeTable,
   printData,
   argParse,

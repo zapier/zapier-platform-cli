@@ -88,16 +88,16 @@ const scaffold = (type, name) => {
 scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
 scaffold.example = 'zapier scaffold model "Contact"';
 scaffold.docs = `\
-Usage: zapier scaffold {model|trigger|search|write} [--entry|--dest]
+> zapier scaffold {model|trigger|search|write} [--entry|--dest]
 
 ${scaffold.help}
 
-Does two primary things:
+Does two *primary* things:
 
-  * Creates a new destination file like "models/contact.js"
-  * (Attempts to) import and register it inside your entry "index.js"
+* Creates a new destination file like \`models/contact.js\`
+* (Attempts to) import and register it inside your entry \`index.js\`
 
-Examples:
+Examples
 
   $ ${scaffold.example}
   $ zapier scaffold model "Contact" --entry=index.js

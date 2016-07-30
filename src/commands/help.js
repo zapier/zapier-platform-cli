@@ -5,7 +5,7 @@ var help = (cmd) => {
   const commands = require('./index');
 
   if (commands[cmd] && commands[cmd].docs) {
-    console.log(commands[cmd].docs.trim());
+    utils.markdownLog(commands[cmd].docs.trim());
     return Promise.resolve();
   }
   console.log(`
@@ -38,9 +38,9 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
 help.help = 'Lists all the commands you can use.';
 help.example = 'zapier help';
 help.docs = `\
-# TODO!
+You need help using help?
 
-This is markdown documentation.
+    (╯°□°）╯︵ ┻━┻
 `;
 
 module.exports = help;
