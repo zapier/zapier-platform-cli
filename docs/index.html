@@ -28,7 +28,6 @@
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
         <h2 id="introduction">Introduction</h2>
-
       </div>
       <div class="col-md-6 col-height docs-code">
         
@@ -38,7 +37,6 @@
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
         <p>Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.</p>
-
       </div>
       <div class="col-md-6 col-height docs-code">
         
@@ -48,7 +46,6 @@
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
         <h2 id="getting-started">Getting Started</h2>
-
       </div>
       <div class="col-md-6 col-height docs-code">
         
@@ -57,30 +54,28 @@
   </div>  <div class="row">
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
-        <p>The Zapier CLI requires Node <code>v4.3.2</code> or higher, we recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p>
-<p>After you install, you&#39;ll be able to set up your auth and then create a working &quot;Hello World&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p>
-
+        <p>The Zapier CLI requires Node <code>v4.3.2</code> or higher, we recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p><p>After you install, you&apos;ll be able to set up your auth and then create a working &quot;Hello World&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p><blockquote>
+<p>Note: have fun!</p>
+</blockquote>
       </div>
       <div class="col-md-6 col-height docs-code">
         <pre><code class="lang-bash"><span class="hljs-comment"># install the cli globally</span>
 npm install -g @zapier/zapier-platform-cli
 
-<span class="hljs-comment"># setup zapier's auth with your deploy key</span>
+<span class="hljs-comment"># setup zapier&apos;s auth with your deploy key</span>
 zapier auth
 
 <span class="hljs-comment"># create your first app</span>
 mkdir helloworld
 <span class="hljs-built_in">cd</span> helloworld
-zapier create <span class="hljs-string">"Hello World"</span> --style=helloworld
+zapier create <span class="hljs-string">&quot;Hello World&quot;</span> --style=helloworld
 </code></pre>
-
       </div>
     </div>
   </div>  <div class="row">
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
-        <p>You can also run tests and validate your app which allows you to verify your code&#39;s behavior and that your app definition conforms to our <code>json-schema</code>.</p>
-
+        <p>You can also run tests and validate your app which allows you to verify your code&apos;s behavior and that your app definition conforms to our <code>json-schema</code>.</p>
       </div>
       <div class="col-md-6 col-height docs-code">
         <pre><code class="lang-bash"><span class="hljs-comment"># run the local tests</span>
@@ -89,14 +84,12 @@ npm <span class="hljs-built_in">test</span>
 <span class="hljs-comment"># validate the app</span>
 zapier validate
 </code></pre>
-
       </div>
     </div>
   </div>  <div class="row">
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
         <h2 id="project-structure">Project Structure</h2>
-
       </div>
       <div class="col-md-6 col-height docs-code">
         
@@ -105,32 +98,29 @@ zapier validate
   </div>  <div class="row">
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
-        <p>In your <code>helloworld</code> folder, you should see this general structure. The <code>index.js</code> is your entry point, you&#39;ll need to export an <code>App</code> definition there.</p>
-
+        <p>In your <code>helloworld</code> folder, you should see this general structure. The <code>index.js</code> is your entry point, you&apos;ll need to export an <code>App</code> definition there.</p>
       </div>
       <div class="col-md-6 col-height docs-code">
         <pre><code class="lang-plain">$ tree .
 .
-├── README.md
-├── index.js
-├── package.json
-├── test
-│   ├── basic.js
-│   └── triggers.js
-├── build
-│   └── build.zip
-└── node_modules
-    ├── ...
-    └── ...
+&#x251C;&#x2500;&#x2500; README.md
+&#x251C;&#x2500;&#x2500; index.js
+&#x251C;&#x2500;&#x2500; package.json
+&#x251C;&#x2500;&#x2500; test
+&#x2502;   &#x251C;&#x2500;&#x2500; basic.js
+&#x2502;   &#x2514;&#x2500;&#x2500; triggers.js
+&#x251C;&#x2500;&#x2500; build
+&#x2502;   &#x2514;&#x2500;&#x2500; build.zip
+&#x2514;&#x2500;&#x2500; node_modules
+    &#x251C;&#x2500;&#x2500; ...
+    &#x2514;&#x2500;&#x2500; ...
 </code></pre>
-
       </div>
     </div>
   </div>  <div class="row">
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
         <h3 id="sub-header">Sub-header</h3>
-
       </div>
       <div class="col-md-6 col-height docs-code">
         
@@ -140,7 +130,6 @@ zapier validate
     <div class="row-height">
       <div class="col-md-6 col-height docs-primary">
         <p>More to come, ay!</p>
-
       </div>
       <div class="col-md-6 col-height docs-code">
         

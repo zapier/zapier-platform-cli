@@ -7,6 +7,7 @@ const _ = require('lodash');
 
 const marked = require('marked');
 const toc = require('markdown-toc');
+const cheerio = require('cheerio');
 const hljs = require('highlight.js');
 
 const commands = require('../commands');
@@ -38,65 +39,57 @@ const renderMarkdownString = (markdownString) => {
 
   const row = (left, right) => rowTemplate({left: left || '', right: right || ''});
 
-  /*
-  This is a major hack since marked does not have a lexer/parser
-  option in the config. We push a paragraph onto the stack, and
-  if it is followed by a code step, we pair them up and flush them.
-
-  EG: blockquotes break it. Lame.
-  */
-  let stack = [];
-  const renderer = new marked.Renderer();
-  const wrapBlock = (_renderer, name, {flush = false, collect = false} = {}) => {
-    const oldFunc = _renderer[name];
-    _renderer[name] = function() {
-      let inner = oldFunc.apply(this, arguments);
-
-      if (collect) {
-        stack.push(inner);
-        return '';
-      }
-
-      let out = '';
-      if (flush) {
-        out += row(stack.join(''), inner);
-        stack = [];
-      } else {
-        if (stack.length) {
-          out += row(stack.join(''));
-        }
-        out += row(inner);
-      }
-
-      if (!collect) {
-        stack = [];
-      }
-
-      return out;
-    };
-  };
-
-  // all block level elements must be wrapped with a row
-  wrapBlock(renderer, 'heading');
-  wrapBlock(renderer, 'paragraph', {collect: true});
-  wrapBlock(renderer, 'code', {flush: true});
-  wrapBlock(renderer, 'blockquote');
-  wrapBlock(renderer, 'list');
-  wrapBlock(renderer, 'table');
-  wrapBlock(renderer, 'hr');
-  wrapBlock(renderer, 'html');
-
-  const markedOptions = {
-    renderer: renderer,
+  const intermediaryOutput = marked(markdownString, {
     highlight: (code, lang) => {
       if (!lang || lang === 'plain') { return code; }
       return hljs.highlight(lang, code).value;
     }
-  };
+  });
 
-  let output = marked(markdownString, markedOptions);
-  output += stack.length ? row(stack.join('')) : '';
-  return output;
+  const $ = cheerio.load(`<div id="root">${intermediaryOutput}</div>`);
+  const blocks = [
+    'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul',
+    'li', 'blockquote', 'table', 'hr', 'br', 'pre'
+  ];
+  const collectLeft = ['p', 'blockquote'];
+  const flushRight = ['pre'];
+
+  let stack = [];
+  let finalOutput = '';
+  // walk all the "root" block level elements, throw anything that can
+  // be bunched into the left side of code onto the stack - then flush
+  // periodically when we run into code.
+  $(`#root > ${blocks.join(',')}`).each((i, el) => {
+    const collect = collectLeft.indexOf(el.name) !== -1;
+    const flush = flushRight.indexOf(el.name) !== -1;
+    let inner = $(el).clone().wrap('<div>').parent().html();
+
+    if (collect) {
+      stack.push(inner);
+      return;
+    }
+
+    if (flush) {
+      finalOutput += row(stack.join(''), inner);
+      stack = [];
+    } else {
+      if (stack.length) {
+        finalOutput += row(stack.join(''));
+      }
+      finalOutput += row(inner);
+    }
+
+    if (!collect) {
+      stack = [];
+    }
+
+  });
+
+  if (stack.length) {
+    finalOutput += row(stack.join(''));
+  }
+
+  return finalOutput;
 };
 
 

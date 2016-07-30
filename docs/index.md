@@ -9,6 +9,8 @@ The Zapier CLI requires Node `v4.3.2` or higher, we recommend using [nvm](https:
 
 After you install, you'll be able to set up your auth and then create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
 
+> Note: have fun!
+
 ```bash
 # install the cli globally
 npm install -g @zapier/zapier-platform-cli

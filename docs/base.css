@@ -25,11 +25,6 @@ h1 {
   font-weight: 400;
   line-height: 1.3em;
   padding: 20px 0; }
-  h1.feature {
-    padding: 20px 0 0; }
-  h1 a:hover {
-    border-bottom: 1px solid;
-    text-decoration: none; }
 
 h2 {
   color: #354147;
@@ -37,14 +32,6 @@ h2 {
   line-height: 1.4em;
   font-weight: 600;
   padding: 1em 0; }
-  h2.feature {
-    font-size: 25px;
-    padding: 20px 0 0; }
-  h2.gray {
-    color: #555; }
-  h2 a:hover {
-    border-bottom: 1px solid;
-    text-decoration: none; }
 
 h3 {
   color: #354147;
@@ -52,8 +39,6 @@ h3 {
   line-height: 1.5em;
   font-weight: 600;
   padding: 0 0 0.5em 0; }
-  h3.orange {
-    color: #ff4a00; }
 
 h4 {
   color: #354147;
@@ -82,21 +67,9 @@ a {
 :-ms-input-placeholder {
   color: #969EA2; }
 
-span.orange {
-  color: #ff4a00; }
-
 p {
   line-height: 1.6em;
   margin: 0 0 15px; }
-  p.big {
-    font-size: 16px;
-    font-weight: 300;
-    -webkit-text-stroke-width: 0.4px; }
-  p.small {
-    font-size: 13px;
-    line-height: 1.75em; }
-  p.bottom {
-    margin-bottom: 20px; }
 
 small {
   font-size: 13px; }
@@ -140,34 +113,24 @@ hr {
 ul {
   line-height: 1.75em;
   margin: 0 0 20px; }
-  ul.default li {
-    margin: 5px 0; }
-  ul.bulleted {
-    margin: 0 0 5px 16px; }
-    ul.bulleted li {
-      margin: 15px 0;
-      list-style-type: disc; }
-      ul.bulleted li:first-child {
-        margin-top: 0; }
-  ul.sidebar {
-    line-height: 1.4em; }
-    ul.sidebar li {
-      font-size: 13px;
-      margin: 10px 0; }
-  ul.big {
-    font-size: 16px;
-    font-weight: 300;
-    -webkit-text-stroke-width: 0.4px; }
-  ul.small {
-    font-size: 13px; }
 
 ol {
   line-height: 1.75em;
   list-style-type: decimal;
   list-style-position: inside;
   margin: 0 0 20px; }
-  ol.default li {
-    margin: 5px 0; }
+
+blockquote {
+  border-left: 3px solid #ff4a00;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 2em;
+  margin: 30px 0;
+  padding-left: 20px; }
+  blockquote p {
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit; }
 
 .row-height {
   display: table;
