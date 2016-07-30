@@ -86,18 +86,15 @@ const scaffold = (type, name) => {
     .then(() => console.log('\nFinished! We did the best we could, you might gut check your files though.'));
 };
 scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
+scaffold.usage = 'zapier scaffold {model|trigger|search|write} [--entry|--dest]';
 scaffold.example = 'zapier scaffold model "Contact"';
 scaffold.docs = `\
-> zapier scaffold {model|trigger|search|write} [--entry|--dest]
-
-${scaffold.help}
-
-Does two *primary* things:
+The scaffold command two *primary* things:
 
 * Creates a new destination file like \`models/contact.js\`
 * (Attempts to) import and register it inside your entry \`index.js\`
 
-Examples
+### Examples
 
     $ ${scaffold.example}
     $ zapier scaffold model "Contact" --entry=index.js

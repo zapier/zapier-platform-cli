@@ -59,7 +59,7 @@ var create = (title, location = '.') => {
 create.help = 'Creates a new app in your account.';
 create.example = 'zapier create "My Example App"';
 create.docs = `\
-# TODO!
+### TODO!
 
 This is markdown documentation.
 `;

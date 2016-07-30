@@ -10,7 +10,7 @@ var push = () => {
 push.help = 'Build and upload a new version of the current app - does not deploy.';
 push.example = 'zapier push';
 push.docs = `\
-# TODO!
+### TODO!
 
 This is markdown documentation.
 `;

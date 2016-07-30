@@ -35,7 +35,7 @@ var auth = () => {
 auth.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
 auth.example = 'zapier auth';
 auth.docs = `\
-# TODO!
+### TODO!
 
 This is markdown documentation.
 `;

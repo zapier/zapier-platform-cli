@@ -11,7 +11,7 @@ var build = () => {
 build.help = 'Builds a deployable zip from the current directory.';
 build.example = 'zapier build';
 build.docs = `\
-# TODO!
+### TODO!
 
 This is markdown documentation.
 `;

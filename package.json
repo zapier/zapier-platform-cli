@@ -8,6 +8,7 @@
   "license": "BSD",
   "main": "zapier.js",
   "scripts": {
+    "docs": "node lib/bin/docs.js",
     "preversion": "git pull && npm test",
     "postversion": "git push && git push --tags && npm publish",
     "prepublish": "npm run build",

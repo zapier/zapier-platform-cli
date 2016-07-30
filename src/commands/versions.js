@@ -20,7 +20,7 @@ var versions = () => {
 versions.help = 'Lists all the versions of the current app.';
 versions.example = 'zapier versions';
 versions.docs = `\
-# TODO!
+### TODO!
 
 This is markdown documentation.
 `;

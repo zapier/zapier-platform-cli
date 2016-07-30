@@ -20,7 +20,7 @@ var apps = () => {
 apps.help = 'Lists all the apps in your account.';
 apps.example = 'zapier apps';
 apps.docs = `\
-# TODO!
+### TODO!
 
 This is markdown documentation.
 `;

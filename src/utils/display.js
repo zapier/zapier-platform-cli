@@ -5,59 +5,9 @@ const colors = require('colors/safe');
 const _ = require('lodash');
 
 const markdownLog = (str) => {
-  // super hacky experiement here! markdown parsers are ... hard :-P
-
-  console.log(str.split('\n').map(line => {
-    // # headers
-    if (_.startsWith(line, '#')) {
-      line = colors.bold(line);
-    }
-
-    //   code
-    if (_.startsWith(line, '  ')) {
-      line = colors.grey(line);
-    }
-
-    // > block quote
-    if (_.startsWith(line, '> ')) {
-      line = colors.italic(line);
-    }
-
-    // add _italic_
-    line = line
-      .split('_')
-      .map((section, i) => {
-        return i % 2 === 0 ? section : colors.italic(section);
-      })
-      .join('');
-
-    // add *bold*
-    // line = line
-    //   .split('*')
-    //   .map((section, i, arr) => {
-    //     // tricky because lists start with *
-    //     return i % 2 === 0 || arr.length % 2 === 0 ? section : colors.bold(section);
-    //   })
-    //   .join('');
-
-    // add `code`
-    line = line
-      .split('`')
-      .map((section, i) => {
-        return i % 2 === 0 ? section : colors.grey(section);
-      })
-      .join('');
-
-    // add "quote"
-    line = line
-      .split('"')
-      .map((section, i) => {
-        return i % 2 === 0 ? section : colors.yellow(section);
-      })
-      .join('"');
-
-    return line;
-  }).join('\n'));
+  // turn markdown into something with styles and stuff
+  // https://blog.mariusschulz.com/content/images/sublime_markdown_with_syntax_highlighting.png
+  console.log(str);
 };
 
 const rewriteLabels = (rows, columnDefs) => {
