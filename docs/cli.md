@@ -74,7 +74,7 @@ $ zapier create "Joe's CRM" --style=oauth2
 #   Building app definition.json - done!
 #   Zipping project and dependencies - done!
 #   Cleaning up temp directory - done!
-#   Uploading version 1.2.50 - done!
+#   Uploading version 1.0.0 - done!
 #
 # Finished!
 ```
@@ -96,8 +96,8 @@ You can mix and match several options to customize the created scaffold for your
 ```bash
 $ zapier scaffold model "Contact"
 $ zapier scaffold model "Contact" --entry=index.js
-$ zapier scaffold model contact --dest=models/contact
-$ zapier scaffold model contact --entry=index.js --dest=models/contact
+$ zapier scaffold model "Contag Tag" --dest=models/tag
+$ zapier scaffold model "List" --entry=index.js --dest=models/list
 ```
 
 
