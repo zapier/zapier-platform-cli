@@ -112,7 +112,7 @@ const makeZip = (dir, zipPath) => {
       listFiles(dir)
     ]))
     .then(([smartPaths, dumbPaths]) => {
-      if (global.argOpts.dumb) {
+      if (global.argOpts['disable-dependency-detection']) {
         return dumbPaths;
       }
       let finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {

@@ -32,7 +32,7 @@ const validate = () => {
 validate.help = 'Validates the current project.';
 validate.example = 'zapier validate';
 validate.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

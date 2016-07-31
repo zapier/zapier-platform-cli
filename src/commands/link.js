@@ -53,7 +53,7 @@ const link = () => {
 link.help = 'Link the current directory to an app in your account.';
 link.example = 'zapier link';
 link.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

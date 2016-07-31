@@ -42,7 +42,7 @@ var env = (version, key, value) => {
 env.help = 'Read and write environment variables.';
 env.example = 'zapier env 1.0.0 API_KEY 1234567890';
 env.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

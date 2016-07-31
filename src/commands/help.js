@@ -36,11 +36,15 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
     });
 };
 help.help = 'Lists all the commands you can use.';
-help.example = 'zapier help';
+help.example = 'zapier help [command]';
 help.docs = `\
-You need help using help?
+Prints documentation to the terminal screen.
 
-    (╯°□°）╯︵ ┻━┻
+${'```'}bash
+$ zapier help
+$ zapier help apps
+$ zapier help scaffold
+${'```'}
 `;
 
 module.exports = help;

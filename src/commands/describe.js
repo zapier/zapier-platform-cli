@@ -35,7 +35,7 @@ const describe = () => {
 describe.help = 'Describes the current app.';
 describe.example = 'zapier describe';
 describe.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

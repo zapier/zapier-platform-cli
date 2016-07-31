@@ -1,48 +1,95 @@
-## `help`
+# Zapier CLI Reference
 
-  Lists all the commands you can use.
+These are the generated docs for all Zapier platform CLI commands.
 
-  `zapier help`
+You can install the CLI with `npm`.
 
-  You need help using help?
+```bash
+$ npm install -g @zapier/zapier-platform-cli
+```
 
-    (╯°□°）╯︵ ┻━┻
+# Commands
 
+## help
 
-## `auth`
+Lists all the commands you can use.
 
-  Configure your `~/.zapierrc` with a deploy key for using the CLI.
+`zapier help [command]`
 
-  `zapier auth`
+Prints documentation to the terminal screen.
 
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `create`
-
-  Creates a new app in your account.
-
-  `zapier create "My Example App"`
-
-  ### TODO!
-
-This is markdown documentation.
+```bash
+$ zapier help
+$ zapier help apps
+$ zapier help scaffold
+```
 
 
-## `scaffold`
+## auth
 
-  Adds a sample model, trigger, action or search to your app.
+Configure your `~/.zapierrc` with a deploy key for using the CLI.
 
-  `zapier scaffold {model|trigger|search|write} [--entry|--dest]`
+`zapier auth`
 
-  The scaffold command two *primary* things:
+This is an interactive prompt which will set up your account deploy keys and credentials.
+
+```bash
+$ zapier auth
+# What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
+#  <type here>
+# Your deploy key has been saved to ~/.zapierrc. Now try `zapier create` or `zapier link`.
+```
+
+
+## create
+
+Creates a new app in your account.
+
+`zapier create "My Example App"`
+
+A handy command that will perform a bunch of steps for you:
+
+* Clone an working example Github repository Zapier app
+* Remove the .git config (so you can optionally run `git init`)
+* npm install all needed dependencies
+* Register the app with Zapier
+* Push a working version as a private app on Zapier
+
+After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running `zapier auth`.
+
+```bash
+$ zapier create "My App"
+$ zapier create "Hello World" --style=helloworld
+$ zapier create "Joe's CRM" --style=oauth2
+# Let's create your app "My App"!
+#
+#   Cloning starter app from zapier/example-app - done!
+#   Installing project dependencies - done!
+#   Creating a new app named "My App" - done!
+#   Setting up .zapierapprc file - done!
+#   Copying project to temp directory - done!
+#   Installing project dependencies - done!
+#   Applying entry point file - done!
+#   Validating project - done!
+#   Building app definition.json - done!
+#   Zipping project and dependencies - done!
+#   Cleaning up temp directory - done!
+#   Uploading version 1.2.50 - done!
+#
+# Finished!
+```
+
+
+## scaffold
+
+Adds a sample model, trigger, action or search to your app.
+
+`zapier scaffold {model|trigger|search|write} [--entry|--dest]`
+
+The scaffold command two *primary* things:
 
 * Creates a new destination file like `models/contact.js`
 * (Attempts to) import and register it inside your entry `index.js`
-
-### Examples
 
 You can mix and match several options to customize the created scaffold for your project.
 
@@ -54,177 +101,199 @@ $ zapier scaffold model contact --entry=index.js --dest=models/contact
 ```
 
 
-## `describe`
+## describe
 
-  Describes the current app.
+Describes the current app.
 
-  `zapier describe`
+`zapier describe`
 
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `link`
-
-  Link the current directory to an app in your account.
-
-  `zapier link`
-
-  ### TODO!
+**TODO!**
 
 This is markdown documentation.
 
 
-## `apps`
+## link
 
-  Lists all the apps in your account.
+Link the current directory to an app in your account.
 
-  `zapier apps`
+`zapier link`
 
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `versions`
-
-  Lists all the versions of the current app.
-
-  `zapier versions`
-
-  ### TODO!
+**TODO!**
 
 This is markdown documentation.
 
 
-## `validate`
+## apps
 
-  Validates the current project.
+Lists all the apps in your account.
 
-  `zapier validate`
+`zapier apps`
 
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `build`
-
-  Builds a deployable zip from the current directory.
-
-  `zapier build`
-
-  ### TODO!
+**TODO!**
 
 This is markdown documentation.
 
 
-## `upload`
+## versions
 
-  Upload the last build as a version.
+Lists all the versions of the current app.
 
-  `zapier upload`
+`zapier versions`
 
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `push`
-
-  Build and upload a new version of the current app - does not deploy.
-
-  `zapier push`
-
-  ### TODO!
+**TODO!**
 
 This is markdown documentation.
 
 
-## `deploy`
+## validate
 
-  Deploys a specific version to a production.
+Validates the current project.
 
-  `zapier deploy 1.0.0`
+`zapier validate`
 
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `migrate`
-
-  Migrate users from one version to another.
-
-  `zapier migrate 1.0.0 1.0.1 [10%]`
-
-  ### TODO!
+**TODO!**
 
 This is markdown documentation.
 
 
-## `deprecate`
+## build
 
-  Mark a non-production version of your app as deprecated by a certain date.
+Builds a deployable zip from the current directory.
 
-  `zapier deprecate 1.0.0 2018-01-20`
+`zapier build`
 
-  ### TODO!
+Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use `zapier push` which does this and `zapier upload` in one go.
 
-This is markdown documentation.
+It does the following steps:
 
+* Creates a temporary folder
+* Copies all code into the temporary folder
+* Adds an entry point `zapierwrapper.js`
+* Generates and validates app definition.
+* Detects dependencies via browserify (optional)
+* Zips up all needed `.js` files
+* Moves the zip to `build/build.zip`
 
-## `collaborators`
+> If you get errors like `Error: Cannot find module 'some-path'`, try disabling dependency detection.
 
-  Manage the collaborators on your project. Can optionally --delete.
-
-  `zapier collaborators [john@example.com]`
-
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `invitees`
-
-  Manage the invitees/testers on your project. Can optionally --delete.
-
-  `zapier invitees [john@example.com]`
-
-  ### TODO!
-
-This is markdown documentation.
-
-
-## `history`
-
-  Prints all recent history for your app.
-
-  `zapier history`
-
-  ### TODO!
-
-This is markdown documentation.
+```bash
+$ zapier build
+$ zapier build --disable-dependency-detection
+# Building project.
+#
+#   Copying project to temp directory - done!
+#   Installing project dependencies - done!
+#   Applying entry point file - done!
+#   Validating project - done!
+#   Building app definition.json - done!
+#   Zipping project and dependencies - done!
+#   Cleaning up temp directory - done!
+#
+# Build complete!
+```
 
 
-## `logs`
+## upload
 
-  Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
+Upload the last build as a version.
 
-  `zapier logs --version=1.0.1`
+`zapier upload`
 
-  ### TODO!
+**TODO!**
 
 This is markdown documentation.
 
 
-## `env`
+## push
 
-  Read and write environment variables.
+Build and upload a new version of the current app - does not deploy.
 
-  `zapier env 1.0.0 API_KEY 1234567890`
+`zapier push`
 
-  ### TODO!
+**TODO!**
+
+This is markdown documentation.
+
+
+## deploy
+
+Deploys a specific version to a production.
+
+`zapier deploy 1.0.0`
+
+
+## migrate
+
+Migrate users from one version to another.
+
+`zapier migrate 1.0.0 1.0.1 [10%]`
+
+**TODO!**
+
+This is markdown documentation.
+
+
+## deprecate
+
+Mark a non-production version of your app as deprecated by a certain date.
+
+`zapier deprecate 1.0.0 2018-01-20`
+
+**TODO!**
+
+This is markdown documentation.
+
+
+## collaborators
+
+Manage the collaborators on your project. Can optionally --delete.
+
+`zapier collaborators [john@example.com]`
+
+**TODO!**
+
+This is markdown documentation.
+
+
+## invitees
+
+Manage the invitees/testers on your project. Can optionally --delete.
+
+`zapier invitees [john@example.com]`
+
+**TODO!**
+
+This is markdown documentation.
+
+
+## history
+
+Prints all recent history for your app.
+
+`zapier history`
+
+**TODO!**
+
+This is markdown documentation.
+
+
+## logs
+
+Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
+
+`zapier logs --version=1.0.1`
+
+**TODO!**
+
+This is markdown documentation.
+
+
+## env
+
+Read and write environment variables.
+
+`zapier env 1.0.0 API_KEY 1234567890`
+
+**TODO!**
 
 This is markdown documentation.

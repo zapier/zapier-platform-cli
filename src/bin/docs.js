@@ -14,17 +14,31 @@ const commands = require('../commands');
 const rollUpCli = () => {
   const docs = _.map(commands, (command, name) => {
     return `\
-  ## \`${name}\`
+## ${name}
 
-  ${command.help}
+${command.help}
 
-  \`${command.usage || command.example}\`
+\`${command.usage || command.example}\`
 
-  ${command.docs}
-  `.trim();
+${command.docs}
+`.trim();
   }).join('\n\n\n');
 
-  fs.writeFileSync('./docs/cli.md', docs);
+  fs.writeFileSync('./docs/cli.md', `\
+# Zapier CLI Reference
+
+These are the generated docs for all Zapier platform CLI commands.
+
+You can install the CLI with \`npm\`.
+
+${'```'}bash
+$ npm install -g @zapier/zapier-platform-cli
+${'```'}
+
+# Commands
+
+${docs}
+`);
 };
 
 rollUpCli();

@@ -15,7 +15,7 @@ var history = () => {
 history.help = 'Prints all recent history for your app.';
 history.example = 'zapier history';
 history.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

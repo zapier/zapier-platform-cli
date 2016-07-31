@@ -27,7 +27,7 @@ var deprecate = (version, deprecation_date) => {
 deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecate.example = 'zapier deprecate 1.0.0 2018-01-20';
 deprecate.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

@@ -12,7 +12,7 @@ var upload = () => {
 upload.help = 'Upload the last build as a version.';
 upload.example = 'zapier upload';
 upload.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

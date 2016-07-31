@@ -94,8 +94,6 @@ The scaffold command two *primary* things:
 * Creates a new destination file like \`models/contact.js\`
 * (Attempts to) import and register it inside your entry \`index.js\`
 
-### Examples
-
 You can mix and match several options to customize the created scaffold for your project.
 
 ${'```'}bash

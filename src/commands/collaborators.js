@@ -4,7 +4,7 @@ const collaborators = makeAccess('collaborator');
 collaborators.help = 'Manage the collaborators on your project. Can optionally --delete.';
 collaborators.example = 'zapier collaborators [john@example.com]';
 collaborators.docs = `\
-### TODO!
+**TODO!**
 
 This is markdown documentation.
 `;

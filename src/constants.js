@@ -1,6 +1,6 @@
 const DEBUG = (process.env.ZAPIER_DEBUG || 'false') === 'true';
 
-const BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'http://dockerhost:8000';
+const BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'http://localhost:8000';
 const ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + '/api/platform/v3';
 const STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
 const AUTH_LOCATION = process.env.ZAPIER_AUTH_LOCATION || '~/.zapierrc';
