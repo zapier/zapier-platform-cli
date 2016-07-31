@@ -86,7 +86,7 @@ $ zapier create "Joe's CRM" --style=oauth2
 #   Building app definition.json - done!
 #   Zipping project and dependencies - done!
 #   Cleaning up temp directory - done!
-#   Uploading version 1.2.50 - done!
+#   Uploading version 1.0.0 - done!
 #
 # Finished!
 ${'```'}
