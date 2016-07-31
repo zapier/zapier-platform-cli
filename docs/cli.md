@@ -37,7 +37,7 @@ This is an interactive prompt which will set up your account deploy keys and cre
 $ zapier auth
 # What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
 #  <type here>
-# Your deploy key has been saved to ~/.zapierrc. Now try `zapier create` or `zapier link`.
+# Your deploy key has been saved to ~/.zapierrc.
 ```
 
 

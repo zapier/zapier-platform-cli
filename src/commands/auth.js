@@ -2,7 +2,7 @@ const constants = require('../constants');
 const utils = require('../utils');
 
 const QUESTION = 'What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)';
-const SUCCESS = `Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier create\` or \`zapier link\`.`;
+const SUCCESS = `Your deploy key has been saved to ${constants.AUTH_LOCATION}.`;
 const auth = () => {
   const checks = [
     utils.readCredentials()
@@ -31,7 +31,7 @@ const auth = () => {
     .then(utils.checkCredentials)
     .then(() => {
       console.log('');
-      console.log(SUCCESS);
+      console.log(SUCCESS + ' Now try `zapier create` or `zapier link`.');
     });
 };
 auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for using the CLI.`;
