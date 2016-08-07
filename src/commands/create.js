@@ -16,6 +16,8 @@ var create = (title, location = '.') => {
         repo = `${constants.STARTER_REPO}-${global.argOpts.style}`;
       }
 
+      // TODO: this should be smarter - we should allow starting after `npm init`/`git init`, or various
+      // other common starting patterns for devs with prebaked assumptions on how to start a project
       utils.printStarting('Cloning starter app from ' + repo);
       return utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, location || '.']);
     })
