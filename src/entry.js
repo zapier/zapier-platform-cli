@@ -24,6 +24,8 @@ module.exports = (argv) => {
   let commandFunc = commands[command];
   if (!commandFunc) {
     commandFunc = commands.help;
+    console.log(`${command} not a command! Try running \`zapier help\`?`);
+    return;
   }
 
   commandFunc.apply(commands, args)
