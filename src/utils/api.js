@@ -23,7 +23,7 @@ const {
 const readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
-    readFile(constants.AUTH_LOCATION, 'Please run "zapier config".')
+    readFile(constants.AUTH_LOCATION, 'Please run `zapier auth`.')
       .then((buf) => {
         return JSON.parse(buf.toString());
       })
