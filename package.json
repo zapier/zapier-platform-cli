@@ -7,6 +7,7 @@
   "author": "Bryan Helmig <bryan@zapier.com>",
   "license": "BSD",
   "main": "zapier.js",
+  "engines": { "node": ">=v4.3.2" },
   "scripts": {
     "docs": "node lib/bin/docs.js",
     "preversion": "git pull && npm test",

@@ -41,6 +41,7 @@ const {
   makePromise,
   runCommand,
   localAppCommand,
+  isValidNodeVersion
 } = require('./misc');
 
 const {
@@ -67,6 +68,7 @@ module.exports = {
   readCredentials,
   runCommand,
   localAppCommand,
+  isValidNodeVersion,
   callAPI,
   writeLinkedAppConfig,
   getLinkedApp,

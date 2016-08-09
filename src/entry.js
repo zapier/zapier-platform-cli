@@ -2,12 +2,19 @@ require('babel-polyfill');
 
 const colors = require('colors/safe');
 
-const constants = require('./constants');
+const {DEBUG, MIN_NODE_VERSION} = require('./constants');
 const commands = require('./commands');
 const utils = require('./utils');
 
 module.exports = (argv) => {
-  if (constants.DEBUG) {
+  if (!utils.isValidNodeVersion()) {
+    console.error(
+      `Requires node version >= ${MIN_NODE_VERSION.major}.${MIN_NODE_VERSION.minor}.${MIN_NODE_VERSION.patch}, found ${process.versions.node}. Please upgrade node.`
+    );
+    process.exit(1);
+  }
+
+  if (DEBUG) {
     console.log('running in:', process.cwd());
     console.log('raw argv:', argv);
     console.log('\n--------------------------------------------------\n\n');
@@ -35,7 +42,7 @@ module.exports = (argv) => {
     })
     .catch((err) => {
       utils.clearSpinner();
-      if (constants.DEBUG || global.argOpts.debug) {
+      if (DEBUG || global.argOpts.debug) {
         console.log('');
         console.log(err.stack);
         console.log('');

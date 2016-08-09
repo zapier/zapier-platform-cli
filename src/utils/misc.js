@@ -3,7 +3,7 @@ const cp = require('child_process');
 const _ = require('lodash');
 const colors = require('colors/safe');
 
-const constants = require('../constants');
+const {PLATFORM_PACKAGE, MIN_NODE_VERSION} = require('../constants');
 
 const argParse = (argv) => {
   var args = [], opts = {};
@@ -84,7 +84,7 @@ const runCommand = (command, args, options) => {
 // Runs a local app command (./index.js) like {command: 'validate'};
 const localAppCommand = (event) => {
   var appRaw = require(`${process.cwd()}/index`);
-  var zapier = require(`${process.cwd()}/node_modules/${constants.PLATFORM_PACKAGE}`);
+  var zapier = require(`${process.cwd()}/node_modules/${PLATFORM_PACKAGE}`);
   var handler = zapier.exposeAppHandler(appRaw);
   var promise = makePromise();
   event = _.extend({}, event, {
@@ -95,6 +95,18 @@ const localAppCommand = (event) => {
   return promise;
 };
 
+const isValidNodeVersion = () => {
+  const versions = process.versions.node.split('.').map(s => parseInt(s, 10));
+  const major = versions[0];
+  const minor = versions[1];
+  const patch = versions[2];
+  return (
+    (major > MIN_NODE_VERSION.major) ||
+    (major === MIN_NODE_VERSION.major && minor > MIN_NODE_VERSION.minor) ||
+    (major === MIN_NODE_VERSION.major && minor === MIN_NODE_VERSION.minor && patch >= MIN_NODE_VERSION.patch)
+  );
+};
+
 module.exports = {
   argParse,
   camelCase,
@@ -102,4 +114,5 @@ module.exports = {
   makePromise,
   runCommand,
   localAppCommand,
+  isValidNodeVersion
 };
