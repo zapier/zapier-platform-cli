@@ -136,6 +136,7 @@ const prettyJSONstringify = (obj) => JSON.stringify(obj, null, '  ');
 const makeJSON = (rows, columnDefs) => prettyJSONstringify(rewriteLabels(rows, columnDefs));
 const makeRawJSON = (rows) => prettyJSONstringify(rows);
 
+const DEFAULT_STYLE = 'table';
 const formatStyles = {
   'plain': makePlain,
   'json': makeJSON,
@@ -144,12 +145,12 @@ const formatStyles = {
   'json-raw': makeRawJSON,
   'row': makeRowBasedTable,
   'row-based': makeRowBasedTable,
-  '_default': makeTable
+  'table': makeTable
 };
 
 const printData = (rows, columnDefs, ifEmptyMessage = '', useRowBasedTable = false) => {
-  const formatStyle = global.argOpts.format || (useRowBasedTable ? 'row-based' : '_default');
-  const formatter = formatStyles[formatStyle] || formatStyles._default;
+  const formatStyle = global.argOpts.format || (useRowBasedTable ? 'row-based' : DEFAULT_STYLE);
+  const formatter = formatStyles[formatStyle] || formatStyles[DEFAULT_STYLE];
   if (rows && !rows.length) {
     console.log(ifEmptyMessage);
   } else {

@@ -35,6 +35,7 @@ This is an interactive prompt which will set up your account deploy keys and cre
 
 **Options**
 
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help auth`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -67,6 +68,7 @@ After running this, you'll have a working app in your Zapier editor. This should
 * `"Example"` -- the name of your app
 * `[dir]` -- an optional directory, default is `.`
 * `--style={helloworld|oauth2}` -- select a starting app template
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help create`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -144,6 +146,7 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Options**
 
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help apps`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -169,6 +172,7 @@ $ zapier apps
 
 **Options**
 
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help versions`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -218,6 +222,7 @@ It does the following steps:
 **Options**
 
 * `--disable-dependency-detection` -- disables walking required files to slim the build
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help build`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -267,6 +272,7 @@ This is markdown documentation.
 
 **Options**
 
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help deploy`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -310,6 +316,7 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * `[user@example.com]` -- the user to add or remove
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help collaborate`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -352,6 +359,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print a table of all invitees
 * `[user@example.com]` -- the user to add or remove
 * `--remove` -- optionally elect to remove this user, default false
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help invite`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -416,6 +424,7 @@ This is markdown documentation.
 
 **Options**
 
+* `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help logs`
 * `--debug` -- print debug API calls and tracebacks
 
