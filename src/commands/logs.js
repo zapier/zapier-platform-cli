@@ -68,6 +68,38 @@ $ zapier logs
 # │     Timestamp   │ 2016-01-01T23:04:36-05:00            │
 # └─────────────────┴──────────────────────────────────────┘
 
+$ zapier logs --http --detailed --format=plain
+# The logs of your app "Example" listed below.
+# 
+# Status
+# 200
+# URL
+# http://httpbin.org/get
+# Querystring
+# hello=world
+# Version
+# 1.0.0
+# Step
+# 99c16565-1547-4b16-bcb5-45189d9d8afa
+# Timestamp
+# 2016-08-03T23:04:36-05:00
+# Request Body
+# undefined
+# Response Body
+# {
+#   "args": {
+#     "hello": "world"
+#   },
+#   "headers": {
+#     "Accept": "*/*",
+#     "Accept-Encoding": "gzip,deflate",
+#     "Host": "httpbin.org",
+#     "User-Agent": "Zapier"
+#   },
+#   "origin": "123.123.123.123",
+#   "url": "http://httpbin.org/get?hello=world"
+# }
+
 $ zapier logs --console
 # The logs of your app "Example" listed below.
 # 
