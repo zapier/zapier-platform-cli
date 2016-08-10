@@ -1,14 +1,18 @@
+var execSync = require('child_process').execSync;
 const constants = require('../constants');
 const utils = require('../utils');
+const path = require('path');
 
-var create = (title, location = '.') => {
+const create = (title, location = '.') => {
+  const appDir = path.resolve(location);
+
   return utils.checkCredentials()
     .then(() => {
       console.log('Welcome to the Zapier Platform! :-D');
       console.log();
       console.log(constants.ART);
       console.log();
-      console.log(`Let's create your app "${title}"!`);
+      console.log(`Let\'s create your app "${title}"!`);
       console.log();
 
       let repo = constants.STARTER_REPO;
@@ -19,21 +23,15 @@ var create = (title, location = '.') => {
       // TODO: this should be smarter - we should allow starting after `npm init`/`git init`, or various
       // other common starting patterns for devs with prebaked assumptions on how to start a project
       utils.printStarting('Cloning starter app from ' + repo);
-      return utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, location || '.']);
+      return utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, appDir]);
     })
     .then(() => {
-      if (location !== '') {
-        return utils.runCommand('cd', [location]);
-      }
-      return Promise.resolve();
-    })
-    .then(() => {
-      return utils.removeDir('.git');
+      return utils.removeDir(path.resolve(appDir, '.git'));
     })
     .then(() => {
       utils.printDone();
       utils.printStarting('Installing project dependencies');
-      return utils.runCommand('npm', ['install']);
+      return utils.runCommand('npm', ['install'], {cwd: appDir});
     })
     .then(() => {
       utils.printDone();
@@ -48,11 +46,11 @@ var create = (title, location = '.') => {
     .then((app) => {
       utils.printDone();
       utils.printStarting(`Setting up ${constants.CURRENT_APP_FILE} file`);
-      return utils.writeLinkedAppConfig(app);
+      return utils.writeLinkedAppConfig(app, appDir);
     })
     .then(() => {
       utils.printDone();
-      return utils.buildAndUploadCurrentDir();
+      return utils.buildAndUploadCurrentDir(constants.BUILD_PATH, appDir);
     })
     .then(() => {
       console.log('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');

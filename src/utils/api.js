@@ -6,6 +6,7 @@ const qs = require('querystring');
 
 const AdmZip = require('adm-zip');
 const fetch = require('node-fetch');
+const path = require('path');
 
 const {
   writeFile,
@@ -86,23 +87,30 @@ const callAPI = (route, options) => {
 };
 
 // Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
-const getLinkedAppConfig = () => {
-  return readFile(constants.CURRENT_APP_FILE)
+const getLinkedAppConfig = (appDir) => {
+  appDir = appDir || '.';
+
+  const file = path.resolve(appDir, constants.CURRENT_APP_FILE);
+  return readFile(file)
     .then((buf) => {
       return JSON.parse(buf.toString()).id;
     });
 };
 
-const writeLinkedAppConfig = (app) => {
-  return writeFile(constants.CURRENT_APP_FILE, prettyJSONstringify({
+const writeLinkedAppConfig = (app, appDir) => {
+  const file = appDir ?
+        path.resolve(appDir, constants.CURRENT_APP_FILE) :
+        constants.CURRENT_APP_FILE;
+
+  return writeFile(file, prettyJSONstringify({
     id: app.id,
     key: app.key
   }));
 };
 
 // Loads the linked app from the API.
-const getLinkedApp = () => {
-  return getLinkedAppConfig()
+const getLinkedApp = (appDir) => {
+  return getLinkedAppConfig(appDir)
     .then((appId) => {
       if (!appId) {
         return {};
@@ -185,11 +193,13 @@ const listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
-const upload = (zipPath) => {
+const upload = (zipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
-  return getLinkedApp()
+  const fullZipPath = path.resolve(appDir, zipPath);
+
+  return getLinkedApp(appDir)
     .then((app) => {
-      var zip = new AdmZip(zipPath);
+      var zip = new AdmZip(fullZipPath);
       var definitionJson = zip.readAsText('definition.json');
       if (!definitionJson) {
         throw new Error('definition.json in the zip was missing!');

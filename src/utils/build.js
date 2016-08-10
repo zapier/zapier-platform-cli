@@ -151,8 +151,8 @@ const _appCommandZapierWrapper = (dir, event) => {
   return promise;
 };
 
-const build = (zipPath) => {
-  var wdir = process.cwd();
+const build = (zipPath, wdir) => {
+  wdir = wdir || process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
   const tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
   return ensureDir(tmpDir)
@@ -214,14 +214,16 @@ const build = (zipPath) => {
     });
 };
 
-const buildAndUploadCurrentDir = (zipPath) => {
+const buildAndUploadCurrentDir = (zipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
+  appDir = appDir || '.'
+  const fullZipPath = path.resolve(appDir, zipPath);
   return checkCredentials()
     .then(() => {
-      return build(zipPath);
+      return build(zipPath, appDir);
     })
     .then(() => {
-      return upload(zipPath);
+      return upload(zipPath, appDir);
     });
 };
 
