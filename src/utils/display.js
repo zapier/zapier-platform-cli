@@ -13,6 +13,7 @@ const markdownLog = (str) => {
   console.log(str);
 };
 
+// Convert rows from keys to column labels.
 const rewriteLabels = (rows, columnDefs) => {
   return rows.map((row) => {
     const consumptionRow = {};
@@ -23,6 +24,15 @@ const rewriteLabels = (rows, columnDefs) => {
     });
     return consumptionRow;
   });
+};
+
+// An easier way to print rows for copy paste accessibility.
+const makePlain = (rows, columnDefs) => {
+  return rewriteLabels(rows, columnDefs).map((row) => {
+    return _.map(row, (value, key) => {
+      return (colors.bold(key) + '\n' + value).trim();
+    }).join('\n');
+  }).join('\n\n---\n\n');
 };
 
 // Wraps the cli-table2 library. Rows is an array of objects, columnDefs
@@ -121,22 +131,27 @@ const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
   return table.toString().trim();
 };
 
-const printData = (rows, columnDefs, ifEmptyMessage = '', useRowBasedTable = false) => {
-  if (rows && !rows.length) {
-    console.log(ifEmptyMessage);
-  } else if (global.argOpts.json) {
-    console.log(prettyJSONstringify(rewriteLabels(rows, columnDefs)));
-  } else if (global.argOpts['json-raw']) {
-    console.log(prettyJSONstringify(rows));
-  } else if (useRowBasedTable || global.argOpts['row-based']) {
-    console.log(makeRowBasedTable(rows, columnDefs));
-  } else {
-    console.log(makeTable(rows, columnDefs));
-  }
+const prettyJSONstringify = (obj) => JSON.stringify(obj, null, '  ');
+
+const makeJSON = (rows, columnDefs) => prettyJSONstringify(rewriteLabels(rows, columnDefs));
+const makeRawJSON = (rows) => prettyJSONstringify(rows);
+
+const formatStyles = {
+  'plain': makePlain,
+  'json': makeJSON,
+  'json-raw': makeRawJSON,
+  'row': makeRowBasedTable,
+  '_default': makeTable
 };
 
-const prettyJSONstringify = (obj) => {
-  return JSON.stringify(obj, null, '  ');
+const printData = (rows, columnDefs, ifEmptyMessage = '', useRowBasedTable = false) => {
+  const formatStyle = global.argOpts.format || (useRowBasedTable ? 'row-based' : '_default');
+  const formatter = formatStyles[formatStyle] || formatStyles._default;
+  if (rows && !rows.length) {
+    console.log(ifEmptyMessage);
+  } else {
+    console.log(formatter(rows, columnDefs));
+  }
 };
 
 let spinner;
