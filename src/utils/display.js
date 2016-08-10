@@ -67,8 +67,7 @@ const makeTable = (rows, columnDefs) => {
 const makeRowBasedTable = (rows, columnDefs) => {
   const table = new Table({
     style: {
-      compact: true,
-      head: ['bold']
+      compact: true
     }
   });
 
@@ -81,7 +80,7 @@ const makeRowBasedTable = (rows, columnDefs) => {
   const widthForValue = process.stdout.columns - maxLabelLength - 15; // The last bit accounts for some padding and borders
 
   rows.forEach((row, index) => {
-    table.push([{colSpan: 2, content: `= ${index + 1} =`}]);
+    table.push([{colSpan: 2, content: colors.grey(`= ${index + 1} =`)}]);
 
     columnDefs.forEach((columnDef) => {
       const consumptionRow = {};
@@ -102,7 +101,7 @@ const makeRowBasedTable = (rows, columnDefs) => {
             }
           }
         }
-        consumptionRow['    ' + label] = val.trim();
+        consumptionRow['    ' + colors.bold(label)] = val.trim();
         table.push(consumptionRow);
       }
     });
