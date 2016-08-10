@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-const makeAccess = (recordType) => {
+const makeAccess = (command, recordType) => {
   const recordTypePlural = `${recordType}s`;
 
   const access = (email) => {
@@ -23,17 +23,18 @@ const makeAccess = (recordType) => {
         })
         .then(() => {
           utils.printDone();
-          console.log(`\n${_.capitalize(recordTypePlural)} updated! Try viewing them with \`zapier ${recordTypePlural}\`.`);
+          console.log(`\n${_.capitalize(recordTypePlural)} updated! Try viewing them with \`zapier ${command}\`.`);
         });
     } else {
       return utils.listEndoint(recordTypePlural)
         .then((data) => {
           console.log(`The ${recordTypePlural} on your app "${data.app.title}" listed below.\n`);
+          const ifEmpty = `${_.capitalize(recordTypePlural)} not found. Try adding one with \`zapier ${command} john@example.com\`.`;
           utils.printData(data[recordTypePlural], [
             ['Email', 'email'],
             ['Role', 'role'],
             ['Status', 'status'],
-          ]);
+          ], ifEmpty);
         });
     }
   };

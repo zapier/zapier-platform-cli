@@ -139,8 +139,11 @@ const makeRawJSON = (rows) => prettyJSONstringify(rows);
 const formatStyles = {
   'plain': makePlain,
   'json': makeJSON,
+  'raw': makeRawJSON,
+  'raw-json': makeRawJSON,
   'json-raw': makeRawJSON,
   'row': makeRowBasedTable,
+  'row-based': makeRowBasedTable,
   '_default': makeTable
 };
 
