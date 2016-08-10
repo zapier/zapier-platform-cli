@@ -28,14 +28,14 @@ const rewriteLabels = (rows, columnDefs) => {
 // Wraps the cli-table2 library. Rows is an array of objects, columnDefs
 // an ordered sub-array [[label, key, (optional_default)], ...].
 const makeTable = (rows, columnDefs) => {
-  const options = {
+  const tableOptions = {
     head: columnDefs.map(([label]) => label),
     style: {
       compact: true,
       head: ['bold']
     }
   };
-  const table = new Table(options);
+  const table = new Table(tableOptions);
 
   rows.forEach((row) => {
     const consumptionRow = [];
@@ -58,7 +58,7 @@ const makeTable = (rows, columnDefs) => {
   }, 0);
 
   if (widestRow > process.stdout.columns) {
-    return makeRowBasedTable(rows, columnDefs);
+    return makeRowBasedTable(rows, columnDefs, {includeIndex: false});
   }
 
   return strTable;
@@ -66,12 +66,13 @@ const makeTable = (rows, columnDefs) => {
 
 // Similar to makeTable, but prints the column headings in the left-hand column
 // and the values in the right-hand column, in rows
-const makeRowBasedTable = (rows, columnDefs) => {
-  const table = new Table({
+const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
+  const tableOptions = {
     style: {
       compact: true
     }
-  });
+  };
+  const table = new Table(tableOptions);
 
   const maxLabelLength = _.reduce(columnDefs, (maxLength, columnDef) => {
     if (columnDef[0] && stringLength(columnDef[0]) > maxLength) {
@@ -82,7 +83,9 @@ const makeRowBasedTable = (rows, columnDefs) => {
   const widthForValue = process.stdout.columns - maxLabelLength - 15; // The last bit accounts for some padding and borders
 
   rows.forEach((row, index) => {
-    table.push([{colSpan: 2, content: colors.grey(`= ${index + 1} =`)}]);
+    if (includeIndex) {
+      table.push([{colSpan: 2, content: colors.grey(`= ${index + 1} =`)}]);
+    }
 
     columnDefs.forEach((columnDef) => {
       const consumptionRow = {};
@@ -102,7 +105,11 @@ const makeRowBasedTable = (rows, columnDefs) => {
           }
         }
       }
-      consumptionRow['    ' + colors.bold(label)] = val.trim();
+      let colLabel = '    ' + colors.bold(label);
+      if (!includeIndex) {
+        colLabel = colors.bold(label) + '   ';
+      }
+      consumptionRow[colLabel] = val.trim();
       table.push(consumptionRow);
     });
 
