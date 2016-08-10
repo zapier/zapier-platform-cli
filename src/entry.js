@@ -25,6 +25,11 @@ module.exports = (argv) => {
   let [args, argOpts] = utils.argParse(argv);
   global.argOpts = argOpts;
 
+  // when `zapier invitees --help`, swap to `zapier help invitees`
+  if (argOpts.help) {
+    args = ['help'].concat(args);
+  }
+
   const command = args[0];
   args = args.slice(1);
 

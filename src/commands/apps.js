@@ -13,7 +13,7 @@ var apps = () => {
       if (!data.apps.length) {
         console.log('\nTry adding an app with the `zapier create` command.');
       } else {
-        console.log('\nTry linking a different app with the `zapier link` command.');
+        console.log('\nTry linking the current directory to a different app with the `zapier link` command.');
       }
     });
 };
