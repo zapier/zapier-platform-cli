@@ -10,9 +10,9 @@ const litdoc = require('litdoc');
 
 const commands = require('../commands');
 
-
-const rollUpCli = () => {
-  const docs = _.map(commands, (command, name) => {
+// Takes all the cmd.docs and puts them into a big md file.
+const generateCliMarkdown = () => {
+  return _.map(commands, (command, name) => {
     return `\
 ## ${name}
 
@@ -23,8 +23,13 @@ ${command.help}
 ${command.docs}
 `.trim();
   }).join('\n\n\n');
+};
 
-  fs.writeFileSync('./docs/cli.md', `\
+// Writes out a big markdown file for the cli.
+const writeCliDocs = ({ markdownPath = './docs/build/cli.md'} = {}) => {
+  const docs = generateCliMarkdown();
+
+  fs.writeFileSync(markdownPath, `\
 # Zapier CLI Reference
 
 These are the generated docs for all Zapier platform CLI commands.
@@ -41,16 +46,19 @@ ${docs}
 `);
 };
 
-rollUpCli();
+
+writeCliDocs();
 
 litdoc({
-  title: 'Zapier Platform CLI',
-  markdownPath: path.join(__dirname, '../../docs/index.md'),
-  outputPath: path.join(__dirname, '../../docs/index.html')
+  title: 'Zapier Platform CLI Documentation',
+  markdownPath: path.join(__dirname, '../../docs/README.md'),
+  outputPath: path.join(__dirname, '../../docs/build/index.html')
 });
 
+// TODO: toc(../../docs/README.md) to ../../README.md
+
 litdoc({
-  title: 'Zapier Platform CLI',
-  markdownPath: path.join(__dirname, '../../docs/cli.md'),
-  outputPath: path.join(__dirname, '../../docs/cli.html')
+  title: 'Zapier Platform CLI Reference',
+  markdownPath: path.join(__dirname, '../../docs/build/cli.md'),
+  outputPath: path.join(__dirname, '../../docs/build/cli.html')
 });
