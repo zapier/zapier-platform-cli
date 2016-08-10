@@ -5,7 +5,9 @@ var help = (cmd) => {
   const commands = require('./index');
 
   if (commands[cmd] && commands[cmd].docs) {
-    console.log('Usage: ' + commands[cmd].example);
+    console.log(commands[cmd].help);
+    console.log();
+    console.log(`Usage: \`${commands[cmd].example}\``);
     console.log();
     utils.markdownLog(commands[cmd].docs.trim());
     return Promise.resolve();

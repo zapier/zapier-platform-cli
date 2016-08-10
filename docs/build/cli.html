@@ -269,7 +269,7 @@ blockquote {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Lists all the commands you can use.</p><p><code>zapier help [command]</code></p><p>Prints documentation to the terminal screen.</p>
+      <p>Lists all the commands you can use.</p><p><strong>Usage:</strong> <code>zapier help [command]</code></p><p>Prints documentation to the terminal screen.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">help</span>
@@ -290,7 +290,7 @@ $ zapier <span class="hljs-built_in">help</span> scaffold
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Configure your <code>~/.zapierrc</code> with a deploy key for using the CLI.</p><p><code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p>
+      <p>Configure your <code>~/.zapierrc</code> with a deploy key for using the CLI.</p><p><strong>Usage:</strong> <code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier auth
@@ -312,7 +312,7 @@ $ zapier <span class="hljs-built_in">help</span> scaffold
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Creates a new app in your account.</p><p><code>zapier create &quot;My Example App&quot;</code></p><p>A handy command that will perform a bunch of steps for you:</p><ul>
+      <p>Creates a new app in your account.</p><p><strong>Usage:</strong> <code>zapier create &quot;My Example App&quot;</code></p><p>A handy command that will perform a bunch of steps for you:</p><ul>
 <li>Clone an working example Github repository Zapier app</li>
 <li>Remove the .git config (so you can optionally run <code>git init</code>)</li>
 <li>npm install all needed dependencies</li>
@@ -355,7 +355,7 @@ $ zapier create <span class="hljs-string">&quot;Joe&apos;s CRM&quot;</span> --st
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Adds a sample model, trigger, action or search to your app.</p><p><code>zapier scaffold {model|trigger|search|write} [--entry|--dest]</code></p><p>The scaffold command two <em>primary</em> things:</p><ul>
+      <p>Adds a sample model, trigger, action or search to your app.</p><p><strong>Usage:</strong> <code>zapier scaffold {model|trigger|search|write} [--entry|--dest]</code></p><p>The scaffold command two <em>primary</em> things:</p><ul>
 <li>Creates a new destination file like <code>models/contact.js</code></li>
 <li>(Attempts to) import and register it inside your entry <code>index.js</code></li>
 </ul><p>You can mix and match several options to customize the created scaffold for your project.</p>
@@ -380,7 +380,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Describes the current app.</p><p><code>zapier describe</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Describes the current app.</p><p><strong>Usage:</strong> <code>zapier describe</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -398,7 +398,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Link the current directory to an app in your account.</p><p><code>zapier link</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Link the current directory to an app in your account.</p><p><strong>Usage:</strong> <code>zapier link</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -416,7 +416,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Lists all the apps in your account.</p><p><code>zapier apps</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Lists all the apps in your account.</p><p><strong>Usage:</strong> <code>zapier apps</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -434,7 +434,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Lists all the versions of the current app.</p><p><code>zapier versions</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Lists all the versions of the current app.</p><p><strong>Usage:</strong> <code>zapier versions</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -452,7 +452,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Validates the current project.</p><p><code>zapier validate</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Validates the current project.</p><p><strong>Usage:</strong> <code>zapier validate</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -470,7 +470,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Builds a deployable zip from the current directory.</p><p><code>zapier build</code></p><p>Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you&apos;d use <code>zapier push</code> which does this and <code>zapier upload</code> in one go.</p><p>It does the following steps:</p><ul>
+      <p>Builds a deployable zip from the current directory.</p><p><strong>Usage:</strong> <code>zapier build</code></p><p>Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you&apos;d use <code>zapier push</code> which does this and <code>zapier upload</code> in one go.</p><p>It does the following steps:</p><ul>
 <li>Creates a temporary folder</li>
 <li>Copies all code into the temporary folder</li>
 <li>Adds an entry point <code>zapierwrapper.js</code></li>
@@ -511,7 +511,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Upload the last build as a version.</p><p><code>zapier upload</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Upload the last build as a version.</p><p><strong>Usage:</strong> <code>zapier upload</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -529,7 +529,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Build and upload a new version of the current app - does not deploy.</p><p><code>zapier push</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Build and upload a new version of the current app - does not deploy.</p><p><strong>Usage:</strong> <code>zapier push</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -547,7 +547,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Deploys a specific version to a production.</p><p><code>zapier deploy 1.0.0</code></p>
+      <p>Deploys a specific version to a production.</p><p><strong>Usage:</strong> <code>zapier deploy 1.0.0</code></p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -565,7 +565,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Migrate users from one version to another.</p><p><code>zapier migrate 1.0.0 1.0.1 [10%]</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Migrate users from one version to another.</p><p><strong>Usage:</strong> <code>zapier migrate 1.0.0 1.0.1 [10%]</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -583,7 +583,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Mark a non-production version of your app as deprecated by a certain date.</p><p><code>zapier deprecate 1.0.0 2018-01-20</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Mark a non-production version of your app as deprecated by a certain date.</p><p><strong>Usage:</strong> <code>zapier deprecate 1.0.0 2018-01-20</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -601,7 +601,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Manage the collaborators on your project. Can optionally --remove.</p><p><code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Options</strong></p><ul>
+      <p>Manage the collaborators on your project. Can optionally --remove.</p><p><strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Options</strong></p><ul>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
 <li><code>--remove</code> -- optionally elect to remove this user, default false</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help collaborate</code></li>
@@ -636,7 +636,7 @@ $ zapier collaborate user@example.com --remove
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Manage the invitees/testers on your project. Can optionally --delete.</p><p><code>zapier invite [user@example.com]</code></p><p>Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you&apos;d only like to provide admin access, try <code>zapier collaborate</code>.</p><p><strong>Options</strong></p><ul>
+      <p>Manage the invitees/testers on your project. Can optionally --delete.</p><p><strong>Usage:</strong> <code>zapier invite [user@example.com]</code></p><p>Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you&apos;d only like to provide admin access, try <code>zapier collaborate</code>.</p><p><strong>Options</strong></p><ul>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
 <li><code>--remove</code> -- optionally elect to remove this user, default false</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help invite</code></li>
@@ -671,7 +671,7 @@ $ zapier invite user@example.com --remove
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Prints all recent history for your app.</p><p><code>zapier history</code></p><p>Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.</p>
+      <p>Prints all recent history for your app.</p><p><strong>Usage:</strong> <code>zapier history</code></p><p>Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">history</span>
@@ -700,7 +700,7 @@ $ zapier invite user@example.com --remove
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5</p><p><code>zapier logs --version=1.0.1</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5</p><p><strong>Usage:</strong> <code>zapier logs --version=1.0.1</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -718,7 +718,7 @@ $ zapier invite user@example.com --remove
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Read and write environment variables.</p><p><code>zapier env 1.0.0 API_KEY 1234567890</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Read and write environment variables.</p><p><strong>Usage:</strong> <code>zapier env 1.0.0 API_KEY 1234567890</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       

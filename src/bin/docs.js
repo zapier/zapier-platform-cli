@@ -18,7 +18,7 @@ const generateCliMarkdown = () => {
 
 ${command.help}
 
-\`${command.usage || command.example}\`
+**Usage:** \`${command.usage || command.example}\`
 
 ${command.docs}
 `.trim();

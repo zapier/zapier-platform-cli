@@ -14,7 +14,7 @@ $ npm install -g @zapier/zapier-platform-cli
 
 Lists all the commands you can use.
 
-`zapier help [command]`
+**Usage:** `zapier help [command]`
 
 Prints documentation to the terminal screen.
 
@@ -29,7 +29,7 @@ $ zapier help scaffold
 
 Configure your `~/.zapierrc` with a deploy key for using the CLI.
 
-`zapier auth`
+**Usage:** `zapier auth`
 
 This is an interactive prompt which will set up your account deploy keys and credentials.
 
@@ -45,7 +45,7 @@ $ zapier auth
 
 Creates a new app in your account.
 
-`zapier create "My Example App"`
+**Usage:** `zapier create "My Example App"`
 
 A handy command that will perform a bunch of steps for you:
 
@@ -84,7 +84,7 @@ $ zapier create "Joe's CRM" --style=oauth2
 
 Adds a sample model, trigger, action or search to your app.
 
-`zapier scaffold {model|trigger|search|write} [--entry|--dest]`
+**Usage:** `zapier scaffold {model|trigger|search|write} [--entry|--dest]`
 
 The scaffold command two *primary* things:
 
@@ -105,7 +105,7 @@ $ zapier scaffold model "List" --entry=index.js --dest=models/list
 
 Describes the current app.
 
-`zapier describe`
+**Usage:** `zapier describe`
 
 **TODO!**
 
@@ -116,7 +116,7 @@ This is markdown documentation.
 
 Link the current directory to an app in your account.
 
-`zapier link`
+**Usage:** `zapier link`
 
 **TODO!**
 
@@ -127,7 +127,7 @@ This is markdown documentation.
 
 Lists all the apps in your account.
 
-`zapier apps`
+**Usage:** `zapier apps`
 
 **TODO!**
 
@@ -138,7 +138,7 @@ This is markdown documentation.
 
 Lists all the versions of the current app.
 
-`zapier versions`
+**Usage:** `zapier versions`
 
 **TODO!**
 
@@ -149,7 +149,7 @@ This is markdown documentation.
 
 Validates the current project.
 
-`zapier validate`
+**Usage:** `zapier validate`
 
 **TODO!**
 
@@ -160,7 +160,7 @@ This is markdown documentation.
 
 Builds a deployable zip from the current directory.
 
-`zapier build`
+**Usage:** `zapier build`
 
 Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use `zapier push` which does this and `zapier upload` in one go.
 
@@ -197,7 +197,7 @@ $ zapier build --disable-dependency-detection
 
 Upload the last build as a version.
 
-`zapier upload`
+**Usage:** `zapier upload`
 
 **TODO!**
 
@@ -208,7 +208,7 @@ This is markdown documentation.
 
 Build and upload a new version of the current app - does not deploy.
 
-`zapier push`
+**Usage:** `zapier push`
 
 **TODO!**
 
@@ -219,14 +219,14 @@ This is markdown documentation.
 
 Deploys a specific version to a production.
 
-`zapier deploy 1.0.0`
+**Usage:** `zapier deploy 1.0.0`
 
 
 ## migrate
 
 Migrate users from one version to another.
 
-`zapier migrate 1.0.0 1.0.1 [10%]`
+**Usage:** `zapier migrate 1.0.0 1.0.1 [10%]`
 
 **TODO!**
 
@@ -237,7 +237,7 @@ This is markdown documentation.
 
 Mark a non-production version of your app as deprecated by a certain date.
 
-`zapier deprecate 1.0.0 2018-01-20`
+**Usage:** `zapier deprecate 1.0.0 2018-01-20`
 
 **TODO!**
 
@@ -248,7 +248,7 @@ This is markdown documentation.
 
 Manage the collaborators on your project. Can optionally --remove.
 
-`zapier collaborate [user@example.com]`
+**Usage:** `zapier collaborate [user@example.com]`
 
 Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you'd only like to provide read-only or testing access, try `zapier invite`.
 
@@ -279,7 +279,7 @@ $ zapier collaborate user@example.com --remove
 
 Manage the invitees/testers on your project. Can optionally --delete.
 
-`zapier invite [user@example.com]`
+**Usage:** `zapier invite [user@example.com]`
 
 Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you'd only like to provide admin access, try `zapier collaborate`.
 
@@ -310,7 +310,7 @@ $ zapier invite user@example.com --remove
 
 Prints all recent history for your app.
 
-`zapier history`
+**Usage:** `zapier history`
 
 Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.
 
@@ -333,7 +333,7 @@ $ zapier history
 
 Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
 
-`zapier logs --version=1.0.1`
+**Usage:** `zapier logs --version=1.0.1`
 
 **TODO!**
 
@@ -344,7 +344,7 @@ This is markdown documentation.
 
 Read and write environment variables.
 
-`zapier env 1.0.0 API_KEY 1234567890`
+**Usage:** `zapier env 1.0.0 API_KEY 1234567890`
 
 **TODO!**
 
