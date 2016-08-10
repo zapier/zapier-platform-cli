@@ -806,7 +806,15 @@ $ zapier invite user@example.com --remove
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Prints recent logs. See help for filter arguments.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier logs --version=1.0.1</code></p><p>Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.</p><p>This is markdown documentation.</p><p><strong>Options</strong></p><ul>
+</blockquote><p><strong>Usage:</strong> <code>zapier logs</code></p><p>Get the logs that are automatically collected during the running of your app. Either explicitly during <code>z.console.log()</code>, automatically via <code>z.request()</code> or any sort of traceback or error.</p><blockquote>
+<p>Does not collect or list the errors found locally during <code>npm test</code>.</p>
+</blockquote><p><strong>Options</strong></p><ul>
+<li><code>--version=1.0.0</code> -- display only this version&apos;s logs, default <code>null</code></li>
+<li><code>--{error|success}</code> -- display only error or success logs, default <code>&apos;success&apos;</code></li>
+<li><code>--{console|http}</code> -- display only console or http logs, default <code>&apos;http&apos;</code></li>
+<li><code>--detailed</code> -- show detailed logs (like http body), default <code>false</code></li>
+<li><code>--user=user@example.com</code> -- display only this users logs, default <code>null</code></li>
+<li><code>--limit=5</code> -- display only console or http logs, default <code>50</code></li>
 <li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help logs</code></li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
@@ -814,6 +822,28 @@ $ zapier invite user@example.com --remove
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier logs
+<span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; = 1 =                                                  &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Status      &#x2502; 200                                  &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     URL         &#x2502; http://httpbin.org/get               &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Querystring &#x2502; hello=world                          &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Version     &#x2502; 1.0.0                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Step        &#x2502; 99c16565-1547-4b16-bcb5-45189d9d8afa &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Timestamp   &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+
+$ zapier logs --console
+<span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; = 1 =                                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Log       &#x2502; console says hello world!            &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Version   &#x2502; 1.0.0                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Step      &#x2502; 99c16565-1547-4b16-bcb5-45189d9d8afa &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Timestamp &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 </code></pre>
     </div>
   </div>

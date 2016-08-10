@@ -416,20 +416,48 @@ $ zapier history
 
 > Prints recent logs. See help for filter arguments.
 
-**Usage:** `zapier logs --version=1.0.1`
+**Usage:** `zapier logs`
 
-Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.
+Get the logs that are automatically collected during the running of your app. Either explicitly during `z.console.log()`, automatically via `z.request()` or any sort of traceback or error.
 
-This is markdown documentation.
+> Does not collect or list the errors found locally during `npm test`.
 
 **Options**
 
+* `--version=1.0.0` -- display only this version's logs, default `null`
+* `--{error|success}` -- display only error or success logs, default `'success'`
+* `--{console|http}` -- display only console or http logs, default `'http'`
+* `--detailed` -- show detailed logs (like http body), default `false`
+* `--user=user@example.com` -- display only this users logs, default `null`
+* `--limit=5` -- display only console or http logs, default `50`
 * `--format={plain|raw|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help logs`
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier logs
+# The logs of your app "Example" listed below.
+# 
+# ┌────────────────────────────────────────────────────────┐
+# │ = 1 =                                                  │
+# │     Status      │ 200                                  │
+# │     URL         │ http://httpbin.org/get               │
+# │     Querystring │ hello=world                          │
+# │     Version     │ 1.0.0                                │
+# │     Step        │ 99c16565-1547-4b16-bcb5-45189d9d8afa │
+# │     Timestamp   │ 2016-01-01T23:04:36-05:00            │
+# └─────────────────┴──────────────────────────────────────┘
+
+$ zapier logs --console
+# The logs of your app "Example" listed below.
+# 
+# ┌──────────────────────────────────────────────────────┐
+# │ = 1 =                                                │
+# │     Log       │ console says hello world!            │
+# │     Version   │ 1.0.0                                │
+# │     Step      │ 99c16565-1547-4b16-bcb5-45189d9d8afa │
+# │     Timestamp │ 2016-01-01T23:04:36-05:00            │
+# └───────────────┴──────────────────────────────────────┘
 ```
 
 
