@@ -125,13 +125,28 @@ This is markdown documentation.
 
 ## apps
 
-> Lists all the apps in your account.
+> Lists all the apps you can access.
 
 **Usage:** `zapier apps`
 
-**TODO!**
+Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with `zapier link`.
 
-This is markdown documentation.
+**Options**
+
+* `--help` -- prints this help text, same as `zapier help apps`
+
+```bash
+$ zapier apps
+# All apps listed below.
+# 
+# ┌─────────┬────────────┬─────────────────────┬────────┐
+# │ Title   │ Unique Key │ Timestamp           │ Linked │
+# ├─────────┼────────────┼─────────────────────┼────────┤
+# │ Example │ Example    │ 2016-01-01T22:19:28 │ ✔      │
+# └─────────┴────────────┴─────────────────────┴────────┘
+# 
+# Try linking the current directory to a different app with the `zapier link` command.
+```
 
 
 ## versions
@@ -162,7 +177,7 @@ This is markdown documentation.
 
 **Usage:** `zapier build`
 
-Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use `zapier push` which does this and `zapier upload` in one go.
+Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use `zapier push` which does this and `zapier upload` together.
 
 It does the following steps:
 
@@ -174,11 +189,15 @@ It does the following steps:
 * Zips up all needed `.js` files
 * Moves the zip to `build/build.zip`
 
-> If you get errors like `Error: Cannot find module 'some-path'`, try disabling dependency detection.
+> If you get live errors like `Error: Cannot find module 'some-path'`, try disabling dependency detection.
+
+**Options**
+
+* `--disable-dependency-detection` -- disables walking required files to slim the build
+* `--help` -- prints this help text, same as `zapier help build`
 
 ```bash
 $ zapier build
-$ zapier build --disable-dependency-detection
 # Building project.
 #
 #   Copying project to temp directory - done!

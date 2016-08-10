@@ -22,6 +22,10 @@ apps.example = 'zapier apps';
 apps.docs = `\
 Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with \`zapier link\`.
 
+**Options**
+
+* \`--help\` -- prints this help text, same as \`zapier help apps\`
+
 ${'```'}bash
 $ zapier apps
 # All apps listed below.

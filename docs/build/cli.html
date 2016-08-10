@@ -429,11 +429,23 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Lists all the apps in your account.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier apps</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+<p>Lists all the apps you can access.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier apps</code></p><p>Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with <code>zapier link</code>.</p><p><strong>Options</strong></p><ul>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help apps</code></li>
+</ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier apps
+<span class="hljs-comment"># All apps listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Title   &#x2502; Unique Key &#x2502; Timestamp           &#x2502; Linked &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; Example &#x2502; Example    &#x2502; 2016-01-01T22:19:28 &#x2502; &#x2714;      &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Try linking the current directory to a different app with the `zapier link` command.</span>
+</code></pre>
     </div>
   </div>
 </div><div class="row">
@@ -490,7 +502,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Builds a deployable zip from the current directory.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier build</code></p><p>Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you&apos;d use <code>zapier push</code> which does this and <code>zapier upload</code> in one go.</p><p>It does the following steps:</p><ul>
+</blockquote><p><strong>Usage:</strong> <code>zapier build</code></p><p>Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you&apos;d use <code>zapier push</code> which does this and <code>zapier upload</code> together.</p><p>It does the following steps:</p><ul>
 <li>Creates a temporary folder</li>
 <li>Copies all code into the temporary folder</li>
 <li>Adds an entry point <code>zapierwrapper.js</code></li>
@@ -499,12 +511,14 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 <li>Zips up all needed <code>.js</code> files</li>
 <li>Moves the zip to <code>build/build.zip</code></li>
 </ul><blockquote>
-<p>If you get errors like <code>Error: Cannot find module &apos;some-path&apos;</code>, try disabling dependency detection.</p>
-</blockquote>
+<p>If you get live errors like <code>Error: Cannot find module &apos;some-path&apos;</code>, try disabling dependency detection.</p>
+</blockquote><p><strong>Options</strong></p><ul>
+<li><code>--disable-dependency-detection</code> -- disables walking required files to slim the build</li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help build</code></li>
+</ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier build
-$ zapier build --disable-dependency-detection
 <span class="hljs-comment"># Building project.</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Copying project to temp directory - done!</span>

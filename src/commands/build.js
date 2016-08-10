@@ -11,7 +11,7 @@ var build = () => {
 build.help = 'Builds a deployable zip from the current directory.';
 build.example = 'zapier build';
 build.docs = `\
-Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use \`zapier push\` which does this and \`zapier upload\` in one go.
+Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use \`zapier push\` which does this and \`zapier upload\` together.
 
 It does the following steps:
 
@@ -23,11 +23,15 @@ It does the following steps:
 * Zips up all needed \`.js\` files
 * Moves the zip to \`${constants.BUILD_PATH}\`
 
-> If you get errors like \`Error: Cannot find module 'some-path'\`, try disabling dependency detection.
+> If you get live errors like \`Error: Cannot find module 'some-path'\`, try disabling dependency detection.
+
+**Options**
+
+* \`--disable-dependency-detection\` -- disables walking required files to slim the build
+* \`--help\` -- prints this help text, same as \`zapier help build\`
 
 ${'```'}bash
 $ zapier build
-$ zapier build --disable-dependency-detection
 # Building project.
 #
 #   Copying project to temp directory - done!
