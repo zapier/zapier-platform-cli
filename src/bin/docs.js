@@ -10,13 +10,15 @@ const litdoc = require('litdoc');
 
 const commands = require('../commands');
 
+const block = (str) => '> ' + str.split('\n').join('\n> ');
+
 // Takes all the cmd.docs and puts them into a big md file.
 const generateCliMarkdown = () => {
   return _.map(commands, (command, name) => {
     return `\
 ## ${name}
 
-${command.help}
+${block(command.help)}
 
 **Usage:** \`${command.usage || command.example}\`
 

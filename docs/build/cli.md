@@ -12,7 +12,7 @@ $ npm install -g @zapier/zapier-platform-cli
 
 ## help
 
-Lists all the commands you can use.
+> Lists all the commands you can use.
 
 **Usage:** `zapier help [command]`
 
@@ -27,7 +27,7 @@ $ zapier help scaffold
 
 ## auth
 
-Configure your `~/.zapierrc` with a deploy key for using the CLI.
+> Configure your `~/.zapierrc` with a deploy key for using the CLI.
 
 **Usage:** `zapier auth`
 
@@ -43,7 +43,7 @@ $ zapier auth
 
 ## create
 
-Creates a new app in your account.
+> Creates a new app in your account.
 
 **Usage:** `zapier create "My Example App"`
 
@@ -82,7 +82,7 @@ $ zapier create "Joe's CRM" --style=oauth2
 
 ## scaffold
 
-Adds a sample model, trigger, action or search to your app.
+> Adds a sample model, trigger, action or search to your app.
 
 **Usage:** `zapier scaffold {model|trigger|search|write} [--entry|--dest]`
 
@@ -103,7 +103,7 @@ $ zapier scaffold model "List" --entry=index.js --dest=models/list
 
 ## describe
 
-Describes the current app.
+> Describes the current app.
 
 **Usage:** `zapier describe`
 
@@ -114,7 +114,7 @@ This is markdown documentation.
 
 ## link
 
-Link the current directory to an app in your account.
+> Link the current directory to an app in your account.
 
 **Usage:** `zapier link`
 
@@ -125,7 +125,7 @@ This is markdown documentation.
 
 ## apps
 
-Lists all the apps in your account.
+> Lists all the apps in your account.
 
 **Usage:** `zapier apps`
 
@@ -136,7 +136,7 @@ This is markdown documentation.
 
 ## versions
 
-Lists all the versions of the current app.
+> Lists all the versions of the current app.
 
 **Usage:** `zapier versions`
 
@@ -147,7 +147,7 @@ This is markdown documentation.
 
 ## validate
 
-Validates the current project.
+> Validates the current project.
 
 **Usage:** `zapier validate`
 
@@ -158,7 +158,7 @@ This is markdown documentation.
 
 ## build
 
-Builds a deployable zip from the current directory.
+> Builds a deployable zip from the current directory.
 
 **Usage:** `zapier build`
 
@@ -195,7 +195,7 @@ $ zapier build --disable-dependency-detection
 
 ## upload
 
-Upload the last build as a version.
+> Upload the last build as a version.
 
 **Usage:** `zapier upload`
 
@@ -206,7 +206,7 @@ This is markdown documentation.
 
 ## push
 
-Build and upload a new version of the current app - does not deploy.
+> Build and upload a new version of the current app - does not deploy.
 
 **Usage:** `zapier push`
 
@@ -217,14 +217,14 @@ This is markdown documentation.
 
 ## deploy
 
-Deploys a specific version to a production.
+> Deploys a specific version to a production.
 
 **Usage:** `zapier deploy 1.0.0`
 
 
 ## migrate
 
-Migrate users from one version to another.
+> Migrate users from one version to another.
 
 **Usage:** `zapier migrate 1.0.0 1.0.1 [10%]`
 
@@ -235,7 +235,7 @@ This is markdown documentation.
 
 ## deprecate
 
-Mark a non-production version of your app as deprecated by a certain date.
+> Mark a non-production version of your app as deprecated by a certain date.
 
 **Usage:** `zapier deprecate 1.0.0 2018-01-20`
 
@@ -246,7 +246,7 @@ This is markdown documentation.
 
 ## collaborate
 
-Manage the collaborators on your project. Can optionally --remove.
+> Manage the collaborators on your project. Can optionally --remove.
 
 **Usage:** `zapier collaborate [user@example.com]`
 
@@ -277,7 +277,7 @@ $ zapier collaborate user@example.com --remove
 
 ## invite
 
-Manage the invitees/testers on your project. Can optionally --delete.
+> Manage the invitees/testers on your project. Can optionally --delete.
 
 **Usage:** `zapier invite [user@example.com]`
 
@@ -308,7 +308,7 @@ $ zapier invite user@example.com --remove
 
 ## history
 
-Prints all recent history for your app.
+> Prints all recent history for your app.
 
 **Usage:** `zapier history`
 
@@ -331,7 +331,7 @@ $ zapier history
 
 ## logs
 
-Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
+> Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
 
 **Usage:** `zapier logs --version=1.0.1`
 
@@ -342,7 +342,7 @@ This is markdown documentation.
 
 ## env
 
-Read and write environment variables.
+> Read and write environment variables.
 
 **Usage:** `zapier env 1.0.0 API_KEY 1234567890`
 
