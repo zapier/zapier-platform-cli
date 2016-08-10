@@ -2,6 +2,7 @@ const readline = require('readline');
 
 const Table = require('cli-table2');
 const colors = require('colors/safe');
+const stringLength = require('string-length');
 const _ = require('lodash');
 
 const markdownLog = (str) => {
@@ -30,9 +31,7 @@ const makeTable = (rows, columnDefs) => {
     style: {
       compact: true,
       head: ['bold']
-    },
-    // colWidths: [16, 40, 60], // detect term width?
-    // wordWrap: true
+    }
   };
   const table = new Table(options);
 
@@ -46,7 +45,21 @@ const makeTable = (rows, columnDefs) => {
     table.push(consumptionRow);
   });
 
-  return table.toString().trim();
+  const strTable = table.toString().trim();
+
+  const widestRow = strTable.split('\n').reduce((coll, row) => {
+    if (stringLength(row) > coll) {
+      return stringLength(row);
+    } else {
+      return coll;
+    }
+  }, 0);
+
+  if (widestRow > process.stdout.columns) {
+    return makeRowBasedTable(rows, columnDefs);
+  }
+
+  return strTable;
 };
 
 // Similar to makeTable, but prints the column headings in the left-hand column
@@ -89,7 +102,7 @@ const makeRowBasedTable = (rows, columnDefs) => {
             }
           }
         }
-        consumptionRow['    ' + label] = val;
+        consumptionRow['    ' + label] = val.trim();
         table.push(consumptionRow);
       }
     });
@@ -109,7 +122,7 @@ const printData = (rows, columnDefs, ifEmptyMessage = '', useRowBasedTable = fal
     console.log(prettyJSONstringify(rewriteLabels(rows, columnDefs)));
   } else if (global.argOpts['json-raw']) {
     console.log(prettyJSONstringify(rows));
-  } else if (useRowBasedTable) {
+  } else if (useRowBasedTable || global.argOpts['row-based']) {
     console.log(makeRowBasedTable(rows, columnDefs));
   } else {
     console.log(makeTable(rows, columnDefs));

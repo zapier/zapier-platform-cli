@@ -7,7 +7,9 @@
   "author": "Bryan Helmig <bryan@zapier.com>",
   "license": "BSD",
   "main": "zapier.js",
-  "engines": { "node": ">=v4.3.2" },
+  "engines": {
+    "node": ">=v4.3.2"
+  },
   "scripts": {
     "docs": "node lib/bin/docs.js",
     "preversion": "git pull && npm test",
@@ -28,6 +30,7 @@
     "fs-extra": "0.30.0",
     "lodash": "4.13.1",
     "node-fetch": "1.5.3",
+    "string-length": "^1.0.1",
     "through2": "2.0.1"
   },
   "devDependencies": {

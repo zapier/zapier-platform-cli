@@ -21,13 +21,15 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
   return Promise.resolve({})
     .then(() => {
       console.log('');
-      var allCommands = Object.keys(commands).map((command) => {
-        return {
-          name: command,
-          help: commands[command].help,
-          example: commands[command].example
-        };
-      });
+      var allCommands = Object
+        .keys(commands)
+        .map((command) => {
+          return {
+            name: command,
+            help: commands[command].help,
+            example: commands[command].example
+          };
+        });
       utils.printData(allCommands, [
         ['Command', 'name'],
         ['Example', 'example'],
