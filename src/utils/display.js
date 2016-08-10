@@ -73,8 +73,8 @@ const makeRowBasedTable = (rows, columnDefs) => {
   });
 
   const maxLabelLength = _.reduce(columnDefs, (maxLength, columnDef) => {
-    if (columnDef[0] && columnDef[0].length > maxLength) {
-      return columnDef[0].length;
+    if (columnDef[0] && stringLength(columnDef[0]) > maxLength) {
+      return stringLength(columnDef[0]);
     }
     return maxLength;
   }, 1);
@@ -89,14 +89,14 @@ const makeRowBasedTable = (rows, columnDefs) => {
       var val = String(_.get(row, key || label, _default || '')).trim();
 
       if (val) {
-        if (val.length > widthForValue) {
+        if (stringLength(val) > widthForValue) {
           try {
             val = prettyJSONstringify(JSON.parse(val));
           } catch(err) {
             // Wasn't JSON, so splice in newlines so that word wraping works properly
             var rest = val;
             val = '';
-            while (rest.length > 0) {
+            while (stringLength(rest) > 0) {
               val += rest.slice(0, widthForValue) + '\n';
               rest = rest.slice(widthForValue);
             }
