@@ -215,8 +215,8 @@ blockquote {
 <li><a href="#deploy">deploy</a></li>
 <li><a href="#migrate">migrate</a></li>
 <li><a href="#deprecate">deprecate</a></li>
-<li><a href="#collaborators">collaborators</a></li>
-<li><a href="#invitees">invitees</a></li>
+<li><a href="#collaborate">collaborate</a></li>
+<li><a href="#invite">invite</a></li>
 <li><a href="#history">history</a></li>
 <li><a href="#logs">logs</a></li>
 <li><a href="#env">env</a></li>
@@ -592,7 +592,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <h2 id="collaborators">collaborators</h2>
+      <h2 id="collaborate">collaborate</h2>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -601,7 +601,33 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Manage the collaborators on your project. Can optionally --delete.</p><p><code>zapier collaborators [john@example.com]</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Manage the collaborators on your project. Can optionally --remove.</p><p><code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Options</strong></p><ul>
+<li><code>[user@example.com]</code> -- the user to add or remove</li>
+<li><code>--remove</code> -- optionally elect to remove this user, default false</li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help collaborate</code></li>
+</ul>
+    </div>
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier collaborate user@example.com
+<span class="hljs-comment"># Preparing to add collaborator user@example.com to your app &quot;Example&quot;.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Adding user@example.com - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Collaborators updated! Try viewing them with `zapier collaborate`.</span>
+
+$ zapier collaborate user@example.com --remove
+<span class="hljs-comment"># Preparing to remove collaborator user@example.com from your app &quot;Example&quot;.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Removing user@example.com - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Collaborators updated! Try viewing them with `zapier collaborate`.</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+      <h2 id="invite">invite</h2>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       
@@ -610,16 +636,7 @@ $ zapier build --disable-dependency-detection
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <h2 id="invitees">invitees</h2>
-    </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
-      <p>Manage the invitees/testers on your project. Can optionally --delete.</p><p><code>zapier invitees [john@example.com]</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+      <p>Manage the invitees/testers on your project. Can optionally --delete.</p><p><code>zapier invite [user@example.com]</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
       

@@ -11,8 +11,8 @@ const makeAccess = (command, recordType) => {
         .then(utils.getLinkedApp)
         .then((app) => {
           var url = `/apps/${app.id}/${recordTypePlural}/${email}`;
-          if (global.argOpts.delete) {
-            console.log(`Preparing to remove ${recordType} ${email} to your app "${app.title}".\n`);
+          if (global.argOpts.remove) {
+            console.log(`Preparing to remove ${recordType} ${email} from your app "${app.title}".\n`);
             utils.printStarting(`Removing ${email}`);
             return utils.callAPI(url, {method: 'DELETE'});
           } else {
@@ -29,7 +29,7 @@ const makeAccess = (command, recordType) => {
       return utils.listEndoint(recordTypePlural)
         .then((data) => {
           console.log(`The ${recordTypePlural} on your app "${data.app.title}" listed below.\n`);
-          const ifEmpty = `${_.capitalize(recordTypePlural)} not found. Try adding one with \`zapier ${command} john@example.com\`.`;
+          const ifEmpty = `${_.capitalize(recordTypePlural)} not found. Try adding one with \`zapier ${command} user@example.com\`.`;
           utils.printData(data[recordTypePlural], [
             ['Email', 'email'],
             ['Role', 'role'],
