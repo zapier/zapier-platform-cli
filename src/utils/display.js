@@ -1,5 +1,7 @@
 const readline = require('readline');
 
+// could we explore https://www.npmjs.com/package/columnify
+// to simplify the columns/tables? the | - decoration is big
 const Table = require('cli-table2');
 const colors = require('colors/safe');
 const stringLength = require('string-length');
