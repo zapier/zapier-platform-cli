@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 const makeAccess = require('./_access');
 
 const invite = makeAccess('invite', 'invitee');
@@ -11,8 +13,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print a table of all invitees
 * \`[user@example.com]\` -- the user to add or remove
 * \`--remove\` -- optionally elect to remove this user, default false
-* \`--help\` -- prints this help text, same as \`zapier help invite\`
-* \`--debug\` -- print debug API calls and tracebacks
+${utils.defaultOptionsDocFragment({cmd: 'invite'})}
 
 ${'```'}bash
 $ zapier invite

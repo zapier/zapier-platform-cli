@@ -72,12 +72,11 @@ After running this, you'll have a working app in your Zapier editor. This should
 
 * \`"Example"\` -- the name of your app
 * \`[dir]\` -- an optional directory, default is \`.\`
-* \`--style=helloworld|oauth2\` -- select a starting app template
-* \`--help\` -- prints this help text, same as \`zapier help create\`
-* \`--debug\` -- print debug API calls and tracebacks
+* \`--style={helloworld|oauth2}\` -- select a starting app template
+${utils.defaultOptionsDocFragment({cmd: 'create'})}
 
 ${'```'}bash
-$ zapier create "Example" example-app --style=helloworld
+$ zapier create "Example" example-dir --style=helloworld
 # Let's create your app "Example"!
 #
 #   Cloning starter app from zapier/example-app - done!

@@ -22,8 +22,7 @@ versions.example = 'zapier versions';
 versions.docs = `\
 **Options**
 
-* \`--help\` -- prints this help text, same as \`zapier help versions\`
-* \`--debug\` -- print debug API calls and tracebacks
+${utils.defaultOptionsDocFragment({cmd: 'versions'})}
 
 ${'```'}bash
 $ zapier versions

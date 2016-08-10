@@ -321,23 +321,27 @@ $ zapier <span class="hljs-built_in">help</span> scaffold
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Creates a new app in your account.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier create &quot;My Example App&quot;</code></p><p>A handy command that will perform a bunch of steps for you:</p><ul>
+</blockquote><p><strong>Usage:</strong> <code>zapier create &quot;Example&quot; [dir]</code></p><p>A handy command that will perform a bunch of steps for you:</p><ul>
 <li>Clone an working example Github repository Zapier app</li>
 <li>Remove the .git config (so you can optionally run <code>git init</code>)</li>
 <li>npm install all needed dependencies</li>
 <li>Register the app with Zapier</li>
 <li>Push a working version as a private app on Zapier</li>
-</ul><p>After running this, you&apos;ll have a working app in your Zapier editor. This should be your first stop after installing and running <code>zapier auth</code>.</p>
+</ul><p>After running this, you&apos;ll have a working app in your Zapier editor. This should be your first stop after installing and running <code>zapier auth</code>.</p><p><strong>Options</strong></p><ul>
+<li><code>&quot;Example&quot;</code> -- the name of your app</li>
+<li><code>[dir]</code> -- an optional directory, default is <code>.</code></li>
+<li><code>--style={helloworld|oauth2}</code> -- select a starting app template</li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help create</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier create <span class="hljs-string">&quot;My App&quot;</span>
-$ zapier create <span class="hljs-string">&quot;Hello World&quot;</span> --style=helloworld
-$ zapier create <span class="hljs-string">&quot;Joe&apos;s CRM&quot;</span> --style=oauth2
-<span class="hljs-comment"># Let&apos;s create your app &quot;My App&quot;!</span>
+      <pre><code class="lang-bash">$ zapier create <span class="hljs-string">&quot;Example&quot;</span> example-dir --style=helloworld
+<span class="hljs-comment"># Let&apos;s create your app &quot;Example&quot;!</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Cloning starter app from zapier/example-app - done!</span>
 <span class="hljs-comment">#   Installing project dependencies - done!</span>
-<span class="hljs-comment">#   Creating a new app named &quot;My App&quot; - done!</span>
+<span class="hljs-comment">#   Creating a new app named &quot;Example&quot; - done!</span>
 <span class="hljs-comment">#   Setting up .zapierapprc file - done!</span>
 <span class="hljs-comment">#   Copying project to temp directory - done!</span>
 <span class="hljs-comment">#   Installing project dependencies - done!</span>
@@ -603,10 +607,14 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Deploys a specific version to a production.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier deploy 1.0.0</code></p>
+</blockquote><p><strong>Usage:</strong> <code>zapier deploy 1.0.0</code></p><p><strong>Options</strong></p><ul>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help deploy</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier deploy 1.0.0
+<span class="hljs-comment"># todo!</span>
 </code></pre>
     </div>
   </div>
@@ -667,8 +675,8 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </blockquote><p><strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Options</strong></p><ul>
 <li><em>none</em> -- print a table of all collaborators</li>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
-<li><code>--remove</code> -- optionally elect to remove this user, default false</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help collaborate</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">

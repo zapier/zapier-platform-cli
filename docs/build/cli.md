@@ -50,7 +50,7 @@ $ zapier auth
 
 > Creates a new app in your account.
 
-**Usage:** `zapier create "My Example App"`
+**Usage:** `zapier create "Example" [dir]`
 
 A handy command that will perform a bunch of steps for you:
 
@@ -62,15 +62,21 @@ A handy command that will perform a bunch of steps for you:
 
 After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running `zapier auth`.
 
+**Options**
+
+* `"Example"` -- the name of your app
+* `[dir]` -- an optional directory, default is `.`
+* `--style={helloworld|oauth2}` -- select a starting app template
+* `--help` -- prints this help text, same as `zapier help create`
+* `--debug` -- print debug API calls and tracebacks
+
 ```bash
-$ zapier create "My App"
-$ zapier create "Hello World" --style=helloworld
-$ zapier create "Joe's CRM" --style=oauth2
-# Let's create your app "My App"!
+$ zapier create "Example" example-dir --style=helloworld
+# Let's create your app "Example"!
 #
 #   Cloning starter app from zapier/example-app - done!
 #   Installing project dependencies - done!
-#   Creating a new app named "My App" - done!
+#   Creating a new app named "Example" - done!
 #   Setting up .zapierapprc file - done!
 #   Copying project to temp directory - done!
 #   Installing project dependencies - done!
@@ -259,9 +265,14 @@ This is markdown documentation.
 
 **Usage:** `zapier deploy 1.0.0`
 
+**Options**
+
+* `--help` -- prints this help text, same as `zapier help deploy`
+* `--debug` -- print debug API calls and tracebacks
+
 ```bash
 $ zapier deploy 1.0.0
-
+# todo!
 ```
 
 
@@ -299,8 +310,8 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * `[user@example.com]` -- the user to add or remove
-* `--remove` -- optionally elect to remove this user, default false
 * `--help` -- prints this help text, same as `zapier help collaborate`
+* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier collaborate

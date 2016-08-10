@@ -24,8 +24,7 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Options**
 
-* \`--help\` -- prints this help text, same as \`zapier help apps\`
-* \`--debug\` -- print debug API calls and tracebacks
+${utils.defaultOptionsDocFragment({cmd: 'apps'})}
 
 ${'```'}bash
 $ zapier apps

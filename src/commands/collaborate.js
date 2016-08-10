@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 const makeAccess = require('./_access');
 
 const collaborate = makeAccess('collaborate', 'collaborator');
@@ -10,8 +12,7 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * \`[user@example.com]\` -- the user to add or remove
-* \`--remove\` -- optionally elect to remove this user, default false
-* \`--help\` -- prints this help text, same as \`zapier help collaborate\`
+${utils.defaultOptionsDocFragment({cmd: 'collaborate'})}
 
 ${'```'}bash
 $ zapier collaborate

@@ -28,8 +28,7 @@ It does the following steps:
 **Options**
 
 * \`--disable-dependency-detection\` -- disables walking required files to slim the build
-* \`--help\` -- prints this help text, same as \`zapier help build\`
-* \`--debug\` -- print debug API calls and tracebacks
+${utils.defaultOptionsDocFragment({cmd: 'build'})}
 
 ${'```'}bash
 $ zapier build

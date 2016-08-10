@@ -41,8 +41,7 @@ This is an interactive prompt which will set up your account deploy keys and cre
 
 **Options**
 
-* \`--help\` -- prints this help text, same as \`zapier help auth\`
-* \`--debug\` -- print debug API calls and tracebacks
+${utils.defaultOptionsDocFragment({cmd: 'auth'})}
 
 ${'```'}bash
 $ zapier auth

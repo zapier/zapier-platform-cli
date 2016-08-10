@@ -6,5 +6,6 @@ module.exports = _.extend(
   require('./display'),
   require('./api'),
   require('./misc'),
-  require('./build')
+  require('./build'),
+  require('./fragments')
 );

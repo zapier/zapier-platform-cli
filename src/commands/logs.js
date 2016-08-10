@@ -46,8 +46,7 @@ This is markdown documentation.
 
 **Options**
 
-* \`--help\` -- prints this help text, same as \`zapier help logs\`
-* \`--debug\` -- print debug API calls and tracebacks
+${utils.defaultOptionsDocFragment({cmd: 'logs'})}
 
 ${'```'}bash
 $ zapier logs
