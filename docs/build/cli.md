@@ -281,9 +281,29 @@ Manage the invitees/testers on your project. Can optionally --delete.
 
 `zapier invite [user@example.com]`
 
-**TODO!**
+Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you'd only like to provide admin access, try `zapier collaborate`.
 
-This is markdown documentation.
+**Options**
+
+* `[user@example.com]` -- the user to add or remove
+* `--remove` -- optionally elect to remove this user, default false
+* `--help` -- prints this help text, same as `zapier help invite`
+
+```bash
+$ zapier invite user@example.com
+# Preparing to add invitee user@example.com to your app "Example".
+# 
+#   Adding user@example.com - done!
+# 
+# Invitees updated! Try viewing them with `zapier invite`.
+
+$ zapier invite user@example.com --remove
+# Preparing to remove invitee user@example.com from your app "Example".
+# 
+#   Removing user@example.com - done!
+# 
+# Invitees updated! Try viewing them with `zapier invite`.
+```
 
 
 ## history
@@ -292,9 +312,21 @@ Prints all recent history for your app.
 
 `zapier history`
 
-**TODO!**
+Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.
 
-This is markdown documentation.
+```bash
+$ zapier history
+# The history of your app "Example" listed below.
+# 
+# ┌──────────────────────────┬───────────────────┬──────────────────┬─────────────────────┐
+# │ What                     │ Message           │ Who              │ Timestamp           │
+# ├──────────────────────────┼───────────────────┼──────────────────┼─────────────────────┤
+# │ collaborator added       │ other@example.com │ user@example.com │ 2016-01-10T16:12:33 │
+# │ environment variable set │ API_KEY           │ user@example.com │ 2016-01-01T22:51:01 │
+# │ version added            │ 1.2.52            │ user@example.com │ 2016-01-01T22:19:36 │
+# │ app created              │ initial creation  │ user@example.com │ 2016-01-01T22:19:28 │
+# └──────────────────────────┴───────────────────┴──────────────────┴─────────────────────┘
+```
 
 
 ## logs
