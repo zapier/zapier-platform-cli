@@ -87,23 +87,21 @@ const makeRowBasedTable = (rows, columnDefs) => {
       const [label, key, _default] = columnDef;
       var val = String(_.get(row, key || label, _default || '')).trim();
 
-      if (val) {
-        if (stringLength(val) > widthForValue) {
-          try {
-            val = prettyJSONstringify(JSON.parse(val));
-          } catch(err) {
-            // Wasn't JSON, so splice in newlines so that word wraping works properly
-            var rest = val;
-            val = '';
-            while (stringLength(rest) > 0) {
-              val += rest.slice(0, widthForValue) + '\n';
-              rest = rest.slice(widthForValue);
-            }
+      if (stringLength(val) > widthForValue) {
+        try {
+          val = prettyJSONstringify(JSON.parse(val));
+        } catch(err) {
+          // Wasn't JSON, so splice in newlines so that word wraping works properly
+          var rest = val;
+          val = '';
+          while (stringLength(rest) > 0) {
+            val += rest.slice(0, widthForValue) + '\n';
+            rest = rest.slice(widthForValue);
           }
         }
-        consumptionRow['    ' + colors.bold(label)] = val.trim();
-        table.push(consumptionRow);
       }
+      consumptionRow['    ' + colors.bold(label)] = val.trim();
+      table.push(consumptionRow);
     });
 
     if (index < rows.length - 1) {
