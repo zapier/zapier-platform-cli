@@ -25,13 +25,16 @@ const rewriteLabels = (rows, columnDefs) => {
 // Wraps the cli-table2 library. Rows is an array of objects, columnDefs
 // an ordered sub-array [[label, key, (optional_default)], ...].
 const makeTable = (rows, columnDefs) => {
-  const table = new Table({
+  const options = {
     head: columnDefs.map(([label]) => label),
     style: {
       compact: true,
       head: ['bold']
-    }
-  });
+    },
+    // colWidths: [16, 40, 60], // detect term width?
+    // wordWrap: true
+  };
+  const table = new Table(options);
 
   rows.forEach((row) => {
     const consumptionRow = [];
