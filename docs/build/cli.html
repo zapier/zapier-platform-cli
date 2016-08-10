@@ -634,13 +634,23 @@ $ zapier build --disable-dependency-detection
       <blockquote>
 <p>Manage the collaborators on your project. Can optionally --remove.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Options</strong></p><ul>
+<li><em>none</em> -- print a table of all collaborators</li>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
 <li><code>--remove</code> -- optionally elect to remove this user, default false</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help collaborate</code></li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier collaborate user@example.com
+      <pre><code class="lang-bash">$ zapier collaborate
+<span class="hljs-comment"># The collaborators on your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Email            &#x2502; Role  &#x2502; Status   &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; user@example.com &#x2502; admin &#x2502; accepted &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+
+$ zapier collaborate user@example.com
 <span class="hljs-comment"># Preparing to add collaborator user@example.com to your app &quot;Example&quot;.</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment">#   Adding user@example.com - done!</span>
@@ -671,13 +681,23 @@ $ zapier collaborate user@example.com --remove
       <blockquote>
 <p>Manage the invitees/testers on your project. Can optionally --delete.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier invite [user@example.com]</code></p><p>Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you&apos;d only like to provide admin access, try <code>zapier collaborate</code>.</p><p><strong>Options</strong></p><ul>
+<li><em>none</em> -- print a table of all invitees</li>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
 <li><code>--remove</code> -- optionally elect to remove this user, default false</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help invite</code></li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier invite user@example.com
+      <pre><code class="lang-bash">$ zapier invite
+<span class="hljs-comment"># The invitees on your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Email            &#x2502; Role    &#x2502; Status   &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; user@example.com &#x2502; invitee &#x2502; accepted &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+
+$ zapier invite user@example.com
 <span class="hljs-comment"># Preparing to add invitee user@example.com to your app &quot;Example&quot;.</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment">#   Adding user@example.com - done!</span>

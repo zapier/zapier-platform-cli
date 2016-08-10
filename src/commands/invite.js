@@ -8,11 +8,21 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 
 **Options**
 
+* _none_ -- print a table of all invitees
 * \`[user@example.com]\` -- the user to add or remove
 * \`--remove\` -- optionally elect to remove this user, default false
 * \`--help\` -- prints this help text, same as \`zapier help invite\`
 
 ${'```'}bash
+$ zapier invite
+# The invitees on your app "Example" listed below.
+# 
+# ┌──────────────────┬─────────┬──────────┐
+# │ Email            │ Role    │ Status   │
+# ├──────────────────┼─────────┼──────────┤
+# │ user@example.com │ invitee │ accepted │
+# └──────────────────┴─────────┴──────────┘
+
 $ zapier invite user@example.com
 # Preparing to add invitee user@example.com to your app "Example".
 # 
