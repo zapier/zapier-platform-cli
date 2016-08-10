@@ -66,7 +66,7 @@ A handy command that will perform a bunch of steps for you:
 * Register the app with Zapier
 * Push a working version as a private app on Zapier
 
-After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running \`zapier auth\`.
+After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running \`zapier auth\`. If the directory is not empty the command will fail.
 
 **Options**
 
