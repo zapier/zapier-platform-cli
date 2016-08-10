@@ -37,10 +37,12 @@ var logs = () => {
       utils.printData(data.logs, columns, ifEmpty, true);
     });
 };
-logs.help = 'Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5';
+logs.help = 'Prints recent logs. See help for filter arguments.';
 logs.example = 'zapier logs --version=1.0.1';
 logs.docs = `\
 **TODO!**
+
+Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.
 
 This is markdown documentation.
 `;

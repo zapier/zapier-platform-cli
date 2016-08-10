@@ -287,7 +287,7 @@ $ zapier collaborate user@example.com --remove
 
 ## invite
 
-> Manage the invitees/testers on your project. Can optionally --delete.
+> Manage the invitees/testers on your project. Can optionally --remove.
 
 **Usage:** `zapier invite [user@example.com]`
 
@@ -351,11 +351,13 @@ $ zapier history
 
 ## logs
 
-> Prints recent logs. Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5
+> Prints recent logs. See help for filter arguments.
 
 **Usage:** `zapier logs --version=1.0.1`
 
 **TODO!**
+
+Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.
 
 This is markdown documentation.
 
