@@ -37,7 +37,7 @@ const scaffold = (type, name) => {
     return Promise.resolve();
   }
 
-  const templateFile = `../scaffold/${type}.template.js`;
+  const templateFile = path.join(__dirname, `../../scaffold/${type}.template.js`);
   const dest = global.argOpts.dest || destMap[type];
   const destFile = path.join(process.cwd(), dest + '.js');
   const entry = global.argOpts.entry || 'index.js';
@@ -86,21 +86,37 @@ const scaffold = (type, name) => {
     .then(() => console.log('\nFinished! We did the best we could, you might gut check your files though.'));
 };
 scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
-scaffold.usage = 'zapier scaffold {model|trigger|search|write} [--entry|--dest]';
+scaffold.usage = 'zapier scaffold {model|trigger|search|write} "Name"';
 scaffold.example = 'zapier scaffold model "Contact"';
 scaffold.docs = `\
-The scaffold command two *primary* things:
+The scaffold command does two general things:
 
 * Creates a new destination file like \`models/contact.js\`
 * (Attempts to) import and register it inside your entry \`index.js\`
 
 You can mix and match several options to customize the created scaffold for your project.
 
+> Note, we may fail to rewrite your \`index.js\` so you may need to handle the 
+
+**Options**
+
+* \`{model|trigger|search|write}\` - what thing are you creating
+* \`"Name"\` -- the name of the new thing to create
+* \`--dest=path\` -- sets the new file's path, default is \`'{type}s/{name}'\`
+* \`--entry=path\` -- where to import the new file, default is \`'index.js'\`
+${utils.defaultOptionsDocFragment({cmd: 'versions'})}
+
 ${'```'}bash
 $ ${scaffold.example}
 $ zapier scaffold model "Contact" --entry=index.js
 $ zapier scaffold model "Contag Tag" --dest=models/tag
-$ zapier scaffold model "List" --entry=index.js --dest=models/list
+$ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
+# Adding model scaffold to your project.
+# 
+#   Writing new models/tag.js - done!
+#   Rewriting your index.js - done!
+# 
+# Finished! We did the best we could, you might gut check your files though.
 ${'```'}
 `;
 

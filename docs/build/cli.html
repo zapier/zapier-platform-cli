@@ -372,16 +372,32 @@ $ zapier <span class="hljs-built_in">help</span> scaffold
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Adds a sample model, trigger, action or search to your app.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier scaffold {model|trigger|search|write} [--entry|--dest]</code></p><p>The scaffold command two <em>primary</em> things:</p><ul>
+</blockquote><p><strong>Usage:</strong> <code>zapier scaffold {model|trigger|search|write} &quot;Name&quot;</code></p><p>The scaffold command does two general things:</p><ul>
 <li>Creates a new destination file like <code>models/contact.js</code></li>
 <li>(Attempts to) import and register it inside your entry <code>index.js</code></li>
-</ul><p>You can mix and match several options to customize the created scaffold for your project.</p>
+</ul><p>You can mix and match several options to customize the created scaffold for your project.</p><blockquote>
+<p>Note, we may fail to rewrite your <code>index.js</code> so you may need to handle the </p>
+</blockquote><p><strong>Options</strong></p><ul>
+<li><code>{model|trigger|search|write}</code> - what thing are you creating</li>
+<li><code>&quot;Name&quot;</code> -- the name of the new thing to create</li>
+<li><code>--dest=path</code> -- sets the new file&apos;s path, default is <code>&apos;{type}s/{name}&apos;</code></li>
+<li><code>--entry=path</code> -- where to import the new file, default is <code>&apos;index.js&apos;</code></li>
+<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span>
 $ zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span> --entry=index.js
 $ zapier scaffold model <span class="hljs-string">&quot;Contag Tag&quot;</span> --dest=models/tag
-$ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entry=index.js --dest=models/list
+$ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry=index.js --dest=models/tag
+<span class="hljs-comment"># Adding model scaffold to your project.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Writing new models/tag.js - done!</span>
+<span class="hljs-comment">#   Rewriting your index.js - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Finished! We did the best we could, you might gut check your files though.</span>
 </code></pre>
     </div>
   </div>

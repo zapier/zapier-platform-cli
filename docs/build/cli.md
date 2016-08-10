@@ -97,20 +97,38 @@ $ zapier create "Example" example-dir --style=helloworld
 
 > Adds a sample model, trigger, action or search to your app.
 
-**Usage:** `zapier scaffold {model|trigger|search|write} [--entry|--dest]`
+**Usage:** `zapier scaffold {model|trigger|search|write} "Name"`
 
-The scaffold command two *primary* things:
+The scaffold command does two general things:
 
 * Creates a new destination file like `models/contact.js`
 * (Attempts to) import and register it inside your entry `index.js`
 
 You can mix and match several options to customize the created scaffold for your project.
 
+> Note, we may fail to rewrite your `index.js` so you may need to handle the 
+
+**Options**
+
+* `{model|trigger|search|write}` - what thing are you creating
+* `"Name"` -- the name of the new thing to create
+* `--dest=path` -- sets the new file's path, default is `'{type}s/{name}'`
+* `--entry=path` -- where to import the new file, default is `'index.js'`
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help versions`
+* `--debug` -- print debug API calls and tracebacks
+
 ```bash
 $ zapier scaffold model "Contact"
 $ zapier scaffold model "Contact" --entry=index.js
 $ zapier scaffold model "Contag Tag" --dest=models/tag
-$ zapier scaffold model "List" --entry=index.js --dest=models/list
+$ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
+# Adding model scaffold to your project.
+# 
+#   Writing new models/tag.js - done!
+#   Rewriting your index.js - done!
+# 
+# Finished! We did the best we could, you might gut check your files though.
 ```
 
 
