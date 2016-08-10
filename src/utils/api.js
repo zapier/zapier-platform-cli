@@ -151,7 +151,7 @@ const listApps = () => {
 
 const listEndoint = (endpoint, keyOverride) => {
   return checkCredentials()
-    .then(getLinkedApp)
+    .then(() => getLinkedApp())
     .then((app) => {
       return Promise.all([
         app,

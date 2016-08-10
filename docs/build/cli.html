@@ -294,7 +294,10 @@ $ zapier <span class="hljs-built_in">help</span> scaffold
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Configure your <code>~/.zapierrc</code> with a deploy key for using the CLI.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p><p><strong>Options</strong></p><ul>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help auth</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier auth
@@ -432,6 +435,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 <p>Lists all the apps you can access.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier apps</code></p><p>Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with <code>zapier link</code>.</p><p><strong>Options</strong></p><ul>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help apps</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
@@ -462,10 +466,21 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Lists all the versions of the current app.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier versions</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier versions</code></p><p><strong>Options</strong></p><ul>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier versions
+<span class="hljs-comment"># All versions of your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Version &#x2502; Platform &#x2502; Users &#x2502; Deployment     &#x2502; Deprecation Date &#x2502; Timestamp           &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; 1.0.0   &#x2502; 3.0.0    &#x2502; 0     &#x2502; non-production &#x2502; null             &#x2502; 2016-01-01T22:19:36 &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+</code></pre>
     </div>
   </div>
 </div><div class="row">
@@ -515,6 +530,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 </blockquote><p><strong>Options</strong></p><ul>
 <li><code>--disable-dependency-detection</code> -- disables walking required files to slim the build</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help build</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
@@ -589,8 +605,9 @@ $ zapier scaffold model <span class="hljs-string">&quot;List&quot;</span> --entr
 <p>Deploys a specific version to a production.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier deploy 1.0.0</code></p>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier deploy 1.0.0
+</code></pre>
     </div>
   </div>
 </div><div class="row">
@@ -699,6 +716,7 @@ $ zapier collaborate user@example.com --remove
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
 <li><code>--remove</code> -- optionally elect to remove this user, default false</li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help invite</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
@@ -772,10 +790,14 @@ $ zapier invite user@example.com --remove
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Prints recent logs. See help for filter arguments.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier logs --version=1.0.1</code></p><p><strong>TODO!</strong></p><p>Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.</p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier logs --version=1.0.1</code></p><p>Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.</p><p>This is markdown documentation.</p><p><strong>Options</strong></p><ul>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help logs</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier logs
+</code></pre>
     </div>
   </div>
 </div><div class="row">

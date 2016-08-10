@@ -12,6 +12,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * \`[user@example.com]\` -- the user to add or remove
 * \`--remove\` -- optionally elect to remove this user, default false
 * \`--help\` -- prints this help text, same as \`zapier help invite\`
+* \`--debug\` -- print debug API calls and tracebacks
 
 ${'```'}bash
 $ zapier invite

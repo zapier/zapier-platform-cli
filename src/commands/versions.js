@@ -20,9 +20,21 @@ var versions = () => {
 versions.help = 'Lists all the versions of the current app.';
 versions.example = 'zapier versions';
 versions.docs = `\
-**TODO!**
+**Options**
 
-This is markdown documentation.
+* \`--help\` -- prints this help text, same as \`zapier help versions\`
+* \`--debug\` -- print debug API calls and tracebacks
+
+${'```'}bash
+$ zapier versions
+# All versions of your app "Example" listed below.
+# 
+# ┌─────────┬──────────┬───────┬────────────────┬──────────────────┬─────────────────────┐
+# │ Version │ Platform │ Users │ Deployment     │ Deprecation Date │ Timestamp           │
+# ├─────────┼──────────┼───────┼────────────────┼──────────────────┼─────────────────────┤
+# │ 1.0.0   │ 3.0.0    │ 0     │ non-production │ null             │ 2016-01-01T22:19:36 │
+# └─────────┴──────────┴───────┴────────────────┴──────────────────┴─────────────────────┘
+${'```'}
 `;
 
 module.exports = versions;

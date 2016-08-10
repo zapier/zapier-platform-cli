@@ -29,6 +29,7 @@ It does the following steps:
 
 * \`--disable-dependency-detection\` -- disables walking required files to slim the build
 * \`--help\` -- prints this help text, same as \`zapier help build\`
+* \`--debug\` -- print debug API calls and tracebacks
 
 ${'```'}bash
 $ zapier build

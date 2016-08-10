@@ -33,6 +33,11 @@ $ zapier help scaffold
 
 This is an interactive prompt which will set up your account deploy keys and credentials.
 
+**Options**
+
+* `--help` -- prints this help text, same as `zapier help auth`
+* `--debug` -- print debug API calls and tracebacks
+
 ```bash
 $ zapier auth
 # What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
@@ -134,6 +139,7 @@ Lists any apps that you have admin access to. Also checks for the current direct
 **Options**
 
 * `--help` -- prints this help text, same as `zapier help apps`
+* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier apps
@@ -155,9 +161,21 @@ $ zapier apps
 
 **Usage:** `zapier versions`
 
-**TODO!**
+**Options**
 
-This is markdown documentation.
+* `--help` -- prints this help text, same as `zapier help versions`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier versions
+# All versions of your app "Example" listed below.
+# 
+# ┌─────────┬──────────┬───────┬────────────────┬──────────────────┬─────────────────────┐
+# │ Version │ Platform │ Users │ Deployment     │ Deprecation Date │ Timestamp           │
+# ├─────────┼──────────┼───────┼────────────────┼──────────────────┼─────────────────────┤
+# │ 1.0.0   │ 3.0.0    │ 0     │ non-production │ null             │ 2016-01-01T22:19:36 │
+# └─────────┴──────────┴───────┴────────────────┴──────────────────┴─────────────────────┘
+```
 
 
 ## validate
@@ -195,6 +213,7 @@ It does the following steps:
 
 * `--disable-dependency-detection` -- disables walking required files to slim the build
 * `--help` -- prints this help text, same as `zapier help build`
+* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier build
@@ -239,6 +258,11 @@ This is markdown documentation.
 > Deploys a specific version to a production.
 
 **Usage:** `zapier deploy 1.0.0`
+
+```bash
+$ zapier deploy 1.0.0
+
+```
 
 
 ## migrate
@@ -318,6 +342,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * `[user@example.com]` -- the user to add or remove
 * `--remove` -- optionally elect to remove this user, default false
 * `--help` -- prints this help text, same as `zapier help invite`
+* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier invite
@@ -374,11 +399,18 @@ $ zapier history
 
 **Usage:** `zapier logs --version=1.0.1`
 
-**TODO!**
-
 Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.
 
 This is markdown documentation.
+
+**Options**
+
+* `--help` -- prints this help text, same as `zapier help logs`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier logs
+```
 
 
 ## env

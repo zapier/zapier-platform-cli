@@ -40,11 +40,18 @@ var logs = () => {
 logs.help = 'Prints recent logs. See help for filter arguments.';
 logs.example = 'zapier logs --version=1.0.1';
 logs.docs = `\
-**TODO!**
-
 Can filter --{error|success} --{http|console} --user=you@person.com --detailed --limit=5.
 
 This is markdown documentation.
+
+**Options**
+
+* \`--help\` -- prints this help text, same as \`zapier help logs\`
+* \`--debug\` -- print debug API calls and tracebacks
+
+${'```'}bash
+$ zapier logs
+${'```'}
 `;
 
 module.exports = logs;

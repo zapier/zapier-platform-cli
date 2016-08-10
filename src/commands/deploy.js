@@ -26,6 +26,10 @@ var deploy = (version) => {
 deploy.help = 'Deploys a specific version to a production.';
 deploy.example = 'zapier deploy 1.0.0';
 deploy.docs = `\
+${'```'}bash
+$ zapier deploy 1.0.0
+
+${'```'}
 
 `;
 
