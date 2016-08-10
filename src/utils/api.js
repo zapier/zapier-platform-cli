@@ -142,7 +142,7 @@ const listApps = () => {
       return {
         app: linkedApp,
         apps: data.objects.map((app) => {
-          app.linked = (linkedApp && app.id === linkedApp.id) ? '✔' : '';
+          app.linked = (linkedApp && app.id === linkedApp.id) ? colors.green('✔') : '';
           return app;
         })
       };
