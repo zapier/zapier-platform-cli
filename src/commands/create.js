@@ -1,4 +1,3 @@
-var execSync = require('child_process').execSync;
 const constants = require('../constants');
 const utils = require('../utils');
 const path = require('path');
@@ -57,7 +56,7 @@ const create = (title, location = '.') => {
     });
 };
 create.help = 'Creates a new app in your account.';
-create.example = 'zapier create "My Example App"';
+create.example = 'zapier create "Example" [dir]';
 create.docs = `\
 A handy command that will perform a bunch of steps for you:
 
@@ -69,15 +68,21 @@ A handy command that will perform a bunch of steps for you:
 
 After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running \`zapier auth\`.
 
+**Options**
+
+* \`"Example"\` -- the name of your app
+* \`[dir]\` -- an optional directory, default is \`.\`
+* \`--style=helloworld|oauth2\` -- select a starting app template
+* \`--help\` -- prints this help text, same as \`zapier help create\`
+* \`--debug\` -- print debug API calls and tracebacks
+
 ${'```'}bash
-$ zapier create "My App"
-$ zapier create "Hello World" --style=helloworld
-$ zapier create "Joe's CRM" --style=oauth2
-# Let's create your app "My App"!
+$ zapier create "Example" example-app --style=helloworld
+# Let's create your app "Example"!
 #
 #   Cloning starter app from zapier/example-app - done!
 #   Installing project dependencies - done!
-#   Creating a new app named "My App" - done!
+#   Creating a new app named "Example" - done!
 #   Setting up .zapierapprc file - done!
 #   Copying project to temp directory - done!
 #   Installing project dependencies - done!
