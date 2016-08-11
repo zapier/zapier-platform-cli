@@ -96,7 +96,7 @@ The scaffold command does two general things:
 
 You can mix and match several options to customize the created scaffold for your project.
 
-> Note, we may fail to rewrite your \`index.js\` so you may need to handle the 
+> Note, we may fail to rewrite your \`index.js\` so you may need to handle the require and registration yourself.
 
 **Options**
 
