@@ -7,6 +7,8 @@ const commands = require('./commands');
 const utils = require('./utils');
 
 module.exports = (argv) => {
+  process.on('exit', utils.clearSpinner);
+
   if (!utils.isValidNodeVersion()) {
     console.error(
       `Requires node version >= ${MIN_NODE_VERSION.major}.${MIN_NODE_VERSION.minor}.${MIN_NODE_VERSION.patch}, found ${process.versions.node}. Please upgrade node.`
