@@ -30,7 +30,7 @@ const rewriteLabels = (rows, columnDefs) => {
 const makePlain = (rows, columnDefs) => {
   return rewriteLabels(rows, columnDefs).map((row) => {
     return _.map(row, (value, key) => {
-      return (colors.bold(key) + '\n' + value).trim();
+      return (colors.grey('==') + ' ' + colors.bold(key) + '\n' + value).trim();
     }).join('\n');
   }).join('\n\n---\n\n');
 };
