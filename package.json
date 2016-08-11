@@ -19,7 +19,7 @@
     "build": "rm -rf lib && node_modules/babel-cli/bin/babel.js src -d lib",
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
     "test": "node_modules/mocha/bin/mocha lib/tests",
-    "lint": "node_modules/.bin/eslint zapier.js src test",
+    "lint": "node_modules/.bin/eslint zapier.js src test && node_modules/mocha/bin/mocha lib/tests",
     "zapier": "zapier.js"
   },
   "dependencies": {
