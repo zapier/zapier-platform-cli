@@ -53,7 +53,7 @@ const link = () => {
 link.help = 'Link the current directory to an app in your account.';
 link.example = 'zapier link';
 link.docs = `\
-Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you'd just \`git clone git@github.com:example-inc/example.git\` which would have a \`.zapierapprc\` file already included. If not, you'd need to be an admin on the app and use this command to regenerate the \`.zapierapprc\` file.
+Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you'd just \`git clone git@github.com:example-inc/example.git\` which would have a \`${constants.CURRENT_APP_FILE}\` file already included. If not, you'd need to be an admin on the app and use this command to regenerate the \`${constants.CURRENT_APP_FILE}\` file.
 
 Or, if you are making an app from scratch - you'd prefer the \`zapier create "Example"\`.
 
@@ -77,7 +77,7 @@ $ zapier link
   1
 # 
 #   Selecting existing app "Example" - done!
-#   Setting up \`.zapierapprc\` file - done!
+#   Setting up \`${constants.CURRENT_APP_FILE}\` file - done!
 # 
 # Finished! You can \`zapier push\` now to build & upload a version!
 ${'```'}
