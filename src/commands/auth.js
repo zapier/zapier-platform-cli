@@ -39,10 +39,6 @@ auth.example = 'zapier auth';
 auth.docs = `\
 This is an interactive prompt which will set up your account deploy keys and credentials.
 
-**Options**
-
-${utils.defaultOptionsDocFragment({cmd: 'auth'})}
-
 ${'```'}bash
 $ zapier auth
 # ${QUESTION}

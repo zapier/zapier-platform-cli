@@ -329,11 +329,7 @@ $ zapier <span class="hljs-built_in">help</span>
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Configure your <code>~/.zapierrc</code> with a deploy key for using the CLI.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help auth</code></li>
-<li><code>--debug</code> -- print debug API calls and tracebacks</li>
-</ul>
+</blockquote><p><strong>Usage:</strong> <code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier auth
@@ -414,9 +410,6 @@ $ zapier <span class="hljs-built_in">help</span>
 <li><code>&quot;Name&quot;</code> -- the name of the new thing to create</li>
 <li><code>--dest=path</code> -- sets the new file&apos;s path, default is <code>&apos;{type}s/{name}&apos;</code></li>
 <li><code>--entry=path</code> -- where to import the new file, default is <code>&apos;index.js&apos;</code></li>
-<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
-<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -759,11 +752,7 @@ $ zapier validate
 <li>This <strong>does not</strong> move old users over to this version - <code>zapier migrate 1.0.0 1.0.1</code> does that.</li>
 </ul><p>Deploys are an inherently safe operation for all existing users of your app.</p><blockquote>
 <p>If this is your first time deploying - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We&apos;ll respond within a few business days.</p>
-</blockquote><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help deploy</code></li>
-<li><code>--debug</code> -- print debug API calls and tracebacks</li>
-</ul>
+</blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier deploy 1.0.0
@@ -830,9 +819,6 @@ $ zapier validate
 </blockquote><p><strong>Options</strong></p><ul>
 <li><code>1.0.0</code> -- the version to deprecate</li>
 <li><code>2017-01-20</code> -- what date should we deprecate on</li>
-<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help deprecate</code></li>
-<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">

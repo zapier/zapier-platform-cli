@@ -66,12 +66,6 @@ $ zapier help
 
 This is an interactive prompt which will set up your account deploy keys and credentials.
 
-**Options**
-
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help auth`
-* `--debug` -- print debug API calls and tracebacks
-
 ```bash
 $ zapier auth
 # What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
@@ -144,9 +138,6 @@ You can mix and match several options to customize the created scaffold for your
 * `"Name"` -- the name of the new thing to create
 * `--dest=path` -- sets the new file's path, default is `'{type}s/{name}'`
 * `--entry=path` -- where to import the new file, default is `'index.js'`
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help versions`
-* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier scaffold model "Contact"
@@ -434,12 +425,6 @@ Deploys are an inherently safe operation for all existing users of your app.
 
 > If this is your first time deploying - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We'll respond within a few business days.
 
-**Options**
-
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help deploy`
-* `--debug` -- print debug API calls and tracebacks
-
 ```bash
 $ zapier deploy 1.0.0
 # Preparing to deploy version 1.0.0 your app "Example".
@@ -498,9 +483,6 @@ A utility to alert users of breaking changes that require the deprecation of an 
 
 * `1.0.0` -- the version to deprecate
 * `2017-01-20` -- what date should we deprecate on
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help deprecate`
-* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier deprecate 1.0.0 2017-01-20

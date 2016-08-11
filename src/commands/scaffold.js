@@ -104,7 +104,6 @@ You can mix and match several options to customize the created scaffold for your
 * \`"Name"\` -- the name of the new thing to create
 * \`--dest=path\` -- sets the new file's path, default is \`'{type}s/{name}'\`
 * \`--entry=path\` -- where to import the new file, default is \`'index.js'\`
-${utils.defaultOptionsDocFragment({cmd: 'versions'})}
 
 ${'```'}bash
 $ ${scaffold.example}
