@@ -274,9 +274,42 @@ blockquote {
 </blockquote><p><strong>Usage:</strong> <code>zapier help [command]</code></p><p>Prints documentation to the terminal screen.</p>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">help</span>
-$ zapier <span class="hljs-built_in">help</span> apps
+      <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">help</span> apps
 $ zapier <span class="hljs-built_in">help</span> scaffold
+$ zapier <span class="hljs-built_in">help</span>
+<span class="hljs-comment"># Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># This Zapier command works off of two files:</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#  * ~/.zapierrc      (home directory identifies the deploy key &amp; user)</span>
+<span class="hljs-comment">#  * ./.zapierapprc   (current directory identifies the app)</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># The `zapier auth` and `zapier create`/`zapier link` commands will help manage those files. All commands listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Command     &#x2502; Example                               &#x2502; Help                                                                       &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; help        &#x2502; zapier help [command]                 &#x2502; Lists all the commands you can use.                                        &#x2502;</span>
+<span class="hljs-comment"># &#x2502; auth        &#x2502; zapier auth                           &#x2502; Configure your `~/.zapierrc` with a deploy key for using the CLI.          &#x2502;</span>
+<span class="hljs-comment"># &#x2502; create      &#x2502; zapier create &quot;Example&quot; [dir]         &#x2502; Creates a new app in your account.                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502; scaffold    &#x2502; zapier scaffold model &quot;Contact&quot;       &#x2502; Adds a sample model, trigger, action or search to your app.                &#x2502;</span>
+<span class="hljs-comment"># &#x2502; describe    &#x2502; zapier describe                       &#x2502; Describes the current app.                                                 &#x2502;</span>
+<span class="hljs-comment"># &#x2502; link        &#x2502; zapier link                           &#x2502; Link the current directory to an app in your account.                      &#x2502;</span>
+<span class="hljs-comment"># &#x2502; apps        &#x2502; zapier apps                           &#x2502; Lists all the apps you can access.                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502; versions    &#x2502; zapier versions                       &#x2502; Lists all the versions of the current app.                                 &#x2502;</span>
+<span class="hljs-comment"># &#x2502; validate    &#x2502; zapier validate                       &#x2502; Validates the current project.                                             &#x2502;</span>
+<span class="hljs-comment"># &#x2502; build       &#x2502; zapier build                          &#x2502; Builds a deployable zip from the current directory.                        &#x2502;</span>
+<span class="hljs-comment"># &#x2502; upload      &#x2502; zapier upload                         &#x2502; Upload the last build as a version.                                        &#x2502;</span>
+<span class="hljs-comment"># &#x2502; push        &#x2502; zapier push                           &#x2502; Build and upload a new version of the current app - does not deploy.       &#x2502;</span>
+<span class="hljs-comment"># &#x2502; deploy      &#x2502; zapier deploy 1.0.0                   &#x2502; Deploys a specific version to a production.                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502; migrate     &#x2502; zapier migrate 1.0.0 1.0.1 [10%]      &#x2502; Migrate users from one version to another.                                 &#x2502;</span>
+<span class="hljs-comment"># &#x2502; deprecate   &#x2502; zapier deprecate 1.0.0 2017-01-20     &#x2502; Mark a non-production version of your app as deprecated by a certain date. &#x2502;</span>
+<span class="hljs-comment"># &#x2502; collaborate &#x2502; zapier collaborate [user@example.com] &#x2502; Manage the collaborators on your project. Can optionally --remove.         &#x2502;</span>
+<span class="hljs-comment"># &#x2502; invite      &#x2502; zapier invite [user@example.com]      &#x2502; Manage the invitees/testers on your project. Can optionally --remove.      &#x2502;</span>
+<span class="hljs-comment"># &#x2502; history     &#x2502; zapier history                        &#x2502; Prints all recent history for your app.                                    &#x2502;</span>
+<span class="hljs-comment"># &#x2502; logs        &#x2502; zapier logs                           &#x2502; Prints recent logs. See help for filter arguments.                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502; env         &#x2502; zapier env 1.0.0 API_KEY 1234567890   &#x2502; Read and write environment variables.                                      &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 </code></pre>
     </div>
   </div>
