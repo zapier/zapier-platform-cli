@@ -18,8 +18,8 @@
     "prepublish": "npm run build",
     "build": "rm -rf lib && node_modules/babel-cli/bin/babel.js src -d lib",
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
-    "test": "node_modules/mocha/bin/mocha lib/tests",
-    "lint": "node_modules/.bin/eslint zapier.js src test && node_modules/mocha/bin/mocha lib/tests",
+    "lint": "node_modules/.bin/eslint zapier.js src test",
+    "test": "npm run lint && npm run build && node_modules/mocha/bin/mocha -t 10000 --recursive lib/tests/**/*.js",
     "zapier": "zapier.js"
   },
   "dependencies": {
@@ -42,6 +42,7 @@
     "fetch-mock": "4.6.0",
     "litdoc": "1.5.2",
     "mocha": "2.5.3",
+    "nock": "^8.0.0",
     "should": "9.0.2"
   },
   "bin": {

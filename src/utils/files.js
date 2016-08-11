@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs'); // TODO: fse is a drop in replacement for fs, don't need both
 const fse = require('fs-extra');
 
 const fixHome = (dir) => {
@@ -6,9 +6,19 @@ const fixHome = (dir) => {
   return dir.replace('~', home);
 };
 
+const fileExistsSync = (path) => {
+  try {
+    fs.accessSync(path);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 // Returns a promise that reads a file and returns a buffer.
 const readFile = (fileName, errMsg) => {
   return new Promise((resolve, reject) => {
+    // TODO: fs.exists is deprecated, use fs.access or fs.stat
     fs.exists(fixHome(fileName), (exists) => {
       if (!exists) {
         var msg = `: File ${fileName} not found.`;
@@ -96,4 +106,5 @@ module.exports = {
   copyDir,
   ensureDir,
   removeDir,
+  fileExistsSync
 };
