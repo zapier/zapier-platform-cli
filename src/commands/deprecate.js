@@ -21,15 +21,31 @@ var deprecate = (version, deprecation_date) => {
     .then(() => {
       utils.printDone();
       console.log('  Deprecation successful!\n');
-      console.log('We\'ll let users know that this version is no longer recommended.');
+      console.log(`We'll let users know that this version is no longer recommended and will cease working by ${deprecation_date}.`);
     });
 };
 deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecate.example = 'zapier deprecate 1.0.0 2018-01-20';
 deprecate.docs = `\
-**TODO!**
+A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the impending deprecation.
 
-This is markdown documentation.
+> Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
+
+**Options**
+
+* \`1.0.0\` -- the version to deprecate
+* \`2017-01-20\` -- what date should we deprecate on
+${utils.defaultOptionsDocFragment({cmd: 'versions'})}
+
+${'```'}bash
+$ zapier deprecate 1.0.0 2017-01-20
+# Preparing to deprecate version 1.0.0 your app "Example".
+# 
+#   Deprecating 1.0.0 - done!
+#   Deprecation successful!
+# 
+# We'll let users know that this version is no longer recommended and will cease working by 2017-01-20.
+${'```'}
 `;
 
 module.exports = deprecate;
