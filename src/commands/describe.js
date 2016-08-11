@@ -35,9 +35,34 @@ const describe = () => {
 describe.help = 'Describes the current app.';
 describe.example = 'zapier describe';
 describe.docs = `\
-**TODO!**
+Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models relate to different actions.
 
-This is markdown documentation.
+**Options**
+
+${utils.defaultOptionsDocFragment({cmd: 'versions'})}
+
+${'```'}bash
+$ zapier describe
+# A description of your app "Example" listed below.
+# 
+# Triggers
+# 
+# ┌─────────────┬──────────┬───────────────┬─────────────────┬───────────────────┐
+# │ key         │ noun     │ display.label │ operation.model │ operation.perform │
+# ├─────────────┼──────────┼───────────────┼─────────────────┼───────────────────┤
+# │ hello_world │ Greeting │ New Greeting  │ n/a             │ $func$2$f$        │
+# └─────────────┴──────────┴───────────────┴─────────────────┴───────────────────┘
+# 
+# Searches
+# 
+#  Nothing found for searches, maybe try the \`zapier scaffold\` command?
+# 
+# Writes
+# 
+#  Nothing found for writes, maybe try the \`zapier scaffold\` command?
+# 
+# If you'd like to add more, try the \`zapier scaffold\` command to kickstart!
+${'```'}
 `;
 
 module.exports = describe;
