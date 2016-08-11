@@ -11,6 +11,7 @@ module.exports = (argv) => {
     console.error(
       `Requires node version >= ${MIN_NODE_VERSION.major}.${MIN_NODE_VERSION.minor}.${MIN_NODE_VERSION.patch}, found ${process.versions.node}. Please upgrade node.`
     );
+    /*eslint no-process-exit: 0 */
     process.exit(1);
   }
 

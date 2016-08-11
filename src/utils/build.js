@@ -216,8 +216,7 @@ const build = (zipPath, wdir) => {
 
 const buildAndUploadCurrentDir = (zipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
-  appDir = appDir || '.'
-  const fullZipPath = path.resolve(appDir, zipPath);
+  appDir = appDir || '.';
   return checkCredentials()
     .then(() => {
       return build(zipPath, appDir);
