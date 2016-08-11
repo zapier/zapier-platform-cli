@@ -415,10 +415,34 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Describes the current app.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier describe</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier describe</code></p><p>Prints a human readable enumeration of your app&apos;s triggers, searches and actions as seen by our system. Useful to understand how your models relate to different actions.</p><p><strong>Options</strong></p><ul>
+<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier describe
+<span class="hljs-comment"># A description of your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Triggers</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; key         &#x2502; noun     &#x2502; display.label &#x2502; operation.model &#x2502; operation.perform &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; hello_world &#x2502; Greeting &#x2502; New Greeting  &#x2502; n/a             &#x2502; $func$2$f$        &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Searches</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#  Nothing found for searches, maybe try the `zapier scaffold` command?</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Writes</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#  Nothing found for writes, maybe try the `zapier scaffold` command?</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># If you&apos;d like to add more, try the `zapier scaffold` command to kickstart!</span>
+</code></pre>
     </div>
   </div>
 </div><div class="row">
@@ -909,10 +933,34 @@ $ zapier logs --console
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Read and write environment variables.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier env 1.0.0 API_KEY 1234567890</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier env 1.0.0 API_KEY 1234567890</code></p><p>Manage the environment of your app so that <code>process.env</code> can access the keys, making it easy to match a local environment with working environment via <code>API_KEY=1234567890 npm test</code>.</p><p><strong>Options</strong></p><ul>
+<li><code>1.0.0</code> -- the version of the app to apply (omit to see all)</li>
+<li><code>KEY</code> -- the uppercase key of the environment variable to set</li>
+<li><code>VALUE</code> -- the raw value to set to the key</li>
+<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier env 1.0.0
+<span class="hljs-comment"># The env of your &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Version &#x2502; Key     &#x2502; Value      &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; 1.0.0   &#x2502; API_KEY &#x2502; 1234567890 &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Try setting an env with the `zapier env 1.0.0 API_KEY 1234567890` command.</span>
+
+$ zapier env 1.0.0 API_KEY 1234567890
+<span class="hljs-comment"># Preparing to set environment API_KEY for your 1.0.0 &quot;Example&quot;.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Setting API_KEY to &quot;1234567890&quot; - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Environment updated! Try viewing it with `zapier env 1.0.0`.</span>
+</code></pre>
     </div>
   </div>
 </div>

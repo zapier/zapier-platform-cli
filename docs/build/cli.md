@@ -138,9 +138,36 @@ $ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
 
 **Usage:** `zapier describe`
 
-**TODO!**
+Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models relate to different actions.
 
-This is markdown documentation.
+**Options**
+
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help versions`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier describe
+# A description of your app "Example" listed below.
+# 
+# Triggers
+# 
+# ┌─────────────┬──────────┬───────────────┬─────────────────┬───────────────────┐
+# │ key         │ noun     │ display.label │ operation.model │ operation.perform │
+# ├─────────────┼──────────┼───────────────┼─────────────────┼───────────────────┤
+# │ hello_world │ Greeting │ New Greeting  │ n/a             │ $func$2$f$        │
+# └─────────────┴──────────┴───────────────┴─────────────────┴───────────────────┘
+# 
+# Searches
+# 
+#  Nothing found for searches, maybe try the `zapier scaffold` command?
+# 
+# Writes
+# 
+#  Nothing found for writes, maybe try the `zapier scaffold` command?
+# 
+# If you'd like to add more, try the `zapier scaffold` command to kickstart!
+```
 
 
 ## link
@@ -517,6 +544,33 @@ $ zapier logs --console
 
 **Usage:** `zapier env 1.0.0 API_KEY 1234567890`
 
-**TODO!**
+Manage the environment of your app so that `process.env` can access the keys, making it easy to match a local environment with working environment via `API_KEY=1234567890 npm test`.
 
-This is markdown documentation.
+**Options**
+
+* `1.0.0` -- the version of the app to apply (omit to see all)
+* `KEY` -- the uppercase key of the environment variable to set
+* `VALUE` -- the raw value to set to the key
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help versions`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier env 1.0.0
+# The env of your "Example" listed below.
+# 
+# ┌─────────┬─────────┬────────────┐
+# │ Version │ Key     │ Value      │
+# ├─────────┼─────────┼────────────┤
+# │ 1.0.0   │ API_KEY │ 1234567890 │
+# └─────────┴─────────┴────────────┘
+# 
+# Try setting an env with the `zapier env 1.0.0 API_KEY 1234567890` command.
+
+$ zapier env 1.0.0 API_KEY 1234567890
+# Preparing to set environment API_KEY for your 1.0.0 "Example".
+# 
+#   Setting API_KEY to "1234567890" - done!
+# 
+# Environment updated! Try viewing it with `zapier env 1.0.0`.
+```
