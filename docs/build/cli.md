@@ -333,9 +333,31 @@ $ zapier deploy 1.0.0
 
 **Usage:** `zapier migrate 1.0.0 1.0.1 [10%]`
 
-**TODO!**
+Starts a migration to move users between different versions of your app. You may also "revert" by simply swapping the from/to verion strings in the command line arguments (IE: `zapier migrate 1.0.1 1.0.0`).
 
-This is markdown documentation.
+Only migrate users between non-breaking versions, use `zapier deprecate` if you have breaking changes!
+
+Migrations can take between 5-10 minutes, so be patient and check `zapier history` to track the status.
+
+> Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert simply.
+
+**Options**
+
+* `1.0.0` -- the version **from** which to migrate users
+* `1.0.1` -- the version **to** which to migrate users
+* `[10%]` -- an optional percent of users to migrate, default is `100%`
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help versions`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier migrate 1.0.0 1.0.1 15%
+# Getting ready to migrate your app "Example" from 1.0.0 to 1.0.1.
+# 
+#   Starting migration from 1.0.0 to 1.0.1 for 15% - done!
+# 
+# Deploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.
+```
 
 
 ## deprecate
@@ -344,9 +366,27 @@ This is markdown documentation.
 
 **Usage:** `zapier deprecate 1.0.0 2018-01-20`
 
-**TODO!**
+A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the impending deprecation.
 
-This is markdown documentation.
+> Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
+
+**Options**
+
+* `1.0.0` -- the version to deprecate
+* `2017-01-20` -- what date should we deprecate on
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help versions`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier deprecate 1.0.0 2017-01-20
+# Preparing to deprecate version 1.0.0 your app "Example".
+# 
+#   Deprecating 1.0.0 - done!
+#   Deprecation successful!
+# 
+# We'll let users know that this version is no longer recommended and will cease working by 2017-01-20.
+```
 
 
 ## collaborate
