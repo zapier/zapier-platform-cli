@@ -7,7 +7,7 @@ var deploy = (version) => {
   }
 
   return utils.checkCredentials()
-    .then(utils.getLinkedApp)
+    .then(() => utils.getLinkedApp())
     .then((app) => {
       console.log(`Preparing to deploy version ${version} your app "${app.title}".\n`);
       var url = `/apps/${app.id}/versions/${version}/deploy/production`;

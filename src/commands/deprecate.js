@@ -6,7 +6,7 @@ var deprecate = (version, deprecation_date) => {
     return Promise.resolve(true);
   }
   return utils.checkCredentials()
-    .then(utils.getLinkedApp)
+    .then(() => utils.getLinkedApp())
     .then((app) => {
       console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
       var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';

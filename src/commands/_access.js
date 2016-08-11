@@ -8,7 +8,7 @@ const makeAccess = (command, recordType) => {
   const access = (email) => {
     if (email) {
       return utils.checkCredentials()
-        .then(utils.getLinkedApp)
+        .then(() => utils.getLinkedApp())
         .then((app) => {
           var url = `/apps/${app.id}/${recordTypePlural}/${email}`;
           if (global.argOpts.remove) {
