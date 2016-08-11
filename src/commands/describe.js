@@ -35,7 +35,7 @@ const describe = () => {
 describe.help = 'Describes the current app.';
 describe.example = 'zapier describe';
 describe.docs = `\
-Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models relate to different actions.
+Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
 
 **Options**
 

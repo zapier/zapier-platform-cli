@@ -130,7 +130,7 @@ The scaffold command does two general things:
 
 You can mix and match several options to customize the created scaffold for your project.
 
-> Note, we may fail to rewrite your `index.js` so you may need to handle the 
+> Note, we may fail to rewrite your `index.js` so you may need to handle the require and registration yourself.
 
 **Options**
 
@@ -159,11 +159,11 @@ $ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
 
 **Usage:** `zapier describe`
 
-Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models relate to different actions.
+Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
 
 **Options**
 
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help describe`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -193,7 +193,7 @@ $ zapier describe
 
 ## link
 
-> Link the current directory to an app in your account.
+> Link the current directory to an app you have access to.
 
 **Usage:** `zapier link`
 
@@ -203,7 +203,7 @@ Or, if you are making an app from scratch - you'd prefer the `zapier create "Exa
 
 **Options**
 
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help link`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -239,7 +239,7 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Options**
 
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help apps`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -265,7 +265,7 @@ $ zapier apps
 
 **Options**
 
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help versions`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -291,7 +291,7 @@ Runs the standard validation routine powered by json-schema that checks your app
 
 **Options**
 
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help validate`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -455,9 +455,6 @@ Migrations can take between 5-10 minutes, so be patient and check `zapier histor
 * `1.0.0` -- the version **from** which to migrate users
 * `1.0.1` -- the version **to** which to migrate users
 * `[10%]` -- an optional percent of users to migrate, default is `100%`
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help migrate`
-* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier migrate 1.0.0 1.0.1 15%
@@ -507,7 +504,7 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * `[user@example.com]` -- the user to add or remove
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help collaborate`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -550,7 +547,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print a table of all invitees
 * `[user@example.com]` -- the user to add or remove
 * `--remove` -- optionally elect to remove this user, default false
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help invite`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -590,7 +587,7 @@ Get the history of your app, listing all the changes made over the lifetime of y
 
 **Options**
 
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help history`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -627,7 +624,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 * `--detailed` -- show detailed logs (like http body), default `false`
 * `--user=user@example.com` -- display only this users logs, default `null`
 * `--limit=5` -- display only console or http logs, default `50`
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help logs`
 * `--debug` -- print debug API calls and tracebacks
 
@@ -700,10 +697,11 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 
 **Options**
 
-* `1.0.0` -- the version of the app to apply (omit to see all)
+* _none_ -- print a table of all environment variables, regardless of app version
+* `1.0.0` -- the app version's environment to work on
 * `KEY` -- the uppercase key of the environment variable to set
 * `VALUE` -- the raw value to set to the key
-* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--format={plain|json|row|table}` -- display format, default is `table`
 * `--help` -- prints this help text, same as `zapier help env`
 * `--debug` -- print debug API calls and tracebacks
 

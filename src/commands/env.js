@@ -46,7 +46,8 @@ Manage the environment of your app so that \`process.env\` can access the keys, 
 
 **Options**
 
-* \`1.0.0\` -- the version of the app to apply (omit to see all)
+* _none_ -- print a table of all environment variables, regardless of app version
+* \`1.0.0\` -- the app version's environment to work on
 * \`KEY\` -- the uppercase key of the environment variable to set
 * \`VALUE\` -- the raw value to set to the key
 ${utils.defaultOptionsDocFragment({cmd: 'env'})}
