@@ -71,21 +71,21 @@ $ zapier logs
 $ zapier logs --http --detailed --format=plain
 # The logs of your app "Example" listed below.
 # 
-# Status
+# == Status
 # 200
-# URL
+# == URL
 # http://httpbin.org/get
-# Querystring
+# == Querystring
 # hello=world
-# Version
+# == Version
 # 1.0.0
-# Step
+# == Step
 # 99c16565-1547-4b16-bcb5-45189d9d8afa
-# Timestamp
+# == Timestamp
 # 2016-08-03T23:04:36-05:00
-# Request Body
+# == Request Body
 # undefined
-# Response Body
+# == Response Body
 # {
 #   "args": {
 #     "hello": "world"
