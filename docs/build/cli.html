@@ -456,10 +456,32 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Link the current directory to an app in your account.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier link</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier link</code></p><p>Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you&apos;d just <code>git clone git@github.com:example-inc/inc.git</code> which would have a <code>.zapierapprc</code> file already included. If not, you&apos;d need to be an admin on the app and use this command to regenerate the <code>.zapierapprc</code> file.</p><p>Or, if you are making an app from scratch - you&apos;d prefer the <code>zapier create &quot;Example&quot;</code>.</p><p><strong>Options</strong></p><ul>
+<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help link</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier link
+<span class="hljs-comment"># Which app would you like to link the current directory to?</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Number &#x2502; Title       &#x2502; Unique Key &#x2502; Timestamp           &#x2502; Linked &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; 1      &#x2502; Example     &#x2502; Example    &#x2502; 2016-01-01T22:19:28 &#x2502; &#x2714;      &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+<span class="hljs-comment">#      ...or type any title to create new app!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)</span>
+<span class="hljs-comment"># </span>
+  1
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Selecting existing app &quot;Example&quot; - done!</span>
+<span class="hljs-comment">#   Setting up `.zapierapprc` file - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Finished! You can `zapier push` now to build &amp; upload a version!</span>
+</code></pre>
     </div>
   </div>
 </div><div class="row">
@@ -634,10 +656,31 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Build and upload a new version of the current app - does not deploy.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier push</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier push</code></p><p>A shortcut for <code>zapier build &amp;&amp; zapier upload</code> - this is our recommended way to push a new version. This is a common workflow:</p><ol>
+<li>Make changes in <code>index.js</code> or other files.</li>
+<li>Run <code>npm test</code>.</li>
+<li>Run <code>zapier push</code>.</li>
+<li>QA/experiment in the Zapier.com Zap editor.</li>
+<li>Go to 1 and repeat.</li>
+</ol><blockquote>
+<p>Note: this is always a safe operation as live/production apps are protected from pushes. You must use <code>zapier deploy</code> or <code>zapier migrate</code> to impact live users.</p>
+</blockquote>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier push
+<span class="hljs-comment"># Preparing to build and upload a new version.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Copying project to temp directory - done!</span>
+<span class="hljs-comment">#   Installing project dependencies - done!</span>
+<span class="hljs-comment">#   Applying entry point file - done!</span>
+<span class="hljs-comment">#   Validating project - done!</span>
+<span class="hljs-comment">#   Building app definition.json - done!</span>
+<span class="hljs-comment">#   Zipping project and dependencies - done!</span>
+<span class="hljs-comment">#   Cleaning up temp directory - done!</span>
+<span class="hljs-comment">#   Uploading version 1.0.0 - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Build and upload complete! Try loading the Zapier editor now, or try `zapier deploy` to put it into rotation or `zapier migrate` to move users over</span>
+</code></pre>
     </div>
   </div>
 </div><div class="row">

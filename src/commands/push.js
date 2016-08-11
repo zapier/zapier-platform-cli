@@ -18,7 +18,7 @@ A shortcut for \`zapier build && zapier upload\` - this is our recommended way t
 4. QA/experiment in the Zapier.com Zap editor.
 5. Go to 1 and repeat.
 
-> Note: this is always a safe operation as live/production apps are protected from pushes. You must use \`zapier migrate\` to impact live users.
+> Note: this is always a safe operation as live/production apps are protected from pushes. You must use \`zapier deploy\` or \`zapier migrate\` to impact live users.
 
 ${'```'}bash
 $ zapier push
