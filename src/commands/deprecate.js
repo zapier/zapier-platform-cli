@@ -2,7 +2,7 @@ const utils = require('../utils');
 
 var deprecate = (version, deprecation_date) => {
   if (!deprecation_date) {
-    console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2018-01-20"...\n');
+    console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2017-01-20"...\n');
     return Promise.resolve(true);
   }
   return utils.checkCredentials()
@@ -25,7 +25,7 @@ var deprecate = (version, deprecation_date) => {
     });
 };
 deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
-deprecate.example = 'zapier deprecate 1.0.0 2018-01-20';
+deprecate.example = 'zapier deprecate 1.0.0 2017-01-20';
 deprecate.docs = `\
 A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the impending deprecation.
 

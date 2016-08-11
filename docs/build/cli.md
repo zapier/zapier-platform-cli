@@ -364,7 +364,7 @@ $ zapier migrate 1.0.0 1.0.1 15%
 
 > Mark a non-production version of your app as deprecated by a certain date.
 
-**Usage:** `zapier deprecate 1.0.0 2018-01-20`
+**Usage:** `zapier deprecate 1.0.0 2017-01-20`
 
 A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the impending deprecation.
 
