@@ -173,7 +173,7 @@ $ zapier describe
 
 **Usage:** `zapier link`
 
-Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you'd just `git clone git@github.com:example-inc/inc.git` which would have a `.zapierapprc` file already included. If not, you'd need to be an admin on the app and use this command to regenerate the `.zapierapprc` file.
+Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you'd just `git clone git@github.com:example-inc/example.git` which would have a `.zapierapprc` file already included. If not, you'd need to be an admin on the app and use this command to regenerate the `.zapierapprc` file.
 
 Or, if you are making an app from scratch - you'd prefer the `zapier create "Example"`.
 
@@ -263,9 +263,34 @@ $ zapier versions
 
 **Usage:** `zapier validate`
 
-**TODO!**
+Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during `zapier build`, `zapier uploard`, `zapier push` or even as a test in `npm test`.
 
-This is markdown documentation.
+**Options**
+
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help validate`
+* `--debug` -- print debug API calls and tracebacks
+
+```bash
+$ zapier validate
+# Validating project locally.
+# 
+# No errors found during validation routine.
+# 
+# This project looks good!
+
+$ zapier validate
+# Validating project locally.
+# 
+# ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+# │ = 1 =                                                                                         │
+# │     Property │ instance                                                                       │
+# │     Message  │ requires property "platformVersion"                                            │
+# │     Links    │ https://github.com/zapier/zapier-platform-schema/blob/v3.0.0/docs.md#appschema │
+# └──────────────┴────────────────────────────────────────────────────────────────────────────────┘
+# 
+# Make any changes to your project and rerun this command.
+```
 
 
 ## build

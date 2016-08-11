@@ -18,7 +18,7 @@ const validate = () => {
         ['Property', 'property'],
         ['Message', 'message'],
         ['Links', 'docLinks'],
-      ], ifEmpty);
+      ], ifEmpty, true);
       return errors;
     })
     .then((errors) => {
@@ -32,9 +32,32 @@ const validate = () => {
 validate.help = 'Validates the current project.';
 validate.example = 'zapier validate';
 validate.docs = `\
-**TODO!**
+Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during \`zapier build\`, \`zapier uploard\`, \`zapier push\` or even as a test in \`npm test\`.
 
-This is markdown documentation.
+**Options**
+
+${utils.defaultOptionsDocFragment({cmd: 'validate'})}
+
+${'```'}bash
+$ zapier validate
+# Validating project locally.
+# 
+# No errors found during validation routine.
+# 
+# This project looks good!
+
+$ zapier validate
+# Validating project locally.
+# 
+# ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+# │ = 1 =                                                                                         │
+# │     Property │ instance                                                                       │
+# │     Message  │ requires property "platformVersion"                                            │
+# │     Links    │ https://github.com/zapier/zapier-platform-schema/blob/v3.0.0/docs.md#appschema │
+# └──────────────┴────────────────────────────────────────────────────────────────────────────────┘
+# 
+# Make any changes to your project and rerun this command.
+${'```'}
 `;
 
 module.exports = validate;
