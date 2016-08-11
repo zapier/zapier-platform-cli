@@ -73,7 +73,6 @@ After running this, you'll have a working app in your Zapier editor. This should
 * \`"Example"\` -- the name of your app
 * \`[dir]\` -- an optional directory, default is \`.\`
 * \`--style={helloworld|oauth2}\` -- select a starting app template
-${utils.defaultOptionsDocFragment({cmd: 'create'})}
 
 ${'```'}bash
 $ zapier create "Example" example-dir --style=helloworld

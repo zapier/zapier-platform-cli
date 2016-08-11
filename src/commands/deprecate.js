@@ -35,7 +35,7 @@ A utility to alert users of breaking changes that require the deprecation of an 
 
 * \`1.0.0\` -- the version to deprecate
 * \`2017-01-20\` -- what date should we deprecate on
-${utils.defaultOptionsDocFragment({cmd: 'versions'})}
+${utils.defaultOptionsDocFragment({cmd: 'deprecate'})}
 
 ${'```'}bash
 $ zapier deprecate 1.0.0 2017-01-20

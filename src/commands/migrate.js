@@ -38,7 +38,7 @@ Migrations can take between 5-10 minutes, so be patient and check \`zapier histo
 * \`1.0.0\` -- the version **from** which to migrate users
 * \`1.0.1\` -- the version **to** which to migrate users
 * \`[10%]\` -- an optional percent of users to migrate, default is \`100%\`
-${utils.defaultOptionsDocFragment({cmd: 'versions'})}
+${utils.defaultOptionsDocFragment({cmd: 'migrate'})}
 
 ${'```'}bash
 $ zapier migrate 1.0.0 1.0.1 15%

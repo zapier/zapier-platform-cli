@@ -28,7 +28,6 @@ It does the following steps:
 **Options**
 
 * \`--disable-dependency-detection\` -- disables walking required files to slim the build
-${utils.defaultOptionsDocFragment({cmd: 'build'})}
 
 ${'```'}bash
 $ zapier build

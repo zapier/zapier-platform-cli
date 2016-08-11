@@ -68,9 +68,6 @@ After running this, you'll have a working app in your Zapier editor. This should
 * `"Example"` -- the name of your app
 * `[dir]` -- an optional directory, default is `.`
 * `--style={helloworld|oauth2}` -- select a starting app template
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help create`
-* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier create "Example" example-dir --style=helloworld
@@ -143,7 +140,7 @@ Prints a human readable enumeration of your app's triggers, searches and actions
 **Options**
 
 * `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help versions`
+* `--help` -- prints this help text, same as `zapier help describe`
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -267,9 +264,6 @@ It does the following steps:
 **Options**
 
 * `--disable-dependency-detection` -- disables walking required files to slim the build
-* `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help build`
-* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier build
@@ -293,9 +287,18 @@ $ zapier build
 
 **Usage:** `zapier upload`
 
-**TODO!**
+Upload the zip file already built by `zapier build` in build/build.zip. The versions and other app details are read by Zapier from the zip file.
 
-This is markdown documentation.
+> Note: we generally recommend using `zapier push` which does both `zapier build && zapier upload` in one step.
+
+```bash
+$ zapier upload
+# Preparing to upload a new version.
+# 
+#   Uploading version 1.0.0 - done!
+# 
+# Upload of build/build.zip complete! Try `zapier versions` now!
+```
 
 
 ## push
@@ -315,6 +318,15 @@ This is markdown documentation.
 
 **Usage:** `zapier deploy 1.0.0`
 
+Deploys an app into production (non-private) rotation, which means new users can use this.
+
+* This **does not** build/upload or push a version to Zapier - you should `zapier push` first.
+* This **does not** move old users over to this version - `zapier migrate 1.0.0 1.0.1` does that.
+
+Deploys are an inherently safe operation for all existing users of your app.
+
+> If this is your first time deploying - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We'll respond within a few business days.
+
 **Options**
 
 * `--format={plain|raw|row|table}` -- display format, default is `table`
@@ -323,7 +335,12 @@ This is markdown documentation.
 
 ```bash
 $ zapier deploy 1.0.0
-# todo!
+# Preparing to deploy version 1.0.0 your app "Example".
+# 
+#   Deploying 1.0.0 - done!
+#   Deploy successful!
+# 
+# Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to put it into rotation.
 ```
 
 
@@ -339,7 +356,7 @@ Only migrate users between non-breaking versions, use `zapier deprecate` if you 
 
 Migrations can take between 5-10 minutes, so be patient and check `zapier history` to track the status.
 
-> Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert simply.
+> Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
 
 **Options**
 
@@ -347,7 +364,7 @@ Migrations can take between 5-10 minutes, so be patient and check `zapier histor
 * `1.0.1` -- the version **to** which to migrate users
 * `[10%]` -- an optional percent of users to migrate, default is `100%`
 * `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help versions`
+* `--help` -- prints this help text, same as `zapier help migrate`
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -375,7 +392,7 @@ A utility to alert users of breaking changes that require the deprecation of an 
 * `1.0.0` -- the version to deprecate
 * `2017-01-20` -- what date should we deprecate on
 * `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help versions`
+* `--help` -- prints this help text, same as `zapier help deprecate`
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -481,6 +498,12 @@ $ zapier invite user@example.com --remove
 **Usage:** `zapier history`
 
 Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.
+
+**Options**
+
+* `--format={plain|raw|row|table}` -- display format, default is `table`
+* `--help` -- prints this help text, same as `zapier help history`
+* `--debug` -- print debug API calls and tracebacks
 
 ```bash
 $ zapier history
@@ -592,7 +615,7 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 * `KEY` -- the uppercase key of the environment variable to set
 * `VALUE` -- the raw value to set to the key
 * `--format={plain|raw|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help versions`
+* `--help` -- prints this help text, same as `zapier help env`
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash

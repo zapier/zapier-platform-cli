@@ -332,9 +332,6 @@ $ zapier <span class="hljs-built_in">help</span> scaffold
 <li><code>&quot;Example&quot;</code> -- the name of your app</li>
 <li><code>[dir]</code> -- an optional directory, default is <code>.</code></li>
 <li><code>--style={helloworld|oauth2}</code> -- select a starting app template</li>
-<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help create</code></li>
-<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
@@ -417,7 +414,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
 <p>Describes the current app.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier describe</code></p><p>Prints a human readable enumeration of your app&apos;s triggers, searches and actions as seen by our system. Useful to understand how your models relate to different actions.</p><p><strong>Options</strong></p><ul>
 <li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help describe</code></li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -577,9 +574,6 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
 <p>If you get live errors like <code>Error: Cannot find module &apos;some-path&apos;</code>, try disabling dependency detection.</p>
 </blockquote><p><strong>Options</strong></p><ul>
 <li><code>--disable-dependency-detection</code> -- disables walking required files to slim the build</li>
-<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help build</code></li>
-<li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
@@ -612,10 +606,18 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Upload the last build as a version.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier upload</code></p><p><strong>TODO!</strong></p><p>This is markdown documentation.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier upload</code></p><p>Upload the zip file already built by <code>zapier build</code> in build/build.zip. The versions and other app details are read by Zapier from the zip file.</p><blockquote>
+<p>Note: we generally recommend using <code>zapier push</code> which does both <code>zapier build &amp;&amp; zapier upload</code> in one step.</p>
+</blockquote>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
-      
+    <div class="col-md-6 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier upload
+<span class="hljs-comment"># Preparing to upload a new version.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Uploading version 1.0.0 - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Upload of build/build.zip complete! Try `zapier versions` now!</span>
+</code></pre>
     </div>
   </div>
 </div><div class="row">
@@ -652,7 +654,12 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Deploys a specific version to a production.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier deploy 1.0.0</code></p><p><strong>Options</strong></p><ul>
+</blockquote><p><strong>Usage:</strong> <code>zapier deploy 1.0.0</code></p><p>Deploys an app into production (non-private) rotation, which means new users can use this.</p><ul>
+<li>This <strong>does not</strong> build/upload or push a version to Zapier - you should <code>zapier push</code> first.</li>
+<li>This <strong>does not</strong> move old users over to this version - <code>zapier migrate 1.0.0 1.0.1</code> does that.</li>
+</ul><p>Deploys are an inherently safe operation for all existing users of your app.</p><blockquote>
+<p>If this is your first time deploying - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We&apos;ll respond within a few business days.</p>
+</blockquote><p><strong>Options</strong></p><ul>
 <li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
 <li><code>--help</code> -- prints this help text, same as <code>zapier help deploy</code></li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
@@ -660,7 +667,12 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier deploy 1.0.0
-<span class="hljs-comment"># todo!</span>
+<span class="hljs-comment"># Preparing to deploy version 1.0.0 your app &quot;Example&quot;.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Deploying 1.0.0 - done!</span>
+<span class="hljs-comment">#   Deploy successful!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to put it into rotation.</span>
 </code></pre>
     </div>
   </div>
@@ -679,13 +691,13 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
       <blockquote>
 <p>Migrate users from one version to another.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier migrate 1.0.0 1.0.1 [10%]</code></p><p>Starts a migration to move users between different versions of your app. You may also &quot;revert&quot; by simply swapping the from/to verion strings in the command line arguments (IE: <code>zapier migrate 1.0.1 1.0.0</code>).</p><p>Only migrate users between non-breaking versions, use <code>zapier deprecate</code> if you have breaking changes!</p><p>Migrations can take between 5-10 minutes, so be patient and check <code>zapier history</code> to track the status.</p><blockquote>
-<p>Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert simply.</p>
+<p>Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.</p>
 </blockquote><p><strong>Options</strong></p><ul>
 <li><code>1.0.0</code> -- the version <strong>from</strong> which to migrate users</li>
 <li><code>1.0.1</code> -- the version <strong>to</strong> which to migrate users</li>
 <li><code>[10%]</code> -- an optional percent of users to migrate, default is <code>100%</code></li>
 <li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help migrate</code></li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -719,7 +731,7 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
 <li><code>1.0.0</code> -- the version to deprecate</li>
 <li><code>2017-01-20</code> -- what date should we deprecate on</li>
 <li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help deprecate</code></li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -845,7 +857,11 @@ $ zapier invite user@example.com --remove
     <div class="col-md-6 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Prints all recent history for your app.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier history</code></p><p>Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier history</code></p><p>Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.</p><p><strong>Options</strong></p><ul>
+<li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help history</code></li>
+<li><code>--debug</code> -- print debug API calls and tracebacks</li>
+</ul>
     </div>
     <div class="col-md-6 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">history</span>
@@ -968,7 +984,7 @@ $ zapier logs --console
 <li><code>KEY</code> -- the uppercase key of the environment variable to set</li>
 <li><code>VALUE</code> -- the raw value to set to the key</li>
 <li><code>--format={plain|raw|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--help</code> -- prints this help text, same as <code>zapier help env</code></li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
