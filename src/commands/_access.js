@@ -39,7 +39,7 @@ const makeAccess = (command, recordType) => {
     }
   };
   access.argsSpec = [
-    {name: 'email', help: 'which user to add/remove', example: 'john@example.com'},
+    {name: 'email', help: 'which user to add/remove', example: 'user@example.com'},
   ];
   access.argOptsSpec = {
     remove: {flag: true, help: 'optionally elect to remove this user'},
