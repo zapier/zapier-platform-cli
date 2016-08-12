@@ -1,5 +1,6 @@
 require('babel-polyfill');
 
+const _ = require('lodash');
 const colors = require('colors/safe');
 
 const {DEBUG, MIN_NODE_VERSION} = require('./constants');
@@ -46,17 +47,21 @@ module.exports = (argv) => {
     return;
   }
 
+  // TODO: maybe rip off heroku formatting?
+  // ➜  testing heroku version --lolzwhat
+  // !    Invalid argument: "--lolzwhat"
+  // <PRINTS heroku version --help>
   const spec = {
     argSpec: commandFunc.argSpec,
-    argOptsSpec: commandFunc.argOptsSpec
+    argOptsSpec: _.extend({}, utils.globalArgOpts, commandFunc.argOptsSpec)
   };
   const errors = utils.enforceArgSpec(spec, args, argOpts);
   if (errors.length) {
-    context.line(`Error on command ${command}:\n`);
     errors.forEach((error) => {
       context.line(' ' + colors.red(error));
     });
     context.line(colors.grey('\nAdjust your command and try again!'));
+    // TODO: print commands help?
     return;
   }
 

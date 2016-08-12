@@ -50,7 +50,7 @@ describe('utils', () => {
     [args, argOpts] = utils.argParse([]);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Missing required positional argument 1 "firstGreeting"',
+      'Missing required positional argument 1/firstGreeting',
       'Missing required keyword argument --lolz="value"'
     ]);
 
@@ -83,7 +83,7 @@ describe('utils', () => {
     [args, argOpts] = utils.argParse([]);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Missing required positional argument 1 "version"',
+      'Missing required positional argument 1/version',
     ]);
 
     [args, argOpts] = utils.argParse(['1.0.0']);
@@ -93,7 +93,7 @@ describe('utils', () => {
     [args, argOpts] = utils.argParse(['1.0.0', 'some_key']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Missing required positional argument 3 "value"',
+      'Missing required positional argument 3/value',
     ]);
 
     [args, argOpts] = utils.argParse(['1.0.0', 'some_key', 'some_value']);
@@ -116,6 +116,34 @@ describe('utils', () => {
     errors.should.eql([
       'Unexpected positional argument 1 "something"',
       'Unexpected positional argument 2 "other"',
+    ]);
+  });
+
+  it('should enforce args choices', () => {
+    let spec, args, argOpts, errors;
+    spec = {
+      argSpec: [
+        {name: 'color', choices: ['blue', 'red']},
+      ],
+      argOptsSpec: {
+        color: {choices: ['blue', 'red']},
+      }
+    };
+
+    [args, argOpts] = utils.argParse(['blue']);
+    errors = utils.enforceArgSpec(spec, args, argOpts);
+    errors.should.eql([]);
+
+    [args, argOpts] = utils.argParse(['urple']);
+    errors = utils.enforceArgSpec(spec, args, argOpts);
+    errors.should.eql([
+      'Unexpected positional argument 1 "urple", must be one of "blue", "red"',
+    ]);
+
+    [args, argOpts] = utils.argParse(['--color=urple']);
+    errors = utils.enforceArgSpec(spec, args, argOpts);
+    errors.should.eql([
+      'Unexpected keyword argument --color="urple", must be one of "blue", "red"',
     ]);
 
   });

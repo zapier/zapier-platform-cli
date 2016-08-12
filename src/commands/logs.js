@@ -40,11 +40,11 @@ var logs = (context) => {
 logs.argSpec = [];
 logs.argOptsSpec = {
   version: {},
-  error: {},
-  success: {},
-  console: {},
-  http: {},
-  detailed: {},
+  error: {flag: true},
+  success: {flag: true},
+  console: {flag: true},
+  http: {flag: true},
+  detailed: {flag: true},
   user: {},
   limit: {},
 };

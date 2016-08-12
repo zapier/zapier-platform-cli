@@ -1,5 +1,11 @@
 const _ = require('lodash');
 
+const globalArgOpts = {
+  format: {help: 'display format', choices: ['plain', 'json', 'row', 'table']},
+  help: {help: 'prints this help text', flag: true},
+  debug: {help: 'print debug API calls and tracebacks', flag: true},
+};
+
 const argParse = (argv) => {
   var args = [], opts = {};
   argv.forEach((arg) => {
@@ -24,7 +30,6 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
   const argOptsSpec = fullSpec.argOptsSpec || {};
 
   const errors = [];
-
   let restAfter = -1;
 
   const _argLookback = {};
@@ -40,7 +45,11 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
       _.every(spec.requiredWith, (name) => _argLookback[name]) // friends are missing!
     );
     if (missingCurrent || missingLookback) {
-      errors.push(`Missing required positional argument ${i + 1} "${spec.name}"`);
+      errors.push(`Missing required positional argument ${i + 1}/${spec.name}`);
+    }
+    if (arg && spec.choices && spec.choices.length && spec.choices.indexOf(arg) === -1) {
+      let choices = spec.choices.map(s => JSON.stringify(s)).join(', ');
+      errors.push(`Unexpected positional argument ${i + 1} "${arg}", must be one of ${choices}`);
     }
 
     restAfter = i;
@@ -57,8 +66,19 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
 
   _.forEach(argOptsSpec, (spec, name) => {
     let arg = argOpts[name];
+
+    if (spec.flag && arg && arg !== true) {
+      errors.push(`Unexpected keyword argument with value --${name}`);
+      return;
+    }
+
     if (spec.required && !arg) {
-      errors.push(`Missing required keyword argument --${name}="${spec.example || 'value'}"`);
+      errors.push(`Missing required keyword argument --${name}="${arg || spec.example || 'value'}"`);
+    }
+
+    if (arg && spec.choices && spec.choices.length && spec.choices.indexOf(arg) === -1) {
+      let choices = spec.choices.map(s => JSON.stringify(s)).join(', ');
+      errors.push(`Unexpected keyword argument --${name}="${arg}", must be one of ${choices}`);
     }
   });
 
@@ -66,6 +86,7 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
 };
 
 module.exports = {
+  globalArgOpts,
   argParse,
   enforceArgSpec
 };
