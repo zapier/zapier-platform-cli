@@ -1,5 +1,8 @@
-const utils = require('../utils');
+const _ = require('lodash');
 const colors = require('colors/safe');
+
+const utils = require('../utils');
+
 
 const validate = (context) => {
   context.line('Validating project locally.\n');
@@ -7,6 +10,8 @@ const validate = (context) => {
     .then(() => utils.localAppCommand({command: 'validate'}))
     .then((errors) => {
       const newErrors = errors.map((error) => {
+        error = _.extend({}, error);
+        error.property = error.property.replace('instance.', 'App.');
         error.docLinks = (error.docLinks || []).join('\n');
         return error;
       });
