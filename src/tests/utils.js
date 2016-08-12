@@ -36,7 +36,7 @@ describe('utils', () => {
   it('should enforce some args', () => {
     let spec, args, argOpts, errors;
     spec = {
-      argSpec: [
+      argsSpec: [
         {name: 'firstGreeting', required: true},
         {name: 'secondGreeting'},
         {rest: true},
@@ -73,7 +73,7 @@ describe('utils', () => {
   it('should enforce requiredWith args', () => {
     let spec, args, argOpts, errors;
     spec = {
-      argSpec: [
+      argsSpec: [
         {name: 'version', required: true},
         {name: 'key'},
         {name: 'value', requiredWith: ['key']},
@@ -134,7 +134,7 @@ describe('utils', () => {
   it('should enforce args choices', () => {
     let spec, args, argOpts, errors;
     spec = {
-      argSpec: [
+      argsSpec: [
         {name: 'color', choices: ['blue', 'red']},
       ],
       argOptsSpec: {

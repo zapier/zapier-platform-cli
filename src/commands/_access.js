@@ -38,7 +38,7 @@ const makeAccess = (command, recordType) => {
         });
     }
   };
-  access.argSpec = [
+  access.argsSpec = [
     {name: 'email', example: 'john@example.com'},
   ];
   access.argOptsSpec = {

@@ -29,7 +29,7 @@ const validate = (context) => {
       }
     });
 };
-validate.argSpec = [];
+validate.argsSpec = [];
 validate.argOptsSpec = {};
 validate.help = 'Validates the current project.';
 validate.example = 'zapier validate';

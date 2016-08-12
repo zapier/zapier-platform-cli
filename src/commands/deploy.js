@@ -23,7 +23,7 @@ var deploy = (context, version) => {
       context.line('Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.');
     });
 };
-deploy.argSpec = [
+deploy.argsSpec = [
   {name: 'version', example: '1.0.0', required: true},
 ];
 deploy.argOptsSpec = {};

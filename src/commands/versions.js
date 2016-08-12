@@ -17,7 +17,7 @@ var versions = (context) => {
       }
     });
 };
-versions.argSpec = [];
+versions.argsSpec = [];
 versions.argOptsSpec = {};
 versions.help = 'Lists all the versions of the current app.';
 versions.example = 'zapier versions';

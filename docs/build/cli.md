@@ -134,8 +134,12 @@ You can mix and match several options to customize the created scaffold for your
 
 **Options**
 
+* `{model,trigger,search,write}` -- **required**, what type of thing are you creating
+* `"Some Name"` -- **required**, the name of the new thing to create
 * `{model|trigger|search|write}` - what thing are you creating
 * `"Name"` -- the name of the new thing to create
+* `--dest={type}s/{name}` -- _optional_, sets the new file's path, default is `{type}s/{name}`
+* `--entry=index.js` -- _optional_, where to import the new file, default is `index.js`
 * `--dest=path` -- sets the new file's path, default is `'{type}s/{name}'`
 * `--entry=path` -- where to import the new file, default is `'index.js'`
 
@@ -163,9 +167,9 @@ Prints a human readable enumeration of your app's triggers, searches and actions
 
 **Options**
 
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier describe
@@ -203,9 +207,9 @@ Or, if you are making an app from scratch - you'd prefer the `zapier create "Exa
 
 **Options**
 
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier link
@@ -239,9 +243,9 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Options**
 
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier apps
@@ -265,9 +269,9 @@ $ zapier apps
 
 **Options**
 
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier versions
@@ -291,9 +295,9 @@ Runs the standard validation routine powered by json-schema that checks your app
 
 **Options**
 
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier validate
@@ -504,9 +508,9 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * `[user@example.com]` -- the user to add or remove
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier collaborate
@@ -547,9 +551,9 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print a table of all invitees
 * `[user@example.com]` -- the user to add or remove
 * `--remove` -- optionally elect to remove this user, default false
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier invite
@@ -587,9 +591,9 @@ Get the history of your app, listing all the changes made over the lifetime of y
 
 **Options**
 
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier history
@@ -618,15 +622,15 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 **Options**
 
-* `--version=value` -- display only this version's logs
-* `--status={success,error}` -- display only error or success logs, default is `success`
-* `--type={http,console}` -- display only console or http logs, default is `http`
-* `--detailed` -- show detailed logs (like http body)
-* `--user=value` -- display only this users logs
-* `--limit=50` -- control the maximum result size, default is `50`
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--version=value` -- _optional_, display only this version's logs
+* `--status={success,error}` -- _optional_, display only error or success logs, default is `success`
+* `--type={http,console}` -- _optional_, display only console or http logs, default is `http`
+* `--detailed` -- _optional_, show detailed logs (like http body)
+* `--user=value` -- _optional_, display only this users logs
+* `--limit=50` -- _optional_, control the maximum result size, default is `50`
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier logs
@@ -701,9 +705,9 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 * `1.0.0` -- the app version's environment to work on
 * `KEY` -- the uppercase key of the environment variable to set
 * `VALUE` -- the raw value to set to the key
-* `--format={plain,json,row,table}` -- display format
-* `--help` -- prints this help text
-* `--debug` -- print debug API calls and tracebacks
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier env 1.0.0

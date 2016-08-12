@@ -37,7 +37,7 @@ var logs = (context) => {
       utils.printData(data.logs, columns, ifEmpty, true);
     });
 };
-logs.argSpec = [];
+logs.argsSpec = [];
 logs.argOptsSpec = {
   version: {help: 'display only this version\'s logs'},
   status: {help: 'display only error or success logs', choices: ['success', 'error'], default: 'success'},

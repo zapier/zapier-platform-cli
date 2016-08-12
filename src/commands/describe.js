@@ -32,7 +32,7 @@ const describe = (context) => {
       context.line('If you\'d like to add more, try the `zapier scaffold` command to kickstart!');
     });
 };
-describe.argSpec = [];
+describe.argsSpec = [];
 describe.argOptsSpec = {};
 describe.help = 'Describes the current app.';
 describe.example = 'zapier describe';

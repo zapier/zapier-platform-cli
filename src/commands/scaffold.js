@@ -85,13 +85,13 @@ const scaffold = (context, type, name) => {
     })
     .then(() => context.line('\nFinished! We did the best we could, you might gut check your files though.'));
 };
-scaffold.argSpec = [
-  {name: 'type', required: true},
-  {name: 'name', required: true},
+scaffold.argsSpec = [
+  {name: 'type', help: 'what type of thing are you creating', required: true, choices: ['model', 'trigger', 'search', 'write']},
+  {name: 'name', help: 'the name of the new thing to create', required: true, example: 'Some Name'},
 ];
 scaffold.argOptsSpec = {
-  dest: {},
-  entry: {},
+  dest: {help: 'sets the new file\'s path', default: '{type}s/{name}'},
+  entry: {help: 'where to import the new file', default: 'index.js'},
 };
 scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
 scaffold.usage = 'zapier scaffold {model|trigger|search|write} "Name"';
@@ -108,8 +108,10 @@ You can mix and match several options to customize the created scaffold for your
 
 **Options**
 
+${utils.argsFragment(scaffold.argsSpec)}
 * \`{model|trigger|search|write}\` - what thing are you creating
 * \`"Name"\` -- the name of the new thing to create
+${utils.argOptsFragment(scaffold.argOptsSpec)}
 * \`--dest=path\` -- sets the new file's path, default is \`'{type}s/{name}'\`
 * \`--entry=path\` -- where to import the new file, default is \`'index.js'\`
 

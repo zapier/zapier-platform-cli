@@ -39,7 +39,7 @@ var env = (context, version, key, value) => {
       context.line(`\nTry setting an env with the \`${env.example}\` command.`);
     });
 };
-env.argSpec = [
+env.argsSpec = [
   {name: 'version', example: '1.0.0', required: true},
   {name: 'key', example: 'API_KEY'},
   {name: 'value', example: '1234567890', requiredWith: ['key']},

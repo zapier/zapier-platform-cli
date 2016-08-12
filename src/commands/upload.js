@@ -9,7 +9,7 @@ var upload = (context) => {
       context.line(`\nUpload of ${constants.BUILD_PATH} complete! Try \`zapier versions\` now!`);
     });
 };
-upload.argSpec = [];
+upload.argsSpec = [];
 upload.argOptsSpec = {};
 upload.help = 'Upload the last build as a version.';
 upload.example = 'zapier upload';

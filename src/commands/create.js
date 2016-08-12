@@ -55,7 +55,7 @@ const create = (context, title, location = '.') => {
       context.line('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
     });
 };
-create.argSpec = [
+create.argsSpec = [
   {name: 'title', required: true, example: 'My App Name'},
   {name: 'location', default: '.'},
 ];

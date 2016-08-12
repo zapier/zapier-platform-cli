@@ -22,7 +22,7 @@ var migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
       context.line('\nDeploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.');
     });
 };
-migrate.argSpec = [
+migrate.argsSpec = [
   {name: 'fromVersion', example: '1.0.0', required: true},
   {name: 'toVersion', example: '1.0.1', required: true},
   {name: 'percent', example: '100%'},

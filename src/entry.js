@@ -52,8 +52,8 @@ module.exports = (argv) => {
   // !    Invalid argument: "--lolzwhat"
   // <PRINTS heroku version --help>
   const spec = {
-    argSpec: commandFunc.argSpec,
-    argOptsSpec: _.extend({}, utils.globalArgOpts, commandFunc.argOptsSpec)
+    argsSpec: commandFunc.argsSpec,
+    argOptsSpec: _.extend({}, utils.globalArgOptsSpec, commandFunc.argOptsSpec)
   };
   const errors = utils.enforceArgSpec(spec, args, argOpts);
   if (errors.length) {

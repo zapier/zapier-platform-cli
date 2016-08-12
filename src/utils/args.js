@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const globalArgOpts = {
+const globalArgOptsSpec = {
   format: {help: 'display format', choices: ['plain', 'json', 'row', 'table']},
   help: {help: 'prints this help text', flag: true},
   debug: {help: 'print debug API calls and tracebacks', flag: true},
@@ -26,7 +26,7 @@ const argParse = (argv) => {
 };
 
 const enforceArgSpec = (fullSpec, args, argOpts) => {
-  const argSpec = fullSpec.argSpec || [];
+  const argsSpec = fullSpec.argsSpec || [];
   const argOptsSpec = fullSpec.argOptsSpec || {};
 
   const errors = [];
@@ -35,7 +35,7 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
   const _argLookback = {};
 
   // Make sure the spec has the provided args.
-  _.forEach(argSpec, (spec, i) => {
+  _.forEach(argsSpec, (spec, i) => {
     let arg = args[i];
 
     _argLookback[spec.name] = arg;
@@ -101,7 +101,7 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
 };
 
 module.exports = {
-  globalArgOpts,
+  globalArgOptsSpec,
   argParse,
   enforceArgSpec
 };
