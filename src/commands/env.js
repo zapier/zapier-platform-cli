@@ -54,7 +54,6 @@ Manage the environment of your app so that \`process.env\` can access the keys, 
 
 * _none_ -- print a table of all environment variables, regardless of app version
 ${utils.argsFragment(env.argsSpec)}
-${utils.argOptsFragment(env.argOptsSpec)}
 ${utils.defaultArgOptsFragment()}
 
 ${'```'}bash

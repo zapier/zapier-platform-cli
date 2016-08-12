@@ -275,10 +275,8 @@ blockquote {
 <p>Lists all the commands you can use.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier help [command]</code></p><p>Prints documentation to the terminal screen.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all commands</li>
-<li><p><code>value</code> -- <em>optional</em>, the command to view docs for</p>
-</li>
-<li><p><code>--format={plain,json,row,table}</code> -- <em>optional</em>, display format</p>
-</li>
+<li><code>value</code> -- <em>optional</em>, the command to view docs for</li>
+<li><code>--format={plain,json,row,table}</code> -- <em>optional</em>, display format</li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -855,7 +853,7 @@ $ zapier validate
 <p>Manage the collaborators on your project. Can optionally --remove.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all collaborators</li>
-<li><code>john@example.com</code> -- <em>optional</em>, which user to add/remove</li>
+<li><code>user@example.com</code> -- <em>optional</em>, which user to add/remove</li>
 <li><code>--remove</code> -- <em>optional</em>, optionally elect to remove this user</li>
 <li><code>--format={plain,json,row,table}</code> -- <em>optional</em>, display format</li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
@@ -904,7 +902,7 @@ $ zapier collaborate user@example.com --remove
 <p>Manage the invitees/testers on your project. Can optionally --remove.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier invite [user@example.com]</code></p><p>Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you&apos;d only like to provide admin access, try <code>zapier collaborate</code>.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all invitees</li>
-<li><code>john@example.com</code> -- <em>optional</em>, which user to add/remove</li>
+<li><code>user@example.com</code> -- <em>optional</em>, which user to add/remove</li>
 <li><code>--remove</code> -- <em>optional</em>, optionally elect to remove this user</li>
 <li><code>--format={plain,json,row,table}</code> -- <em>optional</em>, display format</li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
@@ -1077,10 +1075,8 @@ $ zapier logs --console
 <li><em>none</em> -- print a table of all environment variables, regardless of app version</li>
 <li><code>1.0.0</code> -- <strong>required</strong>, the app version&apos;s environment to work on</li>
 <li><code>API_KEY</code> -- <em>optional</em>, the uppercase key of the environment variable to set</li>
-<li><p><code>1234567890</code> -- <em>optional</em>, the raw value to set to the key</p>
-</li>
-<li><p><code>--format={plain,json,row,table}</code> -- <em>optional</em>, display format</p>
-</li>
+<li><code>1234567890</code> -- <em>optional</em>, the raw value to set to the key</li>
+<li><code>--format={plain,json,row,table}</code> -- <em>optional</em>, display format</li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>

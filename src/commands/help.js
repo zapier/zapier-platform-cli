@@ -54,7 +54,6 @@ Prints documentation to the terminal screen.
 
 * _none_ -- print all commands
 ${utils.argsFragment(help.argsSpec)}
-${utils.argOptsFragment(help.argOptsSpec)}
 ${utils.defaultArgOptsFragment()}
 
 ${'```'}bash

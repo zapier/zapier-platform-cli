@@ -22,7 +22,6 @@ Prints documentation to the terminal screen.
 
 * _none_ -- print all commands
 * `value` -- _optional_, the command to view docs for
-
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -530,7 +529,7 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 **Arguments**
 
 * _none_ -- print all collaborators
-* `john@example.com` -- _optional_, which user to add/remove
+* `user@example.com` -- _optional_, which user to add/remove
 * `--remove` -- _optional_, optionally elect to remove this user
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -573,7 +572,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 **Arguments**
 
 * _none_ -- print all invitees
-* `john@example.com` -- _optional_, which user to add/remove
+* `user@example.com` -- _optional_, which user to add/remove
 * `--remove` -- _optional_, optionally elect to remove this user
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -732,7 +731,6 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 * `1.0.0` -- **required**, the app version's environment to work on
 * `API_KEY` -- _optional_, the uppercase key of the environment variable to set
 * `1234567890` -- _optional_, the raw value to set to the key
-
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
