@@ -13,7 +13,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print a table of all invitees
 * \`[user@example.com]\` -- the user to add or remove
 * \`--remove\` -- optionally elect to remove this user, default false
-${utils.defaultOptionsDocFragment({cmd: 'invite'})}
+${utils.defaultArgOptsFragment({cmd: 'invite'})}
 
 ${'```'}bash
 $ zapier invite

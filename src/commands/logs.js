@@ -7,16 +7,8 @@ var logs = (context) => {
       context.line(`The logs of your app "${data.app.title}" listed below.\n`);
 
       let columns;
-      if (global.argOpts.console) {
-        columns = [
-          ['Log', 'message'],
-          ['Version', 'app_v3_version'],
-          ['Step', 'step'],
-          // ['ID', 'id'],
-          ['Timestamp', 'timestamp'],
-        ];
-      } else {
-        // http is the default
+      const status = global.argOpts.status || 'http';
+      if (status === 'http') {
         columns = [
           ['Status', 'response_status_code'],
           ['URL', 'request_url'],
@@ -31,6 +23,14 @@ var logs = (context) => {
           columns.push(['Request Body', 'request_data']);
           columns.push(['Response Body', 'response_content']);
         }
+      } else {
+        columns = [
+          ['Log', 'message'],
+          ['Version', 'app_v3_version'],
+          ['Step', 'step'],
+          // ['ID', 'id'],
+          ['Timestamp', 'timestamp'],
+        ];
       }
 
       const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.context.line()` and doing a `zapier push`!');
@@ -39,14 +39,12 @@ var logs = (context) => {
 };
 logs.argSpec = [];
 logs.argOptsSpec = {
-  version: {},
-  error: {flag: true},
-  success: {flag: true},
-  console: {flag: true},
-  http: {flag: true},
-  detailed: {flag: true},
-  user: {},
-  limit: {},
+  version: {help: 'display only this version\'s logs'},
+  status: {help: 'display only error or success logs', choices: ['success', 'error'], default: 'success'},
+  type: {help: 'display only console or http logs', choices: ['http', 'console'], default: 'http'},
+  detailed: {help: 'show detailed logs (like http body)', flag: true},
+  user: {help: 'display only this users logs'},
+  limit: {help: 'control the maximum result size', default: 50},
 };
 logs.help = 'Prints recent logs. See help for filter arguments.';
 logs.example = 'zapier logs';
@@ -57,13 +55,8 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 **Options**
 
-* \`--version=1.0.0\` -- display only this version's logs, default \`null\`
-* \`--{error|success}\` -- display only error or success logs, default \`'success'\`
-* \`--{console|http}\` -- display only console or http logs, default \`'http'\`
-* \`--detailed\` -- show detailed logs (like http body), default \`false\`
-* \`--user=user@example.com\` -- display only this users logs, default \`null\`
-* \`--limit=5\` -- display only console or http logs, default \`50\`
-${utils.defaultOptionsDocFragment({cmd: 'logs'})}
+${utils.argOptsFragment(logs.argOptsSpec)}
+${utils.defaultArgOptsFragment({cmd: 'logs'})}
 
 ${'```'}bash
 $ zapier logs

@@ -38,7 +38,7 @@ Runs the standard validation routine powered by json-schema that checks your app
 
 **Options**
 
-${utils.defaultOptionsDocFragment({cmd: 'validate'})}
+${utils.defaultArgOptsFragment({cmd: 'validate'})}
 
 ${'```'}bash
 $ zapier validate

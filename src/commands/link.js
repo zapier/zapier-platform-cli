@@ -61,7 +61,7 @@ Or, if you are making an app from scratch - you'd prefer the \`zapier create "Ex
 
 **Options**
 
-${utils.defaultOptionsDocFragment({cmd: 'link'})}
+${utils.defaultArgOptsFragment({cmd: 'link'})}
 
 ${'```'}bash
 $ zapier link

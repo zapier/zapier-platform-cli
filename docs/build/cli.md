@@ -163,8 +163,8 @@ Prints a human readable enumeration of your app's triggers, searches and actions
 
 **Options**
 
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help describe`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -203,8 +203,8 @@ Or, if you are making an app from scratch - you'd prefer the `zapier create "Exa
 
 **Options**
 
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help link`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -239,8 +239,8 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Options**
 
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help apps`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -265,8 +265,8 @@ $ zapier apps
 
 **Options**
 
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help versions`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -291,8 +291,8 @@ Runs the standard validation routine powered by json-schema that checks your app
 
 **Options**
 
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help validate`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -504,8 +504,8 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * `[user@example.com]` -- the user to add or remove
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help collaborate`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -547,8 +547,8 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print a table of all invitees
 * `[user@example.com]` -- the user to add or remove
 * `--remove` -- optionally elect to remove this user, default false
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help invite`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -587,8 +587,8 @@ Get the history of your app, listing all the changes made over the lifetime of y
 
 **Options**
 
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help history`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -618,14 +618,14 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 **Options**
 
-* `--version=1.0.0` -- display only this version's logs, default `null`
-* `--{error|success}` -- display only error or success logs, default `'success'`
-* `--{console|http}` -- display only console or http logs, default `'http'`
-* `--detailed` -- show detailed logs (like http body), default `false`
-* `--user=user@example.com` -- display only this users logs, default `null`
-* `--limit=5` -- display only console or http logs, default `50`
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help logs`
+* `--version=value` -- display only this version's logs
+* `--status={success,error}` -- display only error or success logs, default is `success`
+* `--type={http,console}` -- display only console or http logs, default is `http`
+* `--detailed` -- show detailed logs (like http body)
+* `--user=value` -- display only this users logs
+* `--limit=50` -- control the maximum result size, default is `50`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash
@@ -701,8 +701,8 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 * `1.0.0` -- the app version's environment to work on
 * `KEY` -- the uppercase key of the environment variable to set
 * `VALUE` -- the raw value to set to the key
-* `--format={plain|json|row|table}` -- display format, default is `table`
-* `--help` -- prints this help text, same as `zapier help env`
+* `--format={plain,json,row,table}` -- display format
+* `--help` -- prints this help text
 * `--debug` -- print debug API calls and tracebacks
 
 ```bash

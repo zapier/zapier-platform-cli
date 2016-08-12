@@ -56,7 +56,7 @@ Manage the environment of your app so that \`process.env\` can access the keys, 
 * \`1.0.0\` -- the app version's environment to work on
 * \`KEY\` -- the uppercase key of the environment variable to set
 * \`VALUE\` -- the raw value to set to the key
-${utils.defaultOptionsDocFragment({cmd: 'env'})}
+${utils.defaultArgOptsFragment({cmd: 'env'})}
 
 ${'```'}bash
 $ zapier env 1.0.0

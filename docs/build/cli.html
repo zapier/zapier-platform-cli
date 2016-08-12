@@ -441,8 +441,8 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
       <blockquote>
 <p>Describes the current app.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier describe</code></p><p>Prints a human readable enumeration of your app&apos;s triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.</p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help describe</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -485,8 +485,8 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
       <blockquote>
 <p>Link the current directory to an app you have access to.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier link</code></p><p>Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you&apos;d just <code>git clone git@github.com:example-inc/example.git</code> which would have a <code>.zapierapprc</code> file already included. If not, you&apos;d need to be an admin on the app and use this command to regenerate the <code>.zapierapprc</code> file.</p><p>Or, if you are making an app from scratch - you&apos;d prefer the <code>zapier create &quot;Example&quot;</code>.</p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help link</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -527,8 +527,8 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
       <blockquote>
 <p>Lists all the apps you can access.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier apps</code></p><p>Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with <code>zapier link</code>.</p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help apps</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -561,8 +561,8 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
       <blockquote>
 <p>Lists all the versions of the current app.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier versions</code></p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help versions</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -593,8 +593,8 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
       <blockquote>
 <p>Validates the current project.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier validate</code></p><p>Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during <code>zapier build</code>, <code>zapier uploard</code>, <code>zapier push</code> or even as a test in <code>npm test</code>.</p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help validate</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -846,8 +846,8 @@ $ zapier validate
 </blockquote><p><strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Options</strong></p><ul>
 <li><em>none</em> -- print a table of all collaborators</li>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help collaborate</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -895,8 +895,8 @@ $ zapier collaborate user@example.com --remove
 <li><em>none</em> -- print a table of all invitees</li>
 <li><code>[user@example.com]</code> -- the user to add or remove</li>
 <li><code>--remove</code> -- optionally elect to remove this user, default false</li>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help invite</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -941,8 +941,8 @@ $ zapier invite user@example.com --remove
       <blockquote>
 <p>Prints all recent history for your app.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier history</code></p><p>Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.</p><p><strong>Options</strong></p><ul>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help history</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -978,14 +978,14 @@ $ zapier invite user@example.com --remove
 </blockquote><p><strong>Usage:</strong> <code>zapier logs</code></p><p>Get the logs that are automatically collected during the running of your app. Either explicitly during <code>z.context.line()</code>, automatically via <code>z.request()</code> or any sort of traceback or error.</p><blockquote>
 <p>Does not collect or list the errors found locally during <code>npm test</code>.</p>
 </blockquote><p><strong>Options</strong></p><ul>
-<li><code>--version=1.0.0</code> -- display only this version&apos;s logs, default <code>null</code></li>
-<li><code>--{error|success}</code> -- display only error or success logs, default <code>&apos;success&apos;</code></li>
-<li><code>--{console|http}</code> -- display only console or http logs, default <code>&apos;http&apos;</code></li>
-<li><code>--detailed</code> -- show detailed logs (like http body), default <code>false</code></li>
-<li><code>--user=user@example.com</code> -- display only this users logs, default <code>null</code></li>
-<li><code>--limit=5</code> -- display only console or http logs, default <code>50</code></li>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help logs</code></li>
+<li><code>--version=value</code> -- display only this version&apos;s logs</li>
+<li><code>--status={success,error}</code> -- display only error or success logs, default is <code>success</code></li>
+<li><code>--type={http,console}</code> -- display only console or http logs, default is <code>http</code></li>
+<li><code>--detailed</code> -- show detailed logs (like http body)</li>
+<li><code>--user=value</code> -- display only this users logs</li>
+<li><code>--limit=50</code> -- control the maximum result size, default is <code>50</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>
@@ -1067,8 +1067,8 @@ $ zapier logs --console
 <li><code>1.0.0</code> -- the app version&apos;s environment to work on</li>
 <li><code>KEY</code> -- the uppercase key of the environment variable to set</li>
 <li><code>VALUE</code> -- the raw value to set to the key</li>
-<li><code>--format={plain|json|row|table}</code> -- display format, default is <code>table</code></li>
-<li><code>--help</code> -- prints this help text, same as <code>zapier help env</code></li>
+<li><code>--format={plain,json,row,table}</code> -- display format</li>
+<li><code>--help</code> -- prints this help text</li>
 <li><code>--debug</code> -- print debug API calls and tracebacks</li>
 </ul>
     </div>

@@ -12,7 +12,7 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 * _none_ -- print a table of all collaborators
 * \`[user@example.com]\` -- the user to add or remove
-${utils.defaultOptionsDocFragment({cmd: 'collaborate'})}
+${utils.defaultArgOptsFragment({cmd: 'collaborate'})}
 
 ${'```'}bash
 $ zapier collaborate
