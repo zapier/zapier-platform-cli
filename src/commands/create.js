@@ -30,7 +30,7 @@ const create = (context, title, location = '.') => {
     .then(() => {
       utils.printDone();
       utils.printStarting('Installing project dependencies');
-      return utils.runCommand('npm', ['install'], {cwd: appDir});
+      return utils.npmInstall(appDir);
     })
     .then(() => {
       utils.printDone();
