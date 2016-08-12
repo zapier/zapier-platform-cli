@@ -1,9 +1,14 @@
 const constants = require('../constants');
 const utils = require('../utils');
 const path = require('path');
+const os = require('os');
 
 const create = (context, title, location = '.') => {
   const appDir = path.resolve(location);
+  const tempAppDir = path.resolve(os.tmpdir(), location);
+
+  const repo = global.argOpts.style ?
+        `${constants.STARTER_REPO}-${global.argOpts.style}` : constants.STARTER_REPO;
 
   return utils.checkCredentials()
     .then(() => {
@@ -13,19 +18,21 @@ const create = (context, title, location = '.') => {
       context.line();
       context.line(`Let\'s create your app "${title}"!`);
       context.line();
-
-      let repo = constants.STARTER_REPO;
-      if (global.argOpts.style) {
-        repo = `${constants.STARTER_REPO}-${global.argOpts.style}`;
-      }
-
-      // TODO: this should be smarter - we should allow starting after `npm init`/`git init`, or various
-      // other common starting patterns for devs with prebaked assumptions on how to start a project
-      utils.printStarting('Cloning starter app from ' + repo);
-      return utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, appDir]);
     })
     .then(() => {
-      return utils.removeDir(path.resolve(appDir, '.git'));
+      // TODO: this should be smarter - we should allow starting after `npm init`/`git init`, or various
+      // other common starting patterns for devs with prebaked assumptions on how to start a project
+
+      utils.printStarting('Cloning starter app from ' + repo);
+
+      // could use a library to generate temp dir with unique name instead (there are several out there)
+      return utils.removeDir(tempAppDir)
+        .then(() => utils.ensureDir(tempAppDir))
+        .then(() => utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, tempAppDir]))
+        .then(() => utils.removeDir(path.resolve(tempAppDir, '.git')))
+        .then(() => utils.ensureDir(appDir))
+        .then(() => utils.copyDir(tempAppDir, appDir))
+        .then(() => utils.removeDir(tempAppDir));
     })
     .then(() => {
       utils.printDone();
