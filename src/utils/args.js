@@ -33,6 +33,8 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
   let restAfter = -1;
 
   const _argLookback = {};
+
+  // Make sure the spec has the provided args.
   _.forEach(argSpec, (spec, i) => {
     let arg = args[i];
 
@@ -58,12 +60,14 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
     }
   });
 
+  // Make sure any leftover provided args are expected.
   _.forEach(args, (arg, i) => {
     if (i > restAfter) {
       errors.push(`Unexpected positional argument ${i + 1} "${arg}"`);
     }
   });
 
+  // Make sure the spec has the provided args opts/keywords.
   _.forEach(argOptsSpec, (spec, name) => {
     let arg = argOpts[name];
 
@@ -79,6 +83,17 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
     if (arg && spec.choices && spec.choices.length && spec.choices.indexOf(arg) === -1) {
       let choices = spec.choices.map(s => JSON.stringify(s)).join(', ');
       errors.push(`Unexpected keyword argument --${name}="${arg}", must be one of ${choices}`);
+    }
+  });
+
+  // Make sure any leftover provided args opts/keywords are expected.
+  _.forEach(argOpts, (arg, name) => {
+    if (!argOptsSpec[name]) {
+      if (arg === true) {
+        errors.push(`Unexpected keyword argument --${name}`);
+      } else {
+        errors.push(`Unexpected keyword argument --${name}="${arg}"`);
+      }
     }
   });
 

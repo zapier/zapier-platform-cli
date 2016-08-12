@@ -117,6 +117,18 @@ describe('utils', () => {
       'Unexpected positional argument 1 "something"',
       'Unexpected positional argument 2 "other"',
     ]);
+
+    [args, argOpts] = utils.argParse(['--color=blue']);
+    errors = utils.enforceArgSpec(spec, args, argOpts);
+    errors.should.eql([
+      'Unexpected keyword argument --color="blue"',
+    ]);
+
+    [args, argOpts] = utils.argParse(['--flaggy']);
+    errors = utils.enforceArgSpec(spec, args, argOpts);
+    errors.should.eql([
+      'Unexpected keyword argument --flaggy',
+    ]);
   });
 
   it('should enforce args choices', () => {
