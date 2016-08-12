@@ -136,12 +136,8 @@ You can mix and match several options to customize the created scaffold for your
 
 * `{model,trigger,search,write}` -- **required**, what type of thing are you creating
 * `"Some Name"` -- **required**, the name of the new thing to create
-* `{model|trigger|search|write}` - what thing are you creating
-* `"Name"` -- the name of the new thing to create
 * `--dest={type}s/{name}` -- _optional_, sets the new file's path, default is `{type}s/{name}`
 * `--entry=index.js` -- _optional_, where to import the new file, default is `index.js`
-* `--dest=path` -- sets the new file's path, default is `'{type}s/{name}'`
-* `--entry=path` -- where to import the new file, default is `'index.js'`
 
 ```bash
 $ zapier scaffold model "Contact"
