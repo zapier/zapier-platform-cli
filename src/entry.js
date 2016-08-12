@@ -35,31 +35,33 @@ module.exports = (argv) => {
 
   const command = args[0];
   args = args.slice(1);
+
+  // create the context, logs thread through this
   const context = utils.createContext({command, args});
 
   let commandFunc = commands[command];
   if (!commandFunc) {
     commandFunc = commands.help;
-    console.log(`${command} not a command! Try running \`zapier help\`?`);
+    context.line(`${command} not a command! Try running \`zapier help\`?`);
     return;
   }
 
   commandFunc.apply(commands, [context].concat(args))
     .then(() => {
       utils.clearSpinner();
-      console.log('');
+      context.line('');
     })
     .catch((err) => {
       utils.clearSpinner();
       if (DEBUG || global.argOpts.debug) {
-        console.log('');
-        console.log(err.stack);
-        console.log('');
-        console.log(colors.red('Error!'));
+        context.line('');
+        context.line(err.stack);
+        context.line('');
+        context.line(colors.red('Error!'));
       } else {
-        console.log('');
-        console.log('');
-        console.log(colors.red('Error!') + ' ' + colors.red(err.message));
+        context.line('');
+        context.line('');
+        context.line(colors.red('Error!') + ' ' + colors.red(err.message));
         colors.grey('(Use --debug flag and run this command again to get more details.)');
       }
       throw err;
