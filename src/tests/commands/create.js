@@ -41,7 +41,8 @@ describe('create command', () => {
           .put(`${API_PATH}/apps/123/versions/1.2.50`) // TODO: don't hard code version
           .reply(200, {});
 
-    create('Test App', appDir)
+    const context = {line: () => {}};
+    create(context, 'Test App', appDir)
       .then(() => {
         // app should exist
         utils.fileExistsSync(path.resolve(appDir, 'index.js')).should.equal(true);
