@@ -50,6 +50,8 @@ const link = (context) => {
       context.line('\nFinished! You can `zapier push` now to build & upload a version!');
     });
 };
+link.argSpec = [];
+link.argOptsSpec = {};
 link.help = 'Link the current directory to an app you have access to.';
 link.example = 'zapier link';
 link.docs = `\

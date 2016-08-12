@@ -37,6 +37,17 @@ var logs = (context) => {
       utils.printData(data.logs, columns, ifEmpty, true);
     });
 };
+logs.argSpec = [];
+logs.argOptsSpec = {
+  version: {},
+  error: {},
+  success: {},
+  console: {},
+  http: {},
+  detailed: {},
+  user: {},
+  limit: {},
+};
 logs.help = 'Prints recent logs. See help for filter arguments.';
 logs.example = 'zapier logs';
 logs.docs = `\

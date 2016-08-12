@@ -29,6 +29,8 @@ const validate = (context) => {
       }
     });
 };
+validate.argSpec = [];
+validate.argOptsSpec = {};
 validate.help = 'Validates the current project.';
 validate.example = 'zapier validate';
 validate.docs = `\

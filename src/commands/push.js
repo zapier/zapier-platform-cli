@@ -7,6 +7,8 @@ var push = (context) => {
       context.line('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier deploy` to put it into rotation or `zapier migrate` to move users over.');
     });
 };
+push.argSpec = [];
+push.argOptsSpec = {};
 push.help = 'Build and upload a new version of the current app - does not deploy.';
 push.example = 'zapier push';
 push.docs = `\

@@ -85,6 +85,14 @@ const scaffold = (context, type, name) => {
     })
     .then(() => context.line('\nFinished! We did the best we could, you might gut check your files though.'));
 };
+scaffold.argSpec = [
+  {name: 'type', required: true},
+  {name: 'name', required: true},
+];
+scaffold.argOptsSpec = {
+  dest: {},
+  entry: {},
+};
 scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
 scaffold.usage = 'zapier scaffold {model|trigger|search|write} "Name"';
 scaffold.example = 'zapier scaffold model "Contact"';

@@ -24,6 +24,11 @@ var deprecate = (context, version, deprecation_date) => {
       context.line(`We'll let users know that this version is no longer recommended and will cease working by ${deprecation_date}.`);
     });
 };
+deprecate.argSpec = [
+  {name: 'version', example: '1.0.0', required: true},
+  {name: 'deprecation_date', example: '2017-01-20', required: true},
+];
+deprecate.argOptsSpec = {};
 deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
 deprecate.example = 'zapier deprecate 1.0.0 2017-01-20';
 deprecate.docs = `\

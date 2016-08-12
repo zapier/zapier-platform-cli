@@ -12,6 +12,8 @@ var history = (context) => {
       ]);
     });
 };
+history.argSpec = [];
+history.argOptsSpec = {};
 history.help = 'Prints all recent history for your app.';
 history.example = 'zapier history';
 history.docs = `\

@@ -1,16 +1,16 @@
 const utils = require('../utils');
 
-var migrate = (context, oldVersion, newVersion, optionalPercent = '100%') => {
-  if (!newVersion) {
+var migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
+  if (!toVersion) {
     context.line('Must provide both old and new version like `zapier migrate 1.0.0 1.0.1`.');
     return Promise.resolve();
   }
   optionalPercent = parseInt(optionalPercent, 10);
   return utils.getLinkedApp()
     .then(app => {
-      context.line(`Getting ready to migrate your app "${app.title}" from ${oldVersion} to ${newVersion}.\n`);
-      utils.printStarting(`Starting migration from ${oldVersion} to ${newVersion} for ${optionalPercent}%`);
-      return utils.callAPI(`/apps/${app.id}/versions/${oldVersion}/migrate-to/${newVersion}`, {
+      context.line(`Getting ready to migrate your app "${app.title}" from ${fromVersion} to ${toVersion}.\n`);
+      utils.printStarting(`Starting migration from ${fromVersion} to ${toVersion} for ${optionalPercent}%`);
+      return utils.callAPI(`/apps/${app.id}/versions/${fromVersion}/migrate-to/${toVersion}`, {
         method: 'POST',
         body: {
           percent: optionalPercent
@@ -22,6 +22,12 @@ var migrate = (context, oldVersion, newVersion, optionalPercent = '100%') => {
       context.line('\nDeploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.');
     });
 };
+migrate.argSpec = [
+  {name: 'fromVersion', example: '1.0.0', required: true},
+  {name: 'toVersion', example: '1.0.1', required: true},
+  {name: 'percent', example: '100%'},
+];
+migrate.argOptsSpec = {};
 migrate.help = 'Migrate users from one version to another.';
 migrate.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
 migrate.docs = `\

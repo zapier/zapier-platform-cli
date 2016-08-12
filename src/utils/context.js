@@ -1,6 +1,6 @@
 const createContext = () => {
   return {
-    line: (_line) => console.log(_line)
+    line: (_line) => console.log(_line || '')
   };
 };
 

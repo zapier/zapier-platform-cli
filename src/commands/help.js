@@ -41,6 +41,10 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
       ]);
     });
 };
+help.argSpec = [
+  {name: 'cmd'}
+];
+help.argOptsSpec = {};
 help.help = 'Lists all the commands you can use.';
 help.example = 'zapier help [command]';
 help.docs = `\

@@ -34,6 +34,8 @@ const auth = (context) => {
       context.line(SUCCESS + ' Now try `zapier create` or `zapier link`.');
     });
 };
+auth.argSpec = [];
+auth.argOptsSpec = {};
 auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for using the CLI.`;
 auth.example = 'zapier auth';
 auth.docs = `\

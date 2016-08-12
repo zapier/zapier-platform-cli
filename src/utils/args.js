@@ -20,8 +20,8 @@ const argParse = (argv) => {
 };
 
 const enforceArgSpec = (fullSpec, args, argOpts) => {
-  const argSpec = fullSpec.args || [];
-  const argOptsSpec = fullSpec.argOpts || {};
+  const argSpec = fullSpec.argSpec || [];
+  const argOptsSpec = fullSpec.argOptsSpec || {};
 
   const errors = [];
 

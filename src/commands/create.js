@@ -55,6 +55,11 @@ const create = (context, title, location = '.') => {
       context.line('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
     });
 };
+create.argSpec = [
+  {name: 'title', required: true, example: 'My App Name'},
+  {name: 'location', default: '.'},
+];
+create.argOptsSpec = {};
 create.help = 'Creates a new app in your account.';
 create.example = 'zapier create "Example" [dir]';
 create.docs = `\

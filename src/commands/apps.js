@@ -17,6 +17,8 @@ var apps = (context) => {
       }
     });
 };
+apps.argSpec = [];
+apps.argOptsSpec = {};
 apps.help = 'Lists all the apps you can access.';
 apps.example = 'zapier apps';
 apps.docs = `\

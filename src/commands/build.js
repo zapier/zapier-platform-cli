@@ -8,6 +8,8 @@ var build = (context) => {
       context.line(`\nBuild complete! Moved to ${constants.BUILD_PATH}! Try the \`zapier upload\` command now.`);
     });
 };
+build.argSpec = [];
+build.argOptsSpec = {};
 build.help = 'Builds a deployable zip from the current directory.';
 build.example = 'zapier build';
 build.docs = `\

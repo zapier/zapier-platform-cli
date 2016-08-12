@@ -46,6 +46,20 @@ module.exports = (argv) => {
     return;
   }
 
+  const spec = {
+    argSpec: commandFunc.argSpec,
+    argOptsSpec: commandFunc.argOptsSpec
+  };
+  const errors = utils.enforceArgSpec(spec, args, argOpts);
+  if (errors.length) {
+    context.line(`Error on command ${command}:\n`);
+    errors.forEach((error) => {
+      context.line(' ' + colors.red(error));
+    });
+    context.line(colors.grey('\nAdjust your command and try again!'));
+    return;
+  }
+
   commandFunc.apply(commands, [context].concat(args))
     .then(() => {
       utils.clearSpinner();
@@ -62,7 +76,7 @@ module.exports = (argv) => {
         context.line('');
         context.line('');
         context.line(colors.red('Error!') + ' ' + colors.red(err.message));
-        colors.grey('(Use --debug flag and run this command again to get more details.)');
+        context.line(colors.grey('(Use --debug flag and run this command again to get more details.)'));
       }
       throw err;
     });
