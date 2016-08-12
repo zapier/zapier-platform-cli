@@ -1,10 +1,10 @@
 const utils = require('../utils');
 const colors = require('colors/safe');
 
-var logs = () => {
+var logs = (context) => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
-      console.log(`The logs of your app "${data.app.title}" listed below.\n`);
+      context.line(`The logs of your app "${data.app.title}" listed below.\n`);
 
       let columns;
       if (global.argOpts.console) {
@@ -33,14 +33,14 @@ var logs = () => {
         }
       }
 
-      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.console.log()` and doing a `zapier push`!');
+      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.context.line()` and doing a `zapier push`!');
       utils.printData(data.logs, columns, ifEmpty, true);
     });
 };
 logs.help = 'Prints recent logs. See help for filter arguments.';
 logs.example = 'zapier logs';
 logs.docs = `\
-Get the logs that are automatically collected during the running of your app. Either explicitly during \`z.console.log()\`, automatically via \`z.request()\` or any sort of traceback or error.
+Get the logs that are automatically collected during the running of your app. Either explicitly during \`z.context.line()\`, automatically via \`z.request()\` or any sort of traceback or error.
 
 > Does not collect or list the errors found locally during \`npm test\`.
 

@@ -1,9 +1,9 @@
 const utils = require('../utils');
 
-var versions = () => {
+var versions = (context) => {
   return utils.listVersions()
     .then((data) => {
-      console.log(`All versions of your app "${data.app.title}" listed below.\n`);
+      context.line(`All versions of your app "${data.app.title}" listed below.\n`);
       utils.printData(data.versions, [
         ['Version', 'version'],
         ['Platform', 'platform_version'],
@@ -13,7 +13,7 @@ var versions = () => {
         ['Timestamp', 'date'],
       ]);
       if (!data.versions.length) {
-        console.log('\nTry adding an version with the `zapier push` command.');
+        context.line('\nTry adding an version with the `zapier push` command.');
       }
     });
 };

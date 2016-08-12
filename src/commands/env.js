@@ -1,13 +1,13 @@
 const utils = require('../utils');
 
-var env = (version, key, value) => {
+var env = (context, version, key, value) => {
   if (value !== undefined) {
     key = key.toUpperCase();
     return utils.checkCredentials()
       .then(() => utils.getLinkedApp())
       .then((app) => {
         var url = '/apps/' + app.id + '/versions/' + version + '/environment';
-        console.log(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
+        context.line(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
         utils.printStarting(`Setting ${key} to "${value}"`);
         return utils.callAPI(url, {
           method: 'PUT',
@@ -19,24 +19,24 @@ var env = (version, key, value) => {
       })
       .then(() => {
         utils.printDone();
-        console.log('');
-        console.log('Environment updated! Try viewing it with `zapier env ${version}`.');
+        context.line('');
+        context.line('Environment updated! Try viewing it with `zapier env ${version}`.');
         return;
       });
   }
   if (key) {
-    console.log(`Try viewing your env with \`zapier env\` or setting with \`${env.example}\`.`);
+    context.line(`Try viewing your env with \`zapier env\` or setting with \`${env.example}\`.`);
     return Promise.resolve();
   }
   return utils.listEnv(version)
     .then((data) => {
-      console.log(`The env of your "${data.app.title}" listed below.\n`);
+      context.line(`The env of your "${data.app.title}" listed below.\n`);
       utils.printData(data.environment, [
         ['Version', 'app_version'],
         ['Key', 'key'],
         ['Value', 'value'],
       ]);
-      console.log(`\nTry setting an env with the \`${env.example}\` command.`);
+      context.line(`\nTry setting an env with the \`${env.example}\` command.`);
     });
 };
 env.help = 'Read and write environment variables.';

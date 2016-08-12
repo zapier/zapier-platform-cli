@@ -1,8 +1,8 @@
 const utils = require('../utils');
 const colors = require('colors/safe');
 
-const validate = () => {
-  console.log('Validating project locally.\n');
+const validate = (context) => {
+  context.line('Validating project locally.\n');
   return Promise.resolve()
     .then(() => utils.localAppCommand({command: 'validate'}))
     .then((errors) => {
@@ -23,9 +23,9 @@ const validate = () => {
     })
     .then((errors) => {
       if (errors.length) {
-        console.log(`\nMake any changes to your project and rerun this command.`);
+        context.line(`\nMake any changes to your project and rerun this command.`);
       } else {
-        console.log(`\nThis project looks good!`);
+        context.line(`\nThis project looks good!`);
       }
     });
 };

@@ -1,9 +1,9 @@
 const utils = require('../utils');
 
-var apps = () => {
+var apps = (context) => {
   return utils.listApps()
     .then((data) => {
-      console.log('All apps listed below.\n');
+      context.line('All apps listed below.\n');
       utils.printData(data.apps, [
         ['Title', 'title'],
         ['Unique Key', 'key'],
@@ -11,9 +11,9 @@ var apps = () => {
         ['Linked', 'linked'],
       ]);
       if (!data.apps.length) {
-        console.log('\nTry adding an app with the `zapier create` command.');
+        context.line('\nTry adding an app with the `zapier create` command.');
       } else {
-        console.log('\nTry linking the current directory to a different app with the `zapier link` command.');
+        context.line('\nTry linking the current directory to a different app with the `zapier link` command.');
       }
     });
 };

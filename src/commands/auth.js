@@ -3,7 +3,7 @@ const utils = require('../utils');
 
 const QUESTION = 'What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)';
 const SUCCESS = `Your deploy key has been saved to ${constants.AUTH_LOCATION}.`;
-const auth = () => {
+const auth = (context) => {
   const checks = [
     utils.readCredentials()
       .then(() => true)
@@ -15,11 +15,11 @@ const auth = () => {
   return Promise.all(checks)
     .then(([credentialsPresent, credentialsGood]) => {
       if (!credentialsPresent) {
-        console.log(`Your ${constants.AUTH_LOCATION} has not been set up yet.\n`);
+        context.line(`Your ${constants.AUTH_LOCATION} has not been set up yet.\n`);
       } else if (!credentialsGood) {
-        console.log(`Your ${constants.AUTH_LOCATION} looks like it has invalid credentials.\n`);
+        context.line(`Your ${constants.AUTH_LOCATION} looks like it has invalid credentials.\n`);
       } else {
-        console.log(`Your ${constants.AUTH_LOCATION} looks valid. You may update it now though.\n`);
+        context.line(`Your ${constants.AUTH_LOCATION} looks valid. You may update it now though.\n`);
       }
       return utils.getInput(QUESTION + '\n\n  ');
     })
@@ -30,8 +30,8 @@ const auth = () => {
     })
     .then(utils.checkCredentials)
     .then(() => {
-      console.log('');
-      console.log(SUCCESS + ' Now try `zapier create` or `zapier link`.');
+      context.line('');
+      context.line(SUCCESS + ' Now try `zapier create` or `zapier link`.');
     });
 };
 auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for using the CLI.`;

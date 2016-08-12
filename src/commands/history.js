@@ -1,9 +1,9 @@
 const utils = require('../utils');
 
-var history = () => {
+var history = (context) => {
   return utils.listHistory()
     .then((data) => {
-      console.log(`The history of your app "${data.app.title}" listed below.\n`);
+      context.line(`The history of your app "${data.app.title}" listed below.\n`);
       utils.printData(data.history, [
         ['What', 'action'],
         ['Message', 'message'],

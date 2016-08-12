@@ -35,6 +35,7 @@ module.exports = (argv) => {
 
   const command = args[0];
   args = args.slice(1);
+  const context = utils.createContext({command, args});
 
   let commandFunc = commands[command];
   if (!commandFunc) {
@@ -43,7 +44,7 @@ module.exports = (argv) => {
     return;
   }
 
-  commandFunc.apply(commands, args)
+  commandFunc.apply(commands, [context].concat(args))
     .then(() => {
       utils.clearSpinner();
       console.log('');

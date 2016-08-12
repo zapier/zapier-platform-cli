@@ -1,18 +1,18 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var help = (cmd) => {
+var help = (context, cmd) => {
   const commands = require('./index');
 
   if (commands[cmd] && commands[cmd].docs) {
-    console.log(commands[cmd].help);
-    console.log();
-    console.log(`Usage: \`${commands[cmd].example}\``);
-    console.log();
+    context.line(commands[cmd].help);
+    context.line();
+    context.line(`Usage: \`${commands[cmd].example}\``);
+    context.line();
     utils.markdownLog(commands[cmd].docs.trim());
     return Promise.resolve();
   }
-  console.log(`
+  context.line(`
 Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]
 
 This Zapier command works off of two files:
@@ -24,7 +24,7 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
 `.trim());
   return Promise.resolve({})
     .then(() => {
-      console.log('');
+      context.line('');
       var allCommands = Object
         .keys(commands)
         .map((command) => {

@@ -1,14 +1,14 @@
 const utils = require('../utils');
 
-var deprecate = (version, deprecation_date) => {
+var deprecate = (context, version, deprecation_date) => {
   if (!deprecation_date) {
-    console.log('Error: No version or deprecation date - provide either a version like "1.0.0" and "2017-01-20"...\n');
+    context.line('Error: No version or deprecation date - provide either a version like "1.0.0" and "2017-01-20"...\n');
     return Promise.resolve(true);
   }
   return utils.checkCredentials()
     .then(() => utils.getLinkedApp())
     .then((app) => {
-      console.log(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
+      context.line(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
       var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
       utils.printStarting(`Deprecating ${version}`);
       return utils.callAPI(url, {
@@ -20,8 +20,8 @@ var deprecate = (version, deprecation_date) => {
     })
     .then(() => {
       utils.printDone();
-      console.log('  Deprecation successful!\n');
-      console.log(`We'll let users know that this version is no longer recommended and will cease working by ${deprecation_date}.`);
+      context.line('  Deprecation successful!\n');
+      context.line(`We'll let users know that this version is no longer recommended and will cease working by ${deprecation_date}.`);
     });
 };
 deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';

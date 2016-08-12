@@ -2,17 +2,17 @@ const constants = require('../constants');
 const utils = require('../utils');
 const path = require('path');
 
-const create = (title, location = '.') => {
+const create = (context, title, location = '.') => {
   const appDir = path.resolve(location);
 
   return utils.checkCredentials()
     .then(() => {
-      console.log('Welcome to the Zapier Platform! :-D');
-      console.log();
-      console.log(constants.ART);
-      console.log();
-      console.log(`Let\'s create your app "${title}"!`);
-      console.log();
+      context.line('Welcome to the Zapier Platform! :-D');
+      context.line();
+      context.line(constants.ART);
+      context.line();
+      context.line(`Let\'s create your app "${title}"!`);
+      context.line();
 
       let repo = constants.STARTER_REPO;
       if (global.argOpts.style) {
@@ -52,7 +52,7 @@ const create = (title, location = '.') => {
       return utils.buildAndUploadCurrentDir(constants.BUILD_PATH, appDir);
     })
     .then(() => {
-      console.log('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
+      context.line('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a new version!');
     });
 };
 create.help = 'Creates a new app in your account.';

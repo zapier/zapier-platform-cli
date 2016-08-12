@@ -1,14 +1,14 @@
 const utils = require('../utils');
 
-var migrate = (oldVersion, newVersion, optionalPercent = '100%') => {
+var migrate = (context, oldVersion, newVersion, optionalPercent = '100%') => {
   if (!newVersion) {
-    console.log('Must provide both old and new version like `zapier migrate 1.0.0 1.0.1`.');
+    context.line('Must provide both old and new version like `zapier migrate 1.0.0 1.0.1`.');
     return Promise.resolve();
   }
   optionalPercent = parseInt(optionalPercent, 10);
   return utils.getLinkedApp()
     .then(app => {
-      console.log(`Getting ready to migrate your app "${app.title}" from ${oldVersion} to ${newVersion}.\n`);
+      context.line(`Getting ready to migrate your app "${app.title}" from ${oldVersion} to ${newVersion}.\n`);
       utils.printStarting(`Starting migration from ${oldVersion} to ${newVersion} for ${optionalPercent}%`);
       return utils.callAPI(`/apps/${app.id}/versions/${oldVersion}/migrate-to/${newVersion}`, {
         method: 'POST',
@@ -19,7 +19,7 @@ var migrate = (oldVersion, newVersion, optionalPercent = '100%') => {
     })
     .then(() => {
       utils.printDone();
-      console.log('\nDeploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.');
+      context.line('\nDeploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.');
     });
 };
 migrate.help = 'Migrate users from one version to another.';
