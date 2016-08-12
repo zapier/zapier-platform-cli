@@ -39,6 +39,12 @@ var env = (context, version, key, value) => {
       context.line(`\nTry setting an env with the \`${env.example}\` command.`);
     });
 };
+env.argSpec = [
+  {name: 'version', example: '1.0.0', required: true},
+  {name: 'key', example: 'API_KEY'},
+  {name: 'value', example: '1234567890', requiredWith: ['key']},
+];
+env.argOptsSpec = {};
 env.help = 'Read and write environment variables.';
 env.example = 'zapier env 1.0.0 API_KEY 1234567890';
 env.docs = `\

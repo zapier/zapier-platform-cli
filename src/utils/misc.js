@@ -5,25 +5,6 @@ const colors = require('colors/safe');
 
 const {PLATFORM_PACKAGE, MIN_NODE_VERSION} = require('../constants');
 
-const argParse = (argv) => {
-  var args = [], opts = {};
-  argv.forEach((arg) => {
-    if (arg.startsWith('--')) {
-      var key = arg.split('=', 1)[0].replace('--', '');
-      var val = arg.split('=').slice(1).join('=');
-      if (val === '') {
-        val = true;
-      } else if (val.toLowerCase() === 'false') {
-        val = false;
-      }
-      opts[key] = val;
-    } else {
-      args.push(arg);
-    }
-  });
-  return [args, opts];
-};
-
 const camelCase = (str) => _.capitalize(_.camelCase(str));
 const snakeCase = (str) => _.snakeCase(str);
 
@@ -113,7 +94,6 @@ const npmInstall = (appDir) => {
 };
 
 module.exports = {
-  argParse,
   camelCase,
   snakeCase,
   makePromise,
