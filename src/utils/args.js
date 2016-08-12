@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const globalArgOptsSpec = {
-  format: {help: 'display format', choices: ['plain', 'json', 'row', 'table']},
+  format: {help: 'display format', choices: ['plain', 'json', 'raw', 'table', 'row'], default: 'table'},
   help: {help: 'prints this help text', flag: true},
   debug: {help: 'print debug API calls and tracebacks', flag: true},
 };

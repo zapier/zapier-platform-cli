@@ -6,12 +6,9 @@ const validate = (context) => {
   return Promise.resolve()
     .then(() => utils.localAppCommand({command: 'validate'}))
     .then((errors) => {
-      const newErrors = errors.map(({property, message, docLinks}) => {
-        return {
-          property,
-          message,
-          docLinks: (docLinks || []).join('\n')
-        };
+      const newErrors = errors.map((error) => {
+        error.docLinks = (error.docLinks || []).join('\n');
+        return error;
       });
       const ifEmpty = colors.grey('No errors found during validation routine.');
       utils.printData(newErrors, [

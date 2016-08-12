@@ -110,7 +110,10 @@ const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
           var rest = val;
           val = '';
           while (stringLength(rest) > 0) {
-            val += rest.slice(0, widthForValue) + '\n';
+            val += rest.slice(0, widthForValue);
+            if (val.indexOf('\n') === -1) {
+              val += '\n';
+            }
             rest = rest.slice(widthForValue);
           }
         }
@@ -141,10 +144,7 @@ const formatStyles = {
   'plain': makePlain,
   'json': makeJSON,
   'raw': makeRawJSON,
-  'raw-json': makeRawJSON,
-  'json-raw': makeRawJSON,
   'row': makeRowBasedTable,
-  'row-based': makeRowBasedTable,
   'table': makeTable
 };
 
