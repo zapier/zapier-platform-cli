@@ -41,7 +41,9 @@ Prints a human readable enumeration of your app's triggers, searches and actions
 
 **Arguments**
 
-${utils.defaultArgOptsFragment({cmd: 'describe'})}
+${utils.argsFragment(describe.argsSpec)}
+${utils.argOptsFragment(describe.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier describe

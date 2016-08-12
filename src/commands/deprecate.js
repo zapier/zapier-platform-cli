@@ -25,8 +25,8 @@ var deprecate = (context, version, deprecation_date) => {
     });
 };
 deprecate.argsSpec = [
-  {name: 'version', example: '1.0.0', required: true},
-  {name: 'deprecation_date', example: '2017-01-20', required: true},
+  {name: 'version', example: '1.0.0', required: true, help: 'the version to deprecate'},
+  {name: 'deprecation_date', example: '2017-01-20', required: true, help: 'what date should we deprecate on'},
 ];
 deprecate.argOptsSpec = {};
 deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
@@ -38,8 +38,8 @@ A utility to alert users of breaking changes that require the deprecation of an 
 
 **Arguments**
 
-* \`1.0.0\` -- the version to deprecate
-* \`2017-01-20\` -- what date should we deprecate on
+${utils.argsFragment(deprecate.argsSpec)}
+${utils.argOptsFragment(deprecate.argOptsSpec)}
 
 ${'```'}bash
 $ zapier deprecate 1.0.0 2017-01-20

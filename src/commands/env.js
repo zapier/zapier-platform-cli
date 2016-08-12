@@ -40,9 +40,9 @@ var env = (context, version, key, value) => {
     });
 };
 env.argsSpec = [
-  {name: 'version', example: '1.0.0', required: true},
-  {name: 'key', example: 'API_KEY'},
-  {name: 'value', example: '1234567890', requiredWith: ['key']},
+  {name: 'version', example: '1.0.0', required: true, help: 'the app version\'s environment to work on'},
+  {name: 'key', example: 'API_KEY', help: 'the uppercase key of the environment variable to set'},
+  {name: 'value', example: '1234567890', requiredWith: ['key'], help: 'the raw value to set to the key'},
 ];
 env.argOptsSpec = {};
 env.help = 'Read and write environment variables.';
@@ -53,10 +53,9 @@ Manage the environment of your app so that \`process.env\` can access the keys, 
 **Arguments**
 
 * _none_ -- print a table of all environment variables, regardless of app version
-* \`1.0.0\` -- the app version's environment to work on
-* \`KEY\` -- the uppercase key of the environment variable to set
-* \`VALUE\` -- the raw value to set to the key
-${utils.defaultArgOptsFragment({cmd: 'env'})}
+${utils.argsFragment(env.argsSpec)}
+${utils.argOptsFragment(env.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier env 1.0.0

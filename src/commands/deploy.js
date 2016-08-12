@@ -39,6 +39,11 @@ Deploys are an inherently safe operation for all existing users of your app.
 
 > If this is your first time deploying - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We'll respond within a few business days.
 
+**Arguments**
+
+${utils.argsFragment(deploy.argsSpec)}
+${utils.argOptsFragment(deploy.argOptsSpec)}
+
 ${'```'}bash
 $ zapier deploy 1.0.0
 # Preparing to deploy version 1.0.0 your app "Example".

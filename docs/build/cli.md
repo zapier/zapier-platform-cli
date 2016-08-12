@@ -18,6 +18,15 @@ $ npm install -g @zapier/zapier-platform-cli
 
 Prints documentation to the terminal screen.
 
+**Arguments**
+
+* _none_ -- print all commands
+* `value` -- _optional_, the command to view docs for
+
+* `--format={plain,json,row,table}` -- _optional_, display format
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
+
 ```bash
 $ zapier help apps
 $ zapier help scaffold
@@ -78,7 +87,7 @@ $ zapier auth
 
 > Creates a new app in your account.
 
-**Usage:** `zapier create "Example" [dir]`
+**Usage:** `zapier create "Example" [directory]`
 
 A handy command that will perform a bunch of steps for you:
 
@@ -92,9 +101,9 @@ After running this, you'll have a working app in your Zapier editor. This should
 
 **Arguments**
 
-* `"Example"` -- the name of your app
-* `[dir]` -- an optional directory, default is `.`
-* `--style={helloworld|oauth2}` -- select a starting app template
+* `"My App Name"` -- **required**, 
+* `.` -- _optional_, , default is `.`
+* `--style={helloworld}` -- _optional_, select a starting app template
 
 ```bash
 $ zapier create "Example" example-dir --style=helloworld
@@ -163,6 +172,8 @@ Prints a human readable enumeration of your app's triggers, searches and actions
 
 **Arguments**
 
+
+
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -203,6 +214,8 @@ Or, if you are making an app from scratch - you'd prefer the `zapier create "Exa
 
 **Arguments**
 
+
+
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -239,6 +252,8 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Arguments**
 
+
+
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -265,6 +280,8 @@ $ zapier apps
 
 **Arguments**
 
+
+
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -290,6 +307,8 @@ $ zapier versions
 Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during `zapier build`, `zapier uploard`, `zapier push` or even as a test in `npm test`.
 
 **Arguments**
+
+
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -339,7 +358,8 @@ It does the following steps:
 
 **Arguments**
 
-* `--disable-dependency-detection` -- disables walking required files to slim the build
+
+* `--disable-dependency-detection` -- _optional_, disables walking required files to slim the build
 
 ```bash
 $ zapier build
@@ -425,6 +445,11 @@ Deploys are an inherently safe operation for all existing users of your app.
 
 > If this is your first time deploying - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We'll respond within a few business days.
 
+**Arguments**
+
+* `1.0.0` -- **required**,
+
+
 ```bash
 $ zapier deploy 1.0.0
 # Preparing to deploy version 1.0.0 your app "Example".
@@ -452,9 +477,10 @@ Migrations can take between 5-10 minutes, so be patient and check `zapier histor
 
 **Arguments**
 
-* `1.0.0` -- the version **from** which to migrate users
-* `1.0.1` -- the version **to** which to migrate users
-* `[10%]` -- an optional percent of users to migrate, default is `100%`
+* `1.0.0` -- **required**, the version **from** which to migrate users
+* `1.0.1` -- **required**, the version **to** which to migrate users
+* `100%` -- _optional_, percent of users to migrate, default is `100%`
+
 
 ```bash
 $ zapier migrate 1.0.0 1.0.1 15%
@@ -478,8 +504,9 @@ A utility to alert users of breaking changes that require the deprecation of an 
 
 **Arguments**
 
-* `1.0.0` -- the version to deprecate
-* `2017-01-20` -- what date should we deprecate on
+* `1.0.0` -- **required**, the version to deprecate
+* `2017-01-20` -- **required**, what date should we deprecate on
+
 
 ```bash
 $ zapier deprecate 1.0.0 2017-01-20
@@ -502,8 +529,9 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 
 **Arguments**
 
-* _none_ -- print a table of all collaborators
-* `[user@example.com]` -- the user to add or remove
+* _none_ -- print all collaborators
+* `john@example.com` -- _optional_, which user to add/remove
+* `--remove` -- _optional_, optionally elect to remove this user
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -544,9 +572,9 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 
 **Arguments**
 
-* _none_ -- print a table of all invitees
-* `[user@example.com]` -- the user to add or remove
-* `--remove` -- optionally elect to remove this user, default false
+* _none_ -- print all invitees
+* `john@example.com` -- _optional_, which user to add/remove
+* `--remove` -- _optional_, optionally elect to remove this user
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -587,6 +615,8 @@ Get the history of your app, listing all the changes made over the lifetime of y
 
 **Arguments**
 
+
+
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -617,6 +647,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 > Does not collect or list the errors found locally during `npm test`.
 
 **Arguments**
+
 
 * `--version=value` -- _optional_, display only this version's logs
 * `--status={success,error}` -- _optional_, display only error or success logs, default is `success`
@@ -698,9 +729,10 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 **Arguments**
 
 * _none_ -- print a table of all environment variables, regardless of app version
-* `1.0.0` -- the app version's environment to work on
-* `KEY` -- the uppercase key of the environment variable to set
-* `VALUE` -- the raw value to set to the key
+* `1.0.0` -- **required**, the app version's environment to work on
+* `API_KEY` -- _optional_, the uppercase key of the environment variable to set
+* `1234567890` -- _optional_, the raw value to set to the key
+
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks

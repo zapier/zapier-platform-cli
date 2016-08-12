@@ -21,7 +21,9 @@ Get the history of your app, listing all the changes made over the lifetime of y
 
 **Arguments**
 
-${utils.defaultArgOptsFragment({cmd: 'history'})}
+${utils.argsFragment(history.argsSpec)}
+${utils.argOptsFragment(history.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier history

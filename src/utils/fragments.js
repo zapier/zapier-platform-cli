@@ -11,7 +11,7 @@ const argsFragment = (argsSpec) => {
     val = (spec.choices && spec.choices.length) ? `{${spec.choices.map(String).join(',')}}` : val;
     let def = spec.default ? `, default is \`${spec.default}\`` : '';
     return `* \`${sq(val)}\` -- ${spec.required ? '**required**' : '_optional_'}, ${spec.help || ''}${def}`;
-  }).join('\n');
+  }).join('\n').trim();
 };
 
 // Make a markdown list for args opts/keywords.
@@ -22,7 +22,7 @@ const argOptsFragment = (argOptsSpec) => {
     val = spec.flag ? '' : `=${sq(val)}`;
     let def = spec.default ? `, default is \`${spec.default}\`` : '';
     return `* \`--${name}${val}\` -- ${spec.required ? '**required**' : '_optional_'}, ${spec.help || ''}${def}`;
-  }).join('\n');
+  }).join('\n').trim();
 };
 
 const defaultArgOptsFragment = () => argOptsFragment(globalArgOptsSpec);

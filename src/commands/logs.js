@@ -55,8 +55,9 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 **Arguments**
 
+${utils.argsFragment(logs.argsSpec)}
 ${utils.argOptsFragment(logs.argOptsSpec)}
-${utils.defaultArgOptsFragment({cmd: 'logs'})}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier logs

@@ -61,7 +61,9 @@ Or, if you are making an app from scratch - you'd prefer the \`zapier create "Ex
 
 **Arguments**
 
-${utils.defaultArgOptsFragment({cmd: 'link'})}
+${utils.argsFragment(link.argsSpec)}
+${utils.argOptsFragment(link.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier link

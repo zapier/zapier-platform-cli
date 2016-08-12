@@ -23,9 +23,9 @@ var migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
     });
 };
 migrate.argsSpec = [
-  {name: 'fromVersion', example: '1.0.0', required: true},
-  {name: 'toVersion', example: '1.0.1', required: true},
-  {name: 'percent', example: '100%'},
+  {name: 'fromVersion', example: '1.0.0', required: true, help: 'the version **from** which to migrate users'},
+  {name: 'toVersion', example: '1.0.1', required: true, help: 'the version **to** which to migrate users'},
+  {name: 'percent', example: '100%', default: '100%', help: 'percent of users to migrate'},
 ];
 migrate.argOptsSpec = {};
 migrate.help = 'Migrate users from one version to another.';
@@ -41,9 +41,8 @@ Migrations can take between 5-10 minutes, so be patient and check \`zapier histo
 
 **Arguments**
 
-* \`1.0.0\` -- the version **from** which to migrate users
-* \`1.0.1\` -- the version **to** which to migrate users
-* \`[10%]\` -- an optional percent of users to migrate, default is \`100%\`
+${utils.argsFragment(migrate.argsSpec)}
+${utils.argOptsFragment(migrate.argOptsSpec)}
 
 ${'```'}bash
 $ zapier migrate 1.0.0 1.0.1 15%

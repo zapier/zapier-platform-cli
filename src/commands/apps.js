@@ -26,7 +26,9 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 **Arguments**
 
-${utils.defaultArgOptsFragment({cmd: 'apps'})}
+${utils.argsFragment(apps.argsSpec)}
+${utils.argOptsFragment(apps.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier apps

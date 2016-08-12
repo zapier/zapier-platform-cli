@@ -57,11 +57,13 @@ const create = (context, title, location = '.') => {
 };
 create.argsSpec = [
   {name: 'title', required: true, example: 'My App Name'},
-  {name: 'location', default: '.'},
+  {name: 'directory', default: '.'},
 ];
-create.argOptsSpec = {};
+create.argOptsSpec = {
+  style: {help: 'select a starting app template', choices: ['helloworld']}
+};
 create.help = 'Creates a new app in your account.';
-create.example = 'zapier create "Example" [dir]';
+create.example = 'zapier create "Example" [directory]';
 create.docs = `\
 A handy command that will perform a bunch of steps for you:
 
@@ -75,9 +77,8 @@ After running this, you'll have a working app in your Zapier editor. This should
 
 **Arguments**
 
-* \`"Example"\` -- the name of your app
-* \`[dir]\` -- an optional directory, default is \`.\`
-* \`--style={helloworld|oauth2}\` -- select a starting app template
+${utils.argsFragment(create.argsSpec)}
+${utils.argOptsFragment(create.argOptsSpec)}
 
 ${'```'}bash
 $ zapier create "Example" example-dir --style=helloworld

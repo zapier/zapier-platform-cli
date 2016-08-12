@@ -24,7 +24,9 @@ versions.example = 'zapier versions';
 versions.docs = `\
 **Arguments**
 
-${utils.defaultArgOptsFragment({cmd: 'versions'})}
+${utils.argsFragment(versions.argsSpec)}
+${utils.argOptsFragment(versions.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier versions

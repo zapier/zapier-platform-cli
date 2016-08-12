@@ -9,7 +9,9 @@ var build = (context) => {
     });
 };
 build.argsSpec = [];
-build.argOptsSpec = {};
+build.argOptsSpec = {
+  'disable-dependency-detection': {flag: true, help: 'disables walking required files to slim the build'}
+};
 build.help = 'Builds a deployable zip from the current directory.';
 build.example = 'zapier build';
 build.docs = `\
@@ -29,7 +31,8 @@ It does the following steps:
 
 **Arguments**
 
-* \`--disable-dependency-detection\` -- disables walking required files to slim the build
+${utils.argsFragment(build.argsSpec)}
+${utils.argOptsFragment(build.argOptsSpec)}
 
 ${'```'}bash
 $ zapier build
