@@ -8,8 +8,7 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/agate.min.css">
-    <style>
-body {
+    <style>body {
   font-family: 'Open Sans', Helvetica, arial, sans-serif;
   background-color: #fff;
   color: #5F6C72;
@@ -17,6 +16,8 @@ body {
   font-weight: 400;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   position: relative; }
 
 img {
@@ -100,6 +101,7 @@ pre {
   font-family: 'Consolas','Liberation Mono',Courier,monospace; }
   pre code {
     display: block;
+    white-space: pre; /* no word wrap */
     padding: 10px;
     line-height: 1.7em; }
 
@@ -213,39 +215,39 @@ blockquote {
     <div class="docs-main container-fluid">
       <div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="introduction">Introduction</h2>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.</p>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="getting-started">Getting Started</h2>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>The Zapier CLI requires Node <code>v4.3.2</code> or higher, we recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p><p>After you install, you&apos;ll be able to set up your auth and then create a working &quot;Hello World&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p><blockquote>
 <p>Note: have fun!</p>
 </blockquote>
     </div>
-    <div class="col-md-6 col-sm-12 col-height  docs-code">
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># install the cli globally</span>
 npm install -g @zapier/zapier-platform-cli
 
@@ -261,10 +263,10 @@ zapier create <span class="hljs-string">&quot;Hello World&quot;</span> --style=h
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>You can also run tests and validate your app which allows you to verify your code&apos;s behavior and that your app definition conforms to our <code>json-schema</code>.</p>
     </div>
-    <div class="col-md-6 col-sm-12 col-height  docs-code">
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># run the local tests</span>
 npm <span class="hljs-built_in">test</span>
 
@@ -275,19 +277,19 @@ zapier validate
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="project-structure">Project Structure</h2>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>In your <code>helloworld</code> folder, you should see this general structure. The <code>index.js</code> is your entry point, you&apos;ll need to export an <code>App</code> definition there.</p>
     </div>
-    <div class="col-md-6 col-sm-12 col-height  docs-code">
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-plain">$ tree .
 .
 &#x251C;&#x2500;&#x2500; README.md
@@ -306,19 +308,19 @@ zapier validate
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h3 id="sub-header">Sub-header</h3>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
-    <div class="col-md-6 col-sm-12 col-height  docs-primary">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>More to come, ay!</p>
     </div>
-    <div class="col-md-6 col-sm-12 col-height is-empty docs-code">
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
     </div>
   </div>
