@@ -1,23 +1,39 @@
 require('should');
 
-const create = require('../../commands/create');
-const {BASE_ENDPOINT, API_PATH} = require('../../constants');
-const utils = require('../../utils');
-
+const _ = require('lodash');
 const nock = require('nock');
 const path = require('path');
 const os = require('os');
 const fse = require('fs-extra');
+const mockery = require('mockery');
+
+const utils = require('../../utils');
+const {BASE_ENDPOINT, API_PATH} = require('../../constants');
 
 describe('create command', () => {
   const appDir = path.resolve(os.tmpdir(), 'test-app');
+  let create;
 
   beforeEach(() => {
     global.argOpts = {};
     fse.removeSync(appDir);
+
+    const mockUtils = _.extend({}, utils, {
+      npmInstall: () => {
+        return fse.ensureDir(path.resolve(appDir, 'node_modules'));
+      }
+    });
+
+    mockery.enable({useCleanCache: true, warnOnUnregistered: false });
+    mockery.registerMock('./misc', mockUtils);
+
+    create = require('../../commands/create');
   });
 
   afterEach(() => {
+    mockery.deregisterAll();
+    mockery.disable();
+
     utils.clearSpinner();
   });
 
@@ -49,7 +65,6 @@ describe('create command', () => {
 
         // .zapierrc should exist and be correct
         const appRcFile = path.resolve(appDir, '.zapierapprc');
-        console.log('appRcFile', appRcFile);
         utils.fileExistsSync(appRcFile).should.equal(true);
         const appRc = JSON.parse(fse.readFileSync(appRcFile, 'utf8'));
         appRc.should.eql(zapierRc);

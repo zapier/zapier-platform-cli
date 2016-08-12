@@ -107,6 +107,11 @@ const isValidNodeVersion = () => {
   );
 };
 
+const npmInstall = (appDir) => {
+  console.log('\n--- REAL NPM INSTALL ---\n');
+  return runCommand('npm', ['install'], {cwd: appDir});
+};
+
 module.exports = {
   argParse,
   camelCase,
@@ -114,5 +119,6 @@ module.exports = {
   makePromise,
   runCommand,
   localAppCommand,
-  isValidNodeVersion
+  isValidNodeVersion,
+  npmInstall
 };
