@@ -109,11 +109,7 @@ You can mix and match several options to customize the created scaffold for your
 **Options**
 
 ${utils.argsFragment(scaffold.argsSpec)}
-* \`{model|trigger|search|write}\` - what thing are you creating
-* \`"Name"\` -- the name of the new thing to create
 ${utils.argOptsFragment(scaffold.argOptsSpec)}
-* \`--dest=path\` -- sets the new file's path, default is \`'{type}s/{name}'\`
-* \`--entry=path\` -- where to import the new file, default is \`'index.js'\`
 
 ${'```'}bash
 $ ${scaffold.example}
