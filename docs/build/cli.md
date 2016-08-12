@@ -22,7 +22,7 @@ Prints documentation to the terminal screen.
 
 * _none_ -- print all commands
 * `value` -- _optional_, the command to view docs for
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -173,7 +173,7 @@ Prints a human readable enumeration of your app's triggers, searches and actions
 
 
 
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -215,7 +215,7 @@ Or, if you are making an app from scratch - you'd prefer the `zapier create "Exa
 
 
 
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -253,7 +253,7 @@ Lists any apps that you have admin access to. Also checks for the current direct
 
 
 
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -281,7 +281,7 @@ $ zapier apps
 
 
 
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -309,7 +309,7 @@ Runs the standard validation routine powered by json-schema that checks your app
 
 
 
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -531,7 +531,7 @@ Give any user registered on Zapier the ability to collaborate on your app. Commo
 * _none_ -- print all collaborators
 * `user@example.com` -- _optional_, which user to add/remove
 * `--remove` -- _optional_, optionally elect to remove this user
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -574,7 +574,7 @@ Invite any user registered on Zapier to test your app. Commonly, this is useful 
 * _none_ -- print all invitees
 * `user@example.com` -- _optional_, which user to add/remove
 * `--remove` -- _optional_, optionally elect to remove this user
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -616,7 +616,7 @@ Get the history of your app, listing all the changes made over the lifetime of y
 
 
 
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -654,7 +654,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 * `--detailed` -- _optional_, show detailed logs (like http body)
 * `--user=value` -- _optional_, display only this users logs
 * `--limit=50` -- _optional_, control the maximum result size, default is `50`
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
@@ -731,7 +731,7 @@ Manage the environment of your app so that `process.env` can access the keys, ma
 * `1.0.0` -- **required**, the app version's environment to work on
 * `API_KEY` -- _optional_, the uppercase key of the environment variable to set
 * `1234567890` -- _optional_, the raw value to set to the key
-* `--format={plain,json,row,table}` -- _optional_, display format
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
