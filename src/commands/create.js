@@ -73,7 +73,7 @@ A handy command that will perform a bunch of steps for you:
 
 After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running \`zapier auth\`. If the directory is not empty the command will fail.
 
-**Options**
+**Arguments**
 
 * \`"Example"\` -- the name of your app
 * \`[dir]\` -- an optional directory, default is \`.\`

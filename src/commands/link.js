@@ -59,7 +59,7 @@ Link the current directory to an app you have access to. It is fairly uncommon t
 
 Or, if you are making an app from scratch - you'd prefer the \`zapier create "Example"\`.
 
-**Options**
+**Arguments**
 
 ${utils.defaultArgOptsFragment({cmd: 'link'})}
 

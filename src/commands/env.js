@@ -50,7 +50,7 @@ env.example = 'zapier env 1.0.0 API_KEY 1234567890';
 env.docs = `\
 Manage the environment of your app so that \`process.env\` can access the keys, making it easy to match a local environment with working environment via \`API_KEY=1234567890 npm test\`.
 
-**Options**
+**Arguments**
 
 * _none_ -- print a table of all environment variables, regardless of app version
 * \`1.0.0\` -- the app version's environment to work on

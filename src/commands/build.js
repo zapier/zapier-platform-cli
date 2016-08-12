@@ -27,7 +27,7 @@ It does the following steps:
 
 > If you get live errors like \`Error: Cannot find module 'some-path'\`, try disabling dependency detection.
 
-**Options**
+**Arguments**
 
 * \`--disable-dependency-detection\` -- disables walking required files to slim the build
 

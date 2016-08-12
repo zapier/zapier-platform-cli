@@ -8,7 +8,7 @@ collaborate.example = 'zapier collaborate [user@example.com]';
 collaborate.docs = `\
 Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you'd only like to provide read-only or testing access, try \`zapier invite\`.
 
-**Options**
+**Arguments**
 
 * _none_ -- print a table of all collaborators
 * \`[user@example.com]\` -- the user to add or remove

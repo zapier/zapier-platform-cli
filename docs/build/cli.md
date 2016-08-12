@@ -90,7 +90,7 @@ A handy command that will perform a bunch of steps for you:
 
 After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running `zapier auth`. If the directory is not empty the command will fail.
 
-**Options**
+**Arguments**
 
 * `"Example"` -- the name of your app
 * `[dir]` -- an optional directory, default is `.`
@@ -132,7 +132,7 @@ You can mix and match several options to customize the created scaffold for your
 
 > Note, we may fail to rewrite your `index.js` so you may need to handle the require and registration yourself.
 
-**Options**
+**Arguments**
 
 * `{model,trigger,search,write}` -- **required**, what type of thing are you creating
 * `"Some Name"` -- **required**, the name of the new thing to create
@@ -161,7 +161,7 @@ $ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
 
 Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
 
-**Options**
+**Arguments**
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -201,7 +201,7 @@ Link the current directory to an app you have access to. It is fairly uncommon t
 
 Or, if you are making an app from scratch - you'd prefer the `zapier create "Example"`.
 
-**Options**
+**Arguments**
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -237,7 +237,7 @@ $ zapier link
 
 Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with `zapier link`.
 
-**Options**
+**Arguments**
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -263,7 +263,7 @@ $ zapier apps
 
 **Usage:** `zapier versions`
 
-**Options**
+**Arguments**
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -289,7 +289,7 @@ $ zapier versions
 
 Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during `zapier build`, `zapier uploard`, `zapier push` or even as a test in `npm test`.
 
-**Options**
+**Arguments**
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -337,7 +337,7 @@ It does the following steps:
 
 > If you get live errors like `Error: Cannot find module 'some-path'`, try disabling dependency detection.
 
-**Options**
+**Arguments**
 
 * `--disable-dependency-detection` -- disables walking required files to slim the build
 
@@ -450,7 +450,7 @@ Migrations can take between 5-10 minutes, so be patient and check `zapier histor
 
 > Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
 
-**Options**
+**Arguments**
 
 * `1.0.0` -- the version **from** which to migrate users
 * `1.0.1` -- the version **to** which to migrate users
@@ -476,7 +476,7 @@ A utility to alert users of breaking changes that require the deprecation of an 
 
 > Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
 
-**Options**
+**Arguments**
 
 * `1.0.0` -- the version to deprecate
 * `2017-01-20` -- what date should we deprecate on
@@ -500,7 +500,7 @@ $ zapier deprecate 1.0.0 2017-01-20
 
 Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you'd only like to provide read-only or testing access, try `zapier invite`.
 
-**Options**
+**Arguments**
 
 * _none_ -- print a table of all collaborators
 * `[user@example.com]` -- the user to add or remove
@@ -542,7 +542,7 @@ $ zapier collaborate user@example.com --remove
 
 Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you'd only like to provide admin access, try `zapier collaborate`.
 
-**Options**
+**Arguments**
 
 * _none_ -- print a table of all invitees
 * `[user@example.com]` -- the user to add or remove
@@ -585,7 +585,7 @@ $ zapier invite user@example.com --remove
 
 Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.
 
-**Options**
+**Arguments**
 
 * `--format={plain,json,row,table}` -- _optional_, display format
 * `--help` -- _optional_, prints this help text
@@ -616,7 +616,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 > Does not collect or list the errors found locally during `npm test`.
 
-**Options**
+**Arguments**
 
 * `--version=value` -- _optional_, display only this version's logs
 * `--status={success,error}` -- _optional_, display only error or success logs, default is `success`
@@ -695,7 +695,7 @@ $ zapier logs --console
 
 Manage the environment of your app so that `process.env` can access the keys, making it easy to match a local environment with working environment via `API_KEY=1234567890 npm test`.
 
-**Options**
+**Arguments**
 
 * _none_ -- print a table of all environment variables, regardless of app version
 * `1.0.0` -- the app version's environment to work on

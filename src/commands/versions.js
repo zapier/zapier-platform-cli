@@ -22,7 +22,7 @@ versions.argOptsSpec = {};
 versions.help = 'Lists all the versions of the current app.';
 versions.example = 'zapier versions';
 versions.docs = `\
-**Options**
+**Arguments**
 
 ${utils.defaultArgOptsFragment({cmd: 'versions'})}
 

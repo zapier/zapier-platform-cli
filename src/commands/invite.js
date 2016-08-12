@@ -8,7 +8,7 @@ invite.example = 'zapier invite [user@example.com]';
 invite.docs = `\
 Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you'd only like to provide admin access, try \`zapier collaborate\`.
 
-**Options**
+**Arguments**
 
 * _none_ -- print a table of all invitees
 * \`[user@example.com]\` -- the user to add or remove

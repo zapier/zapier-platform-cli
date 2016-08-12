@@ -19,7 +19,7 @@ history.example = 'zapier history';
 history.docs = `\
 Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.
 
-**Options**
+**Arguments**
 
 ${utils.defaultArgOptsFragment({cmd: 'history'})}
 

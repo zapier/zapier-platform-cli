@@ -39,7 +39,7 @@ Migrations can take between 5-10 minutes, so be patient and check \`zapier histo
 
 > Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
 
-**Options**
+**Arguments**
 
 * \`1.0.0\` -- the version **from** which to migrate users
 * \`1.0.1\` -- the version **to** which to migrate users

@@ -53,7 +53,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 > Does not collect or list the errors found locally during \`npm test\`.
 
-**Options**
+**Arguments**
 
 ${utils.argOptsFragment(logs.argOptsSpec)}
 ${utils.defaultArgOptsFragment({cmd: 'logs'})}

@@ -36,7 +36,7 @@ A utility to alert users of breaking changes that require the deprecation of an 
 
 > Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
 
-**Options**
+**Arguments**
 
 * \`1.0.0\` -- the version to deprecate
 * \`2017-01-20\` -- what date should we deprecate on
