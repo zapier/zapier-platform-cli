@@ -23,7 +23,7 @@ const link = (context) => {
       return utils.getInput('Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)\n\n');
     })
     .then((answer) => {
-      context.line('');
+      context.line();
       if (answer.toLowerCase() === 'no' || answer.toLowerCase() === 'cancel') {
         throw new Error('Cancelled link operation.');
       } else if (appMap[answer]) {

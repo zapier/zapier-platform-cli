@@ -24,7 +24,7 @@ The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help man
 `.trim());
   return Promise.resolve({})
     .then(() => {
-      context.line('');
+      context.line();
       var allCommands = Object
         .keys(commands)
         .map((command) => {

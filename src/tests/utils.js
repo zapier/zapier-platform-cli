@@ -149,7 +149,7 @@ describe('utils', () => {
     [args, argOpts] = utils.argParse(['urple']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Unexpected positional argument 1 "urple", must be one of "blue", "red"',
+      'Unexpected positional argument 1/color "urple", must be one of "blue", "red"',
     ]);
 
     [args, argOpts] = utils.argParse(['--color=urple']);

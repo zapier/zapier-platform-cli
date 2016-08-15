@@ -51,7 +51,7 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
     }
     if (arg && spec.choices && spec.choices.length && spec.choices.indexOf(arg) === -1) {
       let choices = spec.choices.map(s => JSON.stringify(s)).join(', ');
-      errors.push(`Unexpected positional argument ${i + 1} "${arg}", must be one of ${choices}`);
+      errors.push(`Unexpected positional argument ${i + 1}/${spec.name} "${arg}", must be one of ${choices}`);
     }
 
     restAfter = i;

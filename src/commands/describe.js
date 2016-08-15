@@ -27,7 +27,7 @@ const describe = (context) => {
         ];
         const ifEmpty = colors.grey(`Nothing found for ${type}, maybe try the \`zapier scaffold\` command?`);
         utils.printData(rows, headers, ifEmpty);
-        context.line('');
+        context.line();
       });
       context.line('If you\'d like to add more, try the `zapier scaffold` command to kickstart!');
     });

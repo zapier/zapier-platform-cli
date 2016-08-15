@@ -30,7 +30,7 @@ const auth = (context) => {
     })
     .then(utils.checkCredentials)
     .then(() => {
-      context.line('');
+      context.line();
       context.line(SUCCESS + ' Now try `zapier create` or `zapier link`.');
     });
 };

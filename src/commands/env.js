@@ -19,7 +19,7 @@ var env = (context, version, key, value) => {
       })
       .then(() => {
         utils.printDone();
-        context.line('');
+        context.line();
         context.line('Environment updated! Try viewing it with `zapier env ${version}`.');
         return;
       });
