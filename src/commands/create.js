@@ -7,8 +7,8 @@ const create = (context, title, location = '.') => {
   const appDir = path.resolve(location);
   const tempAppDir = path.resolve(os.tmpdir(), location);
 
-  const repo = global.argOpts.style ?
-        `${constants.STARTER_REPO}-${global.argOpts.style}` : constants.STARTER_REPO;
+  const repo = global.argOpts.template ?
+        `${constants.STARTER_REPO}-${global.argOpts.template}` : constants.STARTER_REPO;
 
   return utils.checkCredentials()
     .then(() => {
@@ -67,7 +67,7 @@ create.argsSpec = [
   {name: 'directory', default: '.'},
 ];
 create.argOptsSpec = {
-  style: {help: 'select a starting app template', choices: ['helloworld']}
+  template: {help: 'select a starting app template', choices: ['helloworld']}
 };
 create.help = 'Creates a new app in your account.';
 create.example = 'zapier create "Example" [directory]';
@@ -88,7 +88,7 @@ ${utils.argsFragment(create.argsSpec)}
 ${utils.argOptsFragment(create.argOptsSpec)}
 
 ${'```'}bash
-$ zapier create "Example" example-dir --style=helloworld
+$ zapier create "Example" example-dir --template=helloworld
 # Let's create your app "Example"!
 #
 #   Cloning starter app from zapier/example-app - done!
