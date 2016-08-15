@@ -1,14 +1,12 @@
 {
-  "name": "@zapier/zapier-platform-example-app",
-  "version": "1.2.52",
-  "description": "An example app for the Zapier platform.",
-  "repository": "zapier/zapier-platform-example-app",
-  "homepage": "https://zapier.com/",
-  "author": "Bryan Helmig <bryan@zapier.com>",
+  "name": "zapier-default-app",
+  "version": "1.0.0",
+  "description": "The default app for the Zapier platform.",
+  "repository": "example/zapier-default-app",
+  "author": "User <user@example.com>",
   "license": "BSD",
   "main": "index.js",
   "scripts": {
-    "docs": "node_modules/docco/bin/docco index.js",
     "test": "node_modules/mocha/bin/mocha"
   },
   "engines": {
@@ -18,12 +16,9 @@
   "engineStrict": true,
   "dependencies": {
     "lodash": "4.13.1",
-    "@zapier/zapier-platform-core": "3.1.0"
+    "@zapier/zapier-platform-core": "3.2.6"
   },
   "devDependencies": {
-    "babel": "6.5.2",
-    "babel-eslint": "6.1.2",
-    "docco": "^0.7.0",
     "mocha": "2.5.3",
     "should": "9.0.2"
   }
