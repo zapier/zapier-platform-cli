@@ -59,7 +59,6 @@ describe('files', () => {
           done('expected an error');
         })
         .catch(err => {
-          console.log('err.message', err.message, '*');
           err.message.should.eql(': File ./i-do-not-exist.txt not found. Oh noes.');
           done();
         });
