@@ -6,7 +6,7 @@ const os = require('os');
 const create = (context, title, location = '.') => {
   const appDir = path.resolve(location);
   const tempAppDir = path.resolve(os.tmpdir(), location);
-  const defaultAppDir = path.resolve(__dirname, '../../templates/default-app');
+  const vendorAppDir = path.resolve(__dirname, '../../templates/default-app');
 
   const repo = global.argOpts.template ?
         `${constants.STARTER_REPO}-${global.argOpts.template}` :
@@ -39,7 +39,7 @@ const create = (context, title, location = '.') => {
       } else {
         utils.printStarting('Copying starter app');
         return utils.ensureDir(appDir)
-          .then(() => utils.copyDir(defaultAppDir, appDir));
+          .then(() => utils.copyDir(vendorAppDir, appDir));
       }
     })
     .then(() => {
