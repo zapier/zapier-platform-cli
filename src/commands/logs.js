@@ -7,7 +7,7 @@ var logs = (context) => {
       context.line(`The logs of your app "${data.app.title}" listed below.\n`);
 
       let columns;
-      const type = global.argOpts.type || 'http';
+      const type = global.argOpts.type || 'console';
       if (type === 'http') {
         columns = [
           ['Status', 'response_status_code'],
@@ -25,7 +25,7 @@ var logs = (context) => {
         }
       } else {
         columns = [
-          ['Log', 'message'],
+          ['Log', 'full_message'],
           ['Version', 'app_v3_version'],
           ['Step', 'step'],
           // ['ID', 'id'],
@@ -41,7 +41,7 @@ logs.argsSpec = [];
 logs.argOptsSpec = {
   version: {help: 'display only this version\'s logs'},
   status: {help: 'display only error or success logs', choices: ['success', 'error'], default: 'success'},
-  type: {help: 'display only console or http logs', choices: ['http', 'console'], default: 'http'},
+  type: {help: 'display only console or http logs', choices: ['console', 'http'], default: 'console'},
   detailed: {help: 'show detailed logs (like http body)', flag: true},
   user: {help: 'display only this users logs'},
   limit: {help: 'control the maximum result size', default: 50},
