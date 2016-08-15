@@ -1,4 +1,4 @@
-// find a particular <%= LOWER_NOUN %> by name
+// triggers on <%= LOWER_NOUN %> with a certain tag
 const trigger<%= CAMEL %> = (z, bundle) => {
   const responsePromise = z.request({
     url: 'http://example.com/api/<%= KEY %>s.json',
@@ -21,7 +21,7 @@ module.exports = {
 
   operation: {
     inputFields: [
-      {key: 'tagName', required: true}
+      {key: 'tagName', required: true, helpText: 'Only trigger on <%= NOUN %> with this tag.'}
     ],
     perform: trigger<%= CAMEL %>
   }

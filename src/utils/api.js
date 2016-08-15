@@ -1,9 +1,12 @@
+const colors = require('colors/safe');
+
 const constants = require('../constants');
 
 const qs = require('querystring');
 
 const AdmZip = require('adm-zip');
 const fetch = require('node-fetch');
+const path = require('path');
 
 const {
   writeFile,
@@ -21,7 +24,7 @@ const {
 const readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
-    readFile(constants.AUTH_LOCATION, 'Please run "zapier config".')
+    readFile(constants.AUTH_LOCATION, 'Please run `zapier auth`.')
       .then((buf) => {
         return JSON.parse(buf.toString());
       })
@@ -54,43 +57,60 @@ const callAPI = (route, options) => {
       ]);
     })
     .then(([res, text]) => {
-      if (constants.DEBUG || global.argOpts.debug) {
-        console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
-        if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
-        console.log(`<< ${res.status}`);
-        console.log(`<< ${(text || '').substring(0, 2500)}\n`);
-      }
-      if (res.status >= 400) {
-        var errors;
+      let errors;
+      const hitError = res.status >= 400;
+      if (hitError) {
         try {
           errors = JSON.parse(text).errors.join(', ');
         } catch(err) {
           errors = (text || 'Unknown error').slice(0, 250);
         }
-        throw new Error(`${constants.ENDPOINT} returned ${res.status} saying ${errors}`);
       }
+
+      if (constants.DEBUG || global.argOpts.debug) {
+        console.log(`>> ${requestOptions.method} ${requestOptions.url}`);
+        if (requestOptions.body) { console.log(`>> ${requestOptions.body}`); }
+        console.log(`<< ${res.status}`);
+        console.log(`<< ${(text || '').substring(0, 2500)}\n`);
+      } else if (hitError) {
+        printDone(false);
+        console.log('');
+        console.log('  ' + colors.red(errors));
+      }
+
+      if (hitError) {
+        throw new Error(`"${requestOptions.url}" returned "${res.status}" saying "${errors}"`);
+      }
+
       return JSON.parse(text);
     });
 };
 
 // Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
-const getLinkedAppConfig = () => {
-  return readFile(constants.CURRENT_APP_FILE)
+const getLinkedAppConfig = (appDir) => {
+  appDir = appDir || '.';
+
+  const file = path.resolve(appDir, constants.CURRENT_APP_FILE);
+  return readFile(file)
     .then((buf) => {
       return JSON.parse(buf.toString()).id;
     });
 };
 
-const writeLinkedAppConfig = (app) => {
-  return writeFile(constants.CURRENT_APP_FILE, prettyJSONstringify({
+const writeLinkedAppConfig = (app, appDir) => {
+  const file = appDir ?
+        path.resolve(appDir, constants.CURRENT_APP_FILE) :
+        constants.CURRENT_APP_FILE;
+
+  return writeFile(file, prettyJSONstringify({
     id: app.id,
     key: app.key
   }));
 };
 
 // Loads the linked app from the API.
-const getLinkedApp = () => {
-  return getLinkedAppConfig()
+const getLinkedApp = (appDir) => {
+  return getLinkedAppConfig(appDir)
     .then((appId) => {
       if (!appId) {
         return {};
@@ -122,7 +142,7 @@ const listApps = () => {
       return {
         app: linkedApp,
         apps: data.objects.map((app) => {
-          app.linked = (linkedApp && app.id === linkedApp.id) ? '✔' : '';
+          app.linked = (linkedApp && app.id === linkedApp.id) ? colors.green('✔') : '';
           return app;
         })
       };
@@ -131,7 +151,7 @@ const listApps = () => {
 
 const listEndoint = (endpoint, keyOverride) => {
   return checkCredentials()
-    .then(getLinkedApp)
+    .then(() => getLinkedApp())
     .then((app) => {
       return Promise.all([
         app,
@@ -155,10 +175,6 @@ const listHistory = () => {
   return listEndoint('history');
 };
 
-const listCollaborators = () => {
-  return listEndoint('collaborators');
-};
-
 const listInvitees = () => {
   return listEndoint('invitees');
 };
@@ -177,11 +193,13 @@ const listEnv = (version) => {
   return listEndoint(endpoint, 'environment');
 };
 
-const upload = (zipPath) => {
+const upload = (zipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
-  return getLinkedApp()
+  const fullZipPath = path.resolve(appDir, zipPath);
+
+  return getLinkedApp(appDir)
     .then((app) => {
-      var zip = new AdmZip(zipPath);
+      var zip = new AdmZip(fullZipPath);
       var definitionJson = zip.readAsText('definition.json');
       if (!definitionJson) {
         throw new Error('definition.json in the zip was missing!');
@@ -211,7 +229,6 @@ module.exports = {
   listEndoint,
   listVersions,
   listHistory,
-  listCollaborators,
   listInvitees,
   listLogs,
   listEnv,

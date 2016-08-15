@@ -1,17 +1,31 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
-var uploadCmd = () => {
+var upload = (context) => {
   var zipPath = constants.BUILD_PATH;
-  console.log('Preparing to upload a new version.\n');
-  return utils.upload(zipPath)
+  context.line('Preparing to upload a new version.\n');
+  return utils.upload(zipPath, '.')
     .then(() => {
-      console.log(`\nUpload of ${constants.BUILD_PATH} complete! Try \`zapier versions\` now!`);
+      context.line(`\nUpload of ${constants.BUILD_PATH} complete! Try \`zapier versions\` now!`);
     });
 };
-uploadCmd.help = 'Upload the last build as a version.';
-uploadCmd.example = 'zapier upload';
+upload.argsSpec = [];
+upload.argOptsSpec = {};
+upload.help = 'Upload the last build as a version.';
+upload.example = 'zapier upload';
+upload.docs = `\
+Upload the zip file already built by \`zapier build\` in build/build.zip. The versions and other app details are read by Zapier from the zip file.
 
+> Note: we generally recommend using \`zapier push\` which does both \`zapier build && zapier upload\` in one step.
 
-module.exports = uploadCmd;
+${'```'}bash
+$ zapier upload
+# Preparing to upload a new version.
+# 
+#   Uploading version 1.0.0 - done!
+# 
+# Upload of build/build.zip complete! Try \`zapier versions\` now!
+${'```'}
+`;
+
+module.exports = upload;

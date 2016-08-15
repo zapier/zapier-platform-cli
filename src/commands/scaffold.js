@@ -1,20 +1,18 @@
 const path = require('path');
-
 const _ = require('lodash');
 
 const utils = require('../utils');
 
-
-const scaffoldCmd = (type, name) => {
+const scaffold = (context, type, name) => {
   if (!name) {
-    console.log('Missing arguments. Please see `zaper help scaffold`.');
+    context.line('Missing arguments. Please see `zaper help scaffold`.');
     return Promise.resolve();
   }
 
-  const context = {
+  const templateContext = {
     CAMEL: utils.camelCase(name),
     KEY: utils.snakeCase(name),
-    NOUN: name,
+    NOUN: _.capitalize(name),
     LOWER_NOUN: name.toLowerCase()
   };
 
@@ -28,28 +26,28 @@ const scaffoldCmd = (type, name) => {
 
   // where will we write/required the new file?
   const destMap = {
-    model: `models/${context.KEY}`,
-    trigger: `triggers/${context.KEY}`,
-    search: `searches/${context.KEY}`,
-    write: `writes/${context.KEY}`,
+    model: `models/${templateContext.KEY}`,
+    trigger: `triggers/${templateContext.KEY}`,
+    search: `searches/${templateContext.KEY}`,
+    write: `writes/${templateContext.KEY}`,
   };
 
   if (!typeMap[type]) {
-    console.log(`Scaffold type "${type}" not found! Please see \`zaper help scaffold\`.`);
+    context.line(`Scaffold type "${type}" not found! Please see \`zaper help scaffold\`.`);
     return Promise.resolve();
   }
 
-  const templateFile = `../scaffold/${type}.template.js`;
+  const templateFile = path.join(__dirname, `../../scaffold/${type}.template.js`);
   const dest = global.argOpts.dest || destMap[type];
   const destFile = path.join(process.cwd(), dest + '.js');
   const entry = global.argOpts.entry || 'index.js';
   const entryFile = path.join(process.cwd(), entry);
 
-  console.log(`Adding ${type} scaffold to your project.\n`);
+  context.line(`Adding ${type} scaffold to your project.\n`);
 
   return utils.readFile(templateFile)
     .then(templateBuf => templateBuf.toString())
-    .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(context))
+    .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(templateContext))
     .then(rendered => {
       utils.printStarting(`Writing new ${dest}.js`);
       return utils.ensureDir(path.dirname(destFile))
@@ -66,18 +64,18 @@ const scaffoldCmd = (type, name) => {
       // we should look at jscodeshift or friends to do this instead
 
       // insert Model = require() line at top
-      const importerLine = `const ${context.CAMEL} = require('./${dest}');`;
+      const importerLine = `const ${templateContext.CAMEL} = require('./${dest}');`;
       lines.splice(0, 0, importerLine);
 
       // insert '[Model.key]: Model,' after 'models:' line
       const injectAfter = `${typeMap[type]}: {`;
-      const injectorLine = `[${context.CAMEL}.key]: ${context.CAMEL},`;
+      const injectorLine = `[${templateContext.CAMEL}.key]: ${templateContext.CAMEL},`;
       const linesDefIndex = _.findIndex(lines, (line) => _.endsWith(line, injectAfter));
       if (linesDefIndex === -1) {
         utils.printDone(false);
-        console.log(`\nOops, we could not reliably rewrite your ${entry}. Please add:`);
-        console.log(` * \`${importerLine}\` to the top`);
-        console.log(` * \`${injectAfter} ${injectorLine} },\` in your app definition`);
+        context.line(`\nOops, we could not reliably rewrite your ${entry}. Please add:`);
+        context.line(` * \`${importerLine}\` to the top`);
+        context.line(` * \`${injectAfter} ${injectorLine} },\` in your app definition`);
         return Promise.resolve();
       } else {
         lines.splice(linesDefIndex + 1, 0, '    ' + injectorLine);
@@ -85,26 +83,53 @@ const scaffoldCmd = (type, name) => {
           .then(() => utils.printDone());
       }
     })
-    .then(() => console.log('\nFinished! We did the best we could, you might gut check your files though.'));
+    .then(() => context.line('\nFinished! We did the best we could, you might gut check your files though.'));
 };
-scaffoldCmd.help = 'Adds a sample model, trigger, action or search to your app.';
-scaffoldCmd.example = 'zapier scaffold model "Contact"';
-scaffoldCmd.docs = `\
-Usage: zapier scaffold {model|trigger|search|write} [--entry|--dest]
+scaffold.argsSpec = [
+  {name: 'type', help: 'what type of thing are you creating', required: true, choices: [
+    'index',
+    'oauth2',
+    'model',
+    'trigger',
+    'search',
+    'write'
+  ]},
+  {name: 'name', help: 'the name of the new thing to create', required: true, example: 'Some Name'},
+];
+scaffold.argOptsSpec = {
+  dest: {help: 'sets the new file\'s path', default: '{type}s/{name}'},
+  entry: {help: 'where to import the new file', default: 'index.js'},
+};
+scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
+scaffold.usage = 'zapier scaffold {model|trigger|search|write} "Name"';
+scaffold.example = 'zapier scaffold model "Contact"';
+scaffold.docs = `\
+The scaffold command does two general things:
 
-${scaffoldCmd.help}
+* Creates a new destination file like \`models/contact.js\`
+* (Attempts to) import and register it inside your entry \`index.js\`
 
-Does two primary things:
+You can mix and match several options to customize the created scaffold for your project.
 
-  * Creates a new destination file like "models/contact.js"
-  * (Attempts to) import and register it inside your entry "index.js"
+> Note, we may fail to rewrite your \`index.js\` so you may need to handle the require and registration yourself.
 
-Examples:
+**Arguments**
 
-  $ ${scaffoldCmd.example}
-  $ zapier scaffold model "Contact" --entry=index.js
-  $ zapier scaffold model contact --dest=models/contact
-  $ zapier scaffold model contact --entry=index.js --dest=models/contact
+${utils.argsFragment(scaffold.argsSpec)}
+${utils.argOptsFragment(scaffold.argOptsSpec)}
+
+${'```'}bash
+$ ${scaffold.example}
+$ zapier scaffold model "Contact" --entry=index.js
+$ zapier scaffold model "Contag Tag" --dest=models/tag
+$ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
+# Adding model scaffold to your project.
+# 
+#   Writing new models/tag.js - done!
+#   Rewriting your index.js - done!
+# 
+# Finished! We did the best we could, you might gut check your files though.
+${'```'}
 `;
 
-module.exports = scaffoldCmd;
+module.exports = scaffold;

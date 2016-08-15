@@ -1,12 +1,15 @@
-const constants = require('../constants');
 
 const crypto = require('crypto');
 const os = require('os');
 const path = require('path');
 
+const browserify = require('browserify');
+const through = require('through2');
 const _ = require('lodash');
 const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
+
+const constants = require('../constants');
 
 const {
   writeFile,
@@ -39,11 +42,8 @@ const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 // TODO: needs to include package.json files too i think
 //   https://github.com/serverless/serverless-optimizer-plugin?
 const browserifyFiles = (entryPoint) => {
-  var browserify = require('browserify');
-  var through = require('through2');
-
-  var cwd = entryPoint + '/';
-  var argv = {
+  const cwd = entryPoint + '/';
+  const argv = {
     noParse: [ undefined ],
     extensions: [],
     ignoreTransform: [],
@@ -66,15 +66,15 @@ const browserifyFiles = (entryPoint) => {
     debug: false,
     standalone: undefined
   };
-  var b = browserify(argv);
+  const b = browserify(argv);
 
   return new Promise((resolve, reject) => {
     b.on('error', reject);
 
-    var paths = [];
+    const paths = [];
     b.pipeline.get('deps')
       .push(through.obj((row, enc, next) => {
-        var filePath = row.file || row.id;
+        const filePath = row.file || row.id;
         // why does browserify add /private + filePath?
         paths.push(stripPath(cwd, filePath));
         next();
@@ -89,8 +89,8 @@ const browserifyFiles = (entryPoint) => {
 
 const listFiles = (dir) => {
   return new Promise((resolve, reject) => {
-    var paths = [];
-    var cwd = dir + '/';
+    const paths = [];
+    const cwd = dir + '/';
     fse.walk(dir)
       .on('data', (item) => {
         if (!item.stats.isDirectory()) {
@@ -112,10 +112,10 @@ const makeZip = (dir, zipPath) => {
       listFiles(dir)
     ]))
     .then(([smartPaths, dumbPaths]) => {
-      if (global.argOpts.dumb) {
+      if (global.argOpts['disable-dependency-detection']) {
         return dumbPaths;
       }
-      var finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {
+      let finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {
         return filePath.endsWith('package.json') || filePath.endsWith('definition.json');
       }));
       finalPaths = _.uniq(finalPaths);
@@ -124,9 +124,9 @@ const makeZip = (dir, zipPath) => {
     })
     .then((paths) => {
       return new Promise((resolve) => {
-        var zip = new AdmZip();
+        const zip = new AdmZip();
         paths.forEach((filePath) => {
-          var basePath = path.dirname(filePath);
+          let basePath = path.dirname(filePath);
           if (basePath === '.') {
             basePath = undefined;
           }
@@ -138,9 +138,11 @@ const makeZip = (dir, zipPath) => {
     });
 };
 
-const _appCommand = (dir, event) => {
-  var entry = require(`${dir}/zapierwrapper.js`);
-  var promise = makePromise();
+// Similar to utils.appCommand, but given a ready to go app
+// with a different location and ready to go zapierwrapper.js.
+const _appCommandZapierWrapper = (dir, event) => {
+  const entry = require(`${dir}/zapierwrapper.js`);
+  const promise = makePromise();
   event = Object.assign({}, event, {
     calledFromCli: true,
     doNotMonkeyPatchPromises: true // can drop this
@@ -149,10 +151,10 @@ const _appCommand = (dir, event) => {
   return promise;
 };
 
-const build = (zipPath) => {
-  var wdir = process.cwd();
+const build = (zipPath, wdir) => {
+  wdir = wdir || process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
-  var tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
+  const tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
   return ensureDir(tmpDir)
     .then(() => {
       printStarting('Copying project to temp directory');
@@ -161,7 +163,7 @@ const build = (zipPath) => {
     .then(() => {
       printDone();
       printStarting('Installing project dependencies');
-      return runCommand('npm install --production', {cwd: tmpDir});
+      return runCommand('npm', ['install', '--production'], {cwd: tmpDir});
     })
     .then(() => {
       printDone();
@@ -173,7 +175,7 @@ const build = (zipPath) => {
     .then(() => {
       printDone();
       printStarting('Validating project');
-      return _appCommand(tmpDir, {command: 'validate'});
+      return _appCommandZapierWrapper(tmpDir, {command: 'validate'});
     })
     .then((resp) => {
       var errors = resp.results;
@@ -185,7 +187,7 @@ const build = (zipPath) => {
     })
     .then(() => {
       printStarting('Building app definition.json');
-      return _appCommand(tmpDir, {command: 'definition'});
+      return _appCommandZapierWrapper(tmpDir, {command: 'definition'});
     })
     .then((rawDefinition) => {
       return writeFile(`${tmpDir}/definition.json`, prettyJSONstringify(rawDefinition.results));
@@ -194,7 +196,7 @@ const build = (zipPath) => {
       // tries to do a reproducible build at least
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
-      return runCommand('find . -exec touch -t 201601010000 {} +', {cwd: tmpDir});
+      return runCommand('find', ['.', '-exec', 'touch', '-t', '201601010000', '{}', '+'], {cwd: tmpDir});
     })
     .then(() => {
       printDone();
@@ -212,14 +214,15 @@ const build = (zipPath) => {
     });
 };
 
-const buildAndUploadCurrentDir = (zipPath) => {
+const buildAndUploadCurrentDir = (zipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
+  appDir = appDir || '.';
   return checkCredentials()
     .then(() => {
-      return build(zipPath);
+      return build(zipPath, appDir);
     })
     .then(() => {
-      return upload(zipPath);
+      return upload(zipPath, appDir);
     });
 };
 

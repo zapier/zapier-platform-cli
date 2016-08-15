@@ -1,10 +1,9 @@
 const utils = require('../utils');
 
-
-var versionsCmd = () => {
+var versions = (context) => {
   return utils.listVersions()
     .then((data) => {
-      console.log(`All versions of your app "${data.app.title}" listed below.\n`);
+      context.line(`All versions of your app "${data.app.title}" listed below.\n`);
       utils.printData(data.versions, [
         ['Version', 'version'],
         ['Platform', 'platform_version'],
@@ -14,12 +13,31 @@ var versionsCmd = () => {
         ['Timestamp', 'date'],
       ]);
       if (!data.versions.length) {
-        console.log('\nTry adding an version with the `zapier push` command.');
+        context.line('\nTry adding an version with the `zapier push` command.');
       }
     });
 };
-versionsCmd.help = 'Lists all the versions of the current app.';
-versionsCmd.example = 'zapier versions';
+versions.argsSpec = [];
+versions.argOptsSpec = {};
+versions.help = 'Lists all the versions of the current app.';
+versions.example = 'zapier versions';
+versions.docs = `\
+**Arguments**
 
+${utils.argsFragment(versions.argsSpec)}
+${utils.argOptsFragment(versions.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
 
-module.exports = versionsCmd;
+${'```'}bash
+$ zapier versions
+# All versions of your app "Example" listed below.
+# 
+# ┌─────────┬──────────┬───────┬────────────────┬──────────────────┬─────────────────────┐
+# │ Version │ Platform │ Users │ Deployment     │ Deprecation Date │ Timestamp           │
+# ├─────────┼──────────┼───────┼────────────────┼──────────────────┼─────────────────────┤
+# │ 1.0.0   │ 3.0.0    │ 0     │ non-production │ null             │ 2016-01-01T22:19:36 │
+# └─────────┴──────────┴───────┴────────────────┴──────────────────┴─────────────────────┘
+${'```'}
+`;
+
+module.exports = versions;

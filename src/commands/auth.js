@@ -1,9 +1,10 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-
-var authCmd = () => {
-  var checks = [
+const QUESTION = 'What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)';
+const SUCCESS = `Your deploy key has been saved to ${constants.AUTH_LOCATION}.`;
+const auth = (context) => {
+  const checks = [
     utils.readCredentials()
       .then(() => true)
       .catch(() => false),
@@ -14,13 +15,13 @@ var authCmd = () => {
   return Promise.all(checks)
     .then(([credentialsPresent, credentialsGood]) => {
       if (!credentialsPresent) {
-        console.log(`Your ${constants.AUTH_LOCATION} has not been set up yet.\n`);
+        context.line(`Your ${constants.AUTH_LOCATION} has not been set up yet.\n`);
       } else if (!credentialsGood) {
-        console.log(`Your ${constants.AUTH_LOCATION} looks like it has invalid credentials.\n`);
+        context.line(`Your ${constants.AUTH_LOCATION} looks like it has invalid credentials.\n`);
       } else {
-        console.log(`Your ${constants.AUTH_LOCATION} looks valid. You may update it now though.\n`);
+        context.line(`Your ${constants.AUTH_LOCATION} looks valid. You may update it now though.\n`);
       }
-      return utils.getInput('What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)\n\n');
+      return utils.getInput(QUESTION + '\n\n  ');
     })
     .then((answer) => {
       return utils.writeFile(constants.AUTH_LOCATION, utils.prettyJSONstringify({
@@ -29,12 +30,23 @@ var authCmd = () => {
     })
     .then(utils.checkCredentials)
     .then(() => {
-      console.log('');
-      console.log(`Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier create\` or \`zapier link\`.`);
+      context.line();
+      context.line(SUCCESS + ' Now try `zapier create` or `zapier link`.');
     });
 };
-authCmd.help = `Configure your ${constants.AUTH_LOCATION} with a deploy key for using the CLI.`;
-authCmd.example = 'zapier auth';
+auth.argsSpec = [];
+auth.argOptsSpec = {};
+auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for using the CLI.`;
+auth.example = 'zapier auth';
+auth.docs = `\
+This is an interactive prompt which will set up your account deploy keys and credentials.
 
+${'```'}bash
+$ zapier auth
+# ${QUESTION}
+#  <type here>
+# ${SUCCESS}
+${'```'}
+`;
 
-module.exports = authCmd;
+module.exports = auth;

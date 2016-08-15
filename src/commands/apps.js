@@ -1,10 +1,9 @@
 const utils = require('../utils');
 
-
-var appsCmd = () => {
+var apps = (context) => {
   return utils.listApps()
     .then((data) => {
-      console.log('All apps listed below.\n');
+      context.line('All apps listed below.\n');
       utils.printData(data.apps, [
         ['Title', 'title'],
         ['Unique Key', 'key'],
@@ -12,14 +11,37 @@ var appsCmd = () => {
         ['Linked', 'linked'],
       ]);
       if (!data.apps.length) {
-        console.log('\nTry adding an app with the `zapier create` command.');
+        context.line('\nTry adding an app with the `zapier create` command.');
       } else {
-        console.log('\nTry linking a different app with the `zapier link` command.');
+        context.line('\nTry linking the current directory to a different app with the `zapier link` command.');
       }
     });
 };
-appsCmd.help = 'Lists all the apps in your account.';
-appsCmd.example = 'zapier apps';
+apps.argsSpec = [];
+apps.argOptsSpec = {};
+apps.help = 'Lists all the apps you can access.';
+apps.example = 'zapier apps';
+apps.docs = `\
+Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with \`zapier link\`.
 
+**Arguments**
 
-module.exports = appsCmd;
+${utils.argsFragment(apps.argsSpec)}
+${utils.argOptsFragment(apps.argOptsSpec)}
+${utils.defaultArgOptsFragment()}
+
+${'```'}bash
+$ zapier apps
+# All apps listed below.
+# 
+# ┌─────────┬────────────┬─────────────────────┬────────┐
+# │ Title   │ Unique Key │ Timestamp           │ Linked │
+# ├─────────┼────────────┼─────────────────────┼────────┤
+# │ Example │ Example    │ 2016-01-01T22:19:28 │ ✔      │
+# └─────────┴────────────┴─────────────────────┴────────┘
+# 
+# Try linking the current directory to a different app with the \`zapier link\` command.
+${'```'}
+`;
+
+module.exports = apps;
