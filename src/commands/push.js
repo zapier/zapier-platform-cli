@@ -1,14 +1,26 @@
 const utils = require('../utils');
+const constants = require('../constants');
+const register = require('./register');
+
+const createIfNeeded = (context) => {
+  if (!utils.fileExistsSync(constants.CURRENT_APP_FILE)) {
+    context.line('Looks like this is your first push. Let\'s register your app on Zapier.');
+    return utils.getInput('Enter app title (Ctl-C to cancel):\n\n  ')
+      .then(title => register(context, title));
+  }
+  return Promise.resolve();
+};
 
 var push = (context) => {
   context.line('Preparing to build and upload a new version.\n');
-  return utils.buildAndUploadCurrentDir()
+
+  return createIfNeeded(context)
+    .then(() => utils.buildAndUploadDir())
     .then(() => {
       context.line('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier deploy` to put it into rotation or `zapier migrate` to move users over.');
     });
 };
 push.argsSpec = [];
-push.argOptsSpec = {};
 push.help = 'Build and upload a new version of the current app - does not deploy.';
 push.example = 'zapier push';
 push.docs = `\
@@ -22,10 +34,12 @@ A shortcut for \`zapier build && zapier upload\` - this is our recommended way t
 
 > Note: this is always a safe operation as live/production apps are protected from pushes. You must use \`zapier deploy\` or \`zapier migrate\` to impact live users.
 
+If you have not yet registered your app, this command will prompt you for your app title and register the app.
+
 ${'```'}bash
 $ zapier push
 # Preparing to build and upload a new version.
-# 
+#
 #   Copying project to temp directory - done!
 #   Installing project dependencies - done!
 #   Applying entry point file - done!
@@ -34,7 +48,7 @@ $ zapier push
 #   Zipping project and dependencies - done!
 #   Cleaning up temp directory - done!
 #   Uploading version 1.0.0 - done!
-# 
+#
 # Build and upload complete! Try loading the Zapier editor now, or try \`zapier deploy\` to put it into rotation or \`zapier migrate\` to move users over
 ${'```'}
 `;

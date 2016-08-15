@@ -214,7 +214,7 @@ const build = (zipPath, wdir) => {
     });
 };
 
-const buildAndUploadCurrentDir = (zipPath, appDir) => {
+const buildAndUploadDir = (zipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
   appDir = appDir || '.';
   return checkCredentials()
@@ -228,5 +228,5 @@ const buildAndUploadCurrentDir = (zipPath, appDir) => {
 
 module.exports = {
   build,
-  buildAndUploadCurrentDir,
+  buildAndUploadDir,
 };
