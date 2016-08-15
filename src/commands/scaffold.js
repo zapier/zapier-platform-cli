@@ -86,7 +86,14 @@ const scaffold = (context, type, name) => {
     .then(() => context.line('\nFinished! We did the best we could, you might gut check your files though.'));
 };
 scaffold.argsSpec = [
-  {name: 'type', help: 'what type of thing are you creating', required: true, choices: ['model', 'trigger', 'search', 'write']},
+  {name: 'type', help: 'what type of thing are you creating', required: true, choices: [
+    'index',
+    'oauth2',
+    'model',
+    'trigger',
+    'search',
+    'write'
+  ]},
   {name: 'name', help: 'the name of the new thing to create', required: true, example: 'Some Name'},
 ];
 scaffold.argOptsSpec = {

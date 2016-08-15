@@ -42,15 +42,10 @@ module.exports = (argv) => {
 
   let commandFunc = commands[command];
   if (!commandFunc) {
-    commandFunc = commands.help;
     context.line(`${command} not a command! Try running \`zapier help\`?`);
     return;
   }
 
-  // TODO: maybe rip off heroku formatting?
-  // ➜  testing heroku version --lolzwhat
-  // !    Invalid argument: "--lolzwhat"
-  // <PRINTS heroku version --help>
   const spec = {
     argsSpec: commandFunc.argsSpec,
     argOptsSpec: _.extend({}, utils.globalArgOptsSpec, commandFunc.argOptsSpec)
@@ -58,11 +53,11 @@ module.exports = (argv) => {
   const errors = utils.enforceArgSpec(spec, args, argOpts);
   if (errors.length) {
     errors.forEach((error) => {
-      context.line(' ' + colors.red(error));
+      context.line(colors.red('!!!   ' + error));
     });
-    context.line(colors.grey('\nAdjust your command and try again!'));
-    // TODO: print commands help?
-    return;
+    context.line();
+    commandFunc = commands.help;
+    args = [command];
   }
 
   commandFunc.apply(commands, [context].concat(args))

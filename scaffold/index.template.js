@@ -3,20 +3,16 @@ const App = {
   platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
 
   models: {
-
   },
 
   triggers: {
-
   },
 
   searches: {
-
   },
 
   writes: {
-
-  }
+  },
 
 };
 
