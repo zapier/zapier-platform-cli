@@ -68,7 +68,7 @@ $ zapier help
 
 ## auth
 
-> Configure your `~/.zapierrc` with a deploy key for using the CLI.
+> Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key for using the CLI.
 
 **Usage:** `zapier auth`
 
@@ -78,48 +78,57 @@ This is an interactive prompt which will set up your account deploy keys and cre
 $ zapier auth
 # What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
 #  <type here>
-# Your deploy key has been saved to ~/.zapierrc.
+# Your deploy key has been saved to /Users/bryanhelmig/.zapierrc.
 ```
 
 
-## create
+## init
 
-> Creates a new app in your account.
+> Initializes a new zapier app in a directory.
 
-**Usage:** `zapier create "Example" [directory]`
+**Usage:** `zapier init [location]`
 
-A handy command that will perform a bunch of steps for you:
+Initializes a new zapier app. Clones a working example Github repository Zapier app.
 
-* Clone an working example Github repository Zapier app
-* Remove the .git config (so you can optionally run `git init`)
-* npm install all needed dependencies
-* Register the app with Zapier
-* Push a working version as a private app on Zapier
+After running this, you'll have a new example app in your directory. If you re-run this command
+on an existing directory it will leave existing files alone and not clobber them.
 
-After running this, you'll have a working app in your Zapier editor. This should be your first stop after installing and running `zapier auth`. If the directory is not empty the command will fail.
+**Arguments**
+
+* `.` -- _optional_, , default is `.`
+* `--template={helloworld}` -- _optional_, select a starting app template
+
+```bash
+$ zapier init example-dir --template=helloworld
+# Let's create your app!
+#
+#   Cloning starter app from zapier/example-app - done!
+#
+# Finished!
+```
+
+
+## register
+
+> Registers a new app in your account.
+
+**Usage:** `zapier register "Example" [directory]`
+
+This command registers your app with Zapier. After running this, you can run 'zapier push' to deploy a version of your app that you can use in your Zapier editor.
 
 **Arguments**
 
 * `"My App Name"` -- **required**, 
 * `.` -- _optional_, , default is `.`
-* `--style={helloworld}` -- _optional_, select a starting app template
+
 
 ```bash
-$ zapier create "Example" example-dir --style=helloworld
-# Let's create your app "Example"!
+$ zapier register "Example" example-dir
+# Let's register your app "Example" on Zapier!
 #
-#   Cloning starter app from zapier/example-app - done!
-#   Installing project dependencies - done!
-#   Creating a new app named "Example" - done!
+#   Creating a new app named "Example" on Zapier - done!
 #   Setting up .zapierapprc file - done!
-#   Copying project to temp directory - done!
-#   Installing project dependencies - done!
 #   Applying entry point file - done!
-#   Validating project - done!
-#   Building app definition.json - done!
-#   Zipping project and dependencies - done!
-#   Cleaning up temp directory - done!
-#   Uploading version 1.0.0 - done!
 #
 # Finished!
 ```
@@ -142,7 +151,7 @@ You can mix and match several options to customize the created scaffold for your
 
 **Arguments**
 
-* `{model,trigger,search,write}` -- **required**, what type of thing are you creating
+* `{index,oauth2,model,trigger,search,write}` -- **required**, what type of thing are you creating
 * `"Some Name"` -- **required**, the name of the new thing to create
 * `--dest={type}s/{name}` -- _optional_, sets the new file's path, default is `{type}s/{name}`
 * `--entry=index.js` -- _optional_, where to import the new file, default is `index.js`
@@ -412,10 +421,12 @@ A shortcut for `zapier build && zapier upload` - this is our recommended way to 
 
 > Note: this is always a safe operation as live/production apps are protected from pushes. You must use `zapier deploy` or `zapier migrate` to impact live users.
 
+If you have not yet registered your app, this command will prompt you for your app title and register the app.
+
 ```bash
 $ zapier push
 # Preparing to build and upload a new version.
-# 
+#
 #   Copying project to temp directory - done!
 #   Installing project dependencies - done!
 #   Applying entry point file - done!
@@ -424,7 +435,7 @@ $ zapier push
 #   Zipping project and dependencies - done!
 #   Cleaning up temp directory - done!
 #   Uploading version 1.0.0 - done!
-# 
+#
 # Build and upload complete! Try loading the Zapier editor now, or try `zapier deploy` to put it into rotation or `zapier migrate` to move users over
 ```
 
@@ -650,7 +661,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 * `--version=value` -- _optional_, display only this version's logs
 * `--status={success,error}` -- _optional_, display only error or success logs, default is `success`
-* `--type={http,console}` -- _optional_, display only console or http logs, default is `http`
+* `--type={console,http}` -- _optional_, display only console or http logs, default is `console`
 * `--detailed` -- _optional_, show detailed logs (like http body)
 * `--user=value` -- _optional_, display only this users logs
 * `--limit=50` -- _optional_, control the maximum result size, default is `50`
