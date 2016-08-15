@@ -6,6 +6,10 @@ const globalArgOptsSpec = {
   debug: {help: 'print debug API calls and tracebacks', flag: true},
 };
 
+const quoteStr = (s) => String(s || '').indexOf(' ') === -1 ? s : `"${s}"`;
+const choicesStr = (choices) => `{${choices.map(String).join(',')}}`;
+
+// Turn process.argv into args/opts.
 const argParse = (argv) => {
   var args = [], opts = {};
   argv.forEach((arg) => {
@@ -25,6 +29,7 @@ const argParse = (argv) => {
   return [args, opts];
 };
 
+// Given a spec and args/opts - return an array of errors.
 const enforceArgSpec = (fullSpec, args, argOpts) => {
   const argsSpec = fullSpec.argsSpec || [];
   const argOptsSpec = fullSpec.argOptsSpec || {};
@@ -50,8 +55,8 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
       errors.push(`Missing required positional argument ${i + 1}/${spec.name}`);
     }
     if (arg && spec.choices && spec.choices.length && spec.choices.indexOf(arg) === -1) {
-      let choices = spec.choices.map(s => JSON.stringify(s)).join(', ');
-      errors.push(`Unexpected positional argument ${i + 1}/${spec.name} "${arg}", must be one of ${choices}`);
+      let choices = choicesStr(spec.choices);
+      errors.push(`Unexpected positional argument ${i + 1}/${spec.name} of ${quoteStr(arg)}, must be one of ${choices}`);
     }
 
     restAfter = i;
@@ -63,7 +68,7 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
   // Make sure any leftover provided args are expected.
   _.forEach(args, (arg, i) => {
     if (i > restAfter) {
-      errors.push(`Unexpected positional argument ${i + 1} "${arg}"`);
+      errors.push(`Unexpected positional argument ${i + 1} of ${quoteStr(arg)}`);
     }
   });
 
@@ -77,12 +82,12 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
     }
 
     if (spec.required && !arg) {
-      errors.push(`Missing required keyword argument --${name}="${arg || spec.example || 'value'}"`);
+      errors.push(`Missing required keyword argument --${name}=${quoteStr(arg || spec.example || 'value')}`);
     }
 
     if (arg && spec.choices && spec.choices.length && spec.choices.indexOf(arg) === -1) {
-      let choices = spec.choices.map(s => JSON.stringify(s)).join(', ');
-      errors.push(`Unexpected keyword argument --${name}="${arg}", must be one of ${choices}`);
+      let choices = choicesStr(spec.choices);
+      errors.push(`Unexpected keyword argument --${name}=${quoteStr(arg)}, must be one of ${choices}`);
     }
   });
 
@@ -92,7 +97,7 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
       if (arg === true) {
         errors.push(`Unexpected keyword argument --${name}`);
       } else {
-        errors.push(`Unexpected keyword argument --${name}="${arg}"`);
+        errors.push(`Unexpected keyword argument --${name}=${quoteStr(arg)}`);
       }
     }
   });
@@ -100,8 +105,36 @@ const enforceArgSpec = (fullSpec, args, argOpts) => {
   return errors;
 };
 
+
+// Make a markdown list for args.
+const argsFragment = (argsSpec) => {
+  return _.map(argsSpec, (spec) => {
+    let val = spec.example || spec.default || 'value';
+    val = (spec.choices && spec.choices.length) ? choicesStr(spec.choices) : val;
+    let def = spec.default ? `, default is \`${spec.default}\`` : '';
+    return `* \`${quoteStr(val)}\` -- ${spec.required ? '**required**' : '_optional_'}, ${spec.help || ''}${def}`;
+  }).join('\n').trim();
+};
+
+// Make a markdown list for args opts/keywords.
+const argOptsFragment = (argOptsSpec) => {
+  return _.map(argOptsSpec, (spec, name) => {
+    let val = spec.example || spec.default || 'value';
+    val = (spec.choices && spec.choices.length) ? choicesStr(spec.choices) : val;
+    val = spec.flag ? '' : `=${quoteStr(val)}`;
+    let def = spec.default ? `, default is \`${spec.default}\`` : '';
+    return `* \`--${name}${val}\` -- ${spec.required ? '**required**' : '_optional_'}, ${spec.help || ''}${def}`;
+  }).join('\n').trim();
+};
+
+const defaultArgOptsFragment = () => argOptsFragment(globalArgOptsSpec);
+
+
 module.exports = {
   globalArgOptsSpec,
   argParse,
-  enforceArgSpec
+  enforceArgSpec,
+  argsFragment,
+  argOptsFragment,
+  defaultArgOptsFragment
 };

@@ -51,13 +51,13 @@ describe('utils', () => {
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
       'Missing required positional argument 1/firstGreeting',
-      'Missing required keyword argument --lolz="value"'
+      'Missing required keyword argument --lolz=value'
     ]);
 
     [args, argOpts] = utils.argParse(['hello']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Missing required keyword argument --lolz="value"'
+      'Missing required keyword argument --lolz=value'
     ]);
 
     [args, argOpts] = utils.argParse(['hello', '--lolz=hahaha']);
@@ -108,20 +108,20 @@ describe('utils', () => {
     [args, argOpts] = utils.argParse(['something']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Unexpected positional argument 1 "something"',
+      'Unexpected positional argument 1 of something',
     ]);
 
     [args, argOpts] = utils.argParse(['something', 'other']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Unexpected positional argument 1 "something"',
-      'Unexpected positional argument 2 "other"',
+      'Unexpected positional argument 1 of something',
+      'Unexpected positional argument 2 of other',
     ]);
 
     [args, argOpts] = utils.argParse(['--color=blue']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Unexpected keyword argument --color="blue"',
+      'Unexpected keyword argument --color=blue',
     ]);
 
     [args, argOpts] = utils.argParse(['--flaggy']);
@@ -149,13 +149,13 @@ describe('utils', () => {
     [args, argOpts] = utils.argParse(['urple']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Unexpected positional argument 1/color "urple", must be one of "blue", "red"',
+      'Unexpected positional argument 1/color of urple, must be one of {blue,red}',
     ]);
 
     [args, argOpts] = utils.argParse(['--color=urple']);
     errors = utils.enforceArgSpec(spec, args, argOpts);
     errors.should.eql([
-      'Unexpected keyword argument --color="urple", must be one of "blue", "red"',
+      'Unexpected keyword argument --color=urple, must be one of {blue,red}',
     ]);
 
   });
