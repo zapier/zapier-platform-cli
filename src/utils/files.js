@@ -1,59 +1,43 @@
-const fs = require('fs'); // TODO: fse is a drop in replacement for fs, don't need both
-const fse = require('fs-extra');
+const {promisifyAll} = require('./promisify');
+const fse = promisifyAll(require('fs-extra'));
 
 const fixHome = (dir) => {
   var home = process.env.HOME || process.env.USERPROFILE;
   return dir.replace('~', home);
 };
 
-const fileExistsSync = (path) => {
+const fileExistsSync = (fileName) => {
   try {
-    fs.accessSync(path);
+    fse.accessSync(fileName);
     return true;
   } catch (e) {
     return false;
   }
 };
 
+const validateFileExists = (fileName, errMsg) => {
+  return fse.accessAsync(fileName)
+    .catch(() => {
+      let msg = `: File ${fileName} not found.`;
+      if (errMsg) {
+        msg += ` ${errMsg}`;
+      }
+      throw new Error(msg);
+    });
+};
+
 // Returns a promise that reads a file and returns a buffer.
 const readFile = (fileName, errMsg) => {
-  return new Promise((resolve, reject) => {
-    // TODO: fs.exists is deprecated, use fs.access or fs.stat
-    fs.exists(fixHome(fileName), (exists) => {
-      if (!exists) {
-        var msg = `: File ${fileName} not found.`;
-        if (errMsg) {
-          msg += ` ${errMsg}`;
-        }
-        reject(new Error(msg));
-      } else {
-        fs.readFile(fixHome(fileName), (err, buf) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(buf);
-          }
-        });
-      }
-    });
-  });
+  return validateFileExists(fileName, errMsg)
+    .then(() => fse.readFileAsync(fixHome(fileName)));
 };
 
 // Returns a promise that writes a file.
 const writeFile = (fileName, data) => {
-  return new Promise((resolve, reject) => {
-    if (!data) {
-      reject(Error('No data provided'));
-    } else {
-      fs.writeFile(fixHome(fileName), data, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    }
-  });
+  if (!data) {
+    throw new Error('No data provided');
+  }
+  return fse.writeFileAsync(fixHome(fileName), data);
 };
 
 // Returns a promise that copies a directory.
@@ -65,40 +49,15 @@ const copyDir = (src, dest, options) => {
     return isntPackage && isntBuild;
   };
   options.filter = options.filter || defaultFilter;
-  return new Promise((resolve, reject) => {
-    fse.copy(src, dest, options, (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
+
+  return fse.copyAsync(src, dest, options);
 };
 
 // Returns a promise that ensures a directory exists.
-const ensureDir = (dir) => {
-  return new Promise((resolve, reject) => {
-    fse.ensureDir(dir, (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-};
+const ensureDir = (dir) => fse.ensureDirAsync(dir);
 
 // Delete a directory.
-const removeDir = (dir) => {
-  return new Promise((resolve, reject) => {
-    fse.remove(dir, (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-};
-
+const removeDir = (dir) => fse.removeAsync(dir);
 
 module.exports = {
   writeFile,
@@ -106,5 +65,6 @@ module.exports = {
   copyDir,
   ensureDir,
   removeDir,
+  validateFileExists,
   fileExistsSync
 };
