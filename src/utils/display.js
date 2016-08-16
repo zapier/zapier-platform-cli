@@ -7,6 +7,8 @@ const colors = require('colors/safe');
 const stringLength = require('string-length');
 const _ = require('lodash');
 
+const notUndef = (s) => String(s === undefined ? '' : s).trim();
+
 const markdownLog = (str) => {
   // turn markdown into something with styles and stuff
   // https://blog.mariusschulz.com/content/images/sublime_markdown_with_syntax_highlighting.png
@@ -18,9 +20,9 @@ const rewriteLabels = (rows, columnDefs) => {
   return rows.map((row) => {
     const consumptionRow = {};
     columnDefs.forEach((columnDef) => {
-      const [label, key] = columnDef;
-      let val = row[key];
-      consumptionRow[label] = val;
+      const [label, key, _default] = columnDef;
+      const val = _.get(row, key || label, _default);
+      consumptionRow[label] = notUndef(val);
     });
     return consumptionRow;
   });
@@ -68,8 +70,8 @@ const makeTable = (rows, columnDefs) => {
     const consumptionRow = [];
     columnDefs.forEach((columnDef) => {
       const [label, key, _default] = columnDef;
-      const val = _.get(row, key || label, _default || '');
-      consumptionRow.push(String(val).trim());
+      const val = _.get(row, key || label, _default);
+      consumptionRow.push(notUndef(val));
     });
     table.push(consumptionRow);
   });
@@ -118,7 +120,8 @@ const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
     columnDefs.forEach((columnDef) => {
       const consumptionRow = {};
       const [label, key, _default] = columnDef;
-      var val = String(_.get(row, key || label, _default || '')).trim();
+      let val = _.get(row, key || label, _default);
+      val = notUndef(val);
 
       if (stringLength(val) > widthForValue) {
         try {

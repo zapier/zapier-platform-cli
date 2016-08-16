@@ -105,7 +105,6 @@ $ zapier logs --type=http --detailed --format=plain
 # == Timestamp
 # 2016-08-03T23:04:36-05:00
 # == Request Body
-# undefined
 # == Response Body
 # {
 #   "args": {
