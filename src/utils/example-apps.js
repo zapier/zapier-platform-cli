@@ -19,7 +19,6 @@ const list = () => {
     return s3.listObjectsV2Async({ContinuationToken: nextContinuationToken})
       .then(data => {
         nextContinuationToken = data.NextContinuationToken;
-        //const keys = _.map(data.Contents, 'Key');
         results = results.concat(data.Contents);
         return data;
       });
