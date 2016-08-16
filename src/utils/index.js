@@ -8,5 +8,6 @@ module.exports = _.extend(
   require('./api'),
   require('./misc'),
   require('./args'),
-  require('./build')
+  require('./build'),
+  require('./promisify')
 );

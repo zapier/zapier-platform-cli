@@ -1,4 +1,5 @@
 const utils = require('../utils');
+const exampleApps = require('../utils/example-apps');
 const constants = require('../constants');
 const path = require('path');
 const os = require('os');
@@ -8,17 +9,13 @@ const initApp = (location) => {
   const tempAppDir = path.resolve(os.tmpdir(), location);
   const vendorAppDir = path.resolve(__dirname, '../../templates/default-app');
 
-  const repo = global.argOpts.template ?
-        `${constants.STARTER_REPO}-${global.argOpts.template}` :
-         null;
   const copyOpts = {clobber: false};
 
-  if (repo) {
-    utils.printStarting('Cloning starter app from ' + repo);
+  if (global.argOpts.template) {
+    utils.printStarting(`Downloading ${global.argOpts.template} starter app`);
     return utils.removeDir(tempAppDir)
       .then(() => utils.ensureDir(tempAppDir))
-      .then(() => utils.runCommand('git', ['clone', `git@github.com:${repo}.git`, tempAppDir]))
-      .then(() => utils.removeDir(path.resolve(tempAppDir, '.git')))
+      .then(() => exampleApps.download(global.argOpts.template, tempAppDir))
       .then(() => utils.ensureDir(appDir))
       .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
       .then(() => utils.removeDir(tempAppDir));
