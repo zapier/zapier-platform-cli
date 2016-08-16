@@ -68,6 +68,17 @@ ${'```'}bash
 $ zapier logs
 # The logs of your app "Example" listed below.
 # 
+# ┌──────────────────────────────────────────────────────┐
+# │ = 1 =                                                │
+# │     Log       │ console says hello world!            │
+# │     Version   │ 1.0.0                                │
+# │     Step      │ 99c16565-1547-4b16-bcb5-45189d9d8afa │
+# │     Timestamp │ 2016-01-01T23:04:36-05:00            │
+# └───────────────┴──────────────────────────────────────┘
+
+$ zapier logs --type=http
+# The logs of your app "Example" listed below.
+# 
 # ┌────────────────────────────────────────────────────────┐
 # │ = 1 =                                                  │
 # │     Status      │ 200                                  │
@@ -78,7 +89,7 @@ $ zapier logs
 # │     Timestamp   │ 2016-01-01T23:04:36-05:00            │
 # └─────────────────┴──────────────────────────────────────┘
 
-$ zapier logs --http --detailed --format=plain
+$ zapier logs --type=http --detailed --format=plain
 # The logs of your app "Example" listed below.
 # 
 # == Status
@@ -109,17 +120,6 @@ $ zapier logs --http --detailed --format=plain
 #   "origin": "123.123.123.123",
 #   "url": "http://httpbin.org/get?hello=world"
 # }
-
-$ zapier logs --console
-# The logs of your app "Example" listed below.
-# 
-# ┌──────────────────────────────────────────────────────┐
-# │ = 1 =                                                │
-# │     Log       │ console says hello world!            │
-# │     Version   │ 1.0.0                                │
-# │     Step      │ 99c16565-1547-4b16-bcb5-45189d9d8afa │
-# │     Timestamp │ 2016-01-01T23:04:36-05:00            │
-# └───────────────┴──────────────────────────────────────┘
 ${'```'}
 `;
 
