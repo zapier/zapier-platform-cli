@@ -26,13 +26,17 @@ const rewriteLabels = (rows, columnDefs) => {
   });
 };
 
+const makePlainSingle = (row) => {
+  return _.map(row, (value, key) => {
+    return (colors.grey('==') + ' ' + colors.bold(key) + '\n' + value).trim();
+  }).join('\n');
+};
+
 // An easier way to print rows for copy paste accessibility.
 const makePlain = (rows, columnDefs) => {
-  return rewriteLabels(rows, columnDefs).map((row) => {
-    return _.map(row, (value, key) => {
-      return (colors.grey('==') + ' ' + colors.bold(key) + '\n' + value).trim();
-    }).join('\n');
-  }).join('\n\n---\n\n');
+  return rewriteLabels(rows, columnDefs)
+    .map(makePlainSingle)
+    .join(colors.grey('\n\n - - - - - - - - - - - - - - - - - - \n\n')) + '\n';
 };
 
 const ansiTrim = (s) => _.trim(s, [
