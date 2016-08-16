@@ -34,7 +34,12 @@ var logs = (context) => {
       }
 
       const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.context.line()` and doing a `zapier push`!');
-      utils.printData(data.logs, columns, ifEmpty, true);
+
+      const listLogs = [].concat(data.logs);
+      listLogs.reverse();
+      utils.printData(listLogs, columns, ifEmpty, true);
+
+      context.line(colors.grey('  Most recent logs near the bottom.'));
     });
 };
 logs.argsSpec = [];

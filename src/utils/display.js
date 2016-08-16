@@ -35,11 +35,24 @@ const makePlain = (rows, columnDefs) => {
   }).join('\n\n---\n\n');
 };
 
+const ansiTrim = (s) => _.trim(s, [
+  '\r',
+  '\n',
+  ' ',
+  // '\u001b[39m',
+  // '\u001b[90m',
+]);
+
+const CHARS = {
+  // 'top': '', 'top-mid': '', 'top-left': '', 'top-right': '',
+  // 'bottom': ' ', 'bottom-mid': ' ', 'bottom-left': ' ', 'bottom-right': ' '
+};
 // Wraps the cli-table2 library. Rows is an array of objects, columnDefs
 // an ordered sub-array [[label, key, (optional_default)], ...].
 const makeTable = (rows, columnDefs) => {
   const tableOptions = {
     head: columnDefs.map(([label]) => label),
+    chars: CHARS,
     style: {
       compact: true,
       head: ['bold']
@@ -57,7 +70,7 @@ const makeTable = (rows, columnDefs) => {
     table.push(consumptionRow);
   });
 
-  const strTable = table.toString().trim();
+  const strTable = ansiTrim(table.toString());
 
   const widestRow = strTable.split('\n').reduce((coll, row) => {
     if (stringLength(row) > coll) {
@@ -78,6 +91,7 @@ const makeTable = (rows, columnDefs) => {
 // and the values in the right-hand column, in rows
 const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
   const tableOptions = {
+    chars: CHARS,
     style: {
       compact: true
     }
@@ -131,7 +145,7 @@ const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
     }
   });
 
-  return table.toString().trim();
+  return ansiTrim(table.toString());
 };
 
 const prettyJSONstringify = (obj) => JSON.stringify(obj, null, '  ');
@@ -154,6 +168,7 @@ const printData = (rows, columnDefs, ifEmptyMessage = '', useRowBasedTable = fal
   if (rows && !rows.length) {
     console.log(ifEmptyMessage);
   } else {
+    // console.log(JSON.stringify(formatter(rows, columnDefs)));
     console.log(formatter(rows, columnDefs));
   }
 };

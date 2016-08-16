@@ -64,8 +64,8 @@ module.exports = (argv) => {
         context.line(colors.red('Errors running command `' + ['zapier'].concat(argv).join(' ') + '`:'));
         context.line();
         errors.forEach((error) => context.line(colors.red('!!!   ' + error)));
+        context.line();
       }
-      context.line();
     })
     .catch((err) => {
       utils.clearSpinner();
