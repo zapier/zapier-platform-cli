@@ -92,6 +92,18 @@ const npmInstall = (appDir) => {
   return runCommand('npm', ['install'], {cwd: appDir});
 };
 
+/*
+  Promise do-while loop. Executes promise returned by action,
+  passing result to stop function. Keeps running action until
+  stop returns falsey. Action is always run at least once.
+ */
+const promiseDoWhile = (action, stop) => {
+  const loop = () => (
+    action().then(result => stop(result) ? result : loop())
+  );
+  return loop();
+};
+
 module.exports = {
   camelCase,
   snakeCase,
@@ -99,5 +111,6 @@ module.exports = {
   runCommand,
   localAppCommand,
   isValidNodeVersion,
-  npmInstall
+  npmInstall,
+  promiseDoWhile
 };
