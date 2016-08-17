@@ -1,3 +1,4 @@
+/*eslint no-process-exit: 0 */
 require('babel-polyfill');
 
 const _ = require('lodash');
@@ -14,7 +15,6 @@ module.exports = (argv) => {
     console.error(
       `Requires node version >= ${MIN_NODE_VERSION.major}.${MIN_NODE_VERSION.minor}.${MIN_NODE_VERSION.patch}, found ${process.versions.node}. Please upgrade node.`
     );
-    /*eslint no-process-exit: 0 */
     process.exit(1);
   }
 
@@ -80,6 +80,6 @@ module.exports = (argv) => {
         context.line(colors.red('Error!') + ' ' + colors.red(err.message));
         context.line(colors.grey('(Use --debug flag and run this command again to get more details.)'));
       }
-      throw err;
+      process.exit(1);
     });
 };
