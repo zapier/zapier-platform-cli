@@ -20,7 +20,9 @@ var logs = (context) => {
         ];
 
         if (global.argOpts.detailed) {
+          columns.push(['Request Headers', 'request_headers']);
           columns.push(['Request Body', 'request_data']);
+          columns.push(['Response Headers', 'response_headers']);
           columns.push(['Response Body', 'response_content']);
         }
       } else {
