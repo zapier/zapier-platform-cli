@@ -41,6 +41,18 @@ const makePlain = (rows, columnDefs) => {
     .join(colors.grey('\n\n - - - - - - - - - - - - - - - - - - \n\n')) + '\n';
 };
 
+const isTooWideForWindow = (str) => {
+  const widestRow = str.split('\n').reduce((coll, row) => {
+    if (stringLength(row) > coll) {
+      return stringLength(row);
+    } else {
+      return coll;
+    }
+  }, 0);
+
+  return widestRow > process.stdout.columns;
+};
+
 const ansiTrim = (s) => _.trim(s, [
   '\r',
   '\n',
@@ -78,15 +90,7 @@ const makeTable = (rows, columnDefs) => {
 
   const strTable = ansiTrim(table.toString());
 
-  const widestRow = strTable.split('\n').reduce((coll, row) => {
-    if (stringLength(row) > coll) {
-      return stringLength(row);
-    } else {
-      return coll;
-    }
-  }, 0);
-
-  if (widestRow > process.stdout.columns) {
+  if (isTooWideForWindow(strTable)) {
     return makeRowBasedTable(rows, columnDefs, {includeIndex: false});
   }
 
@@ -152,7 +156,13 @@ const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
     }
   });
 
-  return ansiTrim(table.toString());
+  const strTable = ansiTrim(table.toString());
+
+  if (isTooWideForWindow(strTable)) {
+    return makePlain(rows, columnDefs);
+  }
+
+  return strTable;
 };
 
 const prettyJSONstringify = (obj) => JSON.stringify(obj, null, '  ');
