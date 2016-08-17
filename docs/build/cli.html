@@ -391,8 +391,7 @@ on an existing directory it will leave existing files alone and not clobber them
       <blockquote>
 <p>Registers a new app in your account.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier register &quot;Example&quot; [directory]</code></p><p>This command registers your app with Zapier. After running this, you can run &apos;zapier push&apos; to deploy a version of your app that you can use in your Zapier editor.</p><p><strong>Arguments</strong></p><ul>
-<li><code>&quot;My App Name&quot;</code> -- <strong>required</strong>, </li>
-<li><code>.</code> -- <em>optional</em>, , default is <code>.</code></li>
+<li><code>&quot;My App Name&quot;</code> -- <strong>required</strong>,</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -514,21 +513,21 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier link
 <span class="hljs-comment"># Which app would you like to link the current directory to?</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
 <span class="hljs-comment"># &#x2502; Number &#x2502; Title       &#x2502; Unique Key &#x2502; Timestamp           &#x2502; Linked &#x2502;</span>
 <span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
 <span class="hljs-comment"># &#x2502; 1      &#x2502; Example     &#x2502; Example    &#x2502; 2016-01-01T22:19:28 &#x2502; &#x2714;      &#x2502;</span>
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 <span class="hljs-comment">#      ...or type any title to create new app!</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
   1
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Selecting existing app &quot;Example&quot; - done!</span>
 <span class="hljs-comment">#   Setting up `.zapierapprc` file - done!</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># Finished! You can `zapier push` now to build &amp; upload a version!</span>
 </code></pre>
     </div>
@@ -1003,7 +1002,7 @@ $ zapier invite user@example.com --remove
 <p>Does not collect or list the errors found locally during <code>npm test</code>.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>--version=value</code> -- <em>optional</em>, display only this version&apos;s logs</li>
-<li><code>--status={success,error}</code> -- <em>optional</em>, display only error or success logs, default is <code>success</code></li>
+<li><code>--status={any,success,error}</code> -- <em>optional</em>, display only success (<400 info)="" logs="" or="" error="" (="">400/tracebacks), default is <code>any</code></400></li>
 <li><code>--type={console,http}</code> -- <em>optional</em>, display only console or http logs, default is <code>console</code></li>
 <li><code>--detailed</code> -- <em>optional</em>, show detailed logs (like http body)</li>
 <li><code>--user=value</code> -- <em>optional</em>, display only this users logs</li>
@@ -1017,6 +1016,17 @@ $ zapier invite user@example.com --remove
       <pre><code class="lang-bash">$ zapier logs
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
 <span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; = 1 =                                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Log       &#x2502; console says hello world!            &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Version   &#x2502; 1.0.0                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Step      &#x2502; 99c16565-1547-4b16-bcb5-45189d9d8afa &#x2502;</span>
+<span class="hljs-comment"># &#x2502;     Timestamp &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+
+$ zapier logs --type=http
+<span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
+<span class="hljs-comment"># </span>
 <span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
 <span class="hljs-comment"># &#x2502; = 1 =                                                  &#x2502;</span>
 <span class="hljs-comment"># &#x2502;     Status      &#x2502; 200                                  &#x2502;</span>
@@ -1027,7 +1037,7 @@ $ zapier invite user@example.com --remove
 <span class="hljs-comment"># &#x2502;     Timestamp   &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 
-$ zapier logs --http --detailed --format=plain
+$ zapier logs --type=http --detailed --format=plain
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment"># == Status</span>
@@ -1043,7 +1053,6 @@ $ zapier logs --http --detailed --format=plain
 <span class="hljs-comment"># == Timestamp</span>
 <span class="hljs-comment"># 2016-08-03T23:04:36-05:00</span>
 <span class="hljs-comment"># == Request Body</span>
-<span class="hljs-comment"># undefined</span>
 <span class="hljs-comment"># == Response Body</span>
 <span class="hljs-comment"># {</span>
 <span class="hljs-comment">#   &quot;args&quot;: {</span>
@@ -1058,17 +1067,6 @@ $ zapier logs --http --detailed --format=plain
 <span class="hljs-comment">#   &quot;origin&quot;: &quot;123.123.123.123&quot;,</span>
 <span class="hljs-comment">#   &quot;url&quot;: &quot;http://httpbin.org/get?hello=world&quot;</span>
 <span class="hljs-comment"># }</span>
-
-$ zapier logs --console
-<span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
-<span class="hljs-comment"># </span>
-<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
-<span class="hljs-comment"># &#x2502; = 1 =                                                &#x2502;</span>
-<span class="hljs-comment"># &#x2502;     Log       &#x2502; console says hello world!            &#x2502;</span>
-<span class="hljs-comment"># &#x2502;     Version   &#x2502; 1.0.0                                &#x2502;</span>
-<span class="hljs-comment"># &#x2502;     Step      &#x2502; 99c16565-1547-4b16-bcb5-45189d9d8afa &#x2502;</span>
-<span class="hljs-comment"># &#x2502;     Timestamp &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
-<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 </code></pre>
     </div>
   </div>

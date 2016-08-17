@@ -118,8 +118,7 @@ This command registers your app with Zapier. After running this, you can run 'za
 
 **Arguments**
 
-* `"My App Name"` -- **required**, 
-* `.` -- _optional_, , default is `.`
+* `"My App Name"` -- **required**,
 
 
 ```bash
@@ -231,21 +230,21 @@ Or, if you are making an app from scratch - you'd prefer the `zapier create "Exa
 ```bash
 $ zapier link
 # Which app would you like to link the current directory to?
-# 
+#
 # ┌────────┬─────────────┬────────────┬─────────────────────┬────────┐
 # │ Number │ Title       │ Unique Key │ Timestamp           │ Linked │
 # ├────────┼─────────────┼────────────┼─────────────────────┼────────┤
 # │ 1      │ Example     │ Example    │ 2016-01-01T22:19:28 │ ✔      │
 # └────────┴─────────────┴────────────┴─────────────────────┴────────┘
 #      ...or type any title to create new app!
-# 
+#
 # Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)
-# 
+#
   1
-# 
+#
 #   Selecting existing app "Example" - done!
 #   Setting up `.zapierapprc` file - done!
-# 
+#
 # Finished! You can `zapier push` now to build & upload a version!
 ```
 
@@ -660,7 +659,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 
 
 * `--version=value` -- _optional_, display only this version's logs
-* `--status={success,error}` -- _optional_, display only error or success logs, default is `success`
+* `--status={any,success,error}` -- _optional_, display only success (<400/info) logs or error (>400/tracebacks), default is `any`
 * `--type={console,http}` -- _optional_, display only console or http logs, default is `console`
 * `--detailed` -- _optional_, show detailed logs (like http body)
 * `--user=value` -- _optional_, display only this users logs
@@ -673,6 +672,17 @@ Get the logs that are automatically collected during the running of your app. Ei
 $ zapier logs
 # The logs of your app "Example" listed below.
 # 
+# ┌──────────────────────────────────────────────────────┐
+# │ = 1 =                                                │
+# │     Log       │ console says hello world!            │
+# │     Version   │ 1.0.0                                │
+# │     Step      │ 99c16565-1547-4b16-bcb5-45189d9d8afa │
+# │     Timestamp │ 2016-01-01T23:04:36-05:00            │
+# └───────────────┴──────────────────────────────────────┘
+
+$ zapier logs --type=http
+# The logs of your app "Example" listed below.
+# 
 # ┌────────────────────────────────────────────────────────┐
 # │ = 1 =                                                  │
 # │     Status      │ 200                                  │
@@ -683,7 +693,7 @@ $ zapier logs
 # │     Timestamp   │ 2016-01-01T23:04:36-05:00            │
 # └─────────────────┴──────────────────────────────────────┘
 
-$ zapier logs --http --detailed --format=plain
+$ zapier logs --type=http --detailed --format=plain
 # The logs of your app "Example" listed below.
 # 
 # == Status
@@ -699,7 +709,6 @@ $ zapier logs --http --detailed --format=plain
 # == Timestamp
 # 2016-08-03T23:04:36-05:00
 # == Request Body
-# undefined
 # == Response Body
 # {
 #   "args": {
@@ -714,17 +723,6 @@ $ zapier logs --http --detailed --format=plain
 #   "origin": "123.123.123.123",
 #   "url": "http://httpbin.org/get?hello=world"
 # }
-
-$ zapier logs --console
-# The logs of your app "Example" listed below.
-# 
-# ┌──────────────────────────────────────────────────────┐
-# │ = 1 =                                                │
-# │     Log       │ console says hello world!            │
-# │     Version   │ 1.0.0                                │
-# │     Step      │ 99c16565-1547-4b16-bcb5-45189d9d8afa │
-# │     Timestamp │ 2016-01-01T23:04:36-05:00            │
-# └───────────────┴──────────────────────────────────────┘
 ```
 
 
