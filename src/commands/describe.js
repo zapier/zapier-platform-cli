@@ -3,6 +3,13 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
+const possibleMethods = [
+  '<%= type %>.<%= key %>.operation.perform',
+  '<%= type %>.<%= key %>.operation.performSubscribe',
+  '<%= type %>.<%= key %>.operation.performUnsubscribe',
+  '<%= type %>.<%= key %>.operation.inputFields',
+  '<%= type %>.<%= key %>.operation.outputFields',
+].map(method => _.template(method));
 
 const describe = (context) => {
   return Promise.resolve()
@@ -13,17 +20,24 @@ const describe = (context) => {
       // context.line(utils.prettyJSONstringify(definition));
       // TODO: auth and app title/description
 
+      // models.form.list.operation.perform
+
       const types = ['triggers', 'searches', 'writes'];
 
       types.forEach((type) => {
         context.line(colors.bold(_.capitalize(type)) + '\n');
-        const rows = _.values(definition[type]);
+        const rows = _.values(definition[type]).map(row => {
+          row.methods = possibleMethods
+            .map(method => method({type, key: row.key}))
+            .filter(path => _.has(definition, path))
+            .join('\n');
+          return row;
+        });
         const headers = [
-          ['key', 'key'],
-          ['noun', 'noun'],
-          ['display.label', 'display.label'],
-          ['operation.model', 'operation.model', colors.grey('n/a')],
-          ['operation.perform', 'operation.perform'],
+          ['Noun', 'noun'],
+          ['Label', 'display.label'],
+          ['Model', 'operation.model', colors.grey('n/a')],
+          ['Available Methods', 'methods', colors.grey('n/a')],
         ];
         const ifEmpty = colors.grey(`Nothing found for ${type}, maybe try the \`zapier scaffold\` command?`);
         utils.printData(rows, headers, ifEmpty);
@@ -38,6 +52,13 @@ describe.help = 'Describes the current app.';
 describe.example = 'zapier describe';
 describe.docs = `\
 Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
+
+> These are the same actions we'd display in our editor!
+
+* \`Noun\` -- your action's noun
+* \`Label\` -- your action's label
+* \`Model\` -- the model (if any) this action is tied to
+* \`Available Methods\` -- testable methods for this action
 
 **Arguments**
 
