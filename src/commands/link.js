@@ -7,7 +7,7 @@ const hasCancelled = answer => (
 
 const pickApp = (context, apps, appMap) => {
   utils.printData(apps, [
-    ['Number', 'number'],
+    ['#', 'number'],
     ['Title', 'title'],
     ['Unique Key', 'key'],
     ['Timestamp', 'date'],
