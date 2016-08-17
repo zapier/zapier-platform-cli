@@ -2,8 +2,8 @@ const constants = require('../constants');
 const utils = require('../utils');
 const path = require('path');
 
-const register = (context, title, location = '.') => {
-  const appDir = path.resolve(location);
+const register = (context, title) => {
+  const appDir = path.resolve('.');
 
   return utils.checkCredentials()
     .then(() => {
@@ -26,8 +26,7 @@ const register = (context, title, location = '.') => {
     });
 };
 register.argsSpec = [
-  {name: 'title', required: true, example: 'My App Name'},
-  {name: 'location', default: '.'},
+  {name: 'title', required: true, example: 'My App Name'}
 ];
 register.argOptsSpec = {
 };
