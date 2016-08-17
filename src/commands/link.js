@@ -25,8 +25,8 @@ const link = (context) => {
 
   return utils.listApps()
     .then((data) => {
-      const apps = data.apps.map((app, index) => {
-        app.number = index + 1;
+      const apps = data.apps.map((app, index, arr) => {
+        app.number = arr.length - index;
         appMap[app.number] = app;
         return app;
       });
