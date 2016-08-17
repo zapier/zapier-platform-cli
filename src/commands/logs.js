@@ -11,6 +11,7 @@ var logs = (context) => {
       if (type === 'http') {
         columns = [
           ['Status', 'response_status_code'],
+          ['Method', 'request_method'],
           ['URL', 'request_url'],
           ['Querystring', 'request_params'],
           ['Version', 'app_v3_version'],
@@ -35,7 +36,7 @@ var logs = (context) => {
         ];
       }
 
-      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.context.line()` and doing a `zapier push`!');
+      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.context.line()` and doing a `zapier push`!\n');
 
       const listLogs = [].concat(data.logs);
       listLogs.reverse();
