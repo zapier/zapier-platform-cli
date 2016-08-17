@@ -38,20 +38,24 @@ const runCommand = (command, args, options) => {
     const result = cp.spawn(command, args, options);
 
     let stdout = '';
-    result.stdout.on('data', (data) => {
-      stdout += data.toString();
-      if (global.argOpts.debug) {
-        console.log(colors.green(stdout));
-      }
-    });
+    if (result.stdout) {
+      result.stdout.on('data', (data) => {
+        stdout += data.toString();
+        if (global.argOpts.debug) {
+          console.log(colors.green(stdout));
+        }
+      });
+    }
 
     let stderr = '';
-    result.stderr.on('data', (data) => {
-      stderr += data.toString();
-      if (global.argOpts.debug) {
-        console.log(colors.red(stdout));
-      }
-    });
+    if (result.stderr) {
+      result.stderr.on('data', (data) => {
+        stderr += data.toString();
+        if (global.argOpts.debug) {
+          console.log(colors.red(stdout));
+        }
+      });
+    }
 
     result.on('error', reject);
 
