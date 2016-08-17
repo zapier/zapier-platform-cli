@@ -12,11 +12,6 @@ const CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapierapprc';
 const PLATFORM_PACKAGE = '@zapier/zapier-platform-core';
 const DEFINITION_PATH = 'build/definition.json';
 const BUILD_PATH = 'build/build.zip';
-const MIN_NODE_VERSION = {
-  major: 4,
-  minor: 3,
-  patch: 2
-};
 
 const ART = `\
                 zzzzzzzz
@@ -49,6 +44,5 @@ module.exports = {
   PLATFORM_PACKAGE,
   DEFINITION_PATH,
   BUILD_PATH,
-  ART,
-  MIN_NODE_VERSION
+  ART
 };

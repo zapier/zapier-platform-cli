@@ -2,8 +2,10 @@ const cp = require('child_process');
 
 const _ = require('lodash');
 const colors = require('colors/safe');
+const path = require('path');
+const fse = require('fs-extra');
 
-const {PLATFORM_PACKAGE, MIN_NODE_VERSION} = require('../constants');
+const {PLATFORM_PACKAGE} = require('../constants');
 
 const camelCase = (str) => _.capitalize(_.camelCase(str));
 const snakeCase = (str) => _.snakeCase(str);
@@ -76,15 +78,21 @@ const localAppCommand = (event) => {
   return promise;
 };
 
+const parseVersions = (versionString) => (
+  versionString.split('.').map(s => parseInt(s, 10))
+);
+
 const isValidNodeVersion = () => {
-  const versions = process.versions.node.split('.').map(s => parseInt(s, 10));
-  const major = versions[0];
-  const minor = versions[1];
-  const patch = versions[2];
+  const nvmrc = path.resolve(__dirname, '../../.nvmrc');
+  const nvmVersion = fse.readFileSync(nvmrc, 'utf8').substr(1); // strip of leading 'v'
+
+  const [nvmMajor, nvmMinor, nvmPatch] = parseVersions(nvmVersion);
+  const [major, minor, patch] = parseVersions(process.versions.node);
+
   return (
-    (major > MIN_NODE_VERSION.major) ||
-    (major === MIN_NODE_VERSION.major && minor > MIN_NODE_VERSION.minor) ||
-    (major === MIN_NODE_VERSION.major && minor === MIN_NODE_VERSION.minor && patch >= MIN_NODE_VERSION.patch)
+    (major > nvmMajor) ||
+    (major === nvmMajor && minor > nvmMinor) ||
+    (major === nvmMajor && minor === nvmMinor && patch >= nvmPatch)
   );
 };
 
