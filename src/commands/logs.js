@@ -48,7 +48,7 @@ var logs = (context) => {
 logs.argsSpec = [];
 logs.argOptsSpec = {
   version: {help: 'display only this version\'s logs'},
-  status: {help: 'display only error or success logs', choices: ['success', 'error'], default: 'success'},
+  status: {help: 'display only success (<400/info) logs or error (>400/tracebacks)', choices: ['any', 'success', 'error'], default: 'any'},
   type: {help: 'display only console or http logs', choices: ['console', 'http'], default: 'console'},
   detailed: {help: 'show detailed logs (like http body)', flag: true},
   user: {help: 'display only this users logs'},
