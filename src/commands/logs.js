@@ -51,7 +51,7 @@ logs.argOptsSpec = {
   status: {help: 'display only success (<400/info) logs or error (>400/tracebacks)', choices: ['any', 'success', 'error'], default: 'any'},
   type: {help: 'display only console or http logs', choices: ['console', 'http'], default: 'console'},
   detailed: {help: 'show detailed logs (like http body)', flag: true},
-  user: {help: 'display only this users logs'},
+  user: {help: 'display only this users logs', example: 'user@example.com', 'default': 'me'},
   limit: {help: 'control the maximum result size', default: 50},
 };
 logs.help = 'Prints recent logs. See help for filter arguments.';
