@@ -4,7 +4,7 @@ require('babel-polyfill');
 const _ = require('lodash');
 const colors = require('colors/safe');
 
-const {DEBUG, MIN_NODE_VERSION} = require('./constants');
+const {DEBUG, MIN_NODE_VERSION, PLATFORM_PACKAGE} = require('./constants');
 const commands = require('./commands');
 const utils = require('./utils');
 
@@ -12,9 +12,9 @@ module.exports = (argv) => {
   process.on('exit', utils.clearSpinner);
 
   if (!utils.isValidNodeVersion()) {
-    console.error(
+    console.error(colors.red(
       `Requires node version >= ${MIN_NODE_VERSION.major}.${MIN_NODE_VERSION.minor}.${MIN_NODE_VERSION.patch}, found ${process.versions.node}. Please upgrade node.`
-    );
+    ));
     process.exit(1);
   }
 
@@ -44,6 +44,13 @@ module.exports = (argv) => {
   if (!commandFunc) {
     context.line(`${command} not a command! Try running \`zapier help\`?`);
     return;
+  }
+
+  if (!utils.isValidAppInstall(command)) {
+    console.error(colors.red(
+      `Looks like your package.json is missing ${PLATFORM_PACKAGE} or you haven't run npm install yet!`
+    ));
+    process.exit(1);
   }
 
   const spec = {

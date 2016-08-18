@@ -100,6 +100,38 @@ const isValidNodeVersion = () => {
   );
 };
 
+const isValidAppInstall = (command) => {
+  if (command === 'help' || command === 'init' || command === 'auth') {
+    return true;
+  }
+
+  let packageJson;
+  try {
+    packageJson = require(path.join(process.cwd(), 'package.json'));
+  } catch(err) {
+    return false;
+  }
+
+  // try skipping the CLI itself
+  const CLIpackageJson = require(path.join(__dirname, '../../package.json'));
+  if (_.isEqual(packageJson, CLIpackageJson)) {
+    return true;
+  }
+
+  const dependencies = packageJson.dependencies || {};
+  if (!dependencies[PLATFORM_PACKAGE]) {
+    return false;
+  }
+
+  try {
+    require(`${process.cwd()}/node_modules/${PLATFORM_PACKAGE}`);
+  } catch(err) {
+    return false;
+  }
+
+  return true;
+};
+
 const npmInstall = (appDir) => {
   return runCommand('npm', ['install'], {cwd: appDir});
 };
@@ -123,6 +155,7 @@ module.exports = {
   runCommand,
   localAppCommand,
   isValidNodeVersion,
+  isValidAppInstall,
   npmInstall,
   promiseDoWhile
 };
