@@ -105,6 +105,10 @@ const listFiles = (dir) => {
   });
 };
 
+const forceIncludeDumbPath = (filePath) => {
+  return filePath.endsWith('package.json') || filePath.endsWith('definition.json');
+};
+
 const makeZip = (dir, zipPath) => {
   return browserifyFiles(dir)
     .then((smartPaths) => Promise.all([
@@ -115,9 +119,7 @@ const makeZip = (dir, zipPath) => {
       if (global.argOpts['disable-dependency-detection']) {
         return dumbPaths;
       }
-      let finalPaths = smartPaths.concat(dumbPaths.filter((filePath) => {
-        return filePath.endsWith('package.json') || filePath.endsWith('definition.json');
-      }));
+      let finalPaths = smartPaths.concat(dumbPaths.filter(forceIncludeDumbPath));
       finalPaths = _.uniq(finalPaths);
       finalPaths.sort();
       return finalPaths;
