@@ -7,7 +7,7 @@
   "license": "BSD",
   "main": "index.js",
   "scripts": {
-    "test": "npm install && node_modules/mocha/bin/mocha"
+    "test": "node_modules/mocha/bin/mocha"
   },
   "engines": {
     "node": ">=4.3.0",
