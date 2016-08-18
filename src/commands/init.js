@@ -10,15 +10,19 @@ const initApp = (location) => {
   const vendorAppDir = path.resolve(__dirname, '../../templates/default-app');
 
   const copyOpts = {clobber: false};
+  const template = global.argOpts.template || 'minimal';
 
-  if (global.argOpts.template) {
-    utils.printStarting(`Downloading ${global.argOpts.template} starter app`);
+  if (template !== 'minimal') {
+    utils.printStarting(`Downloading ${template} starter app`);
     return utils.removeDir(tempAppDir)
       .then(() => utils.ensureDir(tempAppDir))
-      .then(() => exampleApps.download(global.argOpts.template, tempAppDir))
+      .then(() => exampleApps.download(template, tempAppDir))
+      .then(() => utils.printDone())
+      .then(() => utils.printStarting('Copying starter app'))
       .then(() => utils.ensureDir(appDir))
       .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
-      .then(() => utils.removeDir(tempAppDir));
+      .then(() => utils.removeDir(tempAppDir))
+      .then(() => utils.printDone());
   } else {
     utils.printStarting('Copying starter app');
     return utils.ensureDir(appDir)
@@ -45,7 +49,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: ['helloworld']}
+  template: {help: 'select a starting app template', choices: ['minimal', 'helloworld'], 'default': 'minimal'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';
