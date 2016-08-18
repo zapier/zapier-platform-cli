@@ -1,6 +1,10 @@
+const _ = require('lodash');
+
 const utils = require('../utils');
 const constants = require('../constants');
 const register = require('./register');
+
+const build = require('./build');
 
 const createIfNeeded = (context) => {
   if (!utils.fileExistsSync(constants.CURRENT_APP_FILE)) {
@@ -21,6 +25,8 @@ var push = (context) => {
     });
 };
 push.argsSpec = [];
+push.argOptsSpec = _.extend({
+}, build.argOptsSpec);
 push.help = 'Build and upload a new version of the current app - does not deploy.';
 push.example = 'zapier push';
 push.docs = `\
