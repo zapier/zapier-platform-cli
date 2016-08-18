@@ -22,7 +22,8 @@ const initApp = (location) => {
   } else {
     utils.printStarting('Copying starter app');
     return utils.ensureDir(appDir)
-      .then(() => utils.copyDir(vendorAppDir, appDir, copyOpts));
+      .then(() => utils.copyDir(vendorAppDir, appDir, copyOpts))
+      .then(() => utils.printDone());
   }
 };
 
