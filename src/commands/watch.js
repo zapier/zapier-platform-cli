@@ -8,7 +8,7 @@ const utils = require('../utils');
 const defaultPort = 7545;
 
 const watch = (context) => {
-  context.line('Watching and running locally.\n');
+  context.line('Watching and running your app locally. Zapier will tunnel JS calls here.\n');
 
   const options = {
     log: context.line,
@@ -16,25 +16,41 @@ const watch = (context) => {
     handler: utils.getLocalAppHandler(),
   };
 
+  let localAppId, localProxyUrl, localDefinition;
   const orgVersion = require(path.join(process.cwd(), 'package.json')).version;
-  const checkHandler = () => {
-    options.handler({command: 'definition'}, {}, (err, resp) => {
-      utils.printDone();
-      if (err) { throw err; }
-      const definition = resp.results;
-      if (definition.version !== orgVersion) {
-        context.line(colors.yellow(`  Warning! Version changed from ${orgVersion} to ${definition.version}! You need to restart watch to do that.`));
-      }
-    });
+
+  const pingZapierForRPC = () => {
+    const url = `/apps/${localAppId}/versions/${orgVersion}/rpc`;
+    return utils.callAPI(url, {method: 'PUT', body: {
+      url: localProxyUrl,
+      definition: localDefinition || {},
+    }});
   };
 
-  checkHandler();
+  // Pull down the definition
+  const checkLocalHandler = () => {
+    return new Promise((resolve, reject) => {
+      options.handler({command: 'definition'}, {}, (err, resp) => {
+        utils.printDone();
+        if (err) { return reject(err); }
+        const currentDefinition = resp.results;
+        if (currentDefinition.version !== orgVersion) {
+          context.line(colors.yellow(`  Warning! Version changed from ${orgVersion} to ${currentDefinition.version}! You need to restart watch to do that.`));
+        } else {
+          localDefinition = currentDefinition;
+        }
+        return resolve(currentDefinition);
+      });
+    });
+  };
+  checkLocalHandler();
 
   nodeWatch(process.cwd(), {}, (filePath) => {
     const fileName = filePath.replace(process.cwd() + '/', '');
     utils.printStarting(`Reloading for ${fileName}`);
     options.handler = utils.getLocalAppHandler(true);
-    checkHandler();
+    checkLocalHandler()
+      .then(pingZapierForRPC);
   });
 
   // TODO: check we've pushed the current versions.
@@ -42,7 +58,7 @@ const watch = (context) => {
   return utils.checkCredentials()
     .then(() => utils.getLinkedApp())
     .then((app) => {
-      utils.printStarting('Starting local server');
+      utils.printStarting('Starting local server on port ' + options.port);
       return Promise.all([
         app,
         utils.localAppRPCServer(options)
@@ -50,25 +66,25 @@ const watch = (context) => {
     })
     .then(([app, server]) => {
       utils.printDone();
-      utils.printStarting('Starting local tunnel');
+      utils.printStarting('Starting local tunnel for port ' + options.port);
       return Promise.all([
         app,
         server,
         utils.makeTunnelUrl(options.port)
       ]);
     })
-    .then(([app, server, proxyUrl]) => {
+    .then(([app, server, _proxyUrl]) => {
       utils.printDone();
 
+      localAppId = app.id;
+      localProxyUrl = _proxyUrl;
+
       context.line();
-      context.line('Running! Make changes and see them reflect almost instantly in the editor.');
+      context.line('Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.');
       context.line();
 
-      const loop = () => {
-        const url = `/apps/${app.id}/versions/${orgVersion}/rpc-proxy`;
-        return utils.callAPI(url, {method: 'PUT', body: {url: proxyUrl}});
-      };
-      return utils.promiseForever(loop, 15000);
+      // We must ping Zapier with the new deets a minimum of every 15 seconds.
+      return utils.promiseForever(pingZapierForRPC, 15000);
     });
 };
 watch.argsSpec = [];
