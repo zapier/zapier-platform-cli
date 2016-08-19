@@ -38,7 +38,7 @@ module.exports = (argv) => {
   args = args.slice(1);
 
   // create the context, logs thread through this
-  const context = utils.createContext({command, args});
+  const context = utils.createContext({command, args, argOpts});
 
   let commandFunc = commands[command];
   if (!commandFunc) {

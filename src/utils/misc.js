@@ -68,19 +68,6 @@ const runCommand = (command, args, options) => {
   });
 };
 
-// Runs a local app command (./index.js) like {command: 'validate'};
-const localAppCommand = (event) => {
-  var appRaw = require(`${process.cwd()}/index`);
-  var zapier = require(`${process.cwd()}/node_modules/${PLATFORM_PACKAGE}`);
-  var handler = zapier.exposeAppHandler(appRaw);
-  var promise = makePromise();
-  event = _.extend({}, event, {
-    calledFromCli: true,
-    doNotMonkeyPatchPromises: true // can drop this
-  });
-  handler(event, {}, (err, resp) => promise.callback(err, resp.results));
-  return promise;
-};
 
 const parseVersions = (versionString) => (
   versionString.split('.').map(s => parseInt(s, 10))
@@ -153,7 +140,6 @@ module.exports = {
   snakeCase,
   makePromise,
   runCommand,
-  localAppCommand,
   isValidNodeVersion,
   isValidAppInstall,
   npmInstall,

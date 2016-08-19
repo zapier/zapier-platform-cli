@@ -5,6 +5,7 @@ module.exports = {
   register: require('./register'),
   scaffold: require('./scaffold'),
   describe: require('./describe'),
+  watch: require('./watch'),
   test: require('./test'),
   link: require('./link'),
   apps: require('./apps'),

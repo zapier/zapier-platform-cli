@@ -1,5 +1,6 @@
-const createContext = () => {
+const createContext = ({command, args, argOpts} = {}) => {
   return {
+    command, args, argOpts,
     line: (_line) => console.log(_line || '')
   };
 };

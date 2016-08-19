@@ -7,6 +7,7 @@ module.exports = _.extend(
   require('./display'),
   require('./api'),
   require('./misc'),
+  require('./local'),
   require('./args'),
   require('./build'),
   require('./promisify')
