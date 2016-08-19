@@ -135,6 +135,19 @@ const promiseDoWhile = (action, stop) => {
   return loop();
 };
 
+/* Delay a promise, by just a bit. */
+const promiseDelay = (delay = 1000) => {
+  return () => new Promise(resolve => {
+    setTimeout(() => resolve(), delay);
+  });
+};
+
+/* Never stop looping. */
+const promiseForever = (action, delay = 1000) => {
+  const loop = () => action().then(promiseDelay(delay)).then(loop);
+  return loop();
+};
+
 module.exports = {
   camelCase,
   snakeCase,
@@ -143,5 +156,6 @@ module.exports = {
   isValidNodeVersion,
   isValidAppInstall,
   npmInstall,
-  promiseDoWhile
+  promiseDoWhile,
+  promiseForever
 };
