@@ -27,7 +27,6 @@ const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   return (event, ctx, callback) => {
     event = _.merge({}, event, {
       calledFromCli: true,
-      doNotMonkeyPatchPromises: true // can drop this
     }, baseEvent);
     handler(event, _, callback);
   };
