@@ -118,7 +118,7 @@ const getLinkedApp = (appDir) => {
       return callAPI('/apps/' + appId);
     })
     .catch(() => {
-      throw new Error(`Warning! ${constants.CURRENT_APP_FILE} seems to be incorrect. Try running \`zapier link\` or \`zapier create\`.`);
+      throw new Error(`Warning! ${constants.CURRENT_APP_FILE} seems to be incorrect. Try running \`zapier link\` or \`zapier init\`.`);
     });
 };
 

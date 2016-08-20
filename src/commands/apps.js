@@ -11,7 +11,7 @@ const apps = (context) => {
         ['Linked', 'linked'],
       ]);
       if (!data.apps.length) {
-        context.line('\nTry adding an app with the `zapier create` command.');
+        context.line('\nTry adding an app with the `zapier init` command.');
       } else {
         context.line('\nTry linking the current directory to a different app with the `zapier link` command.');
       }

@@ -12,16 +12,7 @@ const help = (context, cmd) => {
     utils.markdownLog(commands[cmd].docs.trim());
     return Promise.resolve();
   }
-  context.line(`
-Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]
-
-This Zapier command works off of two files:
-
- * ${constants.AUTH_LOCATION}      (home directory identifies the deploy key & user)
- * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
-
-The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help manage those files. All commands listed below.
-`.trim());
+  context.line('Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]'.trim());
   return Promise.resolve()
     .then(() => {
       context.line();
@@ -50,6 +41,13 @@ help.example = 'zapier help [command]';
 help.docs = `\
 Prints documentation to the terminal screen.
 
+Generally - the \`zapier\` command works off of two files:
+
+ * ${constants.AUTH_LOCATION}      (home directory identifies the deploy key & user)
+ * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
+
+The \`zapier auth\` and \`zapier register "Example"\` or \`zapier link\` commands will help manage those files. All commands listed below.
+
 **Arguments**
 
 * _none_ -- print all commands
@@ -67,14 +65,14 @@ $ zapier help
 #  * ~/.zapierrc      (home directory identifies the deploy key & user)
 #  * ./.zapierapprc   (current directory identifies the app)
 # 
-# The \`zapier auth\` and \`zapier create\`/\`zapier link\` commands will help manage those files. All commands listed below.
+# The \`zapier auth\` and \`zapier init\`/\`zapier link\` commands will help manage those files. All commands listed below.
 # 
 # ┌─────────────┬───────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
 # │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key for using the CLI.          │
-# │ create      │ zapier create "Example" [dir]         │ Creates a new app in your account.                                         │
+# │ create      │ zapier init "Example" [dir]         │ Creates a new app in your account.                                         │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
 # │ link        │ zapier link                           │ Link the current directory to an app in your account.                      │

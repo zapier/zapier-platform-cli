@@ -31,7 +31,7 @@ const auth = (context) => {
     .then(utils.checkCredentials)
     .then(() => {
       context.line();
-      context.line(SUCCESS + ' Now try `zapier create` or `zapier link`.');
+      context.line(SUCCESS + ' Now try `zapier init`/`zapier register "Example"` or `zapier link`.');
     });
 };
 auth.argsSpec = [];
@@ -40,6 +40,8 @@ auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for
 auth.example = 'zapier auth';
 auth.docs = `\
 This is an interactive prompt which will set up your account deploy keys and credentials.
+
+> This will change the  \`${constants.AUTH_LOCATION}\` (home directory identifies the deploy key & user).
 
 ${'```'}bash
 $ zapier auth
