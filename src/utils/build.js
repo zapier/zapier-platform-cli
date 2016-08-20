@@ -182,7 +182,7 @@ const build = (zipPath, wdir) => {
       return _appCommandZapierWrapper(tmpDir, {command: 'validate'});
     })
     .then((resp) => {
-      var errors = resp.results;
+      const errors = resp.results;
       if (errors.length) {
         throw new Error('We hit some validation errors, try running `zapier validate` to see them!');
       } else {

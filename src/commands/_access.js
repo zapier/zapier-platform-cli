@@ -10,7 +10,7 @@ const makeAccess = (command, recordType) => {
       return utils.checkCredentials()
         .then(() => utils.getLinkedApp())
         .then((app) => {
-          var url = `/apps/${app.id}/${recordTypePlural}/${email}`;
+          const url = `/apps/${app.id}/${recordTypePlural}/${email}`;
           if (global.argOpts.remove) {
             context.line(`Preparing to remove ${recordType} ${email} from your app "${app.title}".\n`);
             utils.printStarting(`Removing ${email}`);

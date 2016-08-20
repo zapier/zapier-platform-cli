@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var deprecate = (context, version, deprecation_date) => {
+const deprecate = (context, version, deprecation_date) => {
   if (!deprecation_date) {
     context.line('Error: No version or deprecation date - provide either a version like "1.0.0" and "2017-01-20"...\n');
     return Promise.resolve(true);
@@ -9,7 +9,7 @@ var deprecate = (context, version, deprecation_date) => {
     .then(() => utils.getLinkedApp())
     .then((app) => {
       context.line(`Preparing to deprecate version ${version} your app "${app.title}".\n`);
-      var url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
+      const url = '/apps/' + app.id + '/versions/' + version + '/deprecate';
       utils.printStarting(`Deprecating ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',

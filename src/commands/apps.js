@@ -1,12 +1,12 @@
 const utils = require('../utils');
 
-var apps = (context) => {
+const apps = (context) => {
   return utils.listApps()
     .then((data) => {
       context.line('All apps listed below.\n');
       utils.printData(data.apps, [
         ['Title', 'title'],
-        ['Unique Key', 'key'],
+        ['Unique Slug', 'key'],
         ['Timestamp', 'date'],
         ['Linked', 'linked'],
       ]);
@@ -34,11 +34,11 @@ ${'```'}bash
 $ zapier apps
 # All apps listed below.
 # 
-# ┌─────────┬────────────┬─────────────────────┬────────┐
-# │ Title   │ Unique Key │ Timestamp           │ Linked │
-# ├─────────┼────────────┼─────────────────────┼────────┤
-# │ Example │ Example    │ 2016-01-01T22:19:28 │ ✔      │
-# └─────────┴────────────┴─────────────────────┴────────┘
+# ┌─────────┬───────────-─┬─────────────────────┬────────┐
+# │ Title   │ Unique Slug │ Timestamp           │ Linked │
+# ├─────────┼───────────-─┼─────────────────────┼────────┤
+# │ Example │ Example     │ 2016-01-01T22:19:28 │ ✔      │
+# └─────────┴───────────-─┴─────────────────────┴────────┘
 # 
 # Try linking the current directory to a different app with the \`zapier link\` command.
 ${'```'}

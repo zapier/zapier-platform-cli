@@ -1,7 +1,7 @@
 const utils = require('../utils');
 const colors = require('colors/safe');
 
-var logs = (context) => {
+const logs = (context) => {
   return utils.listLogs(global.argOpts)
     .then((data) => {
       context.line(`The logs of your app "${data.app.title}" listed below.\n`);

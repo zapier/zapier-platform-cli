@@ -132,7 +132,7 @@ const makeRowBasedTable = (rows, columnDefs, {includeIndex = true} = {}) => {
           val = prettyJSONstringify(JSON.parse(val));
         } catch(err) {
           // Wasn't JSON, so splice in newlines so that word wraping works properly
-          var rest = val;
+          let rest = val;
           val = '';
           while (stringLength(rest) > 0) {
             val += rest.slice(0, widthForValue);
@@ -245,7 +245,7 @@ const printDone = (success = true) => {
 
 // Get input from a user.
 const getInput = (question) => {
-  var rl = readline.createInterface({
+  const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });

@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: 0 */
 const path = require('path');
 const colors = require('colors');
-var nodeWatch = require('node-watch');
+const nodeWatch = require('node-watch');
 
 const utils = require('../utils');
 

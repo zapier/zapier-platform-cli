@@ -13,7 +13,7 @@ const snakeCase = (str) => _.snakeCase(str);
 // Returns a promise that assists "callback to promise" conversions.
 const makePromise = () => {
   let resolve, reject;
-  var promise = new Promise((rs, rj) => {
+  const promise = new Promise((rs, rj) => {
     resolve = rs;
     reject = rj;
   });

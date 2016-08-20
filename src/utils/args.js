@@ -11,11 +11,11 @@ const choicesStr = (choices) => `{${choices.map(String).join(',')}}`;
 
 // Turn process.argv into args/opts.
 const argParse = (argv) => {
-  var args = [], opts = {};
+  const args = [], opts = {};
   argv.forEach((arg) => {
     if (arg.startsWith('--')) {
-      var key = arg.split('=', 1)[0].replace('--', '');
-      var val = arg.split('=').slice(1).join('=');
+      const key = arg.split('=', 1)[0].replace('--', '');
+      let val = arg.split('=').slice(1).join('=');
       if (val === '') {
         val = true;
       } else if (val.toLowerCase() === 'false') {

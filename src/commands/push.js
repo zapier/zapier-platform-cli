@@ -15,7 +15,7 @@ const createIfNeeded = (context) => {
   return Promise.resolve();
 };
 
-var push = (context) => {
+const push = (context) => {
   context.line('Preparing to build and upload a new version.\n');
 
   return createIfNeeded(context)

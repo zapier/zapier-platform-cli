@@ -34,7 +34,7 @@ const readCredentials = (credentials) => {
 // Calls the underlying platform REST API with proper authentication.
 const callAPI = (route, options) => {
   options = options || {};
-  var requestOptions;
+  let requestOptions;
   return readCredentials()
     .then((credentials) => {
       requestOptions = {
@@ -138,7 +138,7 @@ const listApps = () => {
       ]);
     })
     .then((values) => {
-      var [linkedApp, data] = values;
+      const [linkedApp, data] = values;
       return {
         app: linkedApp,
         apps: data.objects.map((app) => {
@@ -159,9 +159,7 @@ const listEndoint = (endpoint, keyOverride) => {
       ]);
     })
     .then(([app, results]) => {
-      var out = {
-        app: app
-      };
+      const out = {app};
       out[keyOverride || endpoint] = results.objects;
       return out;
     });
@@ -184,7 +182,7 @@ const listLogs = (opts) => {
 };
 
 const listEnv = (version) => {
-  var endpoint;
+  let endpoint;
   if (version) {
     endpoint = `versions/${version}/environment`;
   } else {
@@ -199,12 +197,12 @@ const upload = (zipPath, appDir) => {
 
   return getLinkedApp(appDir)
     .then((app) => {
-      var zip = new AdmZip(fullZipPath);
-      var definitionJson = zip.readAsText('definition.json');
+      const zip = new AdmZip(fullZipPath);
+      const definitionJson = zip.readAsText('definition.json');
       if (!definitionJson) {
         throw new Error('definition.json in the zip was missing!');
       }
-      var definition = JSON.parse(definitionJson);
+      const definition = JSON.parse(definitionJson);
 
       printStarting('Uploading version ' + definition.version);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {

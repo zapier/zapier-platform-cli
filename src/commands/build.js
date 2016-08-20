@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var build = (context) => {
+const build = (context) => {
   context.line('Building project.\n');
   return utils.build()
     .then(() => {

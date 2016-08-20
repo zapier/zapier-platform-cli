@@ -2,7 +2,7 @@ const {promisifyAll} = require('./promisify');
 const fse = promisifyAll(require('fs-extra'));
 
 const fixHome = (dir) => {
-  var home = process.env.HOME || process.env.USERPROFILE;
+  const home = process.env.HOME || process.env.USERPROFILE;
   return dir.replace('~', home);
 };
 
@@ -43,9 +43,9 @@ const writeFile = (fileName, data) => {
 // Returns a promise that copies a directory.
 const copyDir = (src, dest, options) => {
   options = options || {};
-  var defaultFilter = (dir) => {
-    var isntPackage = dir.indexOf('node_modules') === -1;
-    var isntBuild = dir.indexOf('.zip') === -1;
+  const defaultFilter = (dir) => {
+    const isntPackage = dir.indexOf('node_modules') === -1;
+    const isntBuild = dir.indexOf('.zip') === -1;
     return isntPackage && isntBuild;
   };
   options.filter = options.filter || defaultFilter;

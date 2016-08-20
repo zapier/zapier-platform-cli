@@ -1,12 +1,12 @@
 const utils = require('../utils');
 
-var env = (context, version, key, value) => {
+const env = (context, version, key, value) => {
   if (value !== undefined) {
     key = key.toUpperCase();
     return utils.checkCredentials()
       .then(() => utils.getLinkedApp())
       .then((app) => {
-        var url = '/apps/' + app.id + '/versions/' + version + '/environment';
+        const url = '/apps/' + app.id + '/versions/' + version + '/environment';
         context.line(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
         utils.printStarting(`Setting ${key} to "${value}"`);
         return utils.callAPI(url, {

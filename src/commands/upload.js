@@ -1,8 +1,8 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-var upload = (context) => {
-  var zipPath = constants.BUILD_PATH;
+const upload = (context) => {
+  const zipPath = constants.BUILD_PATH;
   context.line('Preparing to upload a new version.\n');
   return utils.upload(zipPath, '.')
     .then(() => {

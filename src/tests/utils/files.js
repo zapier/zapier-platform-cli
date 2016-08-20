@@ -5,7 +5,7 @@ const path = require('path');
 const os = require('os');
 
 describe('files', () => {
-  var tmpDir;
+  let tmpDir;
 
   beforeEach(done => {
     tmpDir = path.resolve(os.tmpdir(), 'zapier-platform-cli-files-test');

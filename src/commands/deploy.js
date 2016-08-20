@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var deploy = (context, version) => {
+const deploy = (context, version) => {
   if (!version) {
     context.line('Error: No deploment/version selected...\n');
     return Promise.resolve();
@@ -10,7 +10,7 @@ var deploy = (context, version) => {
     .then(() => utils.getLinkedApp())
     .then((app) => {
       context.line(`Preparing to deploy version ${version} your app "${app.title}".\n`);
-      var url = `/apps/${app.id}/versions/${version}/deploy/production`;
+      const url = `/apps/${app.id}/versions/${version}/deploy/production`;
       utils.printStarting(`Deploying ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',

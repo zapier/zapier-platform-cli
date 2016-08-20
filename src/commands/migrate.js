@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
+const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   if (!toVersion) {
     context.line('Must provide both old and new version like `zapier migrate 1.0.0 1.0.1`.');
     return Promise.resolve();

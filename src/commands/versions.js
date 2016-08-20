@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var versions = (context) => {
+const versions = (context) => {
   return utils.listVersions()
     .then((data) => {
       context.line(`All versions of your app "${data.app.title}" listed below.\n`);
