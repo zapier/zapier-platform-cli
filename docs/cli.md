@@ -50,11 +50,14 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
-# │ auth        │ zapier auth                           │ Configure your `~/.zapierrc` with a deploy key for using the CLI.          │
-# │ create      │ zapier init "Example" [dir]         │ Creates a new app in your account.                                         │
+# │ auth        │ zapier auth                           │ Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key.           │
+# │ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
+# │ register    │ zapier register "Example" [directory] │ Registers a new app in your account.                                       │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
-# │ link        │ zapier link                           │ Link the current directory to an app in your account.                      │
+# │ watch       │ zapier watch                          │ Watch the current project.                                                 │
+# │ test        │ zapier test                           │ Tests your app via `npm test`.                                             │
+# │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │
@@ -75,7 +78,7 @@ $ zapier help
 
 ## auth
 
-> Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key for using the CLI.
+> Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key.
 
 **Usage:** `zapier auth`
 
@@ -229,11 +232,18 @@ $ zapier describe
 
 ## watch
 
-> Watch the current project.
+> Watch the current directory and send changes live to Zapier.
 
 **Usage:** `zapier watch`
 
-Watches the project.
+This command watches the current directory, on changes it does two things:
+
+* Sends any new changes to Zapier, instantly updating the UI in your Zapier editor.
+* Tunnels all Javascript calls through your local environment with logs to stdout.
+
+This makes for a great development experience, letting you make and observe changes much faster than a `zapier push`
+
+> Note: this is only temporary and has no effect on other users at Zapier! You'll want to do `zapier push` to make your changes permanent and universal.
 
 **Arguments**
 
@@ -244,7 +254,17 @@ Watches the project.
 * `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
-$ zapier watch
+$ zapier watch --port=9090
+# Watching and running your app locally. Zapier will tunnel JS calls here.
+# 
+#   Starting local server on port 9090 - done!
+#   Starting local tunnel for port 9090 - done!
+# 
+# Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.
+# 
+#   Reloading for index.js - done!
+#   Reloading for models/form.js - done!
+#   Reloading for index.js - done!
 ```
 
 
@@ -491,6 +511,8 @@ A shortcut for `zapier build && zapier upload` - this is our recommended way to 
 > Note: this is always a safe operation as live/production apps are protected from pushes. You must use `zapier deploy` or `zapier migrate` to impact live users.
 
 If you have not yet registered your app, this command will prompt you for your app title and register the app.
+
+> Note: You might consider `zapier watch` for a faster development cycle!
 
 ```bash
 $ zapier push

@@ -71,11 +71,14 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
-# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key for using the CLI.          │
-# │ create      │ zapier init "Example" [dir]         │ Creates a new app in your account.                                         │
+# │ auth        │ zapier auth                           │ Configure your \`/Users/bryanhelmig/.zapierrc\` with a deploy key.           │
+# │ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
+# │ register    │ zapier register "Example" [directory] │ Registers a new app in your account.                                       │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
-# │ link        │ zapier link                           │ Link the current directory to an app in your account.                      │
+# │ watch       │ zapier watch                          │ Watch the current project.                                                 │
+# │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                             │
+# │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │

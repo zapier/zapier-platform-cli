@@ -304,11 +304,14 @@ $ zapier <span class="hljs-built_in">help</span>
 <span class="hljs-comment"># &#x2502; Command     &#x2502; Example                               &#x2502; Help                                                                       &#x2502;</span>
 <span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
 <span class="hljs-comment"># &#x2502; help        &#x2502; zapier help [command]                 &#x2502; Lists all the commands you can use.                                        &#x2502;</span>
-<span class="hljs-comment"># &#x2502; auth        &#x2502; zapier auth                           &#x2502; Configure your `~/.zapierrc` with a deploy key for using the CLI.          &#x2502;</span>
-<span class="hljs-comment"># &#x2502; create      &#x2502; zapier init &quot;Example&quot; [dir]         &#x2502; Creates a new app in your account.                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502; auth        &#x2502; zapier auth                           &#x2502; Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key.           &#x2502;</span>
+<span class="hljs-comment"># &#x2502; init        &#x2502; zapier init [location]                &#x2502; Initializes a new zapier app in a directory.                               &#x2502;</span>
+<span class="hljs-comment"># &#x2502; register    &#x2502; zapier register &quot;Example&quot; [directory] &#x2502; Registers a new app in your account.                                       &#x2502;</span>
 <span class="hljs-comment"># &#x2502; scaffold    &#x2502; zapier scaffold model &quot;Contact&quot;       &#x2502; Adds a sample model, trigger, action or search to your app.                &#x2502;</span>
 <span class="hljs-comment"># &#x2502; describe    &#x2502; zapier describe                       &#x2502; Describes the current app.                                                 &#x2502;</span>
-<span class="hljs-comment"># &#x2502; link        &#x2502; zapier link                           &#x2502; Link the current directory to an app in your account.                      &#x2502;</span>
+<span class="hljs-comment"># &#x2502; watch       &#x2502; zapier watch                          &#x2502; Watch the current project.                                                 &#x2502;</span>
+<span class="hljs-comment"># &#x2502; test        &#x2502; zapier test                           &#x2502; Tests your app via `npm test`.                                             &#x2502;</span>
+<span class="hljs-comment"># &#x2502; link        &#x2502; zapier link                           &#x2502; Link the current directory to an app you have access to.                   &#x2502;</span>
 <span class="hljs-comment"># &#x2502; apps        &#x2502; zapier apps                           &#x2502; Lists all the apps you can access.                                         &#x2502;</span>
 <span class="hljs-comment"># &#x2502; versions    &#x2502; zapier versions                       &#x2502; Lists all the versions of the current app.                                 &#x2502;</span>
 <span class="hljs-comment"># &#x2502; validate    &#x2502; zapier validate                       &#x2502; Validates the current project.                                             &#x2502;</span>
@@ -340,7 +343,7 @@ $ zapier <span class="hljs-built_in">help</span>
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Configure your <code>/Users/bryanhelmig/.zapierrc</code> with a deploy key for using the CLI.</p>
+<p>Configure your <code>/Users/bryanhelmig/.zapierrc</code> with a deploy key.</p>
 </blockquote><p><strong>Usage:</strong> <code>zapier auth</code></p><p>This is an interactive prompt which will set up your account deploy keys and credentials.</p><blockquote>
 <p>This will change the  <code>/Users/bryanhelmig/.zapierrc</code> (home directory identifies the deploy key &amp; user).</p>
 </blockquote>
@@ -519,8 +522,13 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Watch the current project.</p>
-</blockquote><p><strong>Usage:</strong> <code>zapier watch</code></p><p>Watches the project.</p><p><strong>Arguments</strong></p><ul>
+<p>Watch the current directory and send changes live to Zapier.</p>
+</blockquote><p><strong>Usage:</strong> <code>zapier watch</code></p><p>This command watches the current directory, on changes it does two things:</p><ul>
+<li>Sends any new changes to Zapier, instantly updating the UI in your Zapier editor.</li>
+<li>Tunnels all Javascript calls through your local environment with logs to stdout.</li>
+</ul><p>This makes for a great development experience, letting you make and observe changes much faster than a <code>zapier push</code></p><blockquote>
+<p>Note: this is only temporary and has no effect on other users at Zapier! You&apos;ll want to do <code>zapier push</code> to make your changes permanent and universal.</p>
+</blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>--port=7545</code> -- <em>optional</em>, what port should we host/listen for tunneling, default is <code>7545</code></li>
 <li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
@@ -528,7 +536,17 @@ $ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier watch
+      <pre><code class="lang-bash">$ zapier watch --port=9090
+<span class="hljs-comment"># Watching and running your app locally. Zapier will tunnel JS calls here.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Starting local server on port 9090 - done!</span>
+<span class="hljs-comment">#   Starting local tunnel for port 9090 - done!</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment">#   Reloading for index.js - done!</span>
+<span class="hljs-comment">#   Reloading for models/form.js - done!</span>
+<span class="hljs-comment">#   Reloading for index.js - done!</span>
 </code></pre>
     </div>
   </div>
@@ -810,7 +828,9 @@ $ zapier validate
 <li>Go to 1 and repeat.</li>
 </ol><blockquote>
 <p>Note: this is always a safe operation as live/production apps are protected from pushes. You must use <code>zapier deploy</code> or <code>zapier migrate</code> to impact live users.</p>
-</blockquote><p>If you have not yet registered your app, this command will prompt you for your app title and register the app.</p>
+</blockquote><p>If you have not yet registered your app, this command will prompt you for your app title and register the app.</p><blockquote>
+<p>Note: You might consider <code>zapier watch</code> for a faster development cycle!</p>
+</blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier push

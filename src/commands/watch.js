@@ -91,10 +91,17 @@ watch.argsSpec = [];
 watch.argOptsSpec = {
   port: {help: 'what port should we host/listen for tunneling', default: defaultPort},
 };
-watch.help = 'Watch the current project.';
+watch.help = 'Watch the current directory and send changes live to Zapier.';
 watch.example = 'zapier watch';
 watch.docs = `\
-Watches the project.
+This command watches the current directory, on changes it does two things:
+
+* Sends any new changes to Zapier, instantly updating the UI in your Zapier editor.
+* Tunnels all Javascript calls through your local environment with logs to stdout.
+
+This makes for a great development experience, letting you make and observe changes much faster than a \`zapier push\`
+
+> Note: this is only temporary and has no effect on other users at Zapier! You'll want to do \`zapier push\` to make your changes permanent and universal.
 
 **Arguments**
 
@@ -103,7 +110,17 @@ ${utils.argOptsFragment(watch.argOptsSpec)}
 ${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
-$ zapier watch
+$ zapier watch --port=9090
+# Watching and running your app locally. Zapier will tunnel JS calls here.
+# 
+#   Starting local server on port 9090 - done!
+#   Starting local tunnel for port 9090 - done!
+# 
+# Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.
+# 
+#   Reloading for index.js - done!
+#   Reloading for models/form.js - done!
+#   Reloading for index.js - done!
 ${'```'}
 `;
 
