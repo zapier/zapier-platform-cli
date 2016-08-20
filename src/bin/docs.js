@@ -28,7 +28,7 @@ ${command.docs}
 };
 
 // Writes out a big markdown file for the cli.
-const writeCliDocs = ({ markdownPath = './docs/build/cli.md'} = {}) => {
+const writeCliDocs = ({ markdownPath } = {}) => {
   const docs = generateCliMarkdown();
 
   fs.writeFileSync(markdownPath, `\
@@ -49,18 +49,20 @@ ${docs}
 };
 
 
-writeCliDocs();
+writeCliDocs({
+  markdownPath: './docs/cli.md'
+});
 
 litdoc({
   title: 'Zapier Platform CLI Documentation',
-  markdownPath: path.join(__dirname, '../../docs/README.md'),
-  outputPath: path.join(__dirname, '../../docs/build/index.html')
+  markdownPath: path.join(__dirname, '../../README.md'),
+  outputPath: path.join(__dirname, '../../docs/index.html')
 });
 
 // TODO: toc(../../docs/README.md) to ../../README.md
 
 litdoc({
   title: 'Zapier Platform CLI Reference',
-  markdownPath: path.join(__dirname, '../../docs/build/cli.md'),
-  outputPath: path.join(__dirname, '../../docs/build/cli.html')
+  markdownPath: path.join(__dirname, '../../docs/cli.md'),
+  outputPath: path.join(__dirname, '../../docs/cli.html')
 });
