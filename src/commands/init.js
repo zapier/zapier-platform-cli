@@ -56,8 +56,9 @@ init.example = 'zapier init [location]';
 init.docs = `\
 Initializes a new zapier app. Clones a working example Github repository Zapier app.
 
-After running this, you\'ll have a new example app in your directory. If you re-run this command
-on an existing directory it will leave existing files alone and not clobber them.
+After running this, you\'ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
+
+> Note: this doesn't register the app with Zapier - try \`zapier register "Example"\` and \`zapier push\` for that!
 
 **Arguments**
 

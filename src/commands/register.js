@@ -4,11 +4,13 @@ const path = require('path');
 
 const register = (context, title) => {
   const appDir = path.resolve('.');
+  context.line(`Registering a new app on Zapier named "${title}"`);
+  context.line();
 
   return utils.checkCredentials()
     .then(() => {
       utils.printDone();
-      utils.printStarting(`Registering a new app on Zapier named "${title}"`);
+      utils.printStarting(`Confirming registation of app "${title}"`);
       return utils.callAPI('/apps', {
         method: 'POST',
         body: {
@@ -18,11 +20,12 @@ const register = (context, title) => {
     })
     .then((app) => {
       utils.printDone();
-      utils.printStarting(`Setting up ${constants.CURRENT_APP_FILE} file`);
+      utils.printStarting(`Linking app to current directory with \`${constants.CURRENT_APP_FILE}\``);
       return utils.writeLinkedAppConfig(app, appDir);
     })
     .then(() => {
-      context.line('\nFinished! You can open the Zapier editor now, or edit `index.js` then `zapier push` to build & upload a version of your app!');
+      utils.printDone();
+      context.line('\nFinished! You can edit `index.js` then `zapier push` to build & upload a version of your app!');
     });
 };
 register.argsSpec = [

@@ -1,18 +1,19 @@
+const colors = require('colors');
+
 const utils = require('../utils');
 
 const apps = (context) => {
   return utils.listApps()
     .then((data) => {
       context.line('All apps listed below.\n');
+      const ifEmpty = colors.grey('No apps found, maybe try the `zapier register "Example"` command?');
       utils.printData(data.apps, [
         ['Title', 'title'],
         ['Unique Slug', 'key'],
         ['Timestamp', 'date'],
         ['Linked', 'linked'],
-      ]);
-      if (!data.apps.length) {
-        context.line('\nTry adding an app with the `zapier init` command.');
-      } else {
+      ], ifEmpty);
+      if (data.apps.length) {
         context.line('\nTry linking the current directory to a different app with the `zapier link` command.');
       }
     });

@@ -22,6 +22,8 @@ versions.argOptsSpec = {};
 versions.help = 'Lists all the versions of the current app.';
 versions.example = 'zapier versions';
 versions.docs = `\
+Lists the versions of your app available for use in the Zapier editor.
+
 **Arguments**
 
 ${utils.argsFragment(versions.argsSpec)}

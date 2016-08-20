@@ -5,12 +5,13 @@ const jayson = require('jayson');
 
 const {PLATFORM_PACKAGE} = require('../constants');
 
+const {prettyJSONstringify} = require('./display');
 const {makePromise} = require('./misc');
 const {promisify} = require('./promisify');
 
 const makeTunnelUrl = promisify(require('ngrok').connect);
 
-const getLocalAppHandler = (reload = false) => {
+const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   const entryPath = `${process.cwd()}/index`;
   const rootPath = path.dirname(require.resolve(entryPath));
   if (reload) {
@@ -24,10 +25,10 @@ const getLocalAppHandler = (reload = false) => {
   const zapier = require(`${rootPath}/node_modules/${PLATFORM_PACKAGE}`);
   const handler = zapier.exposeAppHandler(appRaw);
   return (event, ctx, callback) => {
-    event = _.extend({}, event, {
+    event = _.merge({}, event, {
       calledFromCli: true,
       doNotMonkeyPatchPromises: true // can drop this
-    });
+    }, baseEvent);
     handler(event, _, callback);
   };
 };
@@ -49,12 +50,23 @@ const localAppRPCServer = (options) => {
     },
     invoke: (args, callback) => {
       let [event] = args;
-      options.log(colors.green(colors.bold('==Input')));
-      options.log(JSON.stringify(event));
+      options.log();
+      options.log(colors.green('==Method'));
+      options.log(event.method);
+      options.log(colors.green('==Bundle'));
+      options.log(prettyJSONstringify(event.bundle));
       options.handler(event, {}, (err, resp) => {
-        options.log(colors.red(colors.bold('==Output')));
-        options.log(JSON.stringify(resp));
-        options.log();
+        if (err) {
+          options.log(colors.red(colors.bold('==Error')));
+          options.log(err.stack);
+          options.log();
+        } else {
+          options.log(colors.red(colors.bold('==Results')));
+          options.log(prettyJSONstringify(resp.results));
+          options.log();
+        }
+        // TODO: this needs to somehow match how AWS returns its
+        // errors - or we need to do it in zapier/zapier
         callback(err, resp);
       });
     }

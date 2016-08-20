@@ -13,11 +13,20 @@ const watch = (context) => {
   const options = {
     log: context.line,
     port: context.argOpts.port || defaultPort,
-    handler: utils.getLocalAppHandler(),
   };
 
   let localAppId, localProxyUrl, localDefinition;
   const orgVersion = require(path.join(process.cwd(), 'package.json')).version;
+
+  const resetHandler = () => {
+    options.handler = utils.getLocalAppHandler({
+      reload: true,
+      baseEvent: {
+        calledFromLocalProxy: true
+      }
+    });
+  };
+  resetHandler();
 
   const pingZapierForRPC = () => {
     const url = `/apps/${localAppId}/versions/${orgVersion}/rpc`;
@@ -48,7 +57,7 @@ const watch = (context) => {
   nodeWatch(process.cwd(), {}, (filePath) => {
     const fileName = filePath.replace(process.cwd() + '/', '');
     utils.printStarting(`Reloading for ${fileName}`);
-    options.handler = utils.getLocalAppHandler(true);
+    resetHandler();
     checkLocalHandler()
       .then(pingZapierForRPC);
   });
