@@ -2,6 +2,7 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
+
 const makeAccess = (command, recordType) => {
   const recordTypePlural = `${recordType}s`;
 
