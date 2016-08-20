@@ -19,11 +19,14 @@ const watch = (context) => {
   const orgVersion = require(path.join(process.cwd(), 'package.json')).version;
 
   const resetHandler = () => {
-    options.handler = utils.getLocalAppHandler({
-      reload: true,
-      baseEvent: {
-        calledFromLocalProxy: true
-      }
+    return new Promise((resolve) => {
+      options.handler = utils.getLocalAppHandler({
+        reload: true,
+        baseEvent: {
+          calledFromLocalProxy: true
+        }
+      });
+      resolve();
     });
   };
   resetHandler();
@@ -36,8 +39,7 @@ const watch = (context) => {
     }});
   };
 
-  // Pull down the definition
-  const checkLocalHandler = () => {
+  const reloadDefintion = () => {
     return new Promise((resolve, reject) => {
       options.handler({command: 'definition'}, {}, (err, resp) => {
         utils.printDone();
@@ -52,13 +54,13 @@ const watch = (context) => {
       });
     });
   };
-  checkLocalHandler();
+  reloadDefintion();
 
   nodeWatch(process.cwd(), {}, (filePath) => {
     const fileName = filePath.replace(process.cwd() + '/', '');
     utils.printStarting(`Reloading for ${fileName}`);
-    resetHandler();
-    checkLocalHandler()
+    resetHandler()
+      .then(reloadDefintion)
       .then(pingZapierForRPC);
   });
 
