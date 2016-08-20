@@ -36,7 +36,7 @@ const auth = (context) => {
 };
 auth.argsSpec = [];
 auth.argOptsSpec = {};
-auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key for using the CLI.`;
+auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key.`;
 auth.example = 'zapier auth';
 auth.docs = `\
 This is an interactive prompt which will set up your account deploy keys and credentials.
