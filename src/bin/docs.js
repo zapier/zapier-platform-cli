@@ -14,17 +14,19 @@ const block = (str) => '> ' + str.split('\n').join('\n> ');
 
 // Takes all the cmd.docs and puts them into a big md file.
 const generateCliMarkdown = () => {
-  return _.map(commands, (command, name) => {
-    return `\
-## ${name}
+  return _.orderBy(Object.keys(commands))
+    .map((name) => {
+      const command = commands[name];
+      return `\
+  ## ${name}
 
-${block(command.help)}
+  ${block(command.help)}
 
-**Usage:** \`${command.usage || command.example}\`
+  **Usage:** \`${command.usage || command.example}\`
 
-${command.docs}
-`.trim();
-  }).join('\n\n\n');
+  ${command.docs}
+  `.trim();
+    }).join('\n\n\n');
 };
 
 // Writes out a big markdown file for the cli.

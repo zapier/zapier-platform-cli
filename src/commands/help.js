@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const constants = require('../constants');
 const utils = require('../utils');
 
@@ -16,13 +18,12 @@ const help = (context, cmd) => {
   return Promise.resolve()
     .then(() => {
       context.line();
-      const allCommands = Object
-        .keys(commands)
-        .map((command) => {
+      const allCommands = _.orderBy(Object.keys(commands))
+        .map((name) => {
           return {
-            name: command,
-            help: commands[command].help,
-            example: commands[command].example
+            name,
+            help: commands[name].help,
+            example: commands[name].example
           };
         });
       utils.printData(allCommands, [
@@ -70,29 +71,29 @@ $ zapier help
 # ┌─────────────┬───────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+# │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
+# │ auth        │ zapier auth                           │ Configure your \`/Users/username/.zapierrc\` with a deploy key.              │
+# │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
+# │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
+# │ deploy      │ zapier deploy 1.0.0                   │ Deploys a specific version to a production.                                │
+# │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
+# │ describe    │ zapier describe                       │ Describes the current app.                                                 │
+# │ env         │ zapier env 1.0.0 API_KEY 1234567890   │ Read and write environment variables.                                      │
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
-# │ auth        │ zapier auth                           │ Configure your \`/Users/bryanhelmig/.zapierrc\` with a deploy key.           │
+# │ history     │ zapier history                        │ Prints all recent history for your app.                                    │
 # │ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
+# │ invite      │ zapier invite [user@example.com]      │ Manage the invitees/testers on your project. Can optionally --remove.      │
+# │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
+# │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
+# │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
+# │ push        │ zapier push                           │ Build and upload a new version of the current app - does not deploy.       │
 # │ register    │ zapier register "Example" [directory] │ Registers a new app in your account.                                       │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
-# │ describe    │ zapier describe                       │ Describes the current app.                                                 │
-# │ watch       │ zapier watch                          │ Watch the current project.                                                 │
 # │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                             │
-# │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
-# │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
-# │ validate    │ zapier validate                       │ Validates the current project.                                             │
-# │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
-# │ push        │ zapier push                           │ Build and upload a new version of the current app - does not deploy.       │
-# │ deploy      │ zapier deploy 1.0.0                   │ Deploys a specific version to a production.                                │
-# │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
-# │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
-# │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
-# │ invite      │ zapier invite [user@example.com]      │ Manage the invitees/testers on your project. Can optionally --remove.      │
-# │ history     │ zapier history                        │ Prints all recent history for your app.                                    │
-# │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
-# │ env         │ zapier env 1.0.0 API_KEY 1234567890   │ Read and write environment variables.                                      │
+# │ validate    │ zapier validate                       │ Validates the current project.                                             │
+# │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
+# │ watch       │ zapier watch                          │ Watch the current directory and send changes live to Zapier.               │
 # └─────────────┴───────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 ${'```'}
 `;
