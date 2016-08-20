@@ -18,6 +18,13 @@ $ npm install -g @zapier/zapier-platform-cli
 
 Prints documentation to the terminal screen.
 
+Generally - the `zapier` command works off of two files:
+
+ * /Users/bryanhelmig/.zapierrc      (home directory identifies the deploy key & user)
+ * ./.zapierapprc   (current directory identifies the app)
+
+The `zapier auth` and `zapier register "Example"` or `zapier link` commands will help manage those files. All commands listed below.
+
 **Arguments**
 
 * _none_ -- print all commands
@@ -37,14 +44,14 @@ $ zapier help
 #  * ~/.zapierrc      (home directory identifies the deploy key & user)
 #  * ./.zapierapprc   (current directory identifies the app)
 # 
-# The `zapier auth` and `zapier create`/`zapier link` commands will help manage those files. All commands listed below.
+# The `zapier auth` and `zapier init`/`zapier link` commands will help manage those files. All commands listed below.
 # 
 # ┌─────────────┬───────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
 # │ auth        │ zapier auth                           │ Configure your `~/.zapierrc` with a deploy key for using the CLI.          │
-# │ create      │ zapier create "Example" [dir]         │ Creates a new app in your account.                                         │
+# │ create      │ zapier init "Example" [dir]         │ Creates a new app in your account.                                         │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
 # │ link        │ zapier link                           │ Link the current directory to an app in your account.                      │
@@ -74,6 +81,8 @@ $ zapier help
 
 This is an interactive prompt which will set up your account deploy keys and credentials.
 
+> This will change the  `/Users/bryanhelmig/.zapierrc` (home directory identifies the deploy key & user).
+
 ```bash
 $ zapier auth
 # What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
@@ -96,7 +105,7 @@ on an existing directory it will leave existing files alone and not clobber them
 **Arguments**
 
 * `.` -- _optional_, , default is `.`
-* `--template={helloworld}` -- _optional_, select a starting app template
+* `--template={minimal,helloworld}` -- _optional_, select a starting app template, default is `minimal`
 
 ```bash
 $ zapier init example-dir --template=helloworld
@@ -114,7 +123,9 @@ $ zapier init example-dir --template=helloworld
 
 **Usage:** `zapier register "Example" [directory]`
 
-This command registers your app with Zapier. After running this, you can run 'zapier push' to deploy a version of your app that you can use in your Zapier editor.
+This command registers your app with Zapier. After running this, you can run `zapier push` to deploy a version of your app that you can use in your Zapier editor.
+
+> This will change the  `./.zapierapprc` (which identifies the app assosciated with the current directory).
 
 **Arguments**
 
@@ -177,6 +188,13 @@ $ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
 
 Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
 
+> These are the same actions we'd display in our editor!
+
+* `Noun` -- your action's noun
+* `Label` -- your action's label
+* `Model` -- the model (if any) this action is tied to
+* `Available Methods` -- testable methods for this action
+
 **Arguments**
 
 
@@ -209,6 +227,56 @@ $ zapier describe
 ```
 
 
+## watch
+
+> Watch the current project.
+
+**Usage:** `zapier watch`
+
+Watches the project.
+
+**Arguments**
+
+
+* `--port=7545` -- _optional_, what port should we host/listen for tunneling, default is `7545`
+* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
+* `--help` -- _optional_, prints this help text
+* `--debug` -- _optional_, print debug API calls and tracebacks
+
+```bash
+$ zapier watch
+```
+
+
+## test
+
+> Tests your app via `npm test`.
+
+**Usage:** `zapier test`
+
+This command is effectively the same as npm test (which we normally recommend mocha tests) - except we can wire in some custom tests to validate your app.
+
+**Arguments**
+
+
+
+
+```bash
+$ zapier test
+# > node_modules/mocha/bin/mocha
+# 
+#   app
+#     validation
+#       ✓ should be a valid app
+# 
+#   triggers
+#     hello world
+#       ✓ should load fine (777ms)
+# 
+#   2 passing (817ms)
+```
+
+
 ## link
 
 > Link the current directory to an app you have access to.
@@ -217,7 +285,9 @@ $ zapier describe
 
 Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you'd just `git clone git@github.com:example-inc/example.git` which would have a `.zapierapprc` file already included. If not, you'd need to be an admin on the app and use this command to regenerate the `.zapierapprc` file.
 
-Or, if you are making an app from scratch - you'd prefer the `zapier create "Example"`.
+Or, if you are making an app from scratch - you'd prefer the `zapier init`.
+
+> This will change the  `./.zapierapprc` (which identifies the app assosciated with the current directory).
 
 **Arguments**
 
@@ -269,11 +339,11 @@ Lists any apps that you have admin access to. Also checks for the current direct
 $ zapier apps
 # All apps listed below.
 # 
-# ┌─────────┬────────────┬─────────────────────┬────────┐
-# │ Title   │ Unique Key │ Timestamp           │ Linked │
-# ├─────────┼────────────┼─────────────────────┼────────┤
-# │ Example │ Example    │ 2016-01-01T22:19:28 │ ✔      │
-# └─────────┴────────────┴─────────────────────┴────────┘
+# ┌─────────┬───────────-─┬─────────────────────┬────────┐
+# │ Title   │ Unique Slug │ Timestamp           │ Linked │
+# ├─────────┼───────────-─┼─────────────────────┼────────┤
+# │ Example │ Example     │ 2016-01-01T22:19:28 │ ✔      │
+# └─────────┴───────────-─┴─────────────────────┴────────┘
 # 
 # Try linking the current directory to a different app with the `zapier link` command.
 ```
@@ -662,7 +732,7 @@ Get the logs that are automatically collected during the running of your app. Ei
 * `--status={any,success,error}` -- _optional_, display only success (<400/info) logs or error (>400/tracebacks), default is `any`
 * `--type={console,http}` -- _optional_, display only console or http logs, default is `console`
 * `--detailed` -- _optional_, show detailed logs (like http body)
-* `--user=value` -- _optional_, display only this users logs
+* `--user=user@example.com` -- _optional_, display only this users logs, default is `me`
 * `--limit=50` -- _optional_, control the maximum result size, default is `50`
 * `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
