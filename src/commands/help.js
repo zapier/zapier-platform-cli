@@ -44,7 +44,7 @@ Prints documentation to the terminal screen.
 
 Generally - the \`zapier\` command works off of two files:
 
- * ${constants.AUTH_LOCATION}      (home directory identifies the deploy key & user)
+ * ${constants.AUTH_LOCATION_RAW}      (home directory identifies the deploy key & user)
  * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
 
 The \`zapier auth\` and \`zapier register "Example"\` or \`zapier link\` commands will help manage those files. All commands listed below.

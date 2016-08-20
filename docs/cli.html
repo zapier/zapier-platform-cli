@@ -309,16 +309,16 @@ blockquote {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Configure your <code>/Users/bryanhelmig/.zapierrc</code> with a deploy key.</p>
+<p>Configure your <code>~/.zapierrc</code> with a deploy key.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier auth</code></p><p>  This is an interactive prompt which will set up your account deploy keys and credentials.</p><blockquote>
-<p>This will change the  <code>/Users/bryanhelmig/.zapierrc</code> (home directory identifies the deploy key &amp; user).</p>
+<p>This will change the  <code>~/.zapierrc</code> (home directory identifies the deploy key &amp; user).</p>
 </blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier auth
 <span class="hljs-comment"># What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)</span>
 <span class="hljs-comment">#  &lt;type here&gt;</span>
-<span class="hljs-comment"># Your deploy key has been saved to /Users/bryanhelmig/.zapierrc.</span>
+<span class="hljs-comment"># Your deploy key has been saved to ~/.zapierrc.</span>
 </code></pre>
     </div>
   </div>
@@ -592,7 +592,7 @@ $ zapier env 1.0.0 API_KEY 1234567890
       <blockquote>
 <p>Lists all the commands you can use.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier help [command]</code></p><p>  Prints documentation to the terminal screen.</p><p>Generally - the <code>zapier</code> command works off of two files:</p><ul>
-<li>/Users/bryanhelmig/.zapierrc      (home directory identifies the deploy key &amp; user)</li>
+<li>~/.zapierrc      (home directory identifies the deploy key &amp; user)</li>
 <li>./.zapierapprc   (current directory identifies the app)</li>
 </ul><p>The <code>zapier auth</code> and <code>zapier register &quot;Example&quot;</code> or <code>zapier link</code> commands will help manage those files. All commands listed below.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all commands</li>

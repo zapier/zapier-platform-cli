@@ -42,19 +42,19 @@ $ zapier apps
 
 ## auth
 
-  > Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key.
+  > Configure your `~/.zapierrc` with a deploy key.
 
   **Usage:** `zapier auth`
 
   This is an interactive prompt which will set up your account deploy keys and credentials.
 
-> This will change the  `/Users/bryanhelmig/.zapierrc` (home directory identifies the deploy key & user).
+> This will change the  `~/.zapierrc` (home directory identifies the deploy key & user).
 
 ```bash
 $ zapier auth
 # What is your Deploy Key from https://zapier.com/platform/? (Ctl-C to cancel)
 #  <type here>
-# Your deploy key has been saved to /Users/bryanhelmig/.zapierrc.
+# Your deploy key has been saved to ~/.zapierrc.
 ```
 
 
@@ -296,7 +296,7 @@ $ zapier env 1.0.0 API_KEY 1234567890
 
 Generally - the `zapier` command works off of two files:
 
- * /Users/bryanhelmig/.zapierrc      (home directory identifies the deploy key & user)
+ * ~/.zapierrc      (home directory identifies the deploy key & user)
  * ./.zapierapprc   (current directory identifies the app)
 
 The `zapier auth` and `zapier register "Example"` or `zapier link` commands will help manage those files. All commands listed below.

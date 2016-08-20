@@ -36,18 +36,18 @@ const auth = (context) => {
 };
 auth.argsSpec = [];
 auth.argOptsSpec = {};
-auth.help = `Configure your \`${constants.AUTH_LOCATION}\` with a deploy key.`;
+auth.help = `Configure your \`${constants.AUTH_LOCATION_RAW}\` with a deploy key.`;
 auth.example = 'zapier auth';
 auth.docs = `\
 This is an interactive prompt which will set up your account deploy keys and credentials.
 
-> This will change the  \`${constants.AUTH_LOCATION}\` (home directory identifies the deploy key & user).
+> This will change the  \`${constants.AUTH_LOCATION_RAW}\` (home directory identifies the deploy key & user).
 
 ${'```'}bash
 $ zapier auth
 # ${QUESTION}
 #  <type here>
-# ${SUCCESS}
+# Your deploy key has been saved to ${constants.AUTH_LOCATION_RAW}.
 ${'```'}
 `;
 
