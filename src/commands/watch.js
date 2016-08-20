@@ -107,7 +107,6 @@ This makes for a great development experience, letting you make and observe chan
 
 ${utils.argsFragment(watch.argsSpec)}
 ${utils.argOptsFragment(watch.argOptsSpec)}
-${utils.defaultArgOptsFragment()}
 
 ${'```'}bash
 $ zapier watch --port=9090
