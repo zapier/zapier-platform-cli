@@ -694,8 +694,9 @@ $ zapier <span class="hljs-built_in">help</span>
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Initializes a new zapier app in a directory.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier init [location]</code></p><p>  Initializes a new zapier app. Clones a working example Github repository Zapier app.</p><p>After running this, you&apos;ll have a new example app in your directory. If you re-run this command
-on an existing directory it will leave existing files alone and not clobber them.</p><p><strong>Arguments</strong></p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier init [location]</code></p><p>  Initializes a new zapier app. Clones a working example Github repository Zapier app.</p><p>After running this, you&apos;ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.</p><blockquote>
+<p>Note: this doesn&apos;t register the app with Zapier - try <code>zapier register &quot;Example&quot;</code> and <code>zapier push</code> for that!</p>
+</blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>.</code> -- <em>optional</em>, , default is <code>.</code></li>
 <li><code>--template={minimal,helloworld}</code> -- <em>optional</em>, select a starting app template, default is <code>minimal</code></li>
 </ul>
@@ -1152,7 +1153,7 @@ $ zapier validate
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Lists all the versions of the current app.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier versions</code></p><p>  <strong>Arguments</strong></p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier versions</code></p><p>  Lists the versions of your app available for use in the Zapier editor.</p><p><strong>Arguments</strong></p><ul>
 <li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
@@ -1191,9 +1192,6 @@ $ zapier validate
 <p>Note: this is only temporary and has no effect on other users at Zapier! You&apos;ll want to do <code>zapier push</code> to make your changes permanent and universal.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>--port=7545</code> -- <em>optional</em>, what port should we host/listen for tunneling, default is <code>7545</code></li>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
-<li><code>--help</code> -- <em>optional</em>, prints this help text</li>
-<li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">

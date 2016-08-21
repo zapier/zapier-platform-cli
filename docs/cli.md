@@ -391,8 +391,9 @@ $ zapier history
 
   Initializes a new zapier app. Clones a working example Github repository Zapier app.
 
-After running this, you'll have a new example app in your directory. If you re-run this command
-on an existing directory it will leave existing files alone and not clobber them.
+After running this, you'll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
+
+> Note: this doesn't register the app with Zapier - try `zapier register "Example"` and `zapier push` for that!
 
 **Arguments**
 
@@ -799,7 +800,9 @@ $ zapier validate
 
   **Usage:** `zapier versions`
 
-  **Arguments**
+  Lists the versions of your app available for use in the Zapier editor.
+
+**Arguments**
 
 
 
@@ -838,9 +841,6 @@ This makes for a great development experience, letting you make and observe chan
 
 
 * `--port=7545` -- _optional_, what port should we host/listen for tunneling, default is `7545`
-* `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
-* `--help` -- _optional_, prints this help text
-* `--debug` -- _optional_, print debug API calls and tracebacks
 
 ```bash
 $ zapier watch --port=9090
