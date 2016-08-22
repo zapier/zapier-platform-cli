@@ -200,16 +200,19 @@ blockquote {
   <body>
     <div class="docs-toc">
       <ul>
-<li><a href="#zapier-platform-cli">Zapier Platform CLI</a><ul>
-<li><a href="#install-the-zapier-cli">Install the Zapier CLI</a></li>
-<li><a href="#read-the-help">Read the Help</a></li>
-<li><a href="#releasing-a-new-version">Releasing a New Version</a><ul>
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#introduction">Introduction</a><ul>
 <li><a href="#getting-started">Getting Started</a></li>
 <li><a href="#project-structure">Project Structure</a></li>
+<li><a href="#apps--versions-overview">Apps &amp; Versions Overview</a></li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#models">Models</a></li>
+<li><a href="#triggerssearcheswrites">Triggers/Searches/Writes</a></li>
+<li><a href="#making-http-requests">Making HTTP Requests</a><ul>
+<li><a href="#using-standard-http-middleware">Using standard HTTP middleware</a></li>
+<li><a href="#custom-http-middleware">Custom HTTP Middleware</a></li>
 </ul>
 </li>
-<li><a href="#sub-header">Sub-header</a></li>
+<li><a href="#environment">Environment</a></li>
 </ul>
 </li>
 </ul>
@@ -222,124 +225,7 @@ blockquote {
       <div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h1 id="zapier-platform-cli">Zapier Platform CLI</h1>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p><a href="https://travis-ci.org/zapier/zapier-platform-cli"><img src="https://travis-ci.com/zapier/zapier-platform-cli.svg?token=J7yzswuWzN3zrXDd3zFT&amp;branch=master" alt="Build Status"></a>
-<a href="http://badge.fury.io/js/zapier-platform-cli"><img src="https://badge.fury.io/js/zapier-platform-cli.svg" alt="npm version"></a>
-<a href="https://david-dm.org/zapier/zapier-platform-cli"><img src="https://david-dm.org/zapier/zapier-platform-cli.svg" alt="Dependency Status"></a>
-<a href="https://david-dm.org/zapier/zapier-platform-cli#info=devDependencies"><img src="https://david-dm.org/zapier/zapier-platform-cli/dev-status.svg" alt="devDependency Status"></a></p><p>A CLI to test, verify, build and deploy an app to Zapier (both private and public apps).</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="install-the-zapier-cli">Install the Zapier CLI</h3>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height is-empty docs-primary">
-      
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># make sure you have node &amp; npm installed</span>
-<span class="hljs-comment"># behind the scenes Zapier uses node v0.10.36</span>
-<span class="hljs-comment"># we recommend using nvm or similar to match!</span>
-npm install -g @zapier/zapier-platform-cli
-
-<span class="hljs-comment"># setup zapier&apos;s auth with your deploy key</span>
-zapier auth
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="read-the-help">Read the Help</h3>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height is-empty docs-primary">
-      
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">help</span>
-Usage: zapier COMMAND [<span class="hljs-built_in">command</span>-specific-arguments] [--command-specific-options]
-
-&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
-&#x2502; Command     &#x2502; Example                               &#x2502; Help                                                                       &#x2502;
-&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;
-&#x2502; <span class="hljs-built_in">help</span>        &#x2502; zapier <span class="hljs-built_in">help</span> [<span class="hljs-built_in">command</span>]                 &#x2502; Lists all the commands you can use.                                        &#x2502;
-&#x2502; auth        &#x2502; zapier auth                           &#x2502; Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key.           &#x2502;
-&#x2502; init        &#x2502; zapier init [location]                &#x2502; Initializes a new zapier app <span class="hljs-keyword">in</span> a directory.                               &#x2502;
-&#x2502; register    &#x2502; zapier register <span class="hljs-string">&quot;Example&quot;</span> [directory] &#x2502; Registers a new app <span class="hljs-keyword">in</span> your account.                                       &#x2502;
-&#x2502; scaffold    &#x2502; zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span>       &#x2502; Adds a sample model, trigger, action or search to your app.                &#x2502;
-&#x2502; describe    &#x2502; zapier describe                       &#x2502; Describes the current app.                                                 &#x2502;
-&#x2502; watch       &#x2502; zapier watch                          &#x2502; Watch the current project.                                                 &#x2502;
-&#x2502; <span class="hljs-built_in">test</span>        &#x2502; zapier <span class="hljs-built_in">test</span>                           &#x2502; Tests your app via `npm <span class="hljs-built_in">test</span>`.                                             &#x2502;
-&#x2502; link        &#x2502; zapier link                           &#x2502; Link the current directory to an app you have access to.                   &#x2502;
-&#x2502; apps        &#x2502; zapier apps                           &#x2502; Lists all the apps you can access.                                         &#x2502;
-&#x2502; versions    &#x2502; zapier versions                       &#x2502; Lists all the versions of the current app.                                 &#x2502;
-&#x2502; validate    &#x2502; zapier validate                       &#x2502; Validates the current project.                                             &#x2502;
-&#x2502; build       &#x2502; zapier build                          &#x2502; Builds a deployable zip from the current directory.                        &#x2502;
-&#x2502; upload      &#x2502; zapier upload                         &#x2502; Upload the last build as a version.                                        &#x2502;
-&#x2502; push        &#x2502; zapier push                           &#x2502; Build and upload a new version of the current app - does not deploy.       &#x2502;
-&#x2502; deploy      &#x2502; zapier deploy 1.0.0                   &#x2502; Deploys a specific version to a production.                                &#x2502;
-&#x2502; migrate     &#x2502; zapier migrate 1.0.0 1.0.1 [10%]      &#x2502; Migrate users from one version to another.                                 &#x2502;
-&#x2502; deprecate   &#x2502; zapier deprecate 1.0.0 2017-01-20     &#x2502; Mark a non-production version of your app as deprecated by a certain date. &#x2502;
-&#x2502; collaborate &#x2502; zapier collaborate [user@example.com] &#x2502; Manage the collaborators on your project. Can optionally --remove.         &#x2502;
-&#x2502; invite      &#x2502; zapier invite [user@example.com]      &#x2502; Manage the invitees/testers on your project. Can optionally --remove.      &#x2502;
-&#x2502; <span class="hljs-built_in">history</span>     &#x2502; zapier <span class="hljs-built_in">history</span>                        &#x2502; Prints all recent <span class="hljs-built_in">history</span> <span class="hljs-keyword">for</span> your app.                                    &#x2502;
-&#x2502; logs        &#x2502; zapier logs                           &#x2502; Prints recent logs. See <span class="hljs-built_in">help</span> <span class="hljs-keyword">for</span> filter arguments.                         &#x2502;
-&#x2502; env         &#x2502; zapier env 1.0.0 API_KEY 1234567890   &#x2502; Read and write environment variables.                                      &#x2502;
-&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="releasing-a-new-version">Releasing a New Version</h3>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>We&apos;ve configured the proper <code>npm version</code> behavior with pre/post hooks. This simplifies the publishing flow:</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># do not edit package.json, libs, etc. - is automatic!</span>
-<span class="hljs-comment"># be sure to do the same across the other libraries (schema and core)</span>
-npm version patch <span class="hljs-comment"># 1.0.0 -&gt; 1.0.1</span>
-npm version minor <span class="hljs-comment"># 1.0.0 -&gt; 1.1.0</span>
-npm version major <span class="hljs-comment"># 1.0.0 -&gt; 2.0.0</span>
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="introduction">Introduction</h2>
+      <h1 id="introduction">Introduction</h1>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -366,36 +252,99 @@ npm version major <span class="hljs-comment"># 1.0.0 -&gt; 2.0.0</span>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The Zapier CLI requires Node <code>v4.3.2</code> or higher, we recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p><p>After you install, you&apos;ll be able to set up your auth and then create a working &quot;Hello World&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p><blockquote>
-<p>Note: have fun!</p>
-</blockquote>
+      <blockquote>
+<p>The Zapier CLI and Platform requires Node <code>v4.3.2</code> or higher, we recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p>
+</blockquote><p>First up is installing the CLI and settting up your auth to then create a working &quot;Hello World&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># install the cli globally</span>
 npm install -g @zapier/zapier-platform-cli
 
+<span class="hljs-comment"># print all the commands</span>
+zapier <span class="hljs-built_in">help</span>
+
 <span class="hljs-comment"># setup zapier&apos;s auth with your deploy key</span>
 zapier auth
-
-<span class="hljs-comment"># create your first app</span>
-mkdir helloworld
-<span class="hljs-built_in">cd</span> helloworld
-zapier create <span class="hljs-string">&quot;Hello World&quot;</span> --style=helloworld
 </code></pre>
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>You can also run tests and validate your app which allows you to verify your code&apos;s behavior and that your app definition conforms to our <code>json-schema</code>.</p>
+      <p>Your Zapier CLI should be installed and ready to go at this point. Next up, we&apos;ll create our first app!</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># run the local tests</span>
-npm <span class="hljs-built_in">test</span>
+      <pre><code class="lang-bash"><span class="hljs-comment"># make your folder</span>
+mkdir helloworld
+<span class="hljs-built_in">cd</span> helloworld
 
-<span class="hljs-comment"># validate the app</span>
-zapier validate
+<span class="hljs-comment"># create the needed files from a template</span>
+zapier init --template=helloworld
+
+<span class="hljs-comment"># install all the libraries needed for your app</span>
+npm install
 </code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>You should now have a working local app, you can run several local commands to try it out.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># validate the app</span>
+zapier validate
+
+<span class="hljs-comment"># describe the app</span>
+zapier describe
+
+<span class="hljs-comment"># run the local tests</span>
+<span class="hljs-comment"># the same as npm test</span>
+zapier <span class="hljs-built_in">test</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Next, you&apos;ll probably want to register your app and upload your version to Zapier itself so you can start testing live.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># register and deploy your app &amp; version to Zapier</span>
+zapier register <span class="hljs-string">&quot;Hello World&quot;</span>
+zapier deploy
+
+<span class="hljs-comment"># list your apps</span>
+zapier apps
+
+<span class="hljs-comment"># list your versions</span>
+zapier versions
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>If you open the editor in Zapier, you should now see &quot;Hello World (1.0.0)&quot; listed and usable! We recommend using our built in watch command to iterate on the app.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># watch and sync up your local app to zapier</span>
+zapier watch
+
+<span class="hljs-comment"># now make changes locally, and see them reflected live in Zapier</span>
+<span class="hljs-comment"># method calls will also be proxied and logged to stdout for convenience</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Don&apos;t forget you&apos;ll need to <code>zapier deploy</code> to make your changes stick after any <code>zapier watch</code> session!</p><blockquote>
+<p>Go check out our <a href="docs/cli.md">full CLI reference documentation</a> to see all the other commands!</p>
+</blockquote>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
     </div>
   </div>
 </div><div class="row">
@@ -432,7 +381,7 @@ zapier validate
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="sub-header">Sub-header</h3>
+      <h2 id="apps-versions-overview">Apps &amp; Versions Overview</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -441,7 +390,194 @@ zapier validate
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>More to come, ay!</p>
+      <p>In Zapier&apos;s Platform there are two primary resources you&apos;ll interact with via the CLI:</p><ul>
+<li><strong>App</strong> - the base record that defines your App, named like &quot;Joe&apos;s CRM&quot;. Most people have one of these.</li>
+<li><strong>Version</strong> - a distinct implementation of an App, named like &quot;1.0.0&quot;. Most people have many of these.</li>
+</ul><p>If you are wanting to manage your <strong>App</strong>, you&apos;ll be using these commands:</p><ul>
+<li><code>zapier apps</code> - list the apps in Zapier you can administer</li>
+<li><code>zapier register &quot;Name&quot;</code> - creates a new app in Zapier</li>
+<li><code>zapier link</code> - lists and links a selected app in Zapier to your current folder</li>
+<li><code>zapier history</code> - print the history of your app</li>
+</ul><p>If you are wanting to manage your <strong>Version</strong>, you&apos;ll be using these commands:</p><ul>
+<li><code>zapier versions</code> - list the versions for the current directory&apos;s app</li>
+<li><code>zapier deploy</code> - deploy the current version the of current directory&apos;s app &amp; version (read from <code>package.json</code>)</li>
+<li><code>zapier promote [1.0.0]</code> - mark a version as the &quot;production&quot; version</li>
+<li><code>zapier migrate [1.0.0] [1.0.1] [100%]</code> - move users between versions, regardless of deployment status</li>
+<li><code>zapier deprecate [1.0.0] [YYYY-MM-DD]</code> - mark a version as deprecated, but let users continue to use it (we&apos;ll email them)</li>
+<li><code>zapier env 1.0.0 [KEY] [value]</code> - set an environment variable to some value</li>
+</ul><blockquote>
+<p>Note: there is a distinction between your <em>local</em> environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you <code>zapier deploy</code> (including <code>zapier watch</code>). Likewise, pushing one version will not impact other versions - they are completely isolated.</p>
+</blockquote>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="authentication">Authentication</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="models">Models</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="triggers-searches-writes">Triggers/Searches/Writes</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="making-http-requests">Making HTTP Requests</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To make a manual HTTP request, use the <code>request</code> method of the <code>z</code> object:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>perform: (z, bundle) =&gt; {
+  const customHttpOptions = {
+    headers: {
+      &apos;X-My-Custom-Header&apos;: &apos;xxx&apos;
+    }
+  };
+
+  return z.request(&apos;http://movies/favorites.json&apos;, customHttpOptions)
+    .then(response =&gt; {
+      if (response.status !== 200) {
+        throw new z.HaltedError(`Unexpected status code ${response.status}`);
+      }
+      const movies = JSON.parse(response.content);
+      return movies;
+    });
+}
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="using-standard-http-middleware">Using standard HTTP middleware</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>  beforeRequest: [
+    middlewares.applyRequestTemplate({
+      headers: {
+        &apos;X-My-Custom-Header&apos;: &apos;xxx&apos;
+      }
+   }
+  ],
+
+  afterRequest: [
+    middlewares.checkStatusCode,
+    middlewares.parseJSON
+  ]
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>With that in place, the above request would be simpler:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>perform: (z, bundle) =&gt; {
+  return z.request(&apos;http://movies/favorites.json&apos;)
+    .then(response =&gt; {
+      const movies = response.json;
+      return movies;
+    });
+}
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="custom-http-middleware">Custom HTTP Middleware</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="environment">Environment</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
