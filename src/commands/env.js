@@ -41,14 +41,14 @@ const env = (context, version, key, value) => {
 };
 env.argsSpec = [
   {name: 'version', example: '1.0.0', required: true, help: 'the app version\'s environment to work on'},
-  {name: 'key', example: 'API_KEY', help: 'the uppercase key of the environment variable to set'},
-  {name: 'value', example: '1234567890', requiredWith: ['key'], help: 'the raw value to set to the key'},
+  {name: 'key', example: 'CLIENT_SECRET', help: 'the uppercase key of the environment variable to set'},
+  {name: 'value', example: '12345', requiredWith: ['key'], help: 'the raw value to set to the key'},
 ];
 env.argOptsSpec = {};
 env.help = 'Read and write environment variables.';
-env.example = 'zapier env 1.0.0 API_KEY 1234567890';
+env.example = 'zapier env 1.0.0 CLIENT_SECRET 12345';
 env.docs = `\
-Manage the environment of your app so that \`process.env\` can access the keys, making it easy to match a local environment with working environment via \`API_KEY=1234567890 npm test\`.
+Manage the environment of your app so that \`process.env\` can access the keys, making it easy to match a local environment with working environment via \`CLIENT_SECRET=12345 npm test\`.
 
 **Arguments**
 
@@ -63,15 +63,15 @@ $ zapier env 1.0.0
 # ┌─────────┬─────────┬────────────┐
 # │ Version │ Key     │ Value      │
 # ├─────────┼─────────┼────────────┤
-# │ 1.0.0   │ API_KEY │ 1234567890 │
+# │ 1.0.0   │ CLIENT_SECRET │ 12345 │
 # └─────────┴─────────┴────────────┘
 # 
-# Try setting an env with the \`zapier env 1.0.0 API_KEY 1234567890\` command.
+# Try setting an env with the \`zapier env 1.0.0 CLIENT_SECRET 12345\` command.
 
-$ zapier env 1.0.0 API_KEY 1234567890
-# Preparing to set environment API_KEY for your 1.0.0 "Example".
+$ zapier env 1.0.0 CLIENT_SECRET 12345
+# Preparing to set environment CLIENT_SECRET for your 1.0.0 "Example".
 # 
-#   Setting API_KEY to "1234567890" - done!
+#   Setting CLIENT_SECRET to "12345" - done!
 # 
 # Environment updated! Try viewing it with \`zapier env 1.0.0\`.
 ${'```'}

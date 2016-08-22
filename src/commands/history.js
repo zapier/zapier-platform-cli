@@ -33,7 +33,7 @@ $ zapier history
 # │ What                     │ Message           │ Who              │ Timestamp           │
 # ├──────────────────────────┼───────────────────┼──────────────────┼─────────────────────┤
 # │ collaborator added       │ other@example.com │ user@example.com │ 2016-01-10T16:12:33 │
-# │ environment variable set │ API_KEY           │ user@example.com │ 2016-01-01T22:51:01 │
+# │ environment variable set │ CLIENT_SECRET     │ user@example.com │ 2016-01-01T22:51:01 │
 # │ version added            │ 1.2.52            │ user@example.com │ 2016-01-01T22:19:36 │
 # │ app created              │ initial creation  │ user@example.com │ 2016-01-01T22:19:28 │
 # └──────────────────────────┴───────────────────┴──────────────────┴─────────────────────┘

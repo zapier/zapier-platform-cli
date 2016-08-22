@@ -71,7 +71,7 @@ $ zapier help
 # │ deploy      │ zapier deploy                         │ Build and upload a new version of the current app - does not promote.      │
 # │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
-# │ env         │ zapier env 1.0.0 API_KEY 1234567890   │ Read and write environment variables.                                      │
+# │ env         │ zapier env 1.0.0 CLIENT_SECRET 12345  │ Read and write environment variables.                                      │
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
 # │ history     │ zapier history                        │ Prints all recent history for your app.                                    │
 # │ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
