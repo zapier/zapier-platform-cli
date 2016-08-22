@@ -5,11 +5,9 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Getting Started
 
-The Zapier CLI requires Node `v4.3.2` or higher, we recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
+> The Zapier CLI and Platform requires Node `v4.3.2` or higher, we recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
-After you install, you'll be able to set up your auth and then create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
-
-> Note: have fun!
+First up is installing the CLI and settting up your auth to then create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
 
 ```bash
 # install the cli globally
@@ -39,6 +37,7 @@ zapier validate
 zapier describe
 
 # run the local tests
+# the same as npm test
 zapier test
 ```
 
@@ -65,7 +64,7 @@ zapier watch
 # method calls will also be proxied and logged to stdout for convenience
 ```
 
-Don't forget you'll need to `zapier push` to make your changes stick after `zapier push`!
+Don't forget you'll need to `zapier push` to make your changes stick after any `zapier watch` session!
 
 
 ## Project Structure
