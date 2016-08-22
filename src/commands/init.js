@@ -54,7 +54,7 @@ init.argOptsSpec = {
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';
 init.docs = `\
-Initializes a new zapier app. If you specify a template, will download and install app from that template.
+Initializes a new zapier app. Clones a working example Github repository Zapier app.
 
 After running this, you\'ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
