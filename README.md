@@ -74,6 +74,8 @@ zapier watch
 
 Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session!
 
+> Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
+
 
 ## Project Structure
 
