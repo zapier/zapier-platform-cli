@@ -169,6 +169,7 @@ const App = {
   // ...
   authentication: {
     type: 'basic',
+    // "test" could also be a function
     test: {
       url: 'https://example.com/api/accounts/me.json'
     }
@@ -229,7 +230,68 @@ TODO.
 
 ### OAuth2
 
-TODO.
+We'll handle most of the logic around the 3 step OAuth flow but you'll be required to define how the steps work on your own. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET`:
+
+```bash
+# setting the environment variables
+$ zapier env 1.0.0 CLIENT_ID=1234
+$ zapier env 1.0.0 CLIENT_SECRET=abcd
+
+# and when running tests
+$ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
+```
+
+And your definition would look something like this:
+
+```javascript
+const App = {
+  // ...
+  authentication: {
+    type: 'oauth2',
+    test: {
+      url: 'https://example.com/api/accounts/me.json'
+    },
+    // you can provide additional fields for inclusion in authData
+    oauth2Config: {
+      // "authorizeUrl" could also be a function returning a string url
+      authorizeUrl: {
+        method: 'GET',
+        url: 'https://example.com/api/oauth2/authorize',
+        params: {
+          client_id: '{{environment.CLIENT_ID}}',
+          state: '{{inputData.state}}',
+          redirect_uri: '{{inputData.redirect_uri}}',
+          response_type: 'code'
+        }
+      },
+      // we expect a response providing {access_token: 'abcd'}
+      // "getAccessToken" could also be a function returning an object
+      getAccessToken: {
+        method: 'POST',
+        url: 'https://example.com/api/v2/oauth2/token',
+        body: {
+          code: '{{inputData.code}}',
+          client_id: '{{environment.CLIENT_ID}}',
+          client_secret: '{{environment.CLIENT_SECRET}}',
+          redirect_uri: '{{inputData.redirect_uri}}',
+          state: '{{inputData.state}}',
+          grant_type: 'authorization_code'
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    }
+  },
+  beforeRequest: [
+    (request, z, bundle) => {
+      request.headers.Authorization = `Bearer ${bundle.authData.access_token}`;
+      return request;
+    }
+  ]
+  // ...
+};
+```
 
 
 ## Models
