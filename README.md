@@ -1,74 +1,4 @@
-# Zapier Platform CLI
-
-[![Build Status](https://travis-ci.com/zapier/zapier-platform-cli.svg?token=J7yzswuWzN3zrXDd3zFT&branch=master)](https://travis-ci.org/zapier/zapier-platform-cli)
-[![npm version](https://badge.fury.io/js/zapier-platform-cli.svg)](http://badge.fury.io/js/zapier-platform-cli)
-[![Dependency Status](https://david-dm.org/zapier/zapier-platform-cli.svg)](https://david-dm.org/zapier/zapier-platform-cli)
-[![devDependency Status](https://david-dm.org/zapier/zapier-platform-cli/dev-status.svg)](https://david-dm.org/zapier/zapier-platform-cli#info=devDependencies)
-
-A CLI to test, verify, build and deploy an app to Zapier (both private and public apps).
-
-
-### Install the Zapier CLI
-
-```bash
-# make sure you have node & npm installed
-# behind the scenes Zapier uses node v0.10.36
-# we recommend using nvm or similar to match!
-npm install -g @zapier/zapier-platform-cli
-
-# setup zapier's auth with your deploy key
-zapier auth
-```
-
-### Read the Help
-
-```bash
-$ zapier help
-Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]
-
-┌─────────────┬───────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
-│ Command     │ Example                               │ Help                                                                       │
-├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
-│ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
-│ auth        │ zapier auth                           │ Configure your `/Users/bryanhelmig/.zapierrc` with a deploy key.           │
-│ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
-│ register    │ zapier register "Example" [directory] │ Registers a new app in your account.                                       │
-│ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
-│ describe    │ zapier describe                       │ Describes the current app.                                                 │
-│ watch       │ zapier watch                          │ Watch the current project.                                                 │
-│ test        │ zapier test                           │ Tests your app via `npm test`.                                             │
-│ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
-│ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-│ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
-│ validate    │ zapier validate                       │ Validates the current project.                                             │
-│ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
-│ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
-│ push        │ zapier push                           │ Build and upload a new version of the current app - does not deploy.       │
-│ deploy      │ zapier deploy 1.0.0                   │ Deploys a specific version to a production.                                │
-│ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
-│ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
-│ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
-│ invite      │ zapier invite [user@example.com]      │ Manage the invitees/testers on your project. Can optionally --remove.      │
-│ history     │ zapier history                        │ Prints all recent history for your app.                                    │
-│ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
-│ env         │ zapier env 1.0.0 API_KEY 1234567890   │ Read and write environment variables.                                      │
-└─────────────┴───────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
-
-```
-
-### Releasing a New Version
-
-We've configured the proper `npm version` behavior with pre/post hooks. This simplifies the publishing flow:
-
-```bash
-# do not edit package.json, libs, etc. - is automatic!
-# be sure to do the same across the other libraries (schema and core)
-npm version patch # 1.0.0 -> 1.0.1
-npm version minor # 1.0.0 -> 1.1.0
-npm version major # 1.0.0 -> 2.0.0
-```
-
-## Introduction
+# Introduction
 
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
@@ -87,22 +17,55 @@ npm install -g @zapier/zapier-platform-cli
 
 # setup zapier's auth with your deploy key
 zapier auth
+```
 
+Your Zapier CLI should be installed and ready to go at this point. Next up, we'll create our first app!
+
+```bash
 # create your first app
 mkdir helloworld
 cd helloworld
-zapier create "Hello World" --style=helloworld
+zapier init --template=helloworld
+npm install
 ```
 
-You can also run tests and validate your app which allows you to verify your code's behavior and that your app definition conforms to our `json-schema`.
+You should now have a working local app, you can run several local commands to try it out.
 
 ```bash
-# run the local tests
-npm test
-
 # validate the app
 zapier validate
+
+# describe the app
+zapier describe
+
+# run the local tests
+zapier test
 ```
+
+Next, you'll probably want to register your app and upload your version to Zapier itself so you can start testing live.
+
+```bash
+# register and push your app & version to Zapier
+zapier register "Hello World"
+zapier push
+
+# list your apps
+zapier apps
+
+# list your versions
+zapier versions
+```
+
+If you open the editor in Zapier, you should now see "Hello World (1.0.0)" listed and usable! We recommend using our built in watch command to iterate on the app.
+
+```bash
+# watch and sync up your local app to zapier
+zapier watch
+# now make changes locally, and see them reflected live in Zapier
+# method calls will also be proxied and logged to stdout for convenience
+```
+
+Don't forget you'll need to `zapier push` to make your changes stick after `zapier push`!
 
 
 ## Project Structure
@@ -126,6 +89,27 @@ $ tree .
 ```
 
 
-### Sub-header
+## Apps & Versions
 
-More to come, ay!
+TODO.
+
+
+## Authentication
+
+TODO.
+
+
+## Models
+
+TODO.
+
+
+## Triggers/Searches/Writes
+
+TODO.
+
+
+## Making Requests
+
+TODO.
+
