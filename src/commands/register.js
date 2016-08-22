@@ -34,7 +34,7 @@ register.argsSpec = [
 register.argOptsSpec = {
 };
 register.help = 'Registers a new app in your account.';
-register.example = 'zapier register "Example" [directory]';
+register.example = 'zapier register "Example"';
 register.docs = `\
 This command registers your app with Zapier. After running this, you can run \`zapier push\` to deploy a version of your app that you can use in your Zapier editor.
 
@@ -46,7 +46,7 @@ ${utils.argsFragment(register.argsSpec)}
 ${utils.argOptsFragment(register.argOptsSpec)}
 
 ${'```'}bash
-$ zapier register "Example" example-dir
+$ zapier register "Example"
 # Let\'s register your app "Example" on Zapier!
 #
 #   Creating a new app named "Example" on Zapier - done!
