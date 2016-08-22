@@ -23,7 +23,7 @@ const watch = (context) => {
       options.handler = utils.getLocalAppHandler({
         reload: true,
         baseEvent: {
-          calledFromLocalProxy: true
+          logToStdout: true
         }
       });
       resolve();
@@ -122,12 +122,12 @@ ${utils.argOptsFragment(watch.argOptsSpec)}
 ${'```'}bash
 $ zapier watch --port=9090
 # Watching and running your app locally. Zapier will tunnel JS calls here.
-# 
+#
 #   Starting local server on port 9090 - done!
 #   Starting local tunnel for port 9090 - done!
-# 
+#
 # Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.
-# 
+#
 #   Reloading for index.js - done!
 #   Reloading for models/form.js - done!
 #   Reloading for index.js - done!
