@@ -123,8 +123,111 @@ If you are wanting to manage your **Version**, you'll be using these commands:
 
 > Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier deploy` (including `zapier watch`). Likewise, pushing one version will not impact other versions - they are completely isolated.
 
+### App Definition
+
+The core definition of your `App` is will look something like this, and is what your `index.js` should provide as the _only_ export:
+
+```javascript
+const App = {
+  // both version strings are required
+  version: require('./package.json').version,
+  platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
+
+  // see "Authentication" section below
+  authentication: {},
+
+  // see "Making HTTP Requests" section below
+  requestTemplate: {},
+  beforeRequest: [],
+  afterResponse: [],
+
+  // See "Resources" section below
+  resources: {},
+
+  // See "Triggers/Searches/Writes" section below
+  triggers: {},
+  searches: {},
+  writes: {}
+};
+```
+
 
 ## Authentication
+
+Most applications require some sort of authentication - and Zapier provides a handful of methods for helping your users authenticate with your application. Zapier will provide some of the core behaviors, but you'll likely need to handle the rest.
+
+You can access the data tied to your authentication via the `bundle.authData` property in any method called in your app.
+
+### Basic
+
+Useful if your app requires two pieces of information to authentication: `username` and `password` which only the end user can provide. By default we will do the standard Basic authentication base64 header encoding for you (via an automatically registered middleware).
+
+> Note: if you do the common `Authorization: Basic apikey:x` you should look at the "Custom" authentication method instead.
+
+```javascript
+const App = {
+  // ...
+  authentication: {
+    type: 'basic',
+    test: {
+      url: 'https://example.com/api/accounts/me.json'
+    }
+    // you can provide additional fields, but we'll provide `username`/`password` automatically
+  },
+  // ...
+};
+```
+
+### Custom
+
+This is what most "API Key" driven apps should default to doing, you'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
+
+```javascript
+const App = {
+  // ...
+  authentication: {
+    type: 'custom',
+    test: {
+      url: 'https://{{authData.subdomain}}.example.com/api/accounts/me.json'
+    },
+    fields: [
+      {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'}
+      {key: 'api_key', type: 'string', required: true, helpText: 'Found on your settings page.'}
+    ]
+  },
+  beforeRequest: [
+    (request, z, bundle) => {
+      request.headers['X-Api-Key'] = bundle.authData.api_key;
+      return request;
+    }
+  ]
+  // ...
+};
+```
+
+### Digest
+
+Very similar to the "Basic" authentication method above, but uses digest authentication instead of Basic authentication.
+
+```javascript
+const App = {
+  // ...
+  authentication: {
+    type: 'digest',
+    test: {
+      url: 'https://example.com/api/accounts/me.json'
+    }
+    // you can provide additional fields, but we'll provide `username`/`password` automatically
+  },
+  // ...
+};
+```
+
+### Session
+
+TODO.
+
+### OAuth2
 
 TODO.
 
