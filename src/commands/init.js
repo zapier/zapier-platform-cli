@@ -41,7 +41,7 @@ const init = (context, location = '.') => {
 
   return initApp(location)
     .then(() => {
-      context.line('\nFinished! You can edit `index.js` and then `zapier push` to build & upload your app!');
+      context.line('\nFinished! You can edit `index.js` and then `zapier deploy` to build & upload your app!');
     });
 };
 
@@ -58,7 +58,7 @@ Initializes a new zapier app. If you specify a template, will download and insta
 
 After running this, you\'ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this doesn't register the app with Zapier - try \`zapier register "Example"\` and \`zapier push\` for that!
+> Note: this doesn't register the app with Zapier - try \`zapier register "Example"\` and \`zapier deploy\` for that!
 
 **Arguments**
 

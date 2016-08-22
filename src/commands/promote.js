@@ -32,7 +32,7 @@ promote.example = 'zapier promote 1.0.0';
 promote.docs = `\
 Promotes an app version into production (non-private) rotation, which means new users can use this.
 
-* This **does not** build/upload or push a version to Zapier - you should \`zapier push\` first.
+* This **does not** build/upload or push a version to Zapier - you should \`zapier deploy\` first.
 * This **does not** move old users over to this version - \`zapier migrate 1.0.0 1.0.1\` does that.
 
 Promotes are an inherently safe operation for all existing users of your app.

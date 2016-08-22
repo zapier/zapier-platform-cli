@@ -48,7 +48,7 @@ const link = (context) => {
     })
     .then(() => {
       utils.printDone();
-      context.line('\nFinished! You can `zapier push` now to build & upload a version!');
+      context.line('\nFinished! You can `zapier deploy` now to build & upload a version!');
     });
 };
 link.argsSpec = [];
@@ -86,7 +86,7 @@ $ zapier link
 #   Selecting existing app "Example" - done!
 #   Setting up \`${constants.CURRENT_APP_FILE}\` file - done!
 #
-# Finished! You can \`zapier push\` now to build & upload a version!
+# Finished! You can \`zapier deploy\` now to build & upload a version!
 ${'```'}
 `;
 

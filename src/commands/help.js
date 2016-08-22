@@ -86,7 +86,7 @@ $ zapier help
 # │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
 # │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
-# │ push        │ zapier push                           │ Build and upload a new version of the current app - does not promote.      │
+# │ push        │ zapier deploy                           │ Build and upload a new version of the current app - does not promote.      │
 # │ register    │ zapier register "Example" [directory] │ Registers a new app in your account.                                       │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
 # │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                             │

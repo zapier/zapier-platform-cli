@@ -110,9 +110,9 @@ This command watches the current directory, on changes it does two things:
 * Sends any new changes to Zapier, instantly updating the UI in your Zapier editor.
 * Tunnels all Javascript calls through your local environment with logs to stdout.
 
-This makes for a great development experience, letting you make and observe changes much faster than a \`zapier push\`
+This makes for a great development experience, letting you make and observe changes much faster than a \`zapier deploy\`
 
-> Note: this is only temporary and has no effect on other users at Zapier! You'll want to do \`zapier push\` to make your changes permanent and universal.
+> Note: this is only temporary and has no effect on other users at Zapier! You'll want to do \`zapier deploy\` to make your changes permanent and universal.
 
 **Arguments**
 

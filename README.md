@@ -51,9 +51,9 @@ zapier test
 Next, you'll probably want to register your app and upload your version to Zapier itself so you can start testing live.
 
 ```bash
-# register and push your app & version to Zapier
+# register and deploy your app & version to Zapier
 zapier register "Hello World"
-zapier push
+zapier deploy
 
 # list your apps
 zapier apps
@@ -72,7 +72,7 @@ zapier watch
 # method calls will also be proxied and logged to stdout for convenience
 ```
 
-Don't forget you'll need to `zapier push` to make your changes stick after any `zapier watch` session!
+Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session!
 
 
 ## Project Structure
@@ -113,13 +113,13 @@ If you are wanting to manage your **App**, you'll be using these commands:
 If you are wanting to manage your **Version**, you'll be using these commands:
 
 * `zapier versions` - list the versions for the current directory's app
-* `zapier push` - push the current version the of current directory's app & version (read from `package.json`)
-* `zapier deploy [1.0.0]` - mark a version as the "production" version
+* `zapier deploy` - deploy the current version the of current directory's app & version (read from `package.json`)
+* `zapier promote [1.0.0]` - mark a version as the "production" version
 * `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 
-> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier push` (including `zapier watch`). Likewise, pushing one version will not impact other versions - they are completely isolated.
+> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier deploy` (including `zapier watch`). Likewise, pushing one version will not impact other versions - they are completely isolated.
 
 
 ## Authentication

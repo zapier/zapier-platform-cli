@@ -16,7 +16,7 @@ upload.example = 'zapier upload';
 upload.docs = `\
 Upload the zip file already built by \`zapier build\` in build/build.zip. The versions and other app details are read by Zapier from the zip file.
 
-> Note: we generally recommend using \`zapier push\` which does both \`zapier build && zapier upload\` in one step.
+> Note: we generally recommend using \`zapier deploy\` which does both \`zapier build && zapier upload\` in one step.
 
 ${'```'}bash
 $ zapier upload

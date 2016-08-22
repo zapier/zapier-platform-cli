@@ -36,7 +36,7 @@ validate.argOptsSpec = {};
 validate.help = 'Validates the current project.';
 validate.example = 'zapier validate';
 validate.docs = `\
-Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during \`zapier build\`, \`zapier uploard\`, \`zapier push\` or even as a test in \`npm test\`.
+Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during \`zapier build\`, \`zapier uploard\`, \`zapier deploy\` or even as a test in \`npm test\`.
 
 **Arguments**
 
