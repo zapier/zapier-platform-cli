@@ -156,7 +156,7 @@ const App = {
 
 Most applications require some sort of authentication - and Zapier provides a handful of methods for helping your users authenticate with your application. Zapier will provide some of the core behaviors, but you'll likely need to handle the rest.
 
-You can access the data tied to your authentication via the `bundle.authData` property in any method called in your app.
+> Hint: You can access the data tied to your authentication via the `bundle.authData` property in any method called in your app.
 
 ### Basic
 
@@ -188,6 +188,7 @@ const App = {
   // ...
   authentication: {
     type: 'custom',
+    // "test" could also be a function
     test: {
       url: 'https://{{authData.subdomain}}.example.com/api/accounts/me.json'
     },
@@ -215,6 +216,7 @@ const App = {
   // ...
   authentication: {
     type: 'digest',
+    // "test" could also be a function
     test: {
       url: 'https://example.com/api/accounts/me.json'
     }
@@ -233,11 +235,11 @@ TODO.
 We'll handle most of the logic around the 3 step OAuth flow but you'll be required to define how the steps work on your own. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET`:
 
 ```bash
-# setting the environment variables
+# setting the environment variables in Zapier.com
 $ zapier env 1.0.0 CLIENT_ID=1234
 $ zapier env 1.0.0 CLIENT_SECRET=abcd
 
-# and when running tests
+# and when running tests locally, don't forget to define them!
 $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 ```
 
