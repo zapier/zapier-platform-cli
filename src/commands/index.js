@@ -14,7 +14,7 @@ module.exports = {
   build: require('./build'),
   upload: require('./upload'),
   push: require('./push'),
-  deploy: require('./deploy'),
+  promote: require('./promote'),
   migrate: require('./migrate'),
   deprecate: require('./deprecate'),
   collaborate: require('./collaborate'),

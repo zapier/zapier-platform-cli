@@ -21,7 +21,7 @@ const push = (context) => {
   return createIfNeeded(context)
     .then(() => utils.buildAndUploadDir())
     .then(() => {
-      context.line('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier deploy` to put it into rotation or `zapier migrate` to move users over.');
+      context.line('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier promote` to put it into rotation or `zapier migrate` to move users over.');
     });
 };
 push.argsSpec = [];
@@ -38,7 +38,7 @@ A shortcut for \`zapier build && zapier upload\` - this is our recommended way t
 4. QA/experiment in the Zapier.com Zap editor.
 5. Go to 1 and repeat.
 
-> Note: this is always a safe operation as live/production apps are protected from pushes. You must use \`zapier deploy\` or \`zapier migrate\` to impact live users.
+> Note: this is always a safe operation as live/production apps are protected from pushes. You must use \`zapier promote\` or \`zapier migrate\` to impact live users.
 
 If you have not yet registered your app, this command will prompt you for your app title and register the app.
 
@@ -57,7 +57,7 @@ $ zapier push
 #   Cleaning up temp directory - done!
 #   Uploading version 1.0.0 - done!
 #
-# Build and upload complete! Try loading the Zapier editor now, or try \`zapier deploy\` to put it into rotation or \`zapier migrate\` to move users over
+# Build and upload complete! Try loading the Zapier editor now, or try \`zapier promote\` to put it into rotation or \`zapier migrate\` to move users over
 ${'```'}
 `;
 
