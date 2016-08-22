@@ -137,10 +137,63 @@ TODO.
 TODO.
 
 
-## Making Requests
+## Making HTTP Requests
 
-TODO.
+To make a manual HTTP request, use the `request` method of the `z` object:
 
+```
+perform: (z, bundle) => {
+  const customHttpOptions = {
+    headers: {
+      'X-My-Custom-Header': 'xxx'
+    }
+  };
+
+  return z.request('http://movies/favorites.json', customHttpOptions)
+    .then(response => {
+      if (response.status !== 200) {
+        throw new z.HaltedError(`Unexpected status code ${response.status}`);
+      }
+      const movies = JSON.parse(response.content);
+      return movies;
+    });
+}
+```
+
+### Using standard HTTP middleware
+
+If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
+
+```
+  beforeRequest: [
+    middlewares.applyRequestTemplate({
+      headers: {
+        'X-My-Custom-Header': 'xxx'
+      }
+   }
+  ],
+
+  afterRequest: [
+    middlewares.checkStatusCode,
+    middlewares.parseJSON
+  ]
+```
+
+With that in place, the above request would be simpler:
+
+```
+perform: (z, bundle) => {
+  return z.request('http://movies/favorites.json')
+    .then(response => {
+      const movies = response.json;
+      return movies;
+    });
+}
+```
+
+### Custom HTTP Middleware
+
+TODO
 
 ## Environment
 
