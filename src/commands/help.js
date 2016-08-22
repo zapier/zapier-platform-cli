@@ -61,21 +61,14 @@ $ zapier help scaffold
 $ zapier help
 # Usage: zapier COMMAND [command-specific-arguments] [--command-specific-options]
 # 
-# This Zapier command works off of two files:
-# 
-#  * ~/.zapierrc      (home directory identifies the deploy key & user)
-#  * ./.zapierapprc   (current directory identifies the app)
-# 
-# The \`zapier auth\` and \`zapier init\`/\`zapier link\` commands will help manage those files. All commands listed below.
-# 
 # ┌─────────────┬───────────────────────────────────────┬────────────────────────────────────────────────────────────────────────────┐
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ auth        │ zapier auth                           │ Configure your \`/Users/username/.zapierrc\` with a deploy key.              │
+# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                            │
 # │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
-# │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to a production.                               │
+# │ deploy      │ zapier deploy                         │ Build and upload a new version of the current app - does not promote.      │
 # │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
 # │ env         │ zapier env 1.0.0 API_KEY 1234567890   │ Read and write environment variables.                                      │
@@ -86,8 +79,8 @@ $ zapier help
 # │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
 # │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
-# │ push        │ zapier deploy                           │ Build and upload a new version of the current app - does not promote.      │
-# │ register    │ zapier register "Example" [directory] │ Registers a new app in your account.                                       │
+# │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to production rotation.                        │
+# │ register    │ zapier register "Example"             │ Registers a new app in your account.                                       │
 # │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
 # │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                             │
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
