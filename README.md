@@ -100,10 +100,10 @@ $ tree .
 
 In Zapier's Platform there are two primary resources you'll interact with via the CLI:
 
-* **App** - the base record that defines your App, named like "Joe's CRM". Most people only have one of these.
+* **App** - the base record that defines your App, named like "Joe's CRM". Most people have one of these.
 * **Version** - a distinct implementation of an App, named like "1.0.0". Most people have many of these.
 
-If you are wanting to manage your **App*, you'll be using these commands:
+If you are wanting to manage your **App**, you'll be using these commands:
 
 * `zapier apps` - list the apps in Zapier you can administer
 * `zapier register "Name"` - creates a new app in Zapier
