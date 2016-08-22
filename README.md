@@ -10,13 +10,13 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 First up is installing the CLI and settting up your auth to then create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
 
 ```bash
-# install the cli globally
+# install the CLI globally
 npm install -g @zapier/zapier-platform-cli
 
 # print all the commands
 zapier help
 
-# setup zapier's auth with your deploy key
+# setup Zapier's auth with your deploy key
 zapier auth
 ```
 
@@ -292,10 +292,56 @@ const App = {
 ```
 
 
-## Models
+## Getting Started with Resources
 
-TODO.
+A `resource` is a representation (as a JavaScript object) of one of the REST resources of your API. Say you have a `/movies`
+endpoint for working with movies, you can define a movie resource in your app that will tell Zapier how to do create,
+read, and update, operations on that resource.
 
+Under the hood, Zapier converts the `resource` into the usual Triggers, Actions, and Searches. The advantage of defining
+a resource over the other components directly is that, by tying the functionality together in a resource, Zapier is able
+to reuse the functionality to improve the overall experience.
+
+The quickest way to create a resource is with the `zapier scaffold` command:
+
+```bash
+zapier scaffold model "Movie"
+```
+
+This will generate the resource file and add the necessary statements to the `index.js` file to import it.
+
+### Anatomy of a Resource
+
+A resource has a few basic properties. The first is the `key`, which allows Zapier to identify the resource on our backend.
+The second is the `noun`, the user-friendly name of the resource that is presented to users throughout the Zapier UI.
+
+After those, there is a set of optional properties that tell Zapier what methods can be performed on the resource.
+We'll look at a couple:
+
+ * `list` - Tells Zapier how to fetch a set of this resource. This becomes a Trigger in the Zapier Editor.
+ * `create` - Tells Zapier how to create a new instance of the resource. This becomes an Action in the Zapier Editor.
+
+*Note: For information on the other available methods, see the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema).*
+
+Peeking at the `list` property on your resource, you'll find
+
+```javascript
+{
+  list: {
+    display: {
+      label: 'New Movie',
+      description: 'Triggers when a new movie is added.'
+    },
+    operation: {
+      perform: {
+        url: `http://example.com/movies`
+      }
+    }
+  }
+}
+```
+
+TODO
 
 ## Triggers/Searches/Writes
 
