@@ -5,9 +5,9 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Getting Started
 
-> The Zapier CLI and Platform requires Node `v4.3.2` or higher, we recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
+> The Zapier CLI and Platform requires Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
-First up is installing the CLI and settting up your auth to then create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
+First up is installing the CLI and settting up your auth to create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
@@ -16,7 +16,7 @@ npm install -g @zapier/zapier-platform-cli
 # print all the commands
 zapier help
 
-# setup Zapier's auth with your deploy key
+# auth to Zapier's platform with your deploy key. To obtain a key, email partner@zapier.com
 zapier auth
 ```
 
@@ -34,7 +34,7 @@ zapier init --template=helloworld
 npm install
 ```
 
-You should now have a working local app, you can run several local commands to try it out.
+You should now have a working local app. You can run several local commands to try it out.
 
 ```bash
 # validate the app
@@ -62,7 +62,7 @@ zapier apps
 zapier versions
 ```
 
-If you open the editor in Zapier, you should now see "Hello World (1.0.0)" listed and usable! We recommend using our built in watch command to iterate on the app.
+If you open the editor in Zapier, you should now see "Hello World (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
 
 ```bash
 # watch and sync up your local app to zapier
@@ -79,7 +79,7 @@ Don't forget you'll need to `zapier deploy` to make your changes stick after any
 
 ## Project Structure
 
-In your `helloworld` folder, you should see this general structure. The `index.js` is your entry point, you'll need to export an `App` definition there.
+In your `helloworld` folder, you should see this general structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
 
 ```plain
 $ tree .
@@ -100,7 +100,7 @@ $ tree .
 
 ## Apps & Versions Overview
 
-In Zapier's Platform there are two primary resources you'll interact with via the CLI:
+In Zapier's Platform there are two primary records you'll interact with via the CLI:
 
 * **App** - the base record that defines your App, named like "Joe's CRM". Most people have one of these.
 * **Version** - a distinct implementation of an App, named like "1.0.0". Most people have many of these.
@@ -121,7 +121,7 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 
-> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier promote` (including `zapier watch`). Likewise, deploying one version will not impact other versions - they are completely isolated.
+> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier promote` (even changes deployed by `zapier watch`). Likewise, deploying one version will not impact other versions - they are completely isolated.
 
 ### App Definition
 
@@ -162,7 +162,7 @@ Most applications require some sort of authentication - and Zapier provides a ha
 
 ### Basic
 
-Useful if your app requires two pieces of information to authentication: `username` and `password` which only the end user can provide. By default we will do the standard Basic authentication base64 header encoding for you (via an automatically registered middleware).
+Useful if your app requires two pieces of information to authentication: `username` and `password` which only the end user can provide. By default, Zapier will do the standard Basic authentication base64 header encoding for you (via an automatically registered middleware).
 
 > Note: if you do the common `Authorization: Basic apikey:x` you should look at the "Custom" authentication method instead.
 
@@ -182,7 +182,7 @@ const App = {
 
 ### Custom
 
-This is what most "API Key" driven apps should default to doing, you'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
+This is what most "API Key" driven apps should default to using. Uou'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
 
 ```javascript
 const App = {
@@ -220,7 +220,7 @@ const App = {
     test: {
       url: 'https://example.com/api/accounts/me.json'
     }
-    // you can provide additional fields, but we'll provide `username`/`password` automatically
+    // you can provide additional fields, but Zapier will provide `username`/`password` automatically
   },
 };
 ```
@@ -231,10 +231,10 @@ TODO.
 
 ### OAuth2
 
-We'll handle most of the logic around the 3 step OAuth flow but you'll be required to define how the steps work on your own. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET`:
+Zapier will handle most of the logic around the 3 step OAuth flow, but you'll be required to define how the steps work on your own. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET` as environment variables:
 
 ```bash
-# setting the environment variables in Zapier.com
+# setting the environment variables on Zapier.com
 $ zapier env 1.0.0 CLIENT_ID=1234
 $ zapier env 1.0.0 CLIENT_SECRET=abcd
 
@@ -242,7 +242,7 @@ $ zapier env 1.0.0 CLIENT_SECRET=abcd
 $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 ```
 
-And your definition would look something like this:
+Your auth definition would look something like this:
 
 ```javascript
 const App = {
@@ -265,7 +265,7 @@ const App = {
           response_type: 'code'
         }
       },
-      // we expect a response providing {access_token: 'abcd'}
+      // Zapier expects a response providing {access_token: 'abcd'}
       // "getAccessToken" could also be a function returning an object
       getAccessToken: {
         method: 'POST',
@@ -393,7 +393,7 @@ above would result in an app with a New Movie Trigger and an Add Movie Write.
 
 Triggers, Searches, and Writes are the way an app defines what it is able to do. Triggers read
 data into Zapier (i.e. watch for new movies). Searches locate individual records (find movie by title). Writes create
-new records in your system (i.e. add a movie to the catalogue).
+new records in your system (add a movie to the catalogue).
 
 The definition for each of these follows the same structure. Here is an example of a trigger:
 
