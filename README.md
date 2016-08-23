@@ -121,7 +121,7 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 
-> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier deploy` (including `zapier watch`). Likewise, pushing one version will not impact other versions - they are completely isolated.
+> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier promote` (including `zapier watch`). Likewise, deploying one version will not impact other versions - they are completely isolated.
 
 ### App Definition
 
