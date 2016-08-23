@@ -400,8 +400,8 @@ The definition for each of these follows the same structure. Here is an example 
 ```javascript
 const App = {
   //...
-  triggers: [
-    {
+  triggers: {
+    new_movie: {
       // `key` uniquely identifies the trigger to the Zapier backend
       key: 'new_movie',
       // `noun` is the user-friendly word that is used to refer to the resource this trigger relates to
@@ -419,7 +419,7 @@ const App = {
     {
       //... Another trigger
     }
-  ]
+  }
 };
 ```
 
@@ -564,10 +564,9 @@ Shorthand requests and manual `z.request()` calls support the following HTTP opt
 * body: request body, can be a string, buffer, or readable stream.
 * redirect: set to `'manual'`` to extract redirect headers, `'error'` to reject redirect, default is `'follow'`.
 * follow: maximum redirect count, set to `0`` to not follow redirects. default is `20`.
-* compress: support gzip/deflate content encoding. St to `false` to disable. Default is `true`.
-size'
+* compress: support gzip/deflate content encoding. Set to `false` to disable. Default is `true`.
 * agent: Nodejs `http.Agent` instance, allows custom proxy, certificate etc. Default is `null`.
-* timeout: request / response timeout in ms. Set to `0` to disable (os limit still applies), timeout reset on redirect. Default is `0` (disabled).
+* timeout: request / response timeout in ms. Set to `0` to disable (OS limit still applies), timeout reset on redirect. Default is `0` (disabled).
 * size: maximum response body size in bytes. Set to `0`` to disable. Defalut is `0` (disabled).
 
 ### HTTP Response Object
