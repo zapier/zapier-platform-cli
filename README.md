@@ -304,6 +304,52 @@ TODO.
 
 ## Making HTTP Requests
 
+There are two primary ways to make HTTP requests in the Zapier platform:
+
+1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple/repetitive requests.
+1. **Manual HTTP Requests** - this is much less "magic", you use `z.request()` to make the requests and control the response.
+
+There are also a few helper constructs you can use to reduce boilerplate:
+
+1. `requestTemplate` which is an shorthand HTTP request that will be merged with every request.
+2. `beforeRequest` middleware which is an array of functions to mutate a request before it is sent.
+2. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
+
+
+### Shorthand HTTP Requests
+
+TODO: introductory.
+
+This features:
+
+1. Lazy `{{curly}}` replacement.
+2. Smart content type serialization.
+3. Automatic non-2xx error raising.
+
+```javascript
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: {
+          method: 'GET'
+          url: 'http://{{bundle.authData.subdomain}}.example.com/api/v2/records.json',
+          params: {
+            sort_by: 'id',
+            sort_order: 'DESC'
+          }
+        }
+      }
+    }
+  }
+};
+```
+
+### Manual HTTP Requests
+
 To make a manual HTTP request, use the `request` method of the `z` object:
 
 ```javascript
@@ -324,7 +370,7 @@ const App = {
           return z.request('http://example.com/api/v2/records.json', customHttpOptions)
             .then(response => {
               if (response.status !== 200) {
-                throw new z.HaltedError(`Unexpected status code ${response.status}`);
+                throw new Error(`Unexpected status code ${response.status}`);
               }
               const movies = JSON.parse(response.content);
               return movies;
@@ -337,6 +383,8 @@ const App = {
 ```
 
 ### Using standard HTTP middleware
+
+TODO: standard HTTP middleware is not yet a thing. let's not document stuff that doesn't exist yet. put it on the wishlist.
 
 If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
 
@@ -352,6 +400,7 @@ const App = {
    }
   ],
   afterRequest: [
+    // TODO: these are real
     middlewares.checkStatusCode,
     middlewares.parseJSON
   ]
