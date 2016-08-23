@@ -504,12 +504,12 @@ $ zapier collaborate user@example.com --remove
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Describes the current app.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier describe</code></p><p>  Prints a human readable enumeration of your app&apos;s triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.</p><blockquote>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier describe</code></p><p>  Prints a human readable enumeration of your app&apos;s triggers, searches and actions as seen by our system. Useful to understand how your resources convert and relate to different actions.</p><blockquote>
 <p>These are the same actions we&apos;d display in our editor!</p>
 </blockquote><ul>
 <li><code>Noun</code> -- your action&apos;s noun</li>
 <li><code>Label</code> -- your action&apos;s label</li>
-<li><code>Model</code> -- the model (if any) this action is tied to</li>
+<li><code>Resource</code> -- the resource (if any) this action is tied to</li>
 <li><code>Available Methods</code> -- testable methods for this action</li>
 </ul><p><strong>Arguments</strong></p><ul>
 <li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
@@ -523,11 +523,11 @@ $ zapier collaborate user@example.com --remove
 <span class="hljs-comment"># </span>
 <span class="hljs-comment"># Triggers</span>
 <span class="hljs-comment"># </span>
-<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
-<span class="hljs-comment"># &#x2502; key         &#x2502; noun     &#x2502; display.label &#x2502; operation.model &#x2502; operation.perform &#x2502;</span>
-<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
-<span class="hljs-comment"># &#x2502; hello_world &#x2502; Greeting &#x2502; New Greeting  &#x2502; n/a             &#x2502; $func$2$f$        &#x2502;</span>
-<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; key         &#x2502; noun     &#x2502; display.label &#x2502; operation.resource &#x2502; operation.perform &#x2502;</span>
+<span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
+<span class="hljs-comment"># &#x2502; hello_world &#x2502; Greeting &#x2502; New Greeting  &#x2502; n/a                &#x2502; $func$2$f$        &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment"># Searches</span>
 <span class="hljs-comment"># </span>
@@ -621,7 +621,7 @@ $ zapier <span class="hljs-built_in">help</span>
 <span class="hljs-comment"># &#x2502; Command     &#x2502; Example                               &#x2502; Help                                                                       &#x2502;</span>
 <span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
 <span class="hljs-comment"># &#x2502; apps        &#x2502; zapier apps                           &#x2502; Lists all the apps you can access.                                         &#x2502;</span>
-<span class="hljs-comment"># &#x2502; auth        &#x2502; zapier auth                           &#x2502; Configure your `~/.zapierrc` with a deploy key.                            &#x2502;</span>
+<span class="hljs-comment"># &#x2502; auth        &#x2502; zapier auth                           &#x2502; Configure your `~/.zapierrc` with a deploy key.                          &#x2502;</span>
 <span class="hljs-comment"># &#x2502; build       &#x2502; zapier build                          &#x2502; Builds a deployable zip from the current directory.                        &#x2502;</span>
 <span class="hljs-comment"># &#x2502; collaborate &#x2502; zapier collaborate [user@example.com] &#x2502; Manage the collaborators on your project. Can optionally --remove.         &#x2502;</span>
 <span class="hljs-comment"># &#x2502; deploy      &#x2502; zapier deploy                         &#x2502; Build and upload a new version of the current app - does not promote.      &#x2502;</span>
@@ -637,8 +637,8 @@ $ zapier <span class="hljs-built_in">help</span>
 <span class="hljs-comment"># &#x2502; migrate     &#x2502; zapier migrate 1.0.0 1.0.1 [10%]      &#x2502; Migrate users from one version to another.                                 &#x2502;</span>
 <span class="hljs-comment"># &#x2502; promote     &#x2502; zapier promote 1.0.0                  &#x2502; Promotes a specific version to production rotation.                        &#x2502;</span>
 <span class="hljs-comment"># &#x2502; register    &#x2502; zapier register &quot;Example&quot;             &#x2502; Registers a new app in your account.                                       &#x2502;</span>
-<span class="hljs-comment"># &#x2502; scaffold    &#x2502; zapier scaffold model &quot;Contact&quot;       &#x2502; Adds a sample model, trigger, action or search to your app.                &#x2502;</span>
-<span class="hljs-comment"># &#x2502; test        &#x2502; zapier test                           &#x2502; Tests your app via `npm test`.                                             &#x2502;</span>
+<span class="hljs-comment"># &#x2502; scaffold    &#x2502; zapier scaffold resource &quot;Contact&quot;    &#x2502; Adds a sample resource, trigger, action or search to your app.             &#x2502;</span>
+<span class="hljs-comment"># &#x2502; test        &#x2502; zapier test                           &#x2502; Tests your app via `npm test`.                                           &#x2502;</span>
 <span class="hljs-comment"># &#x2502; upload      &#x2502; zapier upload                         &#x2502; Upload the last build as a version.                                        &#x2502;</span>
 <span class="hljs-comment"># &#x2502; validate    &#x2502; zapier validate                       &#x2502; Validates the current project.                                             &#x2502;</span>
 <span class="hljs-comment"># &#x2502; versions    &#x2502; zapier versions                       &#x2502; Lists all the versions of the current app.                                 &#x2502;</span>
@@ -1003,27 +1003,27 @@ $ zapier logs --type=http --detailed --format=plain
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Adds a sample model, trigger, action or search to your app.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier scaffold {model|trigger|search|write} &quot;Name&quot;</code></p><p>  The scaffold command does two general things:</p><ul>
-<li>Creates a new destination file like <code>models/contact.js</code></li>
+<p>Adds a sample resource, trigger, action or search to your app.</p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier scaffold {resource|trigger|search|write} &quot;Name&quot;</code></p><p>  The scaffold command does two general things:</p><ul>
+<li>Creates a new destination file like <code>resources/contact.js</code></li>
 <li>(Attempts to) import and register it inside your entry <code>index.js</code></li>
 </ul><p>You can mix and match several options to customize the created scaffold for your project.</p><blockquote>
 <p>Note, we may fail to rewrite your <code>index.js</code> so you may need to handle the require and registration yourself.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>type [{index,oauth2,model,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
+<li><code>type [{index,oauth2,resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
 <li><code>name [&quot;Some Name&quot;]</code> -- <strong>required</strong>, the name of the new thing to create</li>
 <li><code>--dest={type}s/{name}</code> -- <em>optional</em>, sets the new file&apos;s path, default is <code>{type}s/{name}</code></li>
 <li><code>--entry=index.js</code> -- <em>optional</em>, where to import the new file, default is <code>index.js</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span>
-$ zapier scaffold model <span class="hljs-string">&quot;Contact&quot;</span> --entry=index.js
-$ zapier scaffold model <span class="hljs-string">&quot;Contag Tag&quot;</span> --dest=models/tag
-$ zapier scaffold model <span class="hljs-string">&quot;Tag&quot;</span> --entry=index.js --dest=models/tag
-<span class="hljs-comment"># Adding model scaffold to your project.</span>
+      <pre><code class="lang-bash">$ zapier scaffold resource <span class="hljs-string">&quot;Contact&quot;</span>
+$ zapier scaffold resource <span class="hljs-string">&quot;Contact&quot;</span> --entry=index.js
+$ zapier scaffold resource <span class="hljs-string">&quot;Contag Tag&quot;</span> --dest=resources/tag
+$ zapier scaffold resource <span class="hljs-string">&quot;Tag&quot;</span> --entry=index.js --dest=resources/tag
+<span class="hljs-comment"># Adding resource scaffold to your project.</span>
 <span class="hljs-comment"># </span>
-<span class="hljs-comment">#   Writing new models/tag.js - done!</span>
+<span class="hljs-comment">#   Writing new resources/tag.js - done!</span>
 <span class="hljs-comment">#   Rewriting your index.js - done!</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment"># Finished! We did the best we could, you might gut check your files though.</span>
@@ -1197,7 +1197,7 @@ $ zapier validate
 <span class="hljs-comment"># Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Reloading for index.js - done!</span>
-<span class="hljs-comment">#   Reloading for models/form.js - done!</span>
+<span class="hljs-comment">#   Reloading for resources/form.js - done!</span>
 <span class="hljs-comment">#   Reloading for index.js - done!</span>
 </code></pre>
     </div>

@@ -731,7 +731,7 @@ read, and search operations on that resource.</p>
       <p>The quickest way to create a resource is with the <code>zapier scaffold</code> command:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">zapier scaffold model <span class="hljs-string">&quot;Movie&quot;</span>
+      <pre><code class="lang-bash">zapier scaffold resource <span class="hljs-string">&quot;Movie&quot;</span>
 </code></pre>
     </div>
   </div>
@@ -758,7 +758,7 @@ read, and search operations on that resource.</p>
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>A resource has a few basic properties. The first is the <code>key</code>, which allows Zapier to identify the resource on our backend.
 The second is the <code>noun</code>, the user-friendly name of the resource that is presented to users throughout the Zapier UI.</p><p>After those, there is a set of optional properties that tell Zapier what methods can be performed on the resource.
-The complete list of available methods can be found in the <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema">Resource Schema Docs</a>.
+The complete list of available methods can be found in the <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema">Resource Schema Docs</a>.
 For now, let&apos;s focus on two:</p><ul>
 <li><code>list</code> - Tells Zapier how to fetch a set of this resource. This becomes a Trigger in the Zapier Editor.</li>
 <li><code>create</code> - Tells Zapier how to create a new instance of the resource. This becomes an Action in the Zapier Editor.</li>
@@ -785,7 +785,7 @@ For now, let&apos;s focus on two:</p><ul>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The method is made up of two properties, a <code>display</code> and an <code>operation</code>. The <code>display</code> property (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema">schema</a>) holds the info needed to present the method as an available Trigger in the Zapier Editor. The <code>operation</code> (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema">schema</a>) provides the implementation to make the API call.</p><p>Adding a create method looks very similar.</p>
+      <p>The method is made up of two properties, a <code>display</code> and an <code>operation</code>. The <code>display</code> property (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema">schema</a>) holds the info needed to present the method as an available Trigger in the Zapier Editor. The <code>operation</code> (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema">schema</a>) provides the implementation to make the API call.</p><p>Adding a create method looks very similar.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Movie = {

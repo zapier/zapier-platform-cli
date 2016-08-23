@@ -212,13 +212,13 @@ $ zapier deprecate 1.0.0 2017-01-20
 
   **Usage:** `zapier describe`
 
-  Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
+  Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your resources convert and relate to different actions.
 
 > These are the same actions we'd display in our editor!
 
 * `Noun` -- your action's noun
 * `Label` -- your action's label
-* `Model` -- the model (if any) this action is tied to
+* `Resource` -- the resource (if any) this action is tied to
 * `Available Methods` -- testable methods for this action
 
 **Arguments**
@@ -235,11 +235,11 @@ $ zapier describe
 # 
 # Triggers
 # 
-# ┌─────────────┬──────────┬───────────────┬─────────────────┬───────────────────┐
-# │ key         │ noun     │ display.label │ operation.model │ operation.perform │
-# ├─────────────┼──────────┼───────────────┼─────────────────┼───────────────────┤
-# │ hello_world │ Greeting │ New Greeting  │ n/a             │ $func$2$f$        │
-# └─────────────┴──────────┴───────────────┴─────────────────┴───────────────────┘
+# ┌─────────────┬──────────┬───────────────┬────────────────────┬───────────────────┐
+# │ key         │ noun     │ display.label │ operation.resource │ operation.perform │
+# ├─────────────┼──────────┼───────────────┼────────────────────┼───────────────────┤
+# │ hello_world │ Greeting │ New Greeting  │ n/a                │ $func$2$f$        │
+# └─────────────┴──────────┴───────────────┴────────────────────┴───────────────────┘
 # 
 # Searches
 # 
@@ -325,7 +325,7 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ auth        │ zapier auth                           │ Configure your `~/.zapierrc` with a deploy key.                            │
+# │ auth        │ zapier auth                           │ Configure your `~/.zapierrc` with a deploy key.                          │
 # │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
 # │ deploy      │ zapier deploy                         │ Build and upload a new version of the current app - does not promote.      │
@@ -341,8 +341,8 @@ $ zapier help
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
 # │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to production rotation.                        │
 # │ register    │ zapier register "Example"             │ Registers a new app in your account.                                       │
-# │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
-# │ test        │ zapier test                           │ Tests your app via `npm test`.                                             │
+# │ scaffold    │ zapier scaffold resource "Contact"    │ Adds a sample resource, trigger, action or search to your app.             │
+# │ test        │ zapier test                           │ Tests your app via `npm test`.                                           │
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
@@ -666,13 +666,13 @@ $ zapier register "Example"
 
 ## scaffold
 
-  > Adds a sample model, trigger, action or search to your app.
+  > Adds a sample resource, trigger, action or search to your app.
 
-  **Usage:** `zapier scaffold {model|trigger|search|write} "Name"`
+  **Usage:** `zapier scaffold {resource|trigger|search|write} "Name"`
 
   The scaffold command does two general things:
 
-* Creates a new destination file like `models/contact.js`
+* Creates a new destination file like `resources/contact.js`
 * (Attempts to) import and register it inside your entry `index.js`
 
 You can mix and match several options to customize the created scaffold for your project.
@@ -681,19 +681,19 @@ You can mix and match several options to customize the created scaffold for your
 
 **Arguments**
 
-* `type [{index,oauth2,model,trigger,search,write}]` -- **required**, what type of thing are you creating
+* `type [{index,oauth2,resource,trigger,search,write}]` -- **required**, what type of thing are you creating
 * `name ["Some Name"]` -- **required**, the name of the new thing to create
 * `--dest={type}s/{name}` -- _optional_, sets the new file's path, default is `{type}s/{name}`
 * `--entry=index.js` -- _optional_, where to import the new file, default is `index.js`
 
 ```bash
-$ zapier scaffold model "Contact"
-$ zapier scaffold model "Contact" --entry=index.js
-$ zapier scaffold model "Contag Tag" --dest=models/tag
-$ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
-# Adding model scaffold to your project.
+$ zapier scaffold resource "Contact"
+$ zapier scaffold resource "Contact" --entry=index.js
+$ zapier scaffold resource "Contag Tag" --dest=resources/tag
+$ zapier scaffold resource "Tag" --entry=index.js --dest=resources/tag
+# Adding resource scaffold to your project.
 # 
-#   Writing new models/tag.js - done!
+#   Writing new resources/tag.js - done!
 #   Rewriting your index.js - done!
 # 
 # Finished! We did the best we could, you might gut check your files though.
@@ -845,6 +845,6 @@ $ zapier watch --port=9090
 # Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.
 #
 #   Reloading for index.js - done!
-#   Reloading for models/form.js - done!
+#   Reloading for resources/form.js - done!
 #   Reloading for index.js - done!
 ```
