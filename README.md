@@ -350,6 +350,8 @@ const App = {
 
 ### Manual HTTP Requests
 
+TODO: Remind this doesn't do any of shorthand magic stuff (no curlies, smart content type or non-2xx handling).
+
 To make a manual HTTP request, use the `request` method of the `z` object:
 
 ```javascript
