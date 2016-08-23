@@ -325,7 +325,7 @@ zapier scaffold model "Movie"
 This will generate the resource file and add the necessary statements to the `index.js` file to import it.
 
 
-### Anatomy of a Resource
+### Resource Definition
 
 A resource has a few basic properties. The first is the `key`, which allows Zapier to identify the resource on our backend.
 The second is the `noun`, the user-friendly name of the resource that is presented to users throughout the Zapier UI.
@@ -607,7 +607,7 @@ const App = {
 };
 ```
 
-A `beforeRequest` middleware function takes a request object and returns a (possibly modified) request object. A `afterRequest` object takes a response object and returns a (possibly modified) response object. Middleware functions are executed in the order specified in `beforeRequest` and `afterRequest`. Each subsequent middleware receives the request or response returned by the previous middleware.
+A `beforeRequest` middleware function takes a request object and returns a (possibly modified) request object. An `afterRequest` object takes a response object and returns a (possibly modified) response object. Middleware functions are executed in the order specified in `beforeRequest` and `afterRequest`. Each subsequent middleware receives the request or response returned by the previous middleware.
 
 With these middlewares in place, the GET request above would be simpler:
 
@@ -632,6 +632,7 @@ const App = {
 };
 ```
 
+
 ## Environment
 
-TODO.
+TODO
