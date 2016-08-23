@@ -361,7 +361,7 @@ const App = {
 
 With that in place, the above request would be simpler:
 
-```
+```javascript
 const App = {
   // ...
   triggers: {
@@ -372,6 +372,7 @@ const App = {
         perform: (z, bundle) => {
           return z.request('http://example.com/api/v2/records.json')
             .then(response => {
+              // TODO: response.json isn't real
               const movies = response.json;
               return movies;
             });
