@@ -406,10 +406,12 @@ const App = {
       key: 'new_movie',
       // `noun` is the user-friendly word that is used to refer to the resource this trigger relates to
       noun: 'Movie',
+      // `display` controls the presentation in the Zapier Editor
       display: {
         label: 'New Movie',
         helpText: 'Triggers when a new movie is released.'
       }
+      // `operation` implements the API call used to fetch the data
       operation: {
         url: 'http://example.com/movies',
       }
@@ -420,6 +422,9 @@ const App = {
   ]
 };
 ```
+
+You can find more details on the definition for each by looking at the [Trigger Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#triggerschema),
+[Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Write Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#writeschema).
 
 
 ## Making HTTP Requests
