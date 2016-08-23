@@ -431,7 +431,7 @@ You can find more details on the definition for each by looking at the [Trigger 
 
 There are two primary ways to make HTTP requests in the Zapier platform:
 
-1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple/repetitive requests.
+1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple requests.
 1. **Manual HTTP Requests** - this is much less "magic", you use `z.request()` to make the requests and control the response.
 
 There are also a few helper constructs you can use to reduce boilerplate:
@@ -443,12 +443,12 @@ There are also a few helper constructs you can use to reduce boilerplate:
 
 ### Shorthand HTTP Requests
 
-TODO: introductory.
+For simple HTTP requests that do not require special pre or post processing, you can specify the HTTP options as an object literal in your app definition.
 
 This features:
 
 1. Lazy `{{curly}}` replacement.
-2. Smart content type serialization.
+2. JSON de-serialization.
 3. Automatic non-2xx error raising.
 
 ```javascript
@@ -473,9 +473,13 @@ const App = {
 };
 ```
 
+In the url above, `{{bundle.authData.subdomain}}` is automatically replaced with the live value from the bundle. If the call returns a non 2xx return code, an error is automatically raised. The response body is automatically parsed as JSON and returned.
+
+An error will be raised if the response is not valid JSON, so _do not use shorthand HTTP requests with non-JSON responses_.
+
 ### Manual HTTP Requests
 
-TODO: Remind this doesn't do any of shorthand magic stuff (no curlies, smart content type or non-2xx handling).
+When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no `{{curly}}` replacement, no status code checking, no automatic JSON parsing. Use this method when you need more control.
 
 To make a manual HTTP request, use the `request` method of the `z` object:
 
@@ -490,16 +494,19 @@ const App = {
         perform: (z, bundle) => {
           const customHttpOptions = {
             headers: {
-              'X-My-Custom-Header': 'xxx'
+              'my-header': 'from zapier'
             }
           };
 
-          return z.request('http://example.com/api/v2/records.json', customHttpOptions)
+          return z.request('http://example.com/api/v2/movies.json', customHttpOptions)
             .then(response => {
-              if (response.status !== 200) {
+              if (response.status >= 300) {
                 throw new Error(`Unexpected status code ${response.status}`);
               }
+
               const movies = JSON.parse(response.content);
+              // do any custom processing of movies here...
+
               return movies;
             });
         }
@@ -509,9 +516,71 @@ const App = {
 };
 ```
 
-### Using standard HTTP middleware
+#### POST and PUT Requests:
 
-TODO: standard HTTP middleware is not yet a thing. let's not document stuff that doesn't exist yet. put it on the wishlist.
+To POST or PUT data to your API you can do this:
+
+```javascript
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: (z, bundle) => {
+          const movie = {
+            title: 'The Wizard of Oz',
+            director: 'Victor Fleming'
+          };
+
+          const options = {
+            method: 'POST',
+            body: JSON.stringify(movie)
+          };
+
+          return z.request('http://example.com/api/v2/movies.json', options)
+            .then(response => {
+              if (response.status !== 201) {
+                throw new Error(`Unexpected status code ${response.status}`);
+              }
+            });
+        }
+      }
+    }
+  }
+};
+```
+
+Note that you need to call `JSON.stringify()` before setting the `body`.
+
+### HTTP Request Options
+
+Shorthand requests and manual `z.request()` calls support the following HTTP options:
+
+* method: HTTP method, default is `'GET'`.
+* headers: request headers object, format `{'header-key': 'header-value'}`.
+* params: URL query params object, format `{'query-key': 'query-value'}`.
+* body: request body, can be a string, buffer, or readable stream.
+* redirect: set to `'manual'`` to extract redirect headers, `'error'` to reject redirect, default is `'follow'`.
+* follow: maximum redirect count, set to `0`` to not follow redirects. default is `20`.
+* compress: support gzip/deflate content encoding. St to `false` to disable. Default is `true`.
+size'
+* agent: Nodejs `http.Agent` instance, allows custom proxy, certificate etc. Default is `null`.
+* timeout: request / response timeout in ms. Set to `0` to disable (os limit still applies), timeout reset on redirect. Default is `0` (disabled).
+* size: maximum response body size in bytes. Set to `0`` to disable. Defalut is `0` (disabled).
+
+### HTTP Response Object
+
+The response object returned by `z.request()` supports the following fields and methods:
+
+* status: The response status code, ie `200`, `404`, etc.
+* content: The raw response body. For JSON you need to call `JSON.parse(response.content)`, etc.
+* request: The original request options object (see above).
+* headers: Response headers object. The header keys are all lower case, for example `response.headers['my-header']`
+* getHeader: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
+
+### Using HTTP middleware
 
 If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
 
@@ -519,23 +588,29 @@ If you need to process all HTTP requests in a certain way, you may be able to us
 const App = {
   // ...
   beforeRequest: [
-    // TODO: this isn't real
-    middlewares.applyRequestTemplate({
-      headers: {
-        'X-My-Custom-Header': 'xxx'
-      }
-   }
+    (request) => {
+      request.headers['my-header'] = 'from zapier';
+      return request;
+    }
   ],
   afterRequest: [
-    // TODO: these are real
-    middlewares.checkStatusCode,
-    middlewares.parseJSON
+    (response) => {
+      if (response.status !== 200) {
+        throw new Error(`Unexpected status code ${response.status}`);
+      }
+    },
+    (response) => {
+      response.json = JSON.parse(response.content);
+      return response;
+    }
   ]
   // ...
 };
 ```
 
-With that in place, the above request would be simpler:
+A `beforeRequest` middleware function takes a request object and returns a (possibly modified) request object. A `afterRequest` object takes a response object and returns a (possibly modified) response object. Middleware functions are executed in the order specified in `beforeRequest` and `afterRequest`. Each subsequent middleware receives the request or response returned by the previous middleware.
+
+With these middlewares in place, the GET request above would be simpler:
 
 ```javascript
 const App = {
@@ -548,7 +623,6 @@ const App = {
         perform: (z, bundle) => {
           return z.request('http://example.com/api/v2/records.json')
             .then(response => {
-              // TODO: response.json isn't real
               const movies = response.json;
               return movies;
             });
@@ -558,10 +632,6 @@ const App = {
   }
 };
 ```
-
-### Custom HTTP Middleware
-
-TODO
 
 ## Environment
 
