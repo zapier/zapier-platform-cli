@@ -7,7 +7,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 > The Zapier CLI and Platform requires Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
-First up is installing the CLI and settting up your auth to create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
+First up is installing the CLI and setting up your auth to create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
@@ -182,7 +182,7 @@ const App = {
 
 ### Custom
 
-This is what most "API Key" driven apps should default to using. Uou'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
+This is what most "API Key" driven apps should default to using. You'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
 
 ```javascript
 const App = {
@@ -369,7 +369,7 @@ const Movie = {
   create: {
     display: {
       label: 'Add Movie',
-      description: 'Adds a new movie to the catalogue.'
+      description: 'Adds a new movie to the catalog.'
     },
     operation: {
       perform: {
@@ -393,7 +393,7 @@ above would result in an app with a New Movie Trigger and an Add Movie Write.
 
 Triggers, Searches, and Writes are the way an app defines what it is able to do. Triggers read
 data into Zapier (i.e. watch for new movies). Searches locate individual records (find movie by title). Writes create
-new records in your system (add a movie to the catalogue).
+new records in your system (add a movie to the catalog).
 
 The definition for each of these follows the same structure. Here is an example of a trigger:
 
@@ -554,31 +554,6 @@ const App = {
 
 Note that you need to call `JSON.stringify()` before setting the `body`.
 
-### HTTP Request Options
-
-Shorthand requests and manual `z.request()` calls support the following HTTP options:
-
-* method: HTTP method, default is `'GET'`.
-* headers: request headers object, format `{'header-key': 'header-value'}`.
-* params: URL query params object, format `{'query-key': 'query-value'}`.
-* body: request body, can be a string, buffer, or readable stream.
-* redirect: set to `'manual'`` to extract redirect headers, `'error'` to reject redirect, default is `'follow'`.
-* follow: maximum redirect count, set to `0`` to not follow redirects. default is `20`.
-* compress: support gzip/deflate content encoding. Set to `false` to disable. Default is `true`.
-* agent: Nodejs `http.Agent` instance, allows custom proxy, certificate etc. Default is `null`.
-* timeout: request / response timeout in ms. Set to `0` to disable (OS limit still applies), timeout reset on redirect. Default is `0` (disabled).
-* size: maximum response body size in bytes. Set to `0`` to disable. Defalut is `0` (disabled).
-
-### HTTP Response Object
-
-The response object returned by `z.request()` supports the following fields and methods:
-
-* status: The response status code, ie `200`, `404`, etc.
-* content: The raw response body. For JSON you need to call `JSON.parse(response.content)`, etc.
-* request: The original request options object (see above).
-* headers: Response headers object. The header keys are all lower case, for example `response.headers['my-header']`
-* getHeader: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
-
 ### Using HTTP middleware
 
 If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
@@ -604,34 +579,36 @@ const App = {
     }
   ]
   // ...
-};
 ```
 
-A `beforeRequest` middleware function takes a request object and returns a (possibly modified) request object. An `afterRequest` object takes a response object and returns a (possibly modified) response object. Middleware functions are executed in the order specified in `beforeRequest` and `afterRequest`. Each subsequent middleware receives the request or response returned by the previous middleware.
+A `beforeRequest` middleware function takes a request options object, and returns a (possibly mutated) request object. An `afterResponse` middleware function takes a response object, and returns a (possibly mutated) response object. Middleware functions are executed in the order specified in the app definition, and each subsequent middleware receives the request or response object returned by the previous middleware.
 
-With these middlewares in place, the GET request above would be simpler:
+Middleware functions can be asynchronous - just return a promise from the middleware function.
 
-```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: (z, bundle) => {
-          return z.request('http://example.com/api/v2/records.json')
-            .then(response => {
-              const movies = response.json;
-              return movies;
-            });
-        }
-      }
-    }
-  }
-};
-```
+### HTTP Request Options
 
+Shorthand requests and manual `z.request()` calls support the following HTTP options:
+
+* `method`: HTTP method, default is `GET`.
+* `headers`: request headers object, format `{'header-key': 'header-value'}`.
+* `params`: URL query params object, format `{'query-key': 'query-value'}`.
+* `body`: request body, can be a string, buffer, or readable stream.
+* `redirect`: set to `manual` to extract redirect headers, `error` to reject redirect, default is `follow`.
+* `follow`: maximum redirect count, set to `0` to not follow redirects. default is `20`.
+* `compress`: support gzip/deflate content encoding. Set to `false` to disable. Default is `true`.
+* `agent`: Node.js `http.Agent` instance, allows custom proxy, certificate etc. Default is `null`.
+* `timeout`: request / response timeout in ms. Set to `0` to disable (OS limit still applies), timeout reset on `redirect`. Default is `0` (disabled).
+* `size`: maximum response body size in bytes. Set to `0`` to disable. Defalut is `0` (disabled).
+
+### HTTP Response Object
+
+The response object returned by `z.request()` supports the following fields and methods:
+
+* `status`: The response status code, i.e. `200`, `404`, etc.
+* `content`: The raw response body. For JSON you need to call `JSON.parse(response.content)`.
+* `request`: The original request options object (see above).
+* `headers`: Response headers object. The header keys are all lower case.
+* `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 
 ## Environment
 
