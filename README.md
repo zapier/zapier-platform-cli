@@ -235,8 +235,8 @@ Zapier will handle most of the logic around the 3 step OAuth flow, but you'll be
 
 ```bash
 # setting the environment variables on Zapier.com
-$ zapier env 1.0.0 CLIENT_ID=1234
-$ zapier env 1.0.0 CLIENT_SECRET=abcd
+$ zapier env 1.0.0 CLIENT_ID 1234
+$ zapier env 1.0.0 CLIENT_SECRET abcd
 
 # and when running tests locally, don't forget to define them!
 $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
@@ -635,4 +635,82 @@ const App = {
 
 ## Environment
 
-TODO
+Apps can define environment varialbes that are available when the app's code executes. They work just like environment
+variables defined on the command line. They are useful when you have data like an OAuth client ID and secret that you
+don't want to commit to source control. Environment variables can also be used as a quick way to toggle between a
+a staging and production environment during app development.
+
+It is important to note that **variables are defined on a per-version basis!** When you deploy a new version, the
+existing variables from the previous version are copied, so you don't have to manually add them. However, edits
+made to one version's environment will not affect the other versions.
+
+### Defining Environment Variables
+
+To define an environment variable, use the `env` command:
+
+```bash
+# Will set the environment variable on Zapier.com
+zapier env 1.0.0 MY_SECRET_VALUE 1234
+```
+
+You will likely also want to set the value locally for testing.
+
+```bash
+export MY_SECRET_VALUE=1234
+```
+
+### Accessing Environment Variables
+
+To view existing environment variables, use the `env` command.
+
+```bash
+# Will print a table listing the variables for this version
+zapier env 1.0.0
+```
+
+Within your app, you can access the environment in two ways. First, is through the standard Node.js `process.env`
+
+```javascript
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: (z, bundle) => {
+          var httpOptions = {
+            headers: {
+              x-my-header: process.env.MY_SECRET_VALUE
+            }
+          };
+          return z.request('http://example.com/api/v2/records.json', httpOptions);
+        }
+      }
+    }
+  }
+};
+```
+
+The second way to access the environment is through the bundle. This is most useful when combined with the short-hand
+syntax for HTTP requests.
+
+```javascript
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: {
+          url: 'http://example.com/api/v2/records.json'
+          headers: {
+            x-my-header: '{{bundle.environment.MY_SECRET_VALUE}}'
+          }
+        }
+      }
+    }
+  }
+};
+```
