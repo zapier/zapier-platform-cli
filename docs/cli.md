@@ -257,16 +257,16 @@ $ zapier describe
 
   > Read and write environment variables.
 
-  **Usage:** `zapier env 1.0.0 API_KEY 1234567890`
+  **Usage:** `zapier env 1.0.0 CLIENT_SECRET 12345`
 
-  Manage the environment of your app so that `process.env` can access the keys, making it easy to match a local environment with working environment via `API_KEY=1234567890 npm test`.
+  Manage the environment of your app so that `process.env` can access the keys, making it easy to match a local environment with working environment via `CLIENT_SECRET=12345 npm test`.
 
 **Arguments**
 
 * _none_ -- print a table of all environment variables, regardless of app version
 * `version [1.0.0]` -- **required**, the app version's environment to work on
-* `key [API_KEY]` -- _optional_, the uppercase key of the environment variable to set
-* `value [1234567890]` -- _optional_, the raw value to set to the key
+* `key [CLIENT_SECRET]` -- _optional_, the uppercase key of the environment variable to set
+* `value [12345]` -- _optional_, the raw value to set to the key
 * `--format={plain,json,raw,table,row}` -- _optional_, display format, default is `table`
 * `--help` -- _optional_, prints this help text
 * `--debug` -- _optional_, print debug API calls and tracebacks
@@ -278,15 +278,15 @@ $ zapier env 1.0.0
 # ┌─────────┬─────────┬────────────┐
 # │ Version │ Key     │ Value      │
 # ├─────────┼─────────┼────────────┤
-# │ 1.0.0   │ API_KEY │ 1234567890 │
+# │ 1.0.0   │ CLIENT_SECRET │ 12345 │
 # └─────────┴─────────┴────────────┘
 # 
-# Try setting an env with the `zapier env 1.0.0 API_KEY 1234567890` command.
+# Try setting an env with the `zapier env 1.0.0 CLIENT_SECRET 12345` command.
 
-$ zapier env 1.0.0 API_KEY 1234567890
-# Preparing to set environment API_KEY for your 1.0.0 "Example".
+$ zapier env 1.0.0 CLIENT_SECRET 12345
+# Preparing to set environment CLIENT_SECRET for your 1.0.0 "Example".
 # 
-#   Setting API_KEY to "1234567890" - done!
+#   Setting CLIENT_SECRET to "12345" - done!
 # 
 # Environment updated! Try viewing it with `zapier env 1.0.0`.
 ```
@@ -331,7 +331,7 @@ $ zapier help
 # │ deploy      │ zapier deploy                         │ Build and upload a new version of the current app - does not promote.      │
 # │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
-# │ env         │ zapier env 1.0.0 API_KEY 1234567890   │ Read and write environment variables.                                      │
+# │ env         │ zapier env 1.0.0 CLIENT_SECRET 12345  │ Read and write environment variables.                                      │
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
 # │ history     │ zapier history                        │ Prints all recent history for your app.                                    │
 # │ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
@@ -375,7 +375,7 @@ $ zapier history
 # │ What                     │ Message           │ Who              │ Timestamp           │
 # ├──────────────────────────┼───────────────────┼──────────────────┼─────────────────────┤
 # │ collaborator added       │ other@example.com │ user@example.com │ 2016-01-10T16:12:33 │
-# │ environment variable set │ API_KEY           │ user@example.com │ 2016-01-01T22:51:01 │
+# │ environment variable set │ CLIENT_SECRET     │ user@example.com │ 2016-01-01T22:51:01 │
 # │ version added            │ 1.2.52            │ user@example.com │ 2016-01-01T22:19:36 │
 # │ app created              │ initial creation  │ user@example.com │ 2016-01-01T22:19:28 │
 # └──────────────────────────┴───────────────────┴──────────────────┴─────────────────────┘
