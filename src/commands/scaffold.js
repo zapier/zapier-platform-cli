@@ -16,9 +16,9 @@ const scaffold = (context, type, name) => {
     LOWER_NOUN: name.toLowerCase()
   };
 
-  // what is the `models: {}` app definition point?
+  // what is the `resources: {}` app definition point?
   const typeMap = {
-    model: 'models',
+    resource: 'resources',
     trigger: 'triggers',
     search: 'searches',
     write: 'writes',
@@ -26,7 +26,7 @@ const scaffold = (context, type, name) => {
 
   // where will we write/required the new file?
   const destMap = {
-    model: `models/${templateContext.KEY}`,
+    resource: `resources/${templateContext.KEY}`,
     trigger: `triggers/${templateContext.KEY}`,
     search: `searches/${templateContext.KEY}`,
     write: `writes/${templateContext.KEY}`,
@@ -63,11 +63,11 @@ const scaffold = (context, type, name) => {
       // this is very dumb and will definitely break, it inserts lines of code
       // we should look at jscodeshift or friends to do this instead
 
-      // insert Model = require() line at top
+      // insert Resource = require() line at top
       const importerLine = `const ${templateContext.CAMEL} = require('./${dest}');`;
       lines.splice(0, 0, importerLine);
 
-      // insert '[Model.key]: Model,' after 'models:' line
+      // insert '[Resource.key]: Resource,' after 'resources:' line
       const injectAfter = `${typeMap[type]}: {`;
       const injectorLine = `[${templateContext.CAMEL}.key]: ${templateContext.CAMEL},`;
       const linesDefIndex = _.findIndex(lines, (line) => _.endsWith(line, injectAfter));
@@ -89,7 +89,7 @@ scaffold.argsSpec = [
   {name: 'type', help: 'what type of thing are you creating', required: true, choices: [
     'index',
     'oauth2',
-    'model',
+    'resource',
     'trigger',
     'search',
     'write'
@@ -100,13 +100,13 @@ scaffold.argOptsSpec = {
   dest: {help: 'sets the new file\'s path', default: '{type}s/{name}'},
   entry: {help: 'where to import the new file', default: 'index.js'},
 };
-scaffold.help = 'Adds a sample model, trigger, action or search to your app.';
-scaffold.usage = 'zapier scaffold {model|trigger|search|write} "Name"';
-scaffold.example = 'zapier scaffold model "Contact"';
+scaffold.help = 'Adds a sample resource, trigger, action or search to your app.';
+scaffold.usage = 'zapier scaffold {resource|trigger|search|write} "Name"';
+scaffold.example = 'zapier scaffold resource "Contact"';
 scaffold.docs = `\
 The scaffold command does two general things:
 
-* Creates a new destination file like \`models/contact.js\`
+* Creates a new destination file like \`resources/contact.js\`
 * (Attempts to) import and register it inside your entry \`index.js\`
 
 You can mix and match several options to customize the created scaffold for your project.
@@ -120,12 +120,12 @@ ${utils.argOptsFragment(scaffold.argOptsSpec)}
 
 ${'```'}bash
 $ ${scaffold.example}
-$ zapier scaffold model "Contact" --entry=index.js
-$ zapier scaffold model "Contag Tag" --dest=models/tag
-$ zapier scaffold model "Tag" --entry=index.js --dest=models/tag
-# Adding model scaffold to your project.
+$ zapier scaffold resource "Contact" --entry=index.js
+$ zapier scaffold resource "Contag Tag" --dest=resources/tag
+$ zapier scaffold resource "Tag" --entry=index.js --dest=resources/tag
+# Adding resource scaffold to your project.
 # 
-#   Writing new models/tag.js - done!
+#   Writing new resources/tag.js - done!
 #   Rewriting your index.js - done!
 # 
 # Finished! We did the best we could, you might gut check your files though.

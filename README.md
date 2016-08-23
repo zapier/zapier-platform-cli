@@ -319,7 +319,7 @@ const Movie = {
 The quickest way to create a resource is with the `zapier scaffold` command:
 
 ```bash
-zapier scaffold model "Movie"
+zapier scaffold resource "Movie"
 ```
 
 This will generate the resource file and add the necessary statements to the `index.js` file to import it.
@@ -331,7 +331,7 @@ A resource has a few basic properties. The first is the `key`, which allows Zapi
 The second is the `noun`, the user-friendly name of the resource that is presented to users throughout the Zapier UI.
 
 After those, there is a set of optional properties that tell Zapier what methods can be performed on the resource.
-The complete list of available methods can be found in the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema).
+The complete list of available methods can be found in the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema).
 For now, let's focus on two:
 
  * `list` - Tells Zapier how to fetch a set of this resource. This becomes a Trigger in the Zapier Editor.
@@ -356,7 +356,7 @@ const Movie = {
 }
 ```
 
-The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema)) provides the implementation to make the API call.
+The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema)) provides the implementation to make the API call.
 
 Adding a create method looks very similar.
 

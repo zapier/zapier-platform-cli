@@ -20,7 +20,7 @@ const describe = (context) => {
       // context.line(utils.prettyJSONstringify(definition));
       // TODO: auth and app title/description
 
-      // models.form.list.operation.perform
+      // resources.form.list.operation.perform
 
       const types = ['triggers', 'searches', 'writes'];
 
@@ -36,7 +36,7 @@ const describe = (context) => {
         const headers = [
           ['Noun', 'noun'],
           ['Label', 'display.label'],
-          ['Model', 'operation.model', colors.grey('n/a')],
+          ['Resource', 'operation.resource', colors.grey('n/a')],
           ['Available Methods', 'methods', colors.grey('n/a')],
         ];
         const ifEmpty = colors.grey(`Nothing found for ${type}, maybe try the \`zapier scaffold\` command?`);
@@ -51,13 +51,13 @@ describe.argOptsSpec = {};
 describe.help = 'Describes the current app.';
 describe.example = 'zapier describe';
 describe.docs = `\
-Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your models convert and relate to different actions.
+Prints a human readable enumeration of your app's triggers, searches and actions as seen by our system. Useful to understand how your resources convert and relate to different actions.
 
 > These are the same actions we'd display in our editor!
 
 * \`Noun\` -- your action's noun
 * \`Label\` -- your action's label
-* \`Model\` -- the model (if any) this action is tied to
+* \`Resource\` -- the resource (if any) this action is tied to
 * \`Available Methods\` -- testable methods for this action
 
 **Arguments**
@@ -72,11 +72,11 @@ $ zapier describe
 # 
 # Triggers
 # 
-# ┌─────────────┬──────────┬───────────────┬─────────────────┬───────────────────┐
-# │ key         │ noun     │ display.label │ operation.model │ operation.perform │
-# ├─────────────┼──────────┼───────────────┼─────────────────┼───────────────────┤
-# │ hello_world │ Greeting │ New Greeting  │ n/a             │ $func$2$f$        │
-# └─────────────┴──────────┴───────────────┴─────────────────┴───────────────────┘
+# ┌─────────────┬──────────┬───────────────┬────────────────────┬───────────────────┐
+# │ key         │ noun     │ display.label │ operation.resource │ operation.perform │
+# ├─────────────┼──────────┼───────────────┼────────────────────┼───────────────────┤
+# │ hello_world │ Greeting │ New Greeting  │ n/a                │ $func$2$f$        │
+# └─────────────┴──────────┴───────────────┴────────────────────┴───────────────────┘
 # 
 # Searches
 # 

@@ -41,7 +41,7 @@ const App = {
 
   ],
 
-  models: {
+  resources: {
 
   },
 
