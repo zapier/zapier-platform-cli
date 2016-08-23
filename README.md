@@ -105,14 +105,14 @@ In Zapier's Platform there are two primary resources you'll interact with via th
 * **App** - the base record that defines your App, named like "Joe's CRM". Most people have one of these.
 * **Version** - a distinct implementation of an App, named like "1.0.0". Most people have many of these.
 
-If you are wanting to manage your **App**, you'll be using these commands:
+If you'd like to manage your **App**, use these commands:
 
 * `zapier apps` - list the apps in Zapier you can administer
 * `zapier register "Name"` - creates a new app in Zapier
 * `zapier link` - lists and links a selected app in Zapier to your current folder
 * `zapier history` - print the history of your app
 
-If you are wanting to manage your **Version**, you'll be using these commands:
+If you'd like to manage your **Version**, use these commands:
 
 * `zapier versions` - list the versions for the current directory's app
 * `zapier deploy` - deploy the current version the of current directory's app & version (read from `package.json`)
@@ -175,7 +175,6 @@ const App = {
     }
     // you can provide additional fields, but we'll provide `username`/`password` automatically
   },
-  // ...
 };
 ```
 
@@ -190,7 +189,7 @@ const App = {
     type: 'custom',
     // "test" could also be a function
     test: {
-      url: 'https://{{authData.subdomain}}.example.com/api/accounts/me.json'
+      url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
     },
     fields: [
       {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'}
@@ -203,7 +202,6 @@ const App = {
       return request;
     }
   ]
-  // ...
 };
 ```
 
@@ -222,7 +220,6 @@ const App = {
     }
     // you can provide additional fields, but we'll provide `username`/`password` automatically
   },
-  // ...
 };
 ```
 
@@ -260,9 +257,9 @@ const App = {
         method: 'GET',
         url: 'https://example.com/api/oauth2/authorize',
         params: {
-          client_id: '{{environment.CLIENT_ID}}',
-          state: '{{inputData.state}}',
-          redirect_uri: '{{inputData.redirect_uri}}',
+          client_id: '{{bundle.environment.CLIENT_ID}}',
+          state: '{{bundle.inputData.state}}',
+          redirect_uri: '{{bundle.inputData.redirect_uri}}',
           response_type: 'code'
         }
       },
@@ -272,11 +269,11 @@ const App = {
         method: 'POST',
         url: 'https://example.com/api/v2/oauth2/token',
         body: {
-          code: '{{inputData.code}}',
-          client_id: '{{environment.CLIENT_ID}}',
-          client_secret: '{{environment.CLIENT_SECRET}}',
-          redirect_uri: '{{inputData.redirect_uri}}',
-          state: '{{inputData.state}}',
+          code: '{{bundle.inputData.code}}',
+          client_id: '{{bundle.environment.CLIENT_ID}}',
+          client_secret: '{{bundle.environment.CLIENT_SECRET}}',
+          redirect_uri: '{{bundle.inputData.redirect_uri}}',
+          state: '{{bundle.inputData.state}}',
           grant_type: 'authorization_code'
         },
         headers: {
@@ -291,7 +288,6 @@ const App = {
       return request;
     }
   ]
-  // ...
 };
 ```
 
@@ -310,54 +306,80 @@ TODO.
 
 To make a manual HTTP request, use the `request` method of the `z` object:
 
-```
-perform: (z, bundle) => {
-  const customHttpOptions = {
-    headers: {
-      'X-My-Custom-Header': 'xxx'
-    }
-  };
+```javascript
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: (z, bundle) => {
+          const customHttpOptions = {
+            headers: {
+              'X-My-Custom-Header': 'xxx'
+            }
+          };
 
-  return z.request('http://movies/favorites.json', customHttpOptions)
-    .then(response => {
-      if (response.status !== 200) {
-        throw new z.HaltedError(`Unexpected status code ${response.status}`);
+          return z.request('http://example.com/api/v2/records.json', customHttpOptions)
+            .then(response => {
+              if (response.status !== 200) {
+                throw new z.HaltedError(`Unexpected status code ${response.status}`);
+              }
+              const movies = JSON.parse(response.content);
+              return movies;
+            });
+        }
       }
-      const movies = JSON.parse(response.content);
-      return movies;
-    });
-}
+    }
+  }
+};
 ```
 
 ### Using standard HTTP middleware
 
 If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
 
-```
+```javascript
+const App = {
+  // ...
   beforeRequest: [
+    // TODO: this isn't real
     middlewares.applyRequestTemplate({
       headers: {
         'X-My-Custom-Header': 'xxx'
       }
    }
   ],
-
   afterRequest: [
     middlewares.checkStatusCode,
     middlewares.parseJSON
   ]
+  // ...
+};
 ```
 
 With that in place, the above request would be simpler:
 
 ```
-perform: (z, bundle) => {
-  return z.request('http://movies/favorites.json')
-    .then(response => {
-      const movies = response.json;
-      return movies;
-    });
-}
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: (z, bundle) => {
+          return z.request('http://example.com/api/v2/records.json')
+            .then(response => {
+              const movies = response.json;
+              return movies;
+            });
+        }
+      }
+    }
+  }
+};
 ```
 
 ### Custom HTTP Middleware
