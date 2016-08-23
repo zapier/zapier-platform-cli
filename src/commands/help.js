@@ -65,7 +65,7 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                            │
+# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                          │
 # │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
 # │ deploy      │ zapier deploy                         │ Build and upload a new version of the current app - does not promote.      │
@@ -81,8 +81,8 @@ $ zapier help
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
 # │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to production rotation.                        │
 # │ register    │ zapier register "Example"             │ Registers a new app in your account.                                       │
-# │ scaffold    │ zapier scaffold model "Contact"       │ Adds a sample model, trigger, action or search to your app.                │
-# │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                             │
+# │ scaffold    │ zapier scaffold resource "Contact"    │ Adds a sample resource, trigger, action or search to your app.             │
+# │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                           │
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │

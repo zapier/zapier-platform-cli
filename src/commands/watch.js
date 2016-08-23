@@ -129,7 +129,7 @@ $ zapier watch --port=9090
 # Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.
 #
 #   Reloading for index.js - done!
-#   Reloading for models/form.js - done!
+#   Reloading for resources/form.js - done!
 #   Reloading for index.js - done!
 ${'```'}
 `;
