@@ -125,7 +125,7 @@ If you'd like to manage your **Version**, use these commands:
 
 ### App Definition
 
-The core definition of your `App` is will look something like this, and is what your `index.js` should provide as the _only_ export:
+The core definition of your `App` will look something like this, and is what your `index.js` should provide as the _only_ export:
 
 ```javascript
 const App = {
@@ -149,6 +149,8 @@ const App = {
   searches: {},
   writes: {}
 };
+
+module.export = App;
 ```
 
 
@@ -295,12 +297,24 @@ const App = {
 ## Getting Started with Resources
 
 A `resource` is a representation (as a JavaScript object) of one of the REST resources of your API. Say you have a `/movies`
-endpoint for working with movies, you can define a movie resource in your app that will tell Zapier how to do create,
-read, and update, operations on that resource.
+endpoint for working with movies; you can define a movie resource in your app that will tell Zapier how to do create,
+read, and search operations on that resource.
 
-Under the hood, Zapier converts the `resource` into the usual Triggers, Actions, and Searches. The advantage of defining
-a resource over the other components directly is that, by tying the functionality together in a resource, Zapier is able
-to reuse the functionality to improve the overall experience.
+```javascript
+const Movie = {
+  // `key` is the unique identifier the Zapier backend references
+  key: 'movie',
+  // `noun` is the user-friendly name displayed in the Zapier UI
+  noun: 'Movie',
+  // `list` and `create` are just a couple of the methods you can define
+  list: {
+      //...
+  },
+  create: {
+      //...
+  }
+}
+```
 
 The quickest way to create a resource is with the `zapier scaffold` command:
 
@@ -310,23 +324,24 @@ zapier scaffold model "Movie"
 
 This will generate the resource file and add the necessary statements to the `index.js` file to import it.
 
+
 ### Anatomy of a Resource
 
 A resource has a few basic properties. The first is the `key`, which allows Zapier to identify the resource on our backend.
 The second is the `noun`, the user-friendly name of the resource that is presented to users throughout the Zapier UI.
 
 After those, there is a set of optional properties that tell Zapier what methods can be performed on the resource.
-We'll look at a couple:
+The complete list of available methods can be found in the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema).
+For now, let's focus on two:
 
  * `list` - Tells Zapier how to fetch a set of this resource. This becomes a Trigger in the Zapier Editor.
  * `create` - Tells Zapier how to create a new instance of the resource. This becomes an Action in the Zapier Editor.
 
-*Note: For information on the other available methods, see the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema).*
-
-Peeking at the `list` property on your resource, you'll find
+Here is a complete example of what the list method might look like
 
 ```javascript
-{
+const Movie = {
+  //...
   list: {
     display: {
       label: 'New Movie',
@@ -341,7 +356,38 @@ Peeking at the `list` property on your resource, you'll find
 }
 ```
 
-TODO
+The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#modelschema)) provides the implementation to make the API call.
+
+Adding a create method looks very similar.
+
+```javascript
+const Movie = {
+  //...
+  list: {
+    //...
+  },
+  create: {
+    display: {
+      label: 'Add Movie',
+      description: 'Adds a new movie to the catalogue.'
+    },
+    operation: {
+      perform: {
+        url: `http://example.com/movies`,
+        method: 'POST',
+        body: {
+            title: 'Casablanca',
+            genre: 'romance'
+        }
+      }
+    }
+  }
+}
+```
+
+Every method you define on a `resource` Zapier converts to the appropriate Trigger, Action, or Search. Our examples
+above would result in an app with a New Movie Trigger and an Add Movie Action.
+
 
 ## Triggers/Searches/Writes
 
