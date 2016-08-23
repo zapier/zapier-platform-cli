@@ -656,9 +656,9 @@ const App = {
       operation: {
         // ...
         perform: (z, bundle) => {
-          var httpOptions = {
+          const httpOptions = {
             headers: {
-              x-my-header: process.env.MY_SECRET_VALUE
+              'my-header': process.env.MY_SECRET_VALUE
             }
           };
           return z.request('http://example.com/api/v2/records.json', httpOptions);
@@ -683,7 +683,7 @@ const App = {
         perform: {
           url: 'http://example.com/api/v2/records.json'
           headers: {
-            x-my-header: '{{bundle.environment.MY_SECRET_VALUE}}'
+            'my-header': '{{bundle.environment.MY_SECRET_VALUE}}'
           }
         }
       }
