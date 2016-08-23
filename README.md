@@ -376,8 +376,8 @@ const Movie = {
         url: `http://example.com/movies`,
         method: 'POST',
         body: {
-            title: 'Casablanca',
-            genre: 'romance'
+          title: 'Casablanca',
+          genre: 'romance'
         }
       }
     }
@@ -385,13 +385,41 @@ const Movie = {
 }
 ```
 
-Every method you define on a `resource` Zapier converts to the appropriate Trigger, Action, or Search. Our examples
-above would result in an app with a New Movie Trigger and an Add Movie Action.
+Every method you define on a `resource` Zapier converts to the appropriate Trigger, Write, or Search. Our examples
+above would result in an app with a New Movie Trigger and an Add Movie Write.
 
 
 ## Triggers/Searches/Writes
 
-TODO.
+Triggers, Searches, and Writes are the way an app defines what it is able to do. Triggers read
+data into Zapier (i.e. watch for new movies). Searches locate individual records (find movie by title). Writes create
+new records in your system (i.e. add a movie to the catalogue).
+
+The definition for each of these follows the same structure. Here is an example of a trigger:
+
+```javascript
+const App = {
+  //...
+  triggers: [
+    {
+      // `key` uniquely identifies the trigger to the Zapier backend
+      key: 'new_movie',
+      // `noun` is the user-friendly word that is used to refer to the resource this trigger relates to
+      noun: 'Movie',
+      display: {
+        label: 'New Movie',
+        helpText: 'Triggers when a new movie is released.'
+      }
+      operation: {
+        url: 'http://example.com/movies',
+      }
+    },
+    {
+      //... Another trigger
+    }
+  ]
+};
+```
 
 
 ## Making HTTP Requests
