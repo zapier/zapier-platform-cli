@@ -294,7 +294,7 @@ const App = {
 ```
 
 
-## Getting Started with Resources
+## Resources
 
 A `resource` is a representation (as a JavaScript object) of one of the REST resources of your API. Say you have a `/movies`
 endpoint for working with movies; you can define a movie resource in your app that will tell Zapier how to do create,
