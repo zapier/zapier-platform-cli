@@ -1,7 +1,17 @@
+const _ = require('lodash');
 const utils = require('../utils');
 
 const test = (context) => {
-  return utils.runCommand('npm', ['run', '--silent', 'test'], {stdio: 'inherit'})
+  const extraEnv = {};
+  if (global.argOpts['log-to-stdout']) {
+    extraEnv.LOG_TO_STDOUT = 'true';
+  }
+  if (global.argOpts['detailed-log-to-stdout']) {
+    extraEnv.DETAILED_LOG_TO_STDOUT = 'true';
+  }
+
+  const env = _.extend({}, process.env, extraEnv);
+  return utils.runCommand('npm', ['run', '--silent', 'test'], {stdio: 'inherit', env})
     .then((stdout) => {
       if (stdout) {
         context.line(stdout);
@@ -11,6 +21,8 @@ const test = (context) => {
 test.argsSpec = [
 ];
 test.argOptsSpec = {
+  'log-to-stdout': {flag: true, help: 'print zapier summary logs to standard out'},
+  'detailed-log-to-stdout': {flag: true, help: 'print zapier detailed logs to standard out'}
 };
 test.help = 'Tests your app via `npm test`.';
 test.example = 'zapier test';
@@ -25,15 +37,15 @@ ${utils.argOptsFragment(test.argOptsSpec)}
 ${'```'}bash
 $ zapier test
 # > node_modules/mocha/bin/mocha
-# 
+#
 #   app
 #     validation
 #       ✓ should be a valid app
-# 
+#
 #   triggers
 #     hello world
 #       ✓ should load fine (777ms)
-# 
+#
 #   2 passing (817ms)
 ${'```'}
 `;
