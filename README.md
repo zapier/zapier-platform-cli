@@ -1,7 +1,32 @@
-# Introduction
+# Zapier Platform CLI
 
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Apps & Versions Overview](#apps---versions-overview)
+  * [App Definition](#app-definition)
+- [Authentication](#authentication)
+  * [Basic](#basic)
+  * [Custom](#custom)
+  * [Digest](#digest)
+  * [Session](#session)
+  * [OAuth2](#oauth2)
+- [Resources](#resources)
+  * [Resource Definition](#resource-definition)
+- [Triggers/Searches/Writes](#triggers-searches-writes)
+- [Making HTTP Requests](#making-http-requests)
+  * [Shorthand HTTP Requests](#shorthand-http-requests)
+  * [Manual HTTP Requests](#manual-http-requests)
+    + [POST and PUT Requests](#post-and-put-requests-)
+  * [Using HTTP middleware](#using-http-middleware)
+  * [HTTP Request Options](#http-request-options)
+  * [HTTP Response Object](#http-response-object)
+- [Environment](#environment)
+  * [Defining Environment Variables](#defining-environment-variables)
+  * [Accessing Environment Variables](#accessing-environment-variables)
 
 ## Getting Started
 
@@ -516,7 +541,7 @@ const App = {
 };
 ```
 
-#### POST and PUT Requests:
+#### POST and PUT Requests
 
 To POST or PUT data to your API you can do this:
 
