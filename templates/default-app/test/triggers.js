@@ -6,8 +6,8 @@ const appTester = zapier.createAppTester(require('../index'));
 
 describe('triggers', () => {
 
-  describe('hello world', () => {
-    it('should load fine', (done) => {
+  describe('new recipe trigger', () => {
+    it('should load recipes', (done) => {
       const bundle = {
         inputData: {
           style: 'mediterranean'
