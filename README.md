@@ -2,6 +2,7 @@
 
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
@@ -20,13 +21,17 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Making HTTP Requests](#making-http-requests)
   * [Shorthand HTTP Requests](#shorthand-http-requests)
   * [Manual HTTP Requests](#manual-http-requests)
-    + [POST and PUT Requests](#post-and-put-requests-)
+    + [POST and PUT Requests](#post-and-put-requests)
   * [Using HTTP middleware](#using-http-middleware)
   * [HTTP Request Options](#http-request-options)
   * [HTTP Response Object](#http-response-object)
 - [Environment](#environment)
   * [Defining Environment Variables](#defining-environment-variables)
   * [Accessing Environment Variables](#accessing-environment-variables)
+- [Logging](#logging)
+  * [Log Statements](#log-statements)
+  * [Viewing Logs](#viewing-logs)
+  * [Viewing HTTP Logs in Unit Tests](#viewing-http-logs-in-unit-tests)
 
 ## Getting Started
 
@@ -722,4 +727,57 @@ const App = {
     }
   }
 };
+```
+
+## Logging
+
+### Log Statements
+
+To manually print a log statement in your code, use `z.console`:
+
+```javascript
+  z.console.log('Here are the input fields', bundle.inputData);
+```
+
+The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/dist/latest-v4.x/docs/api/console.html) class.
+
+Zapier automatically logs all HTTP requests.
+
+### Viewing Logs
+
+To view the logs for your application, use the `zapier logs` command. There are two types of logs, `http` (logged automatically by Zapier on HTTP requests) and `console` (manual logs via `z.console.log()` statements). To see the HTTP logs do:
+
+```shell
+zapier logs --type=http
+```
+To see detailed http logs including headers, request and response bodies, etc, do:
+
+```shell
+zapier logs --type=http --detailed
+```
+
+To see your `z.console` logs do:
+
+```shell
+zapier logs --type=console
+```
+
+For more advanced logging options including only displaying the logs for a certain user or app version, look at the help for the logs command:
+
+```shell
+zapier help logs
+```
+
+### Viewing HTTP Logs in Unit Tests
+
+When running a unit test via `zapier test`, `z.console` statements print to `stdout`. To see the HTTP logs when running tests do:
+
+```shell
+zapier test --log-to-stdout
+```
+
+To also see the detailed HTTP logs do:
+
+```shell
+zapier test --log-to-stdout --detailed-log-to-stdout
 ```
