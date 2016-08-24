@@ -645,7 +645,12 @@ To view existing environment variables, use the `env` command.
 zapier env 1.0.0
 ```
 
-Within your app, you can access the environment in two ways. First, is through the standard Node.js `process.env`
+Within your app, you can access the environment in a few ways.
+
+1. In `process.env` - we'll apply the environment here.
+1. In `bundle.environment` - both in the lazy `{{curly}}` and in perform functions.
+
+For example, you can access the `process.env` in your perform functions:
 
 ```javascript
 const App = {
@@ -669,8 +674,9 @@ const App = {
 };
 ```
 
-The second way to access the environment is through the bundle. This is most useful when combined with the short-hand
-syntax for HTTP requests.
+> Warning! Be careful not to access `process.env` in the global namespace if you expect to be filled by Zapier. We backfill the `process.env` but only _after_ your app is loaded.
+
+And the second way to access the environment is through the bundle. This is most useful when combined with the short-hand syntax for HTTP requests:
 
 ```javascript
 const App = {
