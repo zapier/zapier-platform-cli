@@ -36,7 +36,7 @@ const logs = (context) => {
         ];
       }
 
-      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.context.line()` and doing a `zapier deploy`!\n');
+      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.console.log()` and doing a `zapier deploy`!\n');
 
       const listLogs = [].concat(data.logs);
       listLogs.reverse();
@@ -70,7 +70,7 @@ ${utils.defaultArgOptsFragment()}
 ${'```'}bash
 $ zapier logs
 # The logs of your app "Example" listed below.
-# 
+#
 # ┌──────────────────────────────────────────────────────┐
 # │ = 1 =                                                │
 # │     Log       │ console says hello world!            │
@@ -81,7 +81,7 @@ $ zapier logs
 
 $ zapier logs --type=http
 # The logs of your app "Example" listed below.
-# 
+#
 # ┌────────────────────────────────────────────────────────┐
 # │ = 1 =                                                  │
 # │     Status      │ 200                                  │
@@ -94,7 +94,7 @@ $ zapier logs --type=http
 
 $ zapier logs --type=http --detailed --format=plain
 # The logs of your app "Example" listed below.
-# 
+#
 # == Status
 # 200
 # == URL
