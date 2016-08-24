@@ -1,10 +1,10 @@
 /*
-## Welcome to the Hello World example app!
+## Welcome to the Zapier example app!
 
 This is a small example, all in one file. You can get a clone and start it
-from `zapier init --template=helloworld`. You can of course break apart your
+from `zapier init --template=minimal`. You can of course break apart your
 example app, no reason to make it a single file. Also, we recommend taking
-a look at the automated tests you can do via `npm test`!
+a look at the automated tests you can do via `zapier test`!
 */
 
 const baseURL = 'http://57b20fb546b57d1100a3c405.mockapi.io/api';
