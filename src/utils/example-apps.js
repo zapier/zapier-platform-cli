@@ -1,70 +1,32 @@
-const _ = require('lodash');
-const AWS = require('aws-sdk');
-const unzip = require('unzip');
+const fetch = require('node-fetch');
+const path = require('path');
+const os = require('os');
 
-const {promisifyAll, promisifySome} = require('./promisify');
-const {promiseDoWhile} = require('./misc');
-const fse = promisifyAll(require('fs-extra'));
+const AdmZip = require('adm-zip');
 
-const BUCKET = 'zapier-platform-example-apps';
+const {writeFile, copyDir} = require('./files');
 
-const s3 = promisifySome(new AWS.S3({params: {Bucket: BUCKET}}),
-                         ['createBucket', 'listObjectsV2', 'upload', 'deleteObject', 'getObject']);
+const downloadAndUnzipTo = (key, destDir) => {
+  const fragment = `zapier-platform-example-app-${key}`;
+  const folderInZip = `${fragment}-master`;
+  const url = `https://codeload.github.com/zapier/${fragment}/zip/master`;
 
-const list = () => {
-  let results = [];
-  let nextContinuationToken;
+  const tempDir = os.tmpdir();
+  const tempFilePath = path.join(tempDir, 'zapier-template.zip');
 
-  const action = () => {
-    return s3.listObjectsV2Async({ContinuationToken: nextContinuationToken})
-      .then(data => {
-        nextContinuationToken = data.NextContinuationToken;
-        results = results.concat(data.Contents);
-        return data;
-      });
-  };
-
-  const stop = data => !data.IsTruncated;
-
-  return promiseDoWhile(action, stop)
-    .then(() => results);
+  return fetch(url)
+    .then((res) => res.buffer())
+    .then((buffer) => writeFile(tempFilePath, buffer))
+    .then(() => {
+      const zip = new AdmZip(tempFilePath);
+      zip.extractAllTo(tempDir, true);
+      return path.join(tempDir, folderInZip);
+    })
+    .then((currPath) => {
+      return copyDir(currPath, destDir);
+    });
 };
 
-const upload = (key, zipFile) => {
-  return fse.readFileAsync(zipFile)
-    .then(buf => s3.uploadAsync({Key: key, Body: buf}));
+module.exports = {
+  downloadAndUnzipTo
 };
-
-const remove = (key) => {
-  return s3.deleteObjectAsync({Key: key});
-};
-
-const download = (key, destDir) => {
-  return new Promise((resolve, reject) => {
-    const readStream = s3.getObject({Key: key}).createReadStream();
-    const unzipStream = unzip.Extract({path: destDir});
-
-    readStream.pipe(unzipStream);
-
-    readStream.on('error', reject);
-    unzipStream.on('close', resolve);
-  });
-};
-
-const ensureBucket = (methods) => {
-  return _.reduce(methods, (results, method, methodName) => {
-    results[methodName] = (...args) => (
-      s3.createBucketAsync().then(() => method(...args))
-    );
-    return results;
-  }, {});
-};
-
-const exports = {
-  list,
-  upload,
-  download,
-  remove
-};
-
-module.exports = ensureBucket(exports);

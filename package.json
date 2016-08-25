@@ -20,10 +20,7 @@
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
     "lint": "node_modules/.bin/eslint zapier.js src test",
     "test": "npm run build && node_modules/mocha/bin/mocha -t 10000 --recursive lib/tests && npm run lint",
-    "zapier": "zapier.js",
-    "upload-example": "./scripts/upload-example.js $1 $2",
-    "delete-example": "./scripts/delete-example.js $1",
-    "list-examples": "./scripts/list-examples.js"
+    "zapier": "zapier.js"
   },
   "dependencies": {
     "adm-zip": "0.4.7",
@@ -36,11 +33,10 @@
     "jayson": "^2.0.2",
     "lodash": "4.13.1",
     "ngrok": "^2.2.2",
-    "node-fetch": "1.5.3",
+    "node-fetch": "1.6.0",
     "node-watch": "^0.4.0",
     "string-length": "^1.0.1",
-    "through2": "2.0.1",
-    "unzip": "^0.1.11"
+    "through2": "2.0.1"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",

@@ -1,22 +1,23 @@
-const utils = require('../utils');
-const exampleApps = require('../utils/example-apps');
-const constants = require('../constants');
 const path = require('path');
 const os = require('os');
 
+const utils = require('../utils');
+const exampleApps = require('../utils/example-apps');
+const constants = require('../constants');
+
 const initApp = (location) => {
   const appDir = path.resolve(location);
-  const tempAppDir = path.resolve(os.tmpdir(), location);
+  const tempAppDir = path.resolve(path.join(os.tmpdir(), 'zapier', location));
   const vendorAppDir = path.resolve(__dirname, '../../templates/default-app');
 
   const copyOpts = {clobber: false};
   const template = global.argOpts.template || 'minimal';
 
   if (template !== 'minimal') {
-    utils.printStarting(`Downloading ${template} starter app`);
+    utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
     return utils.removeDir(tempAppDir)
       .then(() => utils.ensureDir(tempAppDir))
-      .then(() => exampleApps.download(template, tempAppDir))
+      .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
       .then(() => utils.printDone())
       .then(() => utils.printStarting('Copying starter app'))
       .then(() => utils.ensureDir(appDir))
@@ -49,7 +50,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: ['minimal', 'helloworld'], 'default': 'minimal'}
+  template: {help: 'select a starting app template', choices: ['middleware', 'write', 'resource', 'search', 'httpbin'], 'default': 'minimal'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';
