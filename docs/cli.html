@@ -700,7 +700,7 @@ $ zapier <span class="hljs-built_in">help</span>
 <p>Note: this doesn&apos;t register the app with Zapier - try <code>zapier register &quot;Example&quot;</code> and <code>zapier deploy</code> for that!</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>location [value]</code> -- <em>optional</em>, Default is <code>.</code></li>
-<li><code>--template={minimal,helloworld}</code> -- <em>optional</em>, select a starting app template, default is <code>minimal</code></li>
+<li><code>--template={middleware,write,resource,search,trigger,basic-auth}</code> -- <em>optional</em>, select a starting app template, default is <code>trigger</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -837,7 +837,7 @@ $ zapier invite user@example.com --remove
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier logs
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
 <span class="hljs-comment"># &#x2502; = 1 =                                                &#x2502;</span>
 <span class="hljs-comment"># &#x2502;     Log       &#x2502; console says hello world!            &#x2502;</span>
@@ -848,7 +848,7 @@ $ zapier invite user@example.com --remove
 
 $ zapier logs --type=http
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
 <span class="hljs-comment"># &#x2502; = 1 =                                                  &#x2502;</span>
 <span class="hljs-comment"># &#x2502;     Status      &#x2502; 200                                  &#x2502;</span>
@@ -861,7 +861,7 @@ $ zapier logs --type=http
 
 $ zapier logs --type=http --detailed --format=plain
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># == Status</span>
 <span class="hljs-comment"># 200</span>
 <span class="hljs-comment"># == URL</span>
@@ -1044,20 +1044,23 @@ $ zapier scaffold resource <span class="hljs-string">&quot;Tag&quot;</span> --en
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Tests your app via <code>npm test</code>.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier test</code></p><p>  This command is effectively the same as npm test (which we normally recommend mocha tests) - except we can wire in some custom tests to validate your app.</p><p><strong>Arguments</strong></p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier test</code></p><p>  This command is effectively the same as npm test (which we normally recommend mocha tests) - except we can wire in some custom tests to validate your app.</p><p><strong>Arguments</strong></p><ul>
+<li><code>--log-to-stdout</code> -- <em>optional</em>, print zapier summary logs to standard out</li>
+<li><code>--detailed-log-to-stdout</code> -- <em>optional</em>, print zapier detailed logs to standard out</li>
+</ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier <span class="hljs-built_in">test</span>
 <span class="hljs-comment"># &gt; node_modules/mocha/bin/mocha</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment">#   app</span>
 <span class="hljs-comment">#     validation</span>
 <span class="hljs-comment">#       &#x2713; should be a valid app</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment">#   triggers</span>
 <span class="hljs-comment">#     hello world</span>
 <span class="hljs-comment">#       &#x2713; should load fine (777ms)</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment">#   2 passing (817ms)</span>
 </code></pre>
     </div>

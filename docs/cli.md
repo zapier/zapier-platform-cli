@@ -397,7 +397,7 @@ After running this, you'll have a new example app in your directory. If you re-r
 **Arguments**
 
 * `location [value]` -- _optional_, Default is `.`
-* `--template={minimal,helloworld}` -- _optional_, select a starting app template, default is `minimal`
+* `--template={middleware,write,resource,search,trigger,basic-auth}` -- _optional_, select a starting app template, default is `trigger`
 
 ```bash
 $ zapier init example-dir --template=helloworld
@@ -520,7 +520,7 @@ $ zapier link
 ```bash
 $ zapier logs
 # The logs of your app "Example" listed below.
-# 
+#
 # ┌──────────────────────────────────────────────────────┐
 # │ = 1 =                                                │
 # │     Log       │ console says hello world!            │
@@ -531,7 +531,7 @@ $ zapier logs
 
 $ zapier logs --type=http
 # The logs of your app "Example" listed below.
-# 
+#
 # ┌────────────────────────────────────────────────────────┐
 # │ = 1 =                                                  │
 # │     Status      │ 200                                  │
@@ -544,7 +544,7 @@ $ zapier logs --type=http
 
 $ zapier logs --type=http --detailed --format=plain
 # The logs of your app "Example" listed below.
-# 
+#
 # == Status
 # 200
 # == URL
@@ -711,20 +711,21 @@ $ zapier scaffold resource "Tag" --entry=index.js --dest=resources/tag
 **Arguments**
 
 
-
+* `--log-to-stdout` -- _optional_, print zapier summary logs to standard out
+* `--detailed-log-to-stdout` -- _optional_, print zapier detailed logs to standard out
 
 ```bash
 $ zapier test
 # > node_modules/mocha/bin/mocha
-# 
+#
 #   app
 #     validation
 #       ✓ should be a valid app
-# 
+#
 #   triggers
 #     hello world
 #       ✓ should load fine (777ms)
-# 
+#
 #   2 passing (817ms)
 ```
 
