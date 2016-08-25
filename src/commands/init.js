@@ -42,7 +42,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: ['middleware', 'write', 'resource', 'search', 'trigger'], 'default': 'trigger'}
+  template: {help: 'select a starting app template', choices: ['middleware', 'write', 'resource', 'search', 'trigger', 'basic-auth'], 'default': 'trigger'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';

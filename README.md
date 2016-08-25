@@ -851,7 +851,9 @@ zapier test --log-to-stdout --detailed-log-to-stdout
 
 Check out the following example applications to help you get started:
 
+* [Trigger Example](https://github.com/zapier/zapier-platform-example-app-trigger)
 * [Search Example](https://github.com/zapier/zapier-platform-example-app-search)
 * [Write Example](https://github.com/zapier/zapier-platform-example-app-write)
 * [Resource Example](https://github.com/zapier/zapier-platform-example-app-resource)
 * [Middleware Example](https://github.com/zapier/zapier-platform-example-app-middleware)
+* [Basic Auth Example](https://github.com/zapier/zapier-platform-example-app-basic-auth)
