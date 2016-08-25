@@ -768,6 +768,67 @@ For more advanced logging options including only displaying the logs for a certa
 zapier help logs
 ```
 
+## Testing
+
+You can write unit tests for your Zapier app that run locally, outside of the zapier editor.
+You can run these tests in a CI tool like [Travis](https://travis-ci.com/).
+
+### Writing Unit Tests
+
+We recommend using the [Mocha](https://mochajs.org/) testing framework. After running
+`zapier init` you should find an example test to start from in the `test` directory.
+
+To
+
+```javascript
+// we use should assertions
+const should = require('should');
+const zapier = require('@zapier/zapier-platform-core');
+
+// createAppTester() makes it easier to test your app. It takes your
+// raw app definition, and returns a function that will test you app.
+const appTester = zapier.createAppTester(require('../index'));
+
+describe('triggers', () => {
+
+  describe('new recipe trigger', () => {
+    it('should load recipes', (done) => {
+      // This is what Zapier will send to your app as input.
+      // It contains trigger options the user choice in their zap.
+      const bundle = {
+        inputData: {
+          style: 'mediterranean'
+        }
+      };
+
+      // Pass appTester the path to the trigger you want to call,
+      // and the input bundle. appTester returns a promise for results.
+      appTester('triggers.recipe', bundle)
+        .then(results => {
+          // Make assertions
+
+          results.length.should.eql(10);
+
+          const firstRecipe = results[0];
+          firstRecipe.name.should.eql('Baked Falafel');
+
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+});
+```
+
+### Running Unit Tests
+
+To run all your tests do:
+
+```shell
+zapier test
+```
+
 ### Viewing HTTP Logs in Unit Tests
 
 When running a unit test via `zapier test`, `z.console` statements print to `stdout`. To see the HTTP logs when running tests do:
