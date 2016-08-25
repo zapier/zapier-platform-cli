@@ -751,24 +751,24 @@ Zapier automatically logs all HTTP requests.
 
 To view the logs for your application, use the `zapier logs` command. There are two types of logs, `http` (logged automatically by Zapier on HTTP requests) and `console` (manual logs via `z.console.log()` statements). To see the HTTP logs do:
 
-```shell
+```
 zapier logs --type=http
 ```
 To see detailed http logs including headers, request and response bodies, etc, do:
 
-```shell
+```
 zapier logs --type=http --detailed
 ```
 
 To see your `z.console` logs do:
 
-```shell
+```
 zapier logs --type=console
 ```
 
 For more advanced logging options including only displaying the logs for a certain user or app version, look at the help for the logs command:
 
-```shell
+```
 zapier help logs
 ```
 
@@ -829,7 +829,7 @@ describe('triggers', () => {
 
 To run all your tests do:
 
-```shell
+```
 zapier test
 ```
 
@@ -837,13 +837,13 @@ zapier test
 
 When running a unit test via `zapier test`, `z.console` statements print to `stdout`. To see the HTTP logs when running tests do:
 
-```shell
+```
 zapier test --log-to-stdout
 ```
 
 To also see the detailed HTTP logs do:
 
-```shell
+```
 zapier test --log-to-stdout --detailed-log-to-stdout
 ```
 
