@@ -8,28 +8,20 @@ const constants = require('../constants');
 const initApp = (location) => {
   const appDir = path.resolve(location);
   const tempAppDir = path.resolve(path.join(os.tmpdir(), 'zapier', location));
-  const vendorAppDir = path.resolve(__dirname, '../../templates/default-app');
 
   const copyOpts = {clobber: false};
-  const template = global.argOpts.template || 'minimal';
+  const template = global.argOpts.template || 'trigger';
 
-  if (template !== 'minimal') {
-    utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
-    return utils.removeDir(tempAppDir)
-      .then(() => utils.ensureDir(tempAppDir))
-      .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
-      .then(() => utils.printDone())
-      .then(() => utils.printStarting('Copying starter app'))
-      .then(() => utils.ensureDir(appDir))
-      .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
-      .then(() => utils.removeDir(tempAppDir))
-      .then(() => utils.printDone());
-  } else {
-    utils.printStarting('Copying starter app');
-    return utils.ensureDir(appDir)
-      .then(() => utils.copyDir(vendorAppDir, appDir, copyOpts))
-      .then(() => utils.printDone());
-  }
+  utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
+  return utils.removeDir(tempAppDir)
+    .then(() => utils.ensureDir(tempAppDir))
+    .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
+    .then(() => utils.printDone())
+    .then(() => utils.printStarting('Copying starter app'))
+    .then(() => utils.ensureDir(appDir))
+    .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
+    .then(() => utils.removeDir(tempAppDir))
+    .then(() => utils.printDone());
 };
 
 const init = (context, location = '.') => {
@@ -50,7 +42,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: ['middleware', 'write', 'resource', 'search', 'httpbin'], 'default': 'minimal'}
+  template: {help: 'select a starting app template', choices: ['middleware', 'write', 'resource', 'search', 'trigger'], 'default': 'trigger'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';
