@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 const path = require('path');
-const os = require('os');
-
+const tmp = require('tmp');
+const {promisifyAll} = require('./promisify');
+const fse = promisifyAll(require('fs-extra'));
 const AdmZip = require('adm-zip');
 
 const {writeFile, copyDir} = require('./files');
@@ -11,10 +12,11 @@ const downloadAndUnzipTo = (key, destDir) => {
   const folderInZip = `${fragment}-master`;
   const url = `https://codeload.github.com/zapier/${fragment}/zip/master`;
 
-  const tempDir = os.tmpdir();
-  const tempFilePath = path.join(tempDir, 'zapier-template.zip');
+  const tempDir = tmp.tmpNameSync();
+  const tempFilePath = path.resolve(tempDir, 'zapier-template.zip');
 
-  return fetch(url)
+  return fse.ensureDirAsync(tempDir)
+    .then(() => fetch(url))
     .then((res) => res.buffer())
     .then((buffer) => writeFile(tempFilePath, buffer))
     .then(() => {
@@ -22,9 +24,8 @@ const downloadAndUnzipTo = (key, destDir) => {
       zip.extractAllTo(tempDir, true);
       return path.join(tempDir, folderInZip);
     })
-    .then((currPath) => {
-      return copyDir(currPath, destDir);
-    });
+    .then((currPath) => copyDir(currPath, destDir))
+    .then(() => fse.removeAsync(tempDir));
 };
 
 module.exports = {

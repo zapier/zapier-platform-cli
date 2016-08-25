@@ -20,7 +20,8 @@
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
     "lint": "node_modules/.bin/eslint zapier.js src test",
     "test": "npm run build && node_modules/mocha/bin/mocha -t 10000 --recursive lib/tests && npm run lint",
-    "zapier": "zapier.js"
+    "zapier": "zapier.js",
+    "validate-templates": "./scripts/validate-app-templates.js"
   },
   "dependencies": {
     "adm-zip": "0.4.7",
@@ -35,7 +36,8 @@
     "node-fetch": "1.6.0",
     "node-watch": "^0.4.0",
     "string-length": "^1.0.1",
-    "through2": "2.0.1"
+    "through2": "2.0.1",
+    "tmp": "0.0.28"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",

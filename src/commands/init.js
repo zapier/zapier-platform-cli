@@ -1,13 +1,14 @@
 const path = require('path');
-const os = require('os');
+const tmp = require('tmp');
 
 const utils = require('../utils');
 const exampleApps = require('../utils/example-apps');
 const constants = require('../constants');
+const appTemplates = require('../app-templates');
 
 const initApp = (location) => {
   const appDir = path.resolve(location);
-  const tempAppDir = path.resolve(path.join(os.tmpdir(), 'zapier', location));
+  const tempAppDir = tmp.tmpNameSync();
 
   const copyOpts = {clobber: false};
   const template = global.argOpts.template || 'trigger';
@@ -42,7 +43,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: ['middleware', 'write', 'resource', 'search', 'trigger', 'basic-auth'], 'default': 'trigger'}
+  template: {help: 'select a starting app template', choices: appTemplates, 'default': 'trigger'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';
