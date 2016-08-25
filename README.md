@@ -857,3 +857,4 @@ Check out the following example applications to help you get started:
 * [Resource Example](https://github.com/zapier/zapier-platform-example-app-resource)
 * [Middleware Example](https://github.com/zapier/zapier-platform-example-app-middleware)
 * [Basic Auth Example](https://github.com/zapier/zapier-platform-example-app-basic-auth)
+* [OAuth2 Example](https://github.com/zapier/zapier-platform-example-app-oauth2)
