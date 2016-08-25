@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "adm-zip": "0.4.7",
-    "aws-sdk": "^2.5.0",
     "babel-polyfill": "6.9.1",
     "browserify": "13.0.1",
     "cli-table2": "0.2.0",
