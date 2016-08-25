@@ -2,7 +2,6 @@
 
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
-
 ## Table of Contents
 
 - [Getting Started](#getting-started)
@@ -31,7 +30,11 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Logging](#logging)
   * [Log Statements](#log-statements)
   * [Viewing Logs](#viewing-logs)
+- [Testing](#testing)
+  * [Writing Unit Tests](#writing-unit-tests)
+  * [Running Unit Tests](#running-unit-tests)
   * [Viewing HTTP Logs in Unit Tests](#viewing-http-logs-in-unit-tests)
+- [Example Apps](#example-apps)
 
 ## Getting Started
 
@@ -842,3 +845,12 @@ To also see the detailed HTTP logs do:
 ```shell
 zapier test --log-to-stdout --detailed-log-to-stdout
 ```
+
+## Example Apps
+
+Check out the following example applications to help you get started:
+
+* [Search Example](https://github.com/zapier/zapier-platform-example-app-search)
+* [Write Example](https://github.com/zapier/zapier-platform-example-app-write)
+* [Resource Example](https://github.com/zapier/zapier-platform-example-app-resource)
+* [Middleware Example](https://github.com/zapier/zapier-platform-example-app-middleware)
