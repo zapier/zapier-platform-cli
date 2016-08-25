@@ -329,16 +329,16 @@ const App = {
 
 ## Resources
 
-A `resource` is a representation (as a JavaScript object) of one of the REST resources of your API. Say you have a `/movies`
-endpoint for working with movies; you can define a movie resource in your app that will tell Zapier how to do create,
+A `resource` is a representation (as a JavaScript object) of one of the REST resources of your API. Say you have a `/recipes`
+endpoint for working with recipes; you can define a recipe resource in your app that will tell Zapier how to do create,
 read, and search operations on that resource.
 
 ```javascript
-const Movie = {
+const Recipe = {
   // `key` is the unique identifier the Zapier backend references
-  key: 'movie',
+  key: 'recipe',
   // `noun` is the user-friendly name displayed in the Zapier UI
-  noun: 'Movie',
+  noun: 'Recipe',
   // `list` and `create` are just a couple of the methods you can define
   list: {
       //...
@@ -352,7 +352,7 @@ const Movie = {
 The quickest way to create a resource is with the `zapier scaffold` command:
 
 ```bash
-zapier scaffold resource "Movie"
+zapier scaffold resource "Recipe"
 ```
 
 This will generate the resource file and add the necessary statements to the `index.js` file to import it.
@@ -373,16 +373,16 @@ For now, let's focus on two:
 Here is a complete example of what the list method might look like
 
 ```javascript
-const Movie = {
+const Recipe = {
   //...
   list: {
     display: {
-      label: 'New Movie',
-      description: 'Triggers when a new movie is added.'
+      label: 'New Recipe',
+      description: 'Triggers when a new recipe is added.'
     },
     operation: {
       perform: {
-        url: `http://example.com/movies`
+        url: `http://example.com/recipes`
       }
     }
   }
@@ -394,23 +394,23 @@ The method is made up of two properties, a `display` and an `operation`. The `di
 Adding a create method looks very similar.
 
 ```javascript
-const Movie = {
+const Recipe = {
   //...
   list: {
     //...
   },
   create: {
     display: {
-      label: 'Add Movie',
-      description: 'Adds a new movie to the catalog.'
+      label: 'Add Recipe',
+      description: 'Adds a new recipe to our cookbook.'
     },
     operation: {
       perform: {
-        url: `http://example.com/movies`,
+        url: `http://example.com/recipes`,
         method: 'POST',
         body: {
-          title: 'Casablanca',
-          genre: 'romance'
+          name: 'Baked Falafel',
+          style: 'mediterranean'
         }
       }
     }
@@ -419,14 +419,14 @@ const Movie = {
 ```
 
 Every method you define on a `resource` Zapier converts to the appropriate Trigger, Write, or Search. Our examples
-above would result in an app with a New Movie Trigger and an Add Movie Write.
+above would result in an app with a New Recipe Trigger and an Add Recipe Write.
 
 
 ## Triggers/Searches/Writes
 
 Triggers, Searches, and Writes are the way an app defines what it is able to do. Triggers read
-data into Zapier (i.e. watch for new movies). Searches locate individual records (find movie by title). Writes create
-new records in your system (add a movie to the catalog).
+data into Zapier (i.e. watch for new recipes). Searches locate individual records (find recipe by title). Writes create
+new records in your system (add a recipe to the catalog).
 
 The definition for each of these follows the same structure. Here is an example of a trigger:
 
@@ -434,19 +434,19 @@ The definition for each of these follows the same structure. Here is an example 
 const App = {
   //...
   triggers: {
-    new_movie: {
+    new_recipe: {
       // `key` uniquely identifies the trigger to the Zapier backend
-      key: 'new_movie',
+      key: 'new_recipe',
       // `noun` is the user-friendly word that is used to refer to the resource this trigger relates to
-      noun: 'Movie',
+      noun: 'Recipe',
       // `display` controls the presentation in the Zapier Editor
       display: {
-        label: 'New Movie',
-        helpText: 'Triggers when a new movie is released.'
+        label: 'New Recipe',
+        helpText: 'Triggers when a new recipe is added.'
       }
       // `operation` implements the API call used to fetch the data
       operation: {
-        url: 'http://example.com/movies',
+        url: 'http://example.com/recipes',
       }
     },
     {
@@ -494,7 +494,7 @@ const App = {
         // ...
         perform: {
           method: 'GET'
-          url: 'http://{{bundle.authData.subdomain}}.example.com/api/v2/records.json',
+          url: 'http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json',
           params: {
             sort_by: 'id',
             sort_order: 'DESC'
@@ -531,16 +531,16 @@ const App = {
             }
           };
 
-          return z.request('http://example.com/api/v2/movies.json', customHttpOptions)
+          return z.request('http://example.com/api/v2/recipes.json', customHttpOptions)
             .then(response => {
               if (response.status >= 300) {
                 throw new Error(`Unexpected status code ${response.status}`);
               }
 
-              const movies = JSON.parse(response.content);
-              // do any custom processing of movies here...
+              const recipes = JSON.parse(response.content);
+              // do any custom processing of recipes here...
 
-              return movies;
+              return recipes;
             });
         }
       }
@@ -562,17 +562,18 @@ const App = {
       operation: {
         // ...
         perform: (z, bundle) => {
-          const movie = {
-            title: 'The Wizard of Oz',
-            director: 'Victor Fleming'
+          const recipe = {
+            name: 'Baked Falafel',
+            style: 'mediterranean',
+            directions: 'Get some dough....'
           };
 
           const options = {
             method: 'POST',
-            body: JSON.stringify(movie)
+            body: JSON.stringify(recipe)
           };
 
-          return z.request('http://example.com/api/v2/movies.json', options)
+          return z.request('http://example.com/api/v2/recipes.json', options)
             .then(response => {
               if (response.status !== 201) {
                 throw new Error(`Unexpected status code ${response.status}`);
@@ -700,7 +701,7 @@ const App = {
               'my-header': process.env.MY_SECRET_VALUE
             }
           };
-          return z.request('http://example.com/api/v2/records.json', httpOptions);
+          return z.request('http://example.com/api/v2/recipes.json', httpOptions);
         }
       }
     }
@@ -721,7 +722,7 @@ const App = {
       operation: {
         // ...
         perform: {
-          url: 'http://example.com/api/v2/records.json'
+          url: 'http://example.com/api/v2/recipes.json'
           headers: {
             'my-header': '{{bundle.environment.MY_SECRET_VALUE}}'
           }
