@@ -32,7 +32,7 @@ mkdir zapier-example
 cd zapier-example
 
 # create the needed files from a template
-zapier init --template=helloworld
+zapier init --template=trigger
 
 # install all the libraries needed for your app
 npm install
