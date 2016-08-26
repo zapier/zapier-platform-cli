@@ -1,3 +1,4 @@
+const fs = require('fs');
 const utils = require('../utils');
 
 const env = (context, version, key, value) => {
@@ -21,7 +22,10 @@ const env = (context, version, key, value) => {
         utils.printDone();
         context.line();
         context.line('Environment updated! Try viewing it with `zapier env ${version}`.');
-        // TODO: touch index.js to reload watch?
+
+        // touch index.js to force watch to pick up env changes
+        fs.utimesSync('./index.js', NaN, NaN);
+
         return;
       });
   }
@@ -60,20 +64,20 @@ ${utils.defaultArgOptsFragment()}
 ${'```'}bash
 $ zapier env 1.0.0
 # The env of your "Example" listed below.
-# 
+#
 # ┌─────────┬─────────┬────────────┐
 # │ Version │ Key     │ Value      │
 # ├─────────┼─────────┼────────────┤
 # │ 1.0.0   │ CLIENT_SECRET │ 12345 │
 # └─────────┴─────────┴────────────┘
-# 
+#
 # Try setting an env with the \`zapier env 1.0.0 CLIENT_SECRET 12345\` command.
 
 $ zapier env 1.0.0 CLIENT_SECRET 12345
 # Preparing to set environment CLIENT_SECRET for your 1.0.0 "Example".
-# 
+#
 #   Setting CLIENT_SECRET to "12345" - done!
-# 
+#
 # Environment updated! Try viewing it with \`zapier env 1.0.0\`.
 ${'```'}
 `;
