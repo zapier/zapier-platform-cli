@@ -399,9 +399,9 @@ To manually print a log statement in your code, use `z.console`:
   z.console.log('Here are the input fields', bundle.inputData);
 ```
 
-The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/dist/latest-v4.x/docs/api/console.html) class.
+The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/dist/latest-v4.x/docs/api/console.html) class - the only difference is we'll log to our distrubuted datastore and you can view them via `zapier logs` (more below).
 
-Zapier automatically logs all HTTP requests.
+Zapier automatically logs all HTTP requests (as long as you use `z.request()` or shorthand request objects).
 
 ### Viewing Logs
 
