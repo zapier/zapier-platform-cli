@@ -381,23 +381,12 @@ To view existing environment variables, use the `env` command.
 zapier env 1.0.0
 ```
 
-Within your app, you can access the environment in a few ways.
-
-1. In `process.env` - we'll apply the environment here.
-1. In `bundle.environment` - both in the lazy `{{curly}}` and in perform functions.
+Within your app, you can access the environment via the standard `process.env` - any values set via local `export` or `zapier env` will be there.
 
 For example, you can access the `process.env` in your perform functions:
 
 ```javascript
 [insert-file:./snippets/process-env.js]
-```
-
-> Warning! Be careful not to access `process.env` in the global namespace if you expect to be filled by Zapier. We backfill the `process.env` but only _after_ your app is loaded.
-
-And the second way to access the environment is through the bundle. This is most useful when combined with the short-hand syntax for HTTP requests:
-
-```javascript
-[insert-file:./snippets/bundle-env.js]
 ```
 
 ## Logging

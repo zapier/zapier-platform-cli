@@ -44,7 +44,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 > The Zapier CLI and Platform requires Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
-First up is installing the CLI and setting up your auth to create a working "Hello World" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
+First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
@@ -65,7 +65,7 @@ mkdir zapier-example
 cd zapier-example
 
 # create the needed files from a template
-zapier init --template=helloworld
+zapier init --template=trigger
 
 # install all the libraries needed for your app
 npm install
@@ -301,7 +301,7 @@ const App = {
         method: 'GET',
         url: 'https://example.com/api/oauth2/authorize',
         params: {
-          client_id: '{{bundle.environment.CLIENT_ID}}',
+          client_id: '{{process.env.CLIENT_ID}}',
           state: '{{bundle.inputData.state}}',
           redirect_uri: '{{bundle.inputData.redirect_uri}}',
           response_type: 'code'
@@ -314,8 +314,8 @@ const App = {
         url: 'https://example.com/api/v2/oauth2/token',
         body: {
           code: '{{bundle.inputData.code}}',
-          client_id: '{{bundle.environment.CLIENT_ID}}',
-          client_secret: '{{bundle.environment.CLIENT_SECRET}}',
+          client_id: '{{process.env.CLIENT_ID}}',
+          client_secret: '{{process.env.CLIENT_SECRET}}',
           redirect_uri: '{{bundle.inputData.redirect_uri}}',
           grant_type: 'authorization_code'
         },
@@ -658,9 +658,9 @@ The response object returned by `z.request()` supports the following fields and 
 
 * `status`: The response status code, i.e. `200`, `404`, etc.
 * `content`: The raw response body. For JSON you need to call `JSON.parse(response.content)`.
-* `request`: The original request options object (see above).
 * `headers`: Response headers object. The header keys are all lower case.
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
+* `options`: The original request options object (see above).
 
 ## Environment
 
@@ -697,10 +697,7 @@ To view existing environment variables, use the `env` command.
 zapier env 1.0.0
 ```
 
-Within your app, you can access the environment in a few ways.
-
-1. In `process.env` - we'll apply the environment here.
-1. In `bundle.environment` - both in the lazy `{{curly}}` and in perform functions.
+Within your app, you can access the environment via the standard `process.env` - any values set via local `export` or `zapier env` will be there.
 
 For example, you can access the `process.env` in your perform functions:
 
@@ -719,31 +716,6 @@ const App = {
             }
           };
           return z.request('http://example.com/api/v2/recipes.json', httpOptions);
-        }
-      }
-    }
-  }
-};
-
-```
-
-> Warning! Be careful not to access `process.env` in the global namespace if you expect to be filled by Zapier. We backfill the `process.env` but only _after_ your app is loaded.
-
-And the second way to access the environment is through the bundle. This is most useful when combined with the short-hand syntax for HTTP requests:
-
-```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: {
-          url: 'http://example.com/api/v2/recipes.json',
-          headers: {
-            'my-header': '{{bundle.environment.MY_SECRET_VALUE}}'
-          }
         }
       }
     }

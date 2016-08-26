@@ -7,7 +7,7 @@ const logs = (context) => {
       context.line(`The logs of your app "${data.app.title}" listed below.\n`);
 
       let columns;
-      const type = global.argOpts.type || 'console';
+      const type = global.argOpts.type || logs.argOptsSpec.type.default;
       if (type === 'http') {
         columns = [
           ['Status', 'response_status_code'],

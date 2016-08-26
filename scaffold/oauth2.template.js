@@ -9,7 +9,7 @@ module.exports = {
     authorizeUrl: {
       url: 'https://example.com/oauth/authorize',
       params: {
-        client_id: '{{bundle.environment.CLIENT_ID}}',
+        client_id: '{{process.env.CLIENT_ID}}',
         response_type: 'code'
       }
     },

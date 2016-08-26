@@ -12,7 +12,7 @@ const App = {
         method: 'GET',
         url: 'https://example.com/api/oauth2/authorize',
         params: {
-          client_id: '{{bundle.environment.CLIENT_ID}}',
+          client_id: '{{process.env.CLIENT_ID}}',
           state: '{{bundle.inputData.state}}',
           redirect_uri: '{{bundle.inputData.redirect_uri}}',
           response_type: 'code'
@@ -25,8 +25,8 @@ const App = {
         url: 'https://example.com/api/v2/oauth2/token',
         body: {
           code: '{{bundle.inputData.code}}',
-          client_id: '{{bundle.environment.CLIENT_ID}}',
-          client_secret: '{{bundle.environment.CLIENT_SECRET}}',
+          client_id: '{{process.env.CLIENT_ID}}',
+          client_secret: '{{process.env.CLIENT_SECRET}}',
           redirect_uri: '{{bundle.inputData.redirect_uri}}',
           grant_type: 'authorization_code'
         },

@@ -274,20 +274,20 @@ $ zapier describe
 ```bash
 $ zapier env 1.0.0
 # The env of your "Example" listed below.
-# 
+#
 # ┌─────────┬─────────┬────────────┐
 # │ Version │ Key     │ Value      │
 # ├─────────┼─────────┼────────────┤
 # │ 1.0.0   │ CLIENT_SECRET │ 12345 │
 # └─────────┴─────────┴────────────┘
-# 
+#
 # Try setting an env with the `zapier env 1.0.0 CLIENT_SECRET 12345` command.
 
 $ zapier env 1.0.0 CLIENT_SECRET 12345
 # Preparing to set environment CLIENT_SECRET for your 1.0.0 "Example".
-# 
+#
 #   Setting CLIENT_SECRET to "12345" - done!
-# 
+#
 # Environment updated! Try viewing it with `zapier env 1.0.0`.
 ```
 

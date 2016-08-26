@@ -352,7 +352,7 @@ blockquote {
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>The Zapier CLI and Platform requires Node <code>v4.3.2</code> or higher. We recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p>
-</blockquote><p>First up is installing the CLI and setting up your auth to create a working &quot;Hello World&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p>
+</blockquote><p>First up is installing the CLI and setting up your auth to create a working &quot;Zapier Example&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># install the CLI globally</span>
@@ -377,7 +377,7 @@ mkdir zapier-example
 <span class="hljs-built_in">cd</span> zapier-example
 
 <span class="hljs-comment"># create the needed files from a template</span>
-zapier init --template=helloworld
+zapier init --template=trigger
 
 <span class="hljs-comment"># install all the libraries needed for your app</span>
 npm install
@@ -734,7 +734,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
         method: <span class="hljs-string">&apos;GET&apos;</span>,
         url: <span class="hljs-string">&apos;https://example.com/api/oauth2/authorize&apos;</span>,
         params: {
-          client_id: <span class="hljs-string">&apos;{{bundle.environment.CLIENT_ID}}&apos;</span>,
+          client_id: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
           state: <span class="hljs-string">&apos;{{bundle.inputData.state}}&apos;</span>,
           redirect_uri: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>,
           response_type: <span class="hljs-string">&apos;code&apos;</span>
@@ -747,8 +747,8 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
         url: <span class="hljs-string">&apos;https://example.com/api/v2/oauth2/token&apos;</span>,
         body: {
           code: <span class="hljs-string">&apos;{{bundle.inputData.code}}&apos;</span>,
-          client_id: <span class="hljs-string">&apos;{{bundle.environment.CLIENT_ID}}&apos;</span>,
-          client_secret: <span class="hljs-string">&apos;{{bundle.environment.CLIENT_SECRET}}&apos;</span>,
+          client_id: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
+          client_secret: <span class="hljs-string">&apos;{{process.env.CLIENT_SECRET}}&apos;</span>,
           redirect_uri: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>,
           grant_type: <span class="hljs-string">&apos;authorization_code&apos;</span>
         },
@@ -1225,9 +1225,9 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       <p>The response object returned by <code>z.request()</code> supports the following fields and methods:</p><ul>
 <li><code>status</code>: The response status code, i.e. <code>200</code>, <code>404</code>, etc.</li>
 <li><code>content</code>: The raw response body. For JSON you need to call <code>JSON.parse(response.content)</code>.</li>
-<li><code>request</code>: The original request options object (see above).</li>
 <li><code>headers</code>: Response headers object. The header keys are all lower case.</li>
 <li><code>getHeader</code>: Retrieve response header, case insensitive: <code>response.getHeader(&apos;My-Header&apos;)</code></li>
+<li><code>options</code>: The original request options object (see above).</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -1310,10 +1310,7 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Within your app, you can access the environment in a few ways.</p><ol>
-<li>In <code>process.env</code> - we&apos;ll apply the environment here.</li>
-<li>In <code>bundle.environment</code> - both in the lazy <code>{{curly}}</code> and in perform functions.</li>
-</ol><p>For example, you can access the <code>process.env</code> in your perform functions:</p>
+      <p>Within your app, you can access the environment via the standard <code>process.env</code> - any values set via local <code>export</code> or <code>zapier env</code> will be there.</p><p>For example, you can access the <code>process.env</code> in your perform functions:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
@@ -1330,34 +1327,6 @@ zapier env 1.0.0
             }
           };
           <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, httpOptions);
-        }
-      }
-    }
-  }
-};
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <blockquote>
-<p>Warning! Be careful not to access <code>process.env</code> in the global namespace if you expect to be filled by Zapier. We backfill the <code>process.env</code> but only <em>after</em> your app is loaded.</p>
-</blockquote><p>And the second way to access the environment is through the bundle. This is most useful when combined with the short-hand syntax for HTTP requests:</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
-  <span class="hljs-comment">// ...</span>
-  triggers: {
-    example: {
-      <span class="hljs-comment">// ...</span>
-      operation: {
-        <span class="hljs-comment">// ...</span>
-        perform: {
-          url: <span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>,
-          headers: {
-            <span class="hljs-string">&apos;my-header&apos;</span>: <span class="hljs-string">&apos;{{bundle.environment.MY_SECRET_VALUE}}&apos;</span>
-          }
         }
       }
     }
