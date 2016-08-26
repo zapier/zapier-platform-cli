@@ -9,15 +9,20 @@ module.exports = {
     authorizeUrl: {
       url: 'https://example.com/oauth/authorize',
       params: {
-        client_id: '{{environment.CLIENT_ID}}',
-        client_secret: '{{environment.CLIENT_SECRET}}'
+        client_id: '{{bundle.environment.CLIENT_ID}}',
+        response_type: 'code'
       }
     },
     getAccessToken: (z, bundle) => {
       const requestOptions = {
         method: 'POST',
         url: 'https://example.com/oauth/token',
-        body: querystring.stringify(bundle.inputData),
+        body: querystring.stringify({
+          code: bundle.inputData.code,
+          client_id: bundle.environment.CLIENT_ID,
+          client_secret: bundle.environment.CLIENT_SECRET,
+          grant_type: 'authorization_code'
+        }),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
