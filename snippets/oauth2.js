@@ -28,7 +28,6 @@ const App = {
           client_id: '{{bundle.environment.CLIENT_ID}}',
           client_secret: '{{bundle.environment.CLIENT_SECRET}}',
           redirect_uri: '{{bundle.inputData.redirect_uri}}',
-          state: '{{bundle.inputData.state}}',
           grant_type: 'authorization_code'
         },
         headers: {
