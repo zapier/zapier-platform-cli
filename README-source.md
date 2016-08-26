@@ -161,30 +161,7 @@ If you'd like to manage your **Version**, use these commands:
 The core definition of your `App` will look something like this, and is what your `index.js` should provide as the _only_ export:
 
 ```javascript
-const App = {
-  // both version strings are required
-  version: require('./package.json').version,
-  platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
-
-  // see "Authentication" section below
-  authentication: {},
-
-  // see "Making HTTP Requests" section below
-  requestTemplate: {},
-  beforeRequest: [],
-  afterResponse: [],
-
-  // See "Resources" section below
-  resources: {},
-
-  // See "Triggers/Searches/Writes" section below
-  triggers: {},
-  searches: {},
-  writes: {}
-};
-
-module.export = App;
-
+[insert-file:./snippets/app-def.js]
 ```
 
 ## Authentication
@@ -200,18 +177,7 @@ Useful if your app requires two pieces of information to authentication: `userna
 > Note: if you do the common `Authorization: Basic apikey:x` you should look at the "Custom" authentication method instead.
 
 ```javascript
-const App = {
-  // ...
-  authentication: {
-    type: 'basic',
-    // "test" could also be a function
-    test: {
-      url: 'https://example.com/api/accounts/me.json'
-    }
-    // you can provide additional fields, but we'll provide `username`/`password` automatically
-  },
-};
-
+[insert-file:./snippets/basic-auth.js]
 ```
 
 ### Custom
@@ -219,27 +185,7 @@ const App = {
 This is what most "API Key" driven apps should default to using. You'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
 
 ```javascript
-const App = {
-  // ...
-  authentication: {
-    type: 'custom',
-    // "test" could also be a function
-    test: {
-      url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
-    },
-    fields: [
-      {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'}
-      {key: 'api_key', type: 'string', required: true, helpText: 'Found on your settings page.'}
-    ]
-  },
-  beforeRequest: [
-    (request, z, bundle) => {
-      request.headers['X-Api-Key'] = bundle.authData.api_key;
-      return request;
-    }
-  ]
-};
-
+[insert-file:./snippets/custom-auth.js]
 ```
 
 ### Digest
@@ -247,18 +193,7 @@ const App = {
 Very similar to the "Basic" authentication method above, but uses digest authentication instead of Basic authentication.
 
 ```javascript
-const App = {
-  // ...
-  authentication: {
-    type: 'digest',
-    // "test" could also be a function
-    test: {
-      url: 'https://example.com/api/accounts/me.json'
-    }
-    // you can provide additional fields, but Zapier will provide `username`/`password` automatically
-  },
-};
-
+[insert-file:./snippets/digest-auth.js]
 ```
 
 ### Session
@@ -281,53 +216,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 Your auth definition would look something like this:
 
 ```javascript
-const App = {
-  // ...
-  authentication: {
-    type: 'oauth2',
-    test: {
-      url: 'https://example.com/api/accounts/me.json'
-    },
-    // you can provide additional fields for inclusion in authData
-    oauth2Config: {
-      // "authorizeUrl" could also be a function returning a string url
-      authorizeUrl: {
-        method: 'GET',
-        url: 'https://example.com/api/oauth2/authorize',
-        params: {
-          client_id: '{{bundle.environment.CLIENT_ID}}',
-          state: '{{bundle.inputData.state}}',
-          redirect_uri: '{{bundle.inputData.redirect_uri}}',
-          response_type: 'code'
-        }
-      },
-      // Zapier expects a response providing {access_token: 'abcd'}
-      // "getAccessToken" could also be a function returning an object
-      getAccessToken: {
-        method: 'POST',
-        url: 'https://example.com/api/v2/oauth2/token',
-        body: {
-          code: '{{bundle.inputData.code}}',
-          client_id: '{{bundle.environment.CLIENT_ID}}',
-          client_secret: '{{bundle.environment.CLIENT_SECRET}}',
-          redirect_uri: '{{bundle.inputData.redirect_uri}}',
-          state: '{{bundle.inputData.state}}',
-          grant_type: 'authorization_code'
-        },
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    }
-  },
-  beforeRequest: [
-    (request, z, bundle) => {
-      request.headers.Authorization = `Bearer ${bundle.authData.access_token}`;
-      return request;
-    }
-  ]
-};
-
+[insert-file:./snippets/oauth2.js]
 ```
 
 ## Resources
@@ -337,20 +226,7 @@ endpoint for working with recipes; you can define a recipe resource in your app 
 read, and search operations on that resource.
 
 ```javascript
-const Recipe = {
-  // `key` is the unique identifier the Zapier backend references
-  key: 'recipe',
-  // `noun` is the user-friendly name displayed in the Zapier UI
-  noun: 'Recipe',
-  // `list` and `create` are just a couple of the methods you can define
-  list: {
-      //...
-  },
-  create: {
-      //...
-  }
-}
-
+[insert-file:./snippets/resources.js]
 ```
 
 The quickest way to create a resource is with the `zapier scaffold` command:
@@ -377,21 +253,7 @@ For now, let's focus on two:
 Here is a complete example of what the list method might look like
 
 ```javascript
-const Recipe = {
-  //...
-  list: {
-    display: {
-      label: 'New Recipe',
-      description: 'Triggers when a new recipe is added.'
-    },
-    operation: {
-      perform: {
-        url: `http://example.com/recipes`
-      }
-    }
-  }
-}
-
+[insert-file:./snippets/recipe-list.js]
 ```
 
 The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema)) provides the implementation to make the API call.
@@ -399,29 +261,7 @@ The method is made up of two properties, a `display` and an `operation`. The `di
 Adding a create method looks very similar.
 
 ```javascript
-const Recipe = {
-  //...
-  list: {
-    //...
-  },
-  create: {
-    display: {
-      label: 'Add Recipe',
-      description: 'Adds a new recipe to our cookbook.'
-    },
-    operation: {
-      perform: {
-        url: `http://example.com/recipes`,
-        method: 'POST',
-        body: {
-          name: 'Baked Falafel',
-          style: 'mediterranean'
-        }
-      }
-    }
-  }
-}
-
+[insert-file:./snippets/recipe-create.js]
 ```
 
 Every method you define on a `resource` Zapier converts to the appropriate Trigger, Write, or Search. Our examples
@@ -437,30 +277,7 @@ new records in your system (add a recipe to the catalog).
 The definition for each of these follows the same structure. Here is an example of a trigger:
 
 ```javascript
-const App = {
-  //...
-  triggers: {
-    new_recipe: {
-      // `key` uniquely identifies the trigger to the Zapier backend
-      key: 'new_recipe',
-      // `noun` is the user-friendly word that is used to refer to the resource this trigger relates to
-      noun: 'Recipe',
-      // `display` controls the presentation in the Zapier Editor
-      display: {
-        label: 'New Recipe',
-        helpText: 'Triggers when a new recipe is added.'
-      }
-      // `operation` implements the API call used to fetch the data
-      operation: {
-        url: 'http://example.com/recipes',
-      }
-    },
-    {
-      //... Another trigger
-    }
-  }
-};
-
+[insert-file:./snippets/trigger.js]
 ```
 
 You can find more details on the definition for each by looking at the [Trigger Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#triggerschema),
@@ -492,26 +309,7 @@ This features:
 3. Automatic non-2xx error raising.
 
 ```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: {
-          method: 'GET'
-          url: 'http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json',
-          params: {
-            sort_by: 'id',
-            sort_order: 'DESC'
-          }
-        }
-      }
-    }
-  }
-};
-
+[insert-file:./snippets/shorthand-request.js]
 ```
 
 In the url above, `{{bundle.authData.subdomain}}` is automatically replaced with the live value from the bundle. If the call returns a non 2xx return code, an error is automatically raised. The response body is automatically parsed as JSON and returned.
@@ -525,37 +323,7 @@ When you need to do custom processing of the response, or need to process non-JS
 To make a manual HTTP request, use the `request` method of the `z` object:
 
 ```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: (z, bundle) => {
-          const customHttpOptions = {
-            headers: {
-              'my-header': 'from zapier'
-            }
-          };
-
-          return z.request('http://example.com/api/v2/recipes.json', customHttpOptions)
-            .then(response => {
-              if (response.status >= 300) {
-                throw new Error(`Unexpected status code ${response.status}`);
-              }
-
-              const recipes = JSON.parse(response.content);
-              // do any custom processing of recipes here...
-
-              return recipes;
-            });
-        }
-      }
-    }
-  }
-};
-
+[insert-file:./snippets/manual-request.js]
 ```
 
 #### POST and PUT Requests
@@ -563,37 +331,7 @@ const App = {
 To POST or PUT data to your API you can do this:
 
 ```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: (z, bundle) => {
-          const recipe = {
-            name: 'Baked Falafel',
-            style: 'mediterranean',
-            directions: 'Get some dough....'
-          };
-
-          const options = {
-            method: 'POST',
-            body: JSON.stringify(recipe)
-          };
-
-          return z.request('http://example.com/api/v2/recipes.json', options)
-            .then(response => {
-              if (response.status !== 201) {
-                throw new Error(`Unexpected status code ${response.status}`);
-              }
-            });
-        }
-      }
-    }
-  }
-};
-
+[insert-file:./snippets/put.js]
 ```
 
 Note that you need to call `JSON.stringify()` before setting the `body`.
@@ -603,28 +341,7 @@ Note that you need to call `JSON.stringify()` before setting the `body`.
 If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
 
 ```javascript
-const App = {
-  // ...
-  beforeRequest: [
-    (request) => {
-      request.headers['my-header'] = 'from zapier';
-      return request;
-    }
-  ],
-  afterRequest: [
-    (response) => {
-      if (response.status !== 200) {
-        throw new Error(`Unexpected status code ${response.status}`);
-      }
-      return response;
-    },
-    (response) => {
-      response.json = JSON.parse(response.content);
-      return response;
-    }
-  ]
-  // ...
-
+[insert-file:./snippets/middleware.js]
 ```
 
 A `beforeRequest` middleware function takes a request options object, and returns a (possibly mutated) request object. An `afterResponse` middleware function takes a response object, and returns a (possibly mutated) response object. Middleware functions are executed in the order specified in the app definition, and each subsequent middleware receives the request or response object returned by the previous middleware.
@@ -699,26 +416,7 @@ Within your app, you can access the environment in a few ways.
 For example, you can access the `process.env` in your perform functions:
 
 ```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: (z, bundle) => {
-          const httpOptions = {
-            headers: {
-              'my-header': process.env.MY_SECRET_VALUE
-            }
-          };
-          return z.request('http://example.com/api/v2/recipes.json', httpOptions);
-        }
-      }
-    }
-  }
-};
-
+[insert-file:./snippets/process-env.js]
 ```
 
 > Warning! Be careful not to access `process.env` in the global namespace if you expect to be filled by Zapier. We backfill the `process.env` but only _after_ your app is loaded.
@@ -726,24 +424,7 @@ const App = {
 And the second way to access the environment is through the bundle. This is most useful when combined with the short-hand syntax for HTTP requests:
 
 ```javascript
-const App = {
-  // ...
-  triggers: {
-    example: {
-      // ...
-      operation: {
-        // ...
-        perform: {
-          url: 'http://example.com/api/v2/recipes.json'
-          headers: {
-            'my-header': '{{bundle.environment.MY_SECRET_VALUE}}'
-          }
-        }
-      }
-    }
-  }
-};
-
+[insert-file:./snippets/bundle-env.js]
 ```
 
 ## Logging
@@ -798,45 +479,7 @@ We recommend using the [Mocha](https://mochajs.org/) testing framework. After ru
 To
 
 ```javascript
-// we use should assertions
-const should = require('should');
-const zapier = require('@zapier/zapier-platform-core');
-
-// createAppTester() makes it easier to test your app. It takes your
-// raw app definition, and returns a function that will test you app.
-const appTester = zapier.createAppTester(require('../index'));
-
-describe('triggers', () => {
-
-  describe('new recipe trigger', () => {
-    it('should load recipes', (done) => {
-      // This is what Zapier will send to your app as input.
-      // It contains trigger options the user choice in their zap.
-      const bundle = {
-        inputData: {
-          style: 'mediterranean'
-        }
-      };
-
-      // Pass appTester the path to the trigger you want to call,
-      // and the input bundle. appTester returns a promise for results.
-      appTester('triggers.recipe', bundle)
-        .then(results => {
-          // Make assertions
-
-          results.length.should.eql(10);
-
-          const firstRecipe = results[0];
-          firstRecipe.name.should.eql('Baked Falafel');
-
-          done();
-        })
-        .catch(done);
-    });
-  });
-
-});
-
+[insert-file:./snippets/mocha-test.js]
 ```
 
 ### Running Unit Tests
