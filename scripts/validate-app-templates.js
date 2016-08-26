@@ -22,7 +22,7 @@ const validateAppTemplate = (template, rootTmpDir) => {
   return fse.ensureFileAsync(logFile)
     .then(() => {
       return new Promise((resolve, reject) => {
-        const cmd = `${zapierCmd} init --template=${template} --debug && npm install && ${zapierCmd} test --debug`;
+        const cmd = `${zapierCmd} init --template=${template} --debug && npm install && ${zapierCmd} validate && ${zapierCmd} test --debug`;
         const child = childProcess.exec(cmd, {cwd: appDir}, err => {
           if (err) {
             reject(err);
