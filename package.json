@@ -47,6 +47,7 @@
     "eslint": "^3.2.2",
     "fetch-mock": "4.6.0",
     "litdoc": "1.5.2",
+    "markdown-toc": "0.12.15",
     "mocha": "2.5.3",
     "should": "9.0.2"
   },

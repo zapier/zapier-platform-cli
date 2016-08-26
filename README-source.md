@@ -4,37 +4,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Apps & Versions Overview](#apps---versions-overview)
-  * [App Definition](#app-definition)
-- [Authentication](#authentication)
-  * [Basic](#basic)
-  * [Custom](#custom)
-  * [Digest](#digest)
-  * [Session](#session)
-  * [OAuth2](#oauth2)
-- [Resources](#resources)
-  * [Resource Definition](#resource-definition)
-- [Triggers/Searches/Writes](#triggers-searches-writes)
-- [Making HTTP Requests](#making-http-requests)
-  * [Shorthand HTTP Requests](#shorthand-http-requests)
-  * [Manual HTTP Requests](#manual-http-requests)
-    + [POST and PUT Requests](#post-and-put-requests)
-  * [Using HTTP middleware](#using-http-middleware)
-  * [HTTP Request Options](#http-request-options)
-  * [HTTP Response Object](#http-response-object)
-- [Environment](#environment)
-  * [Defining Environment Variables](#defining-environment-variables)
-  * [Accessing Environment Variables](#accessing-environment-variables)
-- [Logging](#logging)
-  * [Log Statements](#log-statements)
-  * [Viewing Logs](#viewing-logs)
-- [Testing](#testing)
-  * [Writing Unit Tests](#writing-unit-tests)
-  * [Running Unit Tests](#running-unit-tests)
-  * [Viewing HTTP Logs in Unit Tests](#viewing-http-logs-in-unit-tests)
-- [Example Apps](#example-apps)
+<!-- toc -->
+<!-- tocstop -->
 
 ## Getting Started
 

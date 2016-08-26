@@ -4,9 +4,11 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Table of Contents
 
+<!-- toc -->
+
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [Apps & Versions Overview](#apps---versions-overview)
+- [Apps & Versions Overview](#apps--versions-overview)
   * [App Definition](#app-definition)
 - [Authentication](#authentication)
   * [Basic](#basic)
@@ -16,7 +18,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [OAuth2](#oauth2)
 - [Resources](#resources)
   * [Resource Definition](#resource-definition)
-- [Triggers/Searches/Writes](#triggers-searches-writes)
+- [Triggers/Searches/Writes](#triggerssearcheswrites)
 - [Making HTTP Requests](#making-http-requests)
   * [Shorthand HTTP Requests](#shorthand-http-requests)
   * [Manual HTTP Requests](#manual-http-requests)
@@ -35,6 +37,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Running Unit Tests](#running-unit-tests)
   * [Viewing HTTP Logs in Unit Tests](#viewing-http-logs-in-unit-tests)
 - [Example Apps](#example-apps)
+
+<!-- tocstop -->
 
 ## Getting Started
 
@@ -311,7 +315,6 @@ const App = {
           client_id: '{{bundle.environment.CLIENT_ID}}',
           client_secret: '{{bundle.environment.CLIENT_SECRET}}',
           redirect_uri: '{{bundle.inputData.redirect_uri}}',
-          state: '{{bundle.inputData.state}}',
           grant_type: 'authorization_code'
         },
         headers: {

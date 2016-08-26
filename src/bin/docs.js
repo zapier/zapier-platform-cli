@@ -6,6 +6,7 @@ const path = require('path');
 
 const _ = require('lodash');
 
+const toc = require('markdown-toc');
 const litdoc = require('litdoc');
 
 const commands = require('../commands');
@@ -67,7 +68,7 @@ const buildReadme = () => {
 
   const lines = fs.readFileSync(readmeSrc, 'utf8').split('\n');
   const newLines = lines.map(maybeInsertSnippet).join('\n');
-  fs.writeFileSync(readmeDst, newLines);
+  fs.writeFileSync(readmeDst, toc.insert(newLines));
 };
 
 buildReadme();
