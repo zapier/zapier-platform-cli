@@ -373,8 +373,8 @@ zapier auth
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># make your folder</span>
-mkdir helloworld
-<span class="hljs-built_in">cd</span> helloworld
+mkdir zapier-example
+<span class="hljs-built_in">cd</span> zapier-example
 
 <span class="hljs-comment"># create the needed files from a template</span>
 zapier init --template=helloworld
@@ -387,7 +387,9 @@ npm install
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>You should now have a working local app. You can run several local commands to try it out.</p>
+      <blockquote>
+<p>Note: there are plenty of templates &amp; example apps to choose from! <a href="#example-apps">View all Example Apps here.</a></p>
+</blockquote><p>You should now have a working local app. You can run several local commands to try it out.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># validate the app</span>
@@ -409,7 +411,7 @@ zapier <span class="hljs-built_in">test</span>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># register and deploy your app &amp; version to Zapier</span>
-zapier register <span class="hljs-string">&quot;Hello World&quot;</span>
+zapier register <span class="hljs-string">&quot;Zapier Example&quot;</span>
 zapier deploy
 
 <span class="hljs-comment"># list your apps</span>
@@ -423,7 +425,7 @@ zapier versions
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>If you open the editor in Zapier, you should now see &quot;Hello World (1.0.0)&quot; listed and usable! We recommend using our built in <code>watch</code> command to iterate on the app.</p>
+      <p>If you open the editor in Zapier, you should now see &quot;Zapier Example (1.0.0)&quot; listed and usable! We recommend using our built in <code>watch</code> command to iterate on the app.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># watch and sync up your local app to zapier</span>
@@ -457,7 +459,7 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>In your <code>helloworld</code> folder, you should see this general structure. The <code>index.js</code> is Zapier&apos;s entry point to your app. Zapier expects you to export an <code>App</code> definition there.</p>
+      <p>In your <code>zapier-example</code> folder, you should see this general structure. The <code>index.js</code> is Zapier&apos;s entry point to your app. Zapier expects you to export an <code>App</code> definition there.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-plain">$ tree .
@@ -1587,13 +1589,14 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Check out the following example applications to help you get started:</p><ul>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-trigger">Trigger Example</a></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-search">Search Example</a></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-write">Write Example</a></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-resource">Resource Example</a></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-middleware">Middleware Example</a></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-basic-auth">Basic Auth Example</a></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-oauth2">OAuth2 Example</a></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-resource">Resource Example</a> - <code>zapier init --template=resource</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-trigger">Trigger Example</a> - <code>zapier init --template=trigger</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-search">Search Example</a> - <code>zapier init --template=search</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-write">Write Example</a> - <code>zapier init --template=write</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-middleware">Middleware Example</a> - <code>zapier init --template=middleware</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-basic-auth">Basic Auth Example</a> - <code>zapier init --template=basic-auth</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-custom-auth">Custom Auth Example</a> - <code>zapier init --template=custom-auth</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-oauth2">OAuth2 Example</a> - <code>zapier init --template=oauth2</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">

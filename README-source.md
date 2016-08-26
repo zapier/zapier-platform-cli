@@ -28,8 +28,8 @@ Your Zapier CLI should be installed and ready to go at this point. Next up, we'l
 
 ```bash
 # make your folder
-mkdir helloworld
-cd helloworld
+mkdir zapier-example
+cd zapier-example
 
 # create the needed files from a template
 zapier init --template=helloworld
@@ -37,6 +37,8 @@ zapier init --template=helloworld
 # install all the libraries needed for your app
 npm install
 ```
+
+> Note: there are plenty of templates & example apps to choose from! [View all Example Apps here.](#example-apps)
 
 You should now have a working local app. You can run several local commands to try it out.
 
@@ -56,7 +58,7 @@ Next, you'll probably want to register your app and upload your version to Zapie
 
 ```bash
 # register and deploy your app & version to Zapier
-zapier register "Hello World"
+zapier register "Zapier Example"
 zapier deploy
 
 # list your apps
@@ -66,7 +68,7 @@ zapier apps
 zapier versions
 ```
 
-If you open the editor in Zapier, you should now see "Hello World (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
+If you open the editor in Zapier, you should now see "Zapier Example (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
 
 ```bash
 # watch and sync up your local app to zapier
@@ -83,7 +85,7 @@ Don't forget you'll need to `zapier deploy` to make your changes stick after any
 
 ## Project Structure
 
-In your `helloworld` folder, you should see this general structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
+In your `zapier-example` folder, you should see this general structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
 
 ```plain
 $ tree .
@@ -479,10 +481,11 @@ zapier test --log-to-stdout --detailed-log-to-stdout
 
 Check out the following example applications to help you get started:
 
-* [Trigger Example](https://github.com/zapier/zapier-platform-example-app-trigger)
-* [Search Example](https://github.com/zapier/zapier-platform-example-app-search)
-* [Write Example](https://github.com/zapier/zapier-platform-example-app-write)
-* [Resource Example](https://github.com/zapier/zapier-platform-example-app-resource)
-* [Middleware Example](https://github.com/zapier/zapier-platform-example-app-middleware)
-* [Basic Auth Example](https://github.com/zapier/zapier-platform-example-app-basic-auth)
-* [OAuth2 Example](https://github.com/zapier/zapier-platform-example-app-oauth2)
+* [Resource Example](https://github.com/zapier/zapier-platform-example-app-resource) - `zapier init --template=resource`
+* [Trigger Example](https://github.com/zapier/zapier-platform-example-app-trigger) - `zapier init --template=trigger`
+* [Search Example](https://github.com/zapier/zapier-platform-example-app-search) - `zapier init --template=search`
+* [Write Example](https://github.com/zapier/zapier-platform-example-app-write) - `zapier init --template=write`
+* [Middleware Example](https://github.com/zapier/zapier-platform-example-app-middleware) - `zapier init --template=middleware`
+* [Basic Auth Example](https://github.com/zapier/zapier-platform-example-app-basic-auth) - `zapier init --template=basic-auth`
+* [Custom Auth Example](https://github.com/zapier/zapier-platform-example-app-custom-auth) - `zapier init --template=custom-auth`
+* [OAuth2 Example](https://github.com/zapier/zapier-platform-example-app-oauth2) - `zapier init --template=oauth2`
