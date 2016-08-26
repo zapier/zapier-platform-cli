@@ -39,7 +39,7 @@ const watch = (context) => {
     }});
   };
 
-  const reloadDefintion = () => {
+  const reloadDefinition = () => {
     return new Promise((resolve, reject) => {
       options.handler({command: 'definition'}, {}, (err, resp) => {
         utils.printDone();
@@ -54,13 +54,13 @@ const watch = (context) => {
       });
     });
   };
-  reloadDefintion();
+  reloadDefinition();
 
   nodeWatch(process.cwd(), {}, (filePath) => {
     const fileName = filePath.replace(process.cwd() + '/', '');
     utils.printStarting(`Reloading for ${fileName}`);
     resetHandler()
-      .then(reloadDefintion)
+      .then(reloadDefinition)
       .then(pingZapierForRPC);
   });
 

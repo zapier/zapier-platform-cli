@@ -21,6 +21,7 @@ const env = (context, version, key, value) => {
         utils.printDone();
         context.line();
         context.line('Environment updated! Try viewing it with `zapier env ${version}`.');
+        // TODO: touch index.js to reload watch?
         return;
       });
   }
