@@ -23,7 +23,7 @@ const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   }
   const appRaw = require(entryPath);
   const zapier = require(`${rootPath}/node_modules/${PLATFORM_PACKAGE}`);
-  const handler = zapier.exposeAppHandler(appRaw);
+  const handler = zapier.exposeApp(appRaw).handler;
   return (event, ctx, callback) => {
     event = _.merge({}, event, {
       calledFromCli: true,
