@@ -228,7 +228,7 @@ const App = {
       url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
     },
     fields: [
-      {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'}
+      {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'},
       {key: 'api_key', type: 'string', required: true, helpText: 'Found on your settings page.'}
     ]
   },
@@ -349,7 +349,7 @@ const Recipe = {
   create: {
       //...
   }
-}
+};
 
 ```
 
@@ -386,11 +386,11 @@ const Recipe = {
     },
     operation: {
       perform: {
-        url: `http://example.com/recipes`
+        url: 'http://example.com/recipes'
       }
     }
   }
-}
+};
 
 ```
 
@@ -411,7 +411,7 @@ const Recipe = {
     },
     operation: {
       perform: {
-        url: `http://example.com/recipes`,
+        url: 'http://example.com/recipes',
         method: 'POST',
         body: {
           name: 'Baked Falafel',
@@ -420,7 +420,7 @@ const Recipe = {
       }
     }
   }
-}
+};
 
 ```
 
@@ -449,14 +449,14 @@ const App = {
       display: {
         label: 'New Recipe',
         helpText: 'Triggers when a new recipe is added.'
-      }
+      },
       // `operation` implements the API call used to fetch the data
       operation: {
         url: 'http://example.com/recipes',
       }
     },
-    {
-      //... Another trigger
+    another_trigger: {
+      // Another trigger definition...
     }
   }
 };
@@ -500,7 +500,7 @@ const App = {
       operation: {
         // ...
         perform: {
-          method: 'GET'
+          method: 'GET',
           url: 'http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json',
           params: {
             sort_by: 'id',
@@ -624,6 +624,7 @@ const App = {
     }
   ]
   // ...
+};
 
 ```
 
@@ -734,7 +735,7 @@ const App = {
       operation: {
         // ...
         perform: {
-          url: 'http://example.com/api/v2/recipes.json'
+          url: 'http://example.com/api/v2/recipes.json',
           headers: {
             'my-header': '{{bundle.environment.MY_SECRET_VALUE}}'
           }

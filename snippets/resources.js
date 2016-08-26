@@ -10,4 +10,4 @@ const Recipe = {
   create: {
       //...
   }
-}
+};

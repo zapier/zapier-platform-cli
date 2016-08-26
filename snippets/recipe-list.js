@@ -7,8 +7,8 @@ const Recipe = {
     },
     operation: {
       perform: {
-        url: `http://example.com/recipes`
+        url: 'http://example.com/recipes'
       }
     }
   }
-}
+};

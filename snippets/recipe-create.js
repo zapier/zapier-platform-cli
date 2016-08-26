@@ -10,7 +10,7 @@ const Recipe = {
     },
     operation: {
       perform: {
-        url: `http://example.com/recipes`,
+        url: 'http://example.com/recipes',
         method: 'POST',
         body: {
           name: 'Baked Falafel',
@@ -19,4 +19,4 @@ const Recipe = {
       }
     }
   }
-}
+};

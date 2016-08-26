@@ -631,7 +631,7 @@ zapier watch
       url: <span class="hljs-string">&apos;https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json&apos;</span>
     },
     fields: [
-      {key: <span class="hljs-string">&apos;subdomain&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found in your browsers address bar after logging in.&apos;</span>}
+      {key: <span class="hljs-string">&apos;subdomain&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found in your browsers address bar after logging in.&apos;</span>},
       {key: <span class="hljs-string">&apos;api_key&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found on your settings page.&apos;</span>}
     ]
   },
@@ -800,7 +800,7 @@ read, and search operations on that resource.</p>
   create: {
       <span class="hljs-comment">//...</span>
   }
-}
+};
 </code></pre>
     </div>
   </div>
@@ -853,11 +853,11 @@ For now, let&apos;s focus on two:</p><ul>
     },
     operation: {
       perform: {
-        url: <span class="hljs-string">`http://example.com/recipes`</span>
+        url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>
       }
     }
   }
-}
+};
 </code></pre>
     </div>
   </div>
@@ -879,7 +879,7 @@ For now, let&apos;s focus on two:</p><ul>
     },
     operation: {
       perform: {
-        url: <span class="hljs-string">`http://example.com/recipes`</span>,
+        url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>,
         method: <span class="hljs-string">&apos;POST&apos;</span>,
         body: {
           name: <span class="hljs-string">&apos;Baked Falafel&apos;</span>,
@@ -888,7 +888,7 @@ For now, let&apos;s focus on two:</p><ul>
       }
     }
   }
-}
+};
 </code></pre>
     </div>
   </div>
@@ -931,14 +931,14 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       display: {
         label: <span class="hljs-string">&apos;New Recipe&apos;</span>,
         helpText: <span class="hljs-string">&apos;Triggers when a new recipe is added.&apos;</span>
-      }
+      },
       <span class="hljs-comment">// `operation` implements the API call used to fetch the data</span>
       operation: {
         url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>,
       }
     },
-    {
-      <span class="hljs-comment">//... Another trigger</span>
+    another_trigger: {
+      <span class="hljs-comment">// Another trigger definition...</span>
     }
   }
 };
@@ -1007,7 +1007,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       operation: {
         <span class="hljs-comment">// ...</span>
         perform: {
-          method: <span class="hljs-string">&apos;GET&apos;</span>
+          method: <span class="hljs-string">&apos;GET&apos;</span>,
           url: <span class="hljs-string">&apos;http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json&apos;</span>,
           params: {
             sort_by: <span class="hljs-string">&apos;id&apos;</span>,
@@ -1171,6 +1171,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     }
   ]
   <span class="hljs-comment">// ...</span>
+};
 </code></pre>
     </div>
   </div>
@@ -1356,7 +1357,7 @@ zapier env 1.0.0
       operation: {
         <span class="hljs-comment">// ...</span>
         perform: {
-          url: <span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>
+          url: <span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>,
           headers: {
             <span class="hljs-string">&apos;my-header&apos;</span>: <span class="hljs-string">&apos;{{bundle.environment.MY_SECRET_VALUE}}&apos;</span>
           }
