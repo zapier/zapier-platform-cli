@@ -342,9 +342,9 @@ The response object returned by `z.request()` supports the following fields and 
 
 * `status`: The response status code, i.e. `200`, `404`, etc.
 * `content`: The raw response body. For JSON you need to call `JSON.parse(response.content)`.
-* `request`: The original request options object (see above).
 * `headers`: Response headers object. The header keys are all lower case.
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
+* `options`: The original request options object (see above).
 
 ## Environment
 
