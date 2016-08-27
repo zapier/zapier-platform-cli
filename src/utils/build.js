@@ -47,7 +47,6 @@ const requiredFiles = (entryPoint) => {
         .toList({filename: entryPoint, directory: cwd})
         .map(filePath => stripPath(cwd, filePath));
       paths.sort();
-      console.log(paths);
       resolve(paths);
     } catch(err) {
       reject(err);
