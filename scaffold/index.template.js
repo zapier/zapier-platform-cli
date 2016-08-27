@@ -1,6 +1,6 @@
 const App = {
   version: require('./package.json').version,
-  platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
+  platformVersion: require('@zapier/zapier-platform-core').version,
 
   resources: {
   },

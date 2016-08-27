@@ -179,7 +179,7 @@ The core definition of your `App` will look something like this, and is what you
 const App = {
   // both version strings are required
   version: require('./package.json').version,
-  platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
+  platformVersion: require('@zapier/zapier-platform-core').version,
 
   // see "Authentication" section below
   authentication: {
