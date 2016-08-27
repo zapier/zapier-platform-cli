@@ -20,7 +20,7 @@
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib",
     "lint": "node_modules/.bin/eslint zapier.js src test",
     "lint-snippets": "node_modules/.bin/eslint snippets --rule 'no-unused-vars: 0'",
-    "test": "npm run build && node_modules/mocha/bin/mocha -t 10000 --recursive lib/tests && npm run lint && npm run lint-snippets",
+    "test": "npm run build && node_modules/mocha/bin/mocha -t 15000 --recursive lib/tests && npm run lint && npm run lint-snippets",
     "zapier": "zapier.js",
     "validate-templates": "./scripts/validate-app-templates.js"
   },
