@@ -41,7 +41,7 @@ const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 // could probably be done better with module-deps...
 // TODO: needs to include package.json files too i think
 //   https://github.com/serverless/serverless-optimizer-plugin?
-const browserifyFiles = (entryPoint) => {
+const requiredFiles = (entryPoint) => {
   const cwd = path.dirname(entryPoint) + '/';
   const argv = {
     noParse: [ undefined ],
@@ -113,7 +113,7 @@ const forceIncludeDumbPath = (filePath/*, smartPaths*/) => {
 
 const makeZip = (dir, zipPath) => {
   const entryPoint = path.join(dir, 'zapierwrapper.js');
-  return browserifyFiles(entryPoint)
+  return requiredFiles(entryPoint)
     .then((smartPaths) => Promise.all([
       smartPaths,
       listFiles(dir)
@@ -232,7 +232,7 @@ const buildAndUploadDir = (zipPath, appDir) => {
 };
 
 module.exports = {
-  browserifyFiles,
+  requiredFiles,
   listFiles,
   build,
   buildAndUploadDir,

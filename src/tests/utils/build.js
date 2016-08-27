@@ -10,7 +10,7 @@ const dir = path.dirname(entryPoint);
 describe('build', () => {
 
   it('should list only required files', (done) => {
-    build.browserifyFiles(entryPoint)
+    build.requiredFiles(entryPoint)
       .then((smartPaths) => {
         // check that only the two required lodash files are grabbed
         smartPaths
