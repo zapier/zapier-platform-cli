@@ -3,8 +3,8 @@ const crypto = require('crypto');
 const os = require('os');
 const path = require('path');
 
-const browserify = require('browserify');
-const through = require('through2');
+const dependencyTree = require('dependency-tree');
+
 const _ = require('lodash');
 const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
@@ -37,56 +37,25 @@ const {
 
 const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 
-// given an entry point, return a list of files that uses
-// could probably be done better with module-deps...
-// TODO: needs to include package.json files too i think
-//   https://github.com/serverless/serverless-optimizer-plugin?
+// Giving an entry point, build a list of all required js files.
 const requiredFiles = (entryPoint) => {
   const cwd = path.dirname(entryPoint) + '/';
-  const argv = {
-    noParse: [ undefined ],
-    extensions: [],
-    ignoreTransform: [],
-    entries: [entryPoint],
-    fullPaths: false,
-    builtins: false,
-    commondir: false,
-    bundleExternal: true,
-    basedir: undefined,
-    browserField: false,
-    detectGlobals: true,
-    insertGlobals: false,
-    insertGlobalVars: {
-      process: undefined,
-      global: undefined,
-      'Buffer.isBuffer': undefined,
-      Buffer: undefined
-    },
-    ignoreMissing: false,
-    debug: false,
-    standalone: undefined
-  };
-  const b = browserify(argv);
 
   return new Promise((resolve, reject) => {
-    b.on('error', reject);
-
-    const paths = [];
-    b.pipeline.get('deps')
-      .push(through.obj((row, enc, next) => {
-        const filePath = row.file || row.id;
-        // why does browserify add /private + filePath?
-        paths.push(stripPath(cwd, filePath));
-        next();
-      })
-      .on('end', () => {
-        paths.sort();
-        resolve(paths);
-      }));
-    b.bundle();
+    try {
+      const paths = dependencyTree
+        .toList({filename: entryPoint, directory: cwd})
+        .map(filePath => stripPath(cwd, filePath));
+      paths.sort();
+      console.log(paths);
+      resolve(paths);
+    } catch(err) {
+      reject(err);
+    }
   });
 };
 
+// Giving an dir, build a list of all sub files.
 const listFiles = (dir) => {
   return new Promise((resolve, reject) => {
     const paths = [];
@@ -112,7 +81,8 @@ const forceIncludeDumbPath = (filePath/*, smartPaths*/) => {
 };
 
 const makeZip = (dir, zipPath) => {
-  const entryPoint = path.join(dir, 'zapierwrapper.js');
+  // TODO: this entrypoint needs to be smarter now that we are lazy loading apps
+  const entryPoint = path.join(dir, 'index.js');
   return requiredFiles(entryPoint)
     .then((smartPaths) => Promise.all([
       smartPaths,
@@ -124,6 +94,7 @@ const makeZip = (dir, zipPath) => {
       }
       let finalPaths = smartPaths.concat(dumbPaths.filter(forceIncludeDumbPath, smartPaths));
       finalPaths = _.uniq(finalPaths);
+      finalPaths.push('zapierwrapper.js');
       finalPaths.sort();
       return finalPaths;
     })
