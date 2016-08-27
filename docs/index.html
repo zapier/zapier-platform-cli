@@ -551,7 +551,7 @@ npm install
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// both version strings are required</span>
   version: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./package.json&apos;</span>).version,
-  platformVersion: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./package.json&apos;</span>).dependencies[<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>],
+  platformVersion: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>).version,
 
   <span class="hljs-comment">// see &quot;Authentication&quot; section below</span>
   authentication: {
