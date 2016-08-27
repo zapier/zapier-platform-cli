@@ -87,7 +87,21 @@ Don't forget you'll need to `zapier deploy` to make your changes stick after any
 
 ## Creating an App
 
+> Tip: check the [Quickstart](#quickstart) if this is your first time using the platform!
+
 Creating an App can be done entirely locally and they are fairly simple Node.js apps using the standard Node environment and should be completely testable. However, a local app stays local until you `zapier register`.
+
+```bash
+# make your folder
+mkdir zapier-example
+cd zapier-example
+
+# create the needed files from a template
+zapier init --template=trigger
+
+# install all the libraries needed for your app
+npm install
+```
 
 If you'd like to manage your **local App**, use these commands:
 
@@ -135,7 +149,15 @@ The core definition of your `App` will look something like this, and is what you
 
 ## Registering an App
 
-Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.  
+Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.
+
+```bash
+# register your app
+zapier register "Zapier Example"
+
+# list your apps
+zapier apps
+```
 
 If you'd like to manage your **App**, use these commands:
 
@@ -150,6 +172,20 @@ If you'd like to manage your **App**, use these commands:
 ## Deploying an App Version
 
 An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can "promote" it to production for use by over 1 million Zapier users.
+
+```bash
+# deploy your app version to Zapier
+zapier deploy
+
+# list your versions
+zapier versions
+
+# watch and sync up your local app to zapier
+zapier watch
+
+# now make changes locally, and see them reflected live in Zapier
+# method calls will also be proxied and logged to stdout for convenience
+```
 
 If you'd like to manage your **Version**, use these commands:
 

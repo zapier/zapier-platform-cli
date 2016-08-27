@@ -465,7 +465,27 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Creating an App can be done entirely locally and they are fairly simple Node.js apps using the standard Node environment and should be completely testable. However, a local app stays local until you <code>zapier register</code>.</p><p>If you&apos;d like to manage your <strong>local App</strong>, use these commands:</p><ul>
+      <blockquote>
+<p>Tip: check the <a href="#quickstart">Quickstart</a> if this is your first time using the platform!</p>
+</blockquote><p>Creating an App can be done entirely locally and they are fairly simple Node.js apps using the standard Node environment and should be completely testable. However, a local app stays local until you <code>zapier register</code>.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># make your folder</span>
+mkdir zapier-example
+<span class="hljs-built_in">cd</span> zapier-example
+
+<span class="hljs-comment"># create the needed files from a template</span>
+zapier init --template=trigger
+
+<span class="hljs-comment"># install all the libraries needed for your app</span>
+npm install
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>If you&apos;d like to manage your <strong>local App</strong>, use these commands:</p><ul>
 <li><code>zapier init --template=resource</code> - initialize/start a local app project</li>
 <li><code>zapier scaffold resource Contact</code> - auto-injects a new resource, trigger, etc.</li>
 <li><code>zapier test</code> - run the same tests as <code>npm test</code></li>
@@ -585,7 +605,21 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.  </p><p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
+      <p>Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># register your app</span>
+zapier register <span class="hljs-string">&quot;Zapier Example&quot;</span>
+
+<span class="hljs-comment"># list your apps</span>
+zapier apps
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
 <li><code>zapier apps</code> - list the apps in Zapier you can administer</li>
 <li><code>zapier register &quot;Name&quot;</code> - creates a new app in Zapier</li>
 <li><code>zapier link</code> - lists and links a selected app in Zapier to your current folder</li>
@@ -610,7 +644,27 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>An App Version is related to a specific App but is an &quot;immutable&quot; implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can &quot;promote&quot; it to production for use by over 1 million Zapier users.</p><p>If you&apos;d like to manage your <strong>Version</strong>, use these commands:</p><ul>
+      <p>An App Version is related to a specific App but is an &quot;immutable&quot; implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can &quot;promote&quot; it to production for use by over 1 million Zapier users.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># deploy your app version to Zapier</span>
+zapier deploy
+
+<span class="hljs-comment"># list your versions</span>
+zapier versions
+
+<span class="hljs-comment"># watch and sync up your local app to zapier</span>
+zapier watch
+
+<span class="hljs-comment"># now make changes locally, and see them reflected live in Zapier</span>
+<span class="hljs-comment"># method calls will also be proxied and logged to stdout for convenience</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>If you&apos;d like to manage your <strong>Version</strong>, use these commands:</p><ul>
 <li><code>zapier versions</code> - list the versions for the current directory&apos;s app</li>
 <li><code>zapier deploy</code> - deploy the current version the of current directory&apos;s app &amp; version (read from <code>package.json</code>)</li>
 <li><code>zapier promote [1.0.0]</code> - mark a version as the &quot;production&quot; version</li>
