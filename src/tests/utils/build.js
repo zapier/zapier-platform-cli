@@ -13,7 +13,6 @@ describe('build', () => {
     build.browserifyFiles(entryPoint)
       .then((smartPaths) => {
         // check that only the two required lodash files are grabbed
-        console.log(smartPaths);
         smartPaths
           .filter(filePath => filePath.indexOf('node_modules/lodash') === 0)
           .length.should.eql(2);
