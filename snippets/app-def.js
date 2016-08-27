@@ -4,20 +4,28 @@ const App = {
   platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
 
   // see "Authentication" section below
-  authentication: {},
+  authentication: {
+  },
 
   // see "Making HTTP Requests" section below
-  requestTemplate: {},
-  beforeRequest: [],
-  afterResponse: [],
+  requestTemplate: {
+  },
+  beforeRequest: [
+  ],
+  afterResponse: [
+  ],
 
   // See "Resources" section below
-  resources: {},
+  resources: {
+  },
 
   // See "Triggers/Searches/Writes" section below
-  triggers: {},
-  searches: {},
-  writes: {}
+  triggers: {
+  },
+  searches: {
+  },
+  writes: {
+  }
 };
 
 module.export = App;

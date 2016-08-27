@@ -200,12 +200,14 @@ blockquote {
   <body>
     <div class="docs-toc">
       <ul>
-<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#quickstart">Quickstart</a></li>
+<li><a href="#creating-an-app">Creating an App</a><ul>
 <li><a href="#project-structure">Project Structure</a></li>
-<li><a href="#apps--versions-overview">Apps &amp; Versions Overview</a><ul>
 <li><a href="#app-definition">App Definition</a></li>
 </ul>
 </li>
+<li><a href="#registering-an-app">Registering an App</a></li>
+<li><a href="#deploying-an-app-version">Deploying an App Version</a></li>
 <li><a href="#authentication">Authentication</a><ul>
 <li><a href="#basic">Basic</a></li>
 <li><a href="#custom">Custom</a></li>
@@ -285,12 +287,14 @@ blockquote {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <ul>
-<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#quickstart">Quickstart</a></li>
+<li><a href="#creating-an-app">Creating an App</a><ul>
 <li><a href="#project-structure">Project Structure</a></li>
-<li><a href="#apps--versions-overview">Apps &amp; Versions Overview</a><ul>
 <li><a href="#app-definition">App Definition</a></li>
 </ul>
 </li>
+<li><a href="#registering-an-app">Registering an App</a></li>
+<li><a href="#deploying-an-app-version">Deploying an App Version</a></li>
 <li><a href="#authentication">Authentication</a><ul>
 <li><a href="#basic">Basic</a></li>
 <li><a href="#custom">Custom</a></li>
@@ -341,7 +345,7 @@ blockquote {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="getting-started">Getting Started</h2>
+      <h2 id="quickstart">Quickstart</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -410,12 +414,14 @@ zapier <span class="hljs-built_in">test</span>
       <p>Next, you&apos;ll probably want to register your app and upload your version to Zapier itself so you can start testing live.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># register and deploy your app &amp; version to Zapier</span>
+      <pre><code class="lang-bash"><span class="hljs-comment"># register your app</span>
 zapier register <span class="hljs-string">&quot;Zapier Example&quot;</span>
-zapier deploy
 
 <span class="hljs-comment"># list your apps</span>
 zapier apps
+
+<span class="hljs-comment"># deploy your app version to Zapier</span>
+zapier deploy
 
 <span class="hljs-comment"># list your versions</span>
 zapier versions
@@ -450,7 +456,7 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="project-structure">Project Structure</h2>
+      <h2 id="creating-an-app">Creating an App</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -459,7 +465,31 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>In your <code>zapier-example</code> folder, you should see this general structure. The <code>index.js</code> is Zapier&apos;s entry point to your app. Zapier expects you to export an <code>App</code> definition there.</p>
+      <p>Creating an App can be done entirely locally and they are fairly simple Node.js apps using the standard Node environment and should be completely testable. However, a local app stays local until you <code>zapier register</code>.</p><p>If you&apos;d like to manage your <strong>local App</strong>, use these commands:</p><ul>
+<li><code>zapier init --template=resource</code> - initialize/start a local app project</li>
+<li><code>zapier scaffold resource Contact</code> - auto-injects a new resource, trigger, etc.</li>
+<li><code>zapier test</code> - run the same tests as <code>npm test</code></li>
+<li><code>zapier validate</code> - ensure your app is valid</li>
+<li><code>zapier describe</code> - print some helpful information about your app</li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="project-structure">Project Structure</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>In your app&apos;s folder, you should see this general recommended structure. The <code>index.js</code> is Zapier&apos;s entry point to your app. Zapier expects you to export an <code>App</code> definition there.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-plain">$ tree .
@@ -467,50 +497,20 @@ zapier watch
 &#x251C;&#x2500;&#x2500; README.md
 &#x251C;&#x2500;&#x2500; index.js
 &#x251C;&#x2500;&#x2500; package.json
+&#x251C;&#x2500;&#x2500; triggers
+&#x2502;   &#x2514;&#x2500;&#x2500; contact-by-tag.js
+&#x251C;&#x2500;&#x2500; resources
+&#x2502;   &#x2514;&#x2500;&#x2500; Contact.js
 &#x251C;&#x2500;&#x2500; test
 &#x2502;   &#x251C;&#x2500;&#x2500; basic.js
-&#x2502;   &#x2514;&#x2500;&#x2500; triggers.js
+&#x2502;   &#x251C;&#x2500;&#x2500; triggers.js
+&#x2502;   &#x2514;&#x2500;&#x2500; resources.js
 &#x251C;&#x2500;&#x2500; build
 &#x2502;   &#x2514;&#x2500;&#x2500; build.zip
 &#x2514;&#x2500;&#x2500; node_modules
     &#x251C;&#x2500;&#x2500; ...
     &#x2514;&#x2500;&#x2500; ...
 </code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="apps-versions-overview">Apps &amp; Versions Overview</h2>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>In Zapier&apos;s Platform there are two primary records you&apos;ll interact with via the CLI:</p><ul>
-<li><strong>App</strong> - the base record that defines your App, named like &quot;Joe&apos;s CRM&quot;. Most people have one of these.</li>
-<li><strong>Version</strong> - a distinct implementation of an App, named like &quot;1.0.0&quot;. Most people have many of these.</li>
-</ul><p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
-<li><code>zapier apps</code> - list the apps in Zapier you can administer</li>
-<li><code>zapier register &quot;Name&quot;</code> - creates a new app in Zapier</li>
-<li><code>zapier link</code> - lists and links a selected app in Zapier to your current folder</li>
-<li><code>zapier history</code> - print the history of your app</li>
-</ul><p>If you&apos;d like to manage your <strong>Version</strong>, use these commands:</p><ul>
-<li><code>zapier versions</code> - list the versions for the current directory&apos;s app</li>
-<li><code>zapier deploy</code> - deploy the current version the of current directory&apos;s app &amp; version (read from <code>package.json</code>)</li>
-<li><code>zapier promote [1.0.0]</code> - mark a version as the &quot;production&quot; version</li>
-<li><code>zapier migrate [1.0.0] [1.0.1] [100%]</code> - move users between versions, regardless of deployment status</li>
-<li><code>zapier deprecate [1.0.0] [YYYY-MM-DD]</code> - mark a version as deprecated, but let users continue to use it (we&apos;ll email them)</li>
-<li><code>zapier env 1.0.0 [KEY] [value]</code> - set an environment variable to some value</li>
-</ul><blockquote>
-<p>Note: there is a distinction between your <em>local</em> environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you <code>zapier promote</code> (even changes deployed by <code>zapier watch</code>). Likewise, deploying one version will not impact other versions - they are completely isolated.</p>
-</blockquote>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
     </div>
   </div>
 </div><div class="row">
@@ -534,24 +534,94 @@ zapier watch
   platformVersion: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./package.json&apos;</span>).dependencies[<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>],
 
   <span class="hljs-comment">// see &quot;Authentication&quot; section below</span>
-  authentication: {},
+  authentication: {
+  },
 
   <span class="hljs-comment">// see &quot;Making HTTP Requests&quot; section below</span>
-  requestTemplate: {},
-  beforeRequest: [],
-  afterResponse: [],
+  requestTemplate: {
+  },
+  beforeRequest: [
+  ],
+  afterResponse: [
+  ],
 
   <span class="hljs-comment">// See &quot;Resources&quot; section below</span>
-  resources: {},
+  resources: {
+  },
 
   <span class="hljs-comment">// See &quot;Triggers/Searches/Writes&quot; section below</span>
-  triggers: {},
-  searches: {},
-  writes: {}
+  triggers: {
+  },
+  searches: {
+  },
+  writes: {
+  }
 };
 
 <span class="hljs-built_in">module</span>.export = App;
 </code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <blockquote>
+<p>Tip: you can use higher order functions to create any part of your App definition!</p>
+</blockquote>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="registering-an-app">Registering an App</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.  </p><p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
+<li><code>zapier apps</code> - list the apps in Zapier you can administer</li>
+<li><code>zapier register &quot;Name&quot;</code> - creates a new app in Zapier</li>
+<li><code>zapier link</code> - lists and links a selected app in Zapier to your current folder</li>
+<li><code>zapier history</code> - print the history of your app</li>
+<li><code>zapier collaborate [user@example.com]</code> - add admins to your app who can deploy</li>
+<li><code>zapier invite [user@example.com]</code> - add users to try your app before promotion</li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="deploying-an-app-version">Deploying an App Version</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>An App Version is related to a specific App but is an &quot;immutable&quot; implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can &quot;promote&quot; it to production for use by over 1 million Zapier users.</p><p>If you&apos;d like to manage your <strong>Version</strong>, use these commands:</p><ul>
+<li><code>zapier versions</code> - list the versions for the current directory&apos;s app</li>
+<li><code>zapier deploy</code> - deploy the current version the of current directory&apos;s app &amp; version (read from <code>package.json</code>)</li>
+<li><code>zapier promote [1.0.0]</code> - mark a version as the &quot;production&quot; version</li>
+<li><code>zapier migrate [1.0.0] [1.0.1] [100%]</code> - move users between versions, regardless of deployment status</li>
+<li><code>zapier deprecate [1.0.0] [YYYY-MM-DD]</code> - mark a version as deprecated, but let users continue to use it (we&apos;ll email them)</li>
+<li><code>zapier env 1.0.0 [KEY] [value]</code> - set an environment variable to some value</li>
+<li><code>zapier watch</code> - continuously sync your app to the Zapier interface, creating a fast feedback loop</li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
     </div>
   </div>
 </div><div class="row">

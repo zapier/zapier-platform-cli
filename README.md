@@ -6,10 +6,12 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 <!-- toc -->
 
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Apps & Versions Overview](#apps--versions-overview)
+- [Quickstart](#quickstart)
+- [Creating an App](#creating-an-app)
+  * [Project Structure](#project-structure)
   * [App Definition](#app-definition)
+- [Registering an App](#registering-an-app)
+- [Deploying an App Version](#deploying-an-app-version)
 - [Authentication](#authentication)
   * [Basic](#basic)
   * [Custom](#custom)
@@ -40,7 +42,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 <!-- tocstop -->
 
-## Getting Started
+## Quickstart
 
 > The Zapier CLI and Platform requires Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
 
@@ -90,12 +92,14 @@ zapier test
 Next, you'll probably want to register your app and upload your version to Zapier itself so you can start testing live.
 
 ```bash
-# register and deploy your app & version to Zapier
+# register your app
 zapier register "Zapier Example"
-zapier deploy
 
 # list your apps
 zapier apps
+
+# deploy your app version to Zapier
+zapier deploy
 
 # list your versions
 zapier versions
@@ -116,9 +120,21 @@ Don't forget you'll need to `zapier deploy` to make your changes stick after any
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
 
-## Project Structure
+## Creating an App
 
-In your `zapier-example` folder, you should see this general structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
+Creating an App can be done entirely locally and they are fairly simple Node.js apps using the standard Node environment and should be completely testable. However, a local app stays local until you `zapier register`.
+
+If you'd like to manage your **local App**, use these commands:
+
+* `zapier init --template=resource` - initialize/start a local app project
+* `zapier scaffold resource Contact` - auto-injects a new resource, trigger, etc.
+* `zapier test` - run the same tests as `npm test`
+* `zapier validate` - ensure your app is valid
+* `zapier describe` - print some helpful information about your app
+
+### Project Structure
+
+In your app's folder, you should see this general recommended structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
 
 ```plain
 $ tree .
@@ -126,41 +142,20 @@ $ tree .
 ├── README.md
 ├── index.js
 ├── package.json
+├── triggers
+│   └── contact-by-tag.js
+├── resources
+│   └── Contact.js
 ├── test
 │   ├── basic.js
-│   └── triggers.js
+│   ├── triggers.js
+│   └── resources.js
 ├── build
 │   └── build.zip
 └── node_modules
     ├── ...
     └── ...
 ```
-
-
-## Apps & Versions Overview
-
-In Zapier's Platform there are two primary records you'll interact with via the CLI:
-
-* **App** - the base record that defines your App, named like "Joe's CRM". Most people have one of these.
-* **Version** - a distinct implementation of an App, named like "1.0.0". Most people have many of these.
-
-If you'd like to manage your **App**, use these commands:
-
-* `zapier apps` - list the apps in Zapier you can administer
-* `zapier register "Name"` - creates a new app in Zapier
-* `zapier link` - lists and links a selected app in Zapier to your current folder
-* `zapier history` - print the history of your app
-
-If you'd like to manage your **Version**, use these commands:
-
-* `zapier versions` - list the versions for the current directory's app
-* `zapier deploy` - deploy the current version the of current directory's app & version (read from `package.json`)
-* `zapier promote [1.0.0]` - mark a version as the "production" version
-* `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
-* `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
-* `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
-
-> Note: there is a distinction between your _local_ environment and what is deployed to Zapier - you could have many versions deployed with users on each. Making changes locally never impacts users until you `zapier promote` (even changes deployed by `zapier watch`). Likewise, deploying one version will not impact other versions - they are completely isolated.
 
 ### App Definition
 
@@ -173,25 +168,65 @@ const App = {
   platformVersion: require('./package.json').dependencies['@zapier/zapier-platform-core'],
 
   // see "Authentication" section below
-  authentication: {},
+  authentication: {
+  },
 
   // see "Making HTTP Requests" section below
-  requestTemplate: {},
-  beforeRequest: [],
-  afterResponse: [],
+  requestTemplate: {
+  },
+  beforeRequest: [
+  ],
+  afterResponse: [
+  ],
 
   // See "Resources" section below
-  resources: {},
+  resources: {
+  },
 
   // See "Triggers/Searches/Writes" section below
-  triggers: {},
-  searches: {},
-  writes: {}
+  triggers: {
+  },
+  searches: {
+  },
+  writes: {
+  }
 };
 
 module.export = App;
 
 ```
+
+> Tip: you can use higher order functions to create any part of your App definition!
+
+
+## Registering an App
+
+Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.  
+
+If you'd like to manage your **App**, use these commands:
+
+* `zapier apps` - list the apps in Zapier you can administer
+* `zapier register "Name"` - creates a new app in Zapier
+* `zapier link` - lists and links a selected app in Zapier to your current folder
+* `zapier history` - print the history of your app
+* `zapier collaborate [user@example.com]` - add admins to your app who can deploy
+* `zapier invite [user@example.com]` - add users to try your app before promotion
+
+
+## Deploying an App Version
+
+An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can "promote" it to production for use by over 1 million Zapier users.
+
+If you'd like to manage your **Version**, use these commands:
+
+* `zapier versions` - list the versions for the current directory's app
+* `zapier deploy` - deploy the current version the of current directory's app & version (read from `package.json`)
+* `zapier promote [1.0.0]` - mark a version as the "production" version
+* `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
+* `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
+* `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
+* `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
+
 
 ## Authentication
 
