@@ -32,7 +32,6 @@ const {
 
 const {
   runCommand,
-  makePromise,
 } = require('./misc');
 
 const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
@@ -116,14 +115,19 @@ const makeZip = (dir, zipPath) => {
 // Similar to utils.appCommand, but given a ready to go app
 // with a different location and ready to go zapierwrapper.js.
 const _appCommandZapierWrapper = (dir, event) => {
-  const entry = require(`${dir}/zapierwrapper.js`);
-  const promise = makePromise();
+  const app = require(`${dir}/zapierwrapper.js`);
   event = Object.assign({}, event, {
     calledFromCli: true,
-    doNotMonkeyPatchPromises: true // can drop this
   });
-  entry.handler(event, {}, promise.callback);
-  return promise;
+  return new Promise((resolve, reject) => {
+    app.handler(event, {}, (err, resp) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(resp);
+      }
+    });
+  });
 };
 
 const build = (zipPath, wdir) => {

@@ -6,7 +6,6 @@ const jayson = require('jayson');
 const {PLATFORM_PACKAGE} = require('../constants');
 
 const {prettyJSONstringify} = require('./display');
-const {makePromise} = require('./misc');
 const {promisify} = require('./promisify');
 
 const makeTunnelUrl = promisify(require('ngrok').connect);
@@ -35,9 +34,15 @@ const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
 // Runs a local app command (./index.js) like {command: 'validate'};
 const localAppCommand = (event) => {
   const handler = getLocalAppHandler();
-  const promise = makePromise();
-  handler(event, {}, (err, resp) => promise.callback(err, resp.results));
-  return promise;
+  return new Promise((resolve, reject) => {
+    handler(event, {}, (err, resp) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(resp.results);
+      }
+    });
+  });
 };
 
 // Stands up a local RPC server for app commands.

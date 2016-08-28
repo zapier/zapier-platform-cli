@@ -10,23 +10,6 @@ const {PLATFORM_PACKAGE} = require('../constants');
 const camelCase = (str) => _.capitalize(_.camelCase(str));
 const snakeCase = (str) => _.snakeCase(str);
 
-// Returns a promise that assists "callback to promise" conversions.
-const makePromise = () => {
-  let resolve, reject;
-  const promise = new Promise((rs, rj) => {
-    resolve = rs;
-    reject = rj;
-  });
-  promise.callback = (err, ...args) => {
-    if (err) {
-      reject(err);
-    } else {
-      resolve(...args);
-    }
-  };
-  return promise;
-};
-
 // Run a bash command with a promise.
 const runCommand = (command, args, options) => {
   options = options || {};
@@ -151,7 +134,6 @@ const promiseForever = (action, delay = 1000) => {
 module.exports = {
   camelCase,
   snakeCase,
-  makePromise,
   runCommand,
   isValidNodeVersion,
   isValidAppInstall,
