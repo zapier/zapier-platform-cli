@@ -39,7 +39,6 @@ const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 // Giving an entry point, build a list of all required js files.
 const requiredFiles = (entryPoint) => {
   const cwd = path.dirname(entryPoint) + '/';
-
   return new Promise((resolve, reject) => {
     try {
       const paths = dependencyTree
