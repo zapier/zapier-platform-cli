@@ -35,17 +35,20 @@ const {
 
 const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 
-// given an entry point, return a list of files that uses
+// given entry points in a directory, return a list of files that uses
 // could probably be done better with module-deps...
 // TODO: needs to include package.json files too i think
 //   https://github.com/serverless/serverless-optimizer-plugin?
-const requiredFiles = (entryPoint) => {
-  const cwd = path.dirname(entryPoint) + '/';
+const requiredFiles = (cwd, entryPoints) => {
+  if (!cwd.match(/\/$/)) {
+    cwd += '/';
+  }
+
   const argv = {
     noParse: [ undefined ],
     extensions: [],
     ignoreTransform: [],
-    entries: [entryPoint],
+    entries: entryPoints,
     fullPaths: false,
     builtins: false,
     commondir: false,
@@ -110,8 +113,12 @@ const forceIncludeDumbPath = (filePath/*, smartPaths*/) => {
 };
 
 const makeZip = (dir, zipPath) => {
-  const entryPoint = path.join(dir, 'zapierwrapper.js');
-  return requiredFiles(entryPoint)
+  const entryPoints = [
+    path.resolve(dir, 'zapierwrapper.js'),
+    path.resolve(dir, 'index.js')
+  ];
+
+  return requiredFiles(dir, entryPoints)
     .then((smartPaths) => Promise.all([
       smartPaths,
       listFiles(dir)
@@ -167,7 +174,8 @@ const _appCommandZapierWrapper = (dir, event) => {
 const build = (zipPath, wdir) => {
   wdir = wdir || process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
-  const tmpDir = path.join(os.tmpdir(), 'zapier-' + crypto.randomBytes(4).toString('hex'));
+  const osTmpDir = fse.realpathSync(os.tmpdir());
+  const tmpDir = path.join(osTmpDir, 'zapier-' + crypto.randomBytes(4).toString('hex'));
   return ensureDir(tmpDir)
     .then(() => {
       printStarting('Copying project to temp directory');

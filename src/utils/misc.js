@@ -134,7 +134,8 @@ const promiseForever = (action, delay = 1000) => {
 /* Return full path to entry point file as specified in package.json (ie "index.js") */
 const entryPoint = (dir) => {
   dir = dir || process.cwd();
-  return require(path.join(dir, 'package.json')).main;
+  const packageJson = require(path.resolve(dir, 'package.json'));
+  return fse.realpathSync(path.resolve(dir, packageJson.main));
 };
 
 module.exports = {
