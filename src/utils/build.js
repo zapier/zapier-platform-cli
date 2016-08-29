@@ -93,6 +93,11 @@ const makeZip = (dir, zipPath) => {
       finalPaths = _.uniq(finalPaths);
       finalPaths.push('zapierwrapper.js');
       finalPaths.sort();
+      if (global.argOpts.debug) {
+        console.log('\nZip files:');
+        finalPaths.map(filePath => console.log(`  ${filePath}`));
+        console.log('');
+      }
       return finalPaths;
     })
     .then((paths) => {
