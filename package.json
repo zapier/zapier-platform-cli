@@ -27,9 +27,9 @@
   "dependencies": {
     "adm-zip": "0.4.7",
     "babel-polyfill": "6.9.1",
+    "browserify": "13.0.1",
     "cli-table2": "0.2.0",
     "colors": "1.1.2",
-    "dependency-tree": "5.5.0",
     "fs-extra": "0.30.0",
     "jayson": "2.0.2",
     "lodash": "4.13.1",
@@ -37,6 +37,7 @@
     "node-fetch": "1.6.0",
     "node-watch": "0.4.0",
     "string-length": "1.0.1",
+    "through2": "2.0.1",
     "tmp": "0.0.28"
   },
   "devDependencies": {
