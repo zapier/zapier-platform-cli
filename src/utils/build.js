@@ -50,7 +50,7 @@ const requiredFiles = (entryPoint) => {
     builtins: false,
     commondir: false,
     bundleExternal: true,
-    basedir: undefined,
+    basedir: cwd,
     browserField: false,
     detectGlobals: true,
     insertGlobals: false,
