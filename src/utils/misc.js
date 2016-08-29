@@ -131,6 +131,12 @@ const promiseForever = (action, delay = 1000) => {
   return loop();
 };
 
+/* Return full path to entry point file as specified in package.json (ie "index.js") */
+const entryPoint = (dir) => {
+  dir = dir || process.cwd();
+  return require(path.join(dir, 'package.json')).main;
+};
+
 module.exports = {
   camelCase,
   snakeCase,
@@ -139,5 +145,6 @@ module.exports = {
   isValidAppInstall,
   npmInstall,
   promiseDoWhile,
-  promiseForever
+  promiseForever,
+  entryPoint
 };
