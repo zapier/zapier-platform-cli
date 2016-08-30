@@ -797,6 +797,8 @@ const App = {
 
 ## Logging
 
+TODO: describe rough logging outline.
+
 ### Log Statements
 
 To manually print a log statement in your code, use `z.console`:
