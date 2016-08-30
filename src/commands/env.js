@@ -2,14 +2,17 @@ const fs = require('fs');
 const utils = require('../utils');
 
 const env = (context, version, key, value) => {
-  if (value !== undefined) {
+  if (value !== undefined || global.argOpts.remove) {
     key = key.toUpperCase();
     return utils.checkCredentials()
       .then(() => utils.getLinkedApp())
       .then((app) => {
         const url = '/apps/' + app.id + '/versions/' + version + '/environment';
         context.line(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
-        utils.printStarting(`Setting ${key} to "${value}"`);
+
+        const msg = global.argOpts.remove ? `Deleting ${key}` : `Setting ${key} to "${value}"`;
+        utils.printStarting(msg);
+
         return utils.callAPI(url, {
           method: 'PUT',
           body: {
@@ -47,9 +50,11 @@ const env = (context, version, key, value) => {
 env.argsSpec = [
   {name: 'version', example: '1.0.0', required: true, help: 'the app version\'s environment to work on'},
   {name: 'key', example: 'CLIENT_SECRET', help: 'the uppercase key of the environment variable to set'},
-  {name: 'value', example: '12345', requiredWith: ['key'], help: 'the raw value to set to the key'},
+  {name: 'value', example: '12345', help: 'the raw value to set to the key'},
 ];
-env.argOptsSpec = {};
+env.argOptsSpec = {
+  remove: {flag: true, help: 'optionally remove environment variable with this key'}
+};
 env.help = 'Read and write environment variables.';
 env.example = 'zapier env 1.0.0 CLIENT_SECRET 12345';
 env.docs = `\
