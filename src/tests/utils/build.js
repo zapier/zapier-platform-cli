@@ -17,7 +17,7 @@ describe('build', () => {
         // check that only the required lodash files are grabbed
         smartPaths
           .filter(filePath => filePath.indexOf('node_modules/lodash') === 0)
-          .length.should.eql(1);
+          .length.should.be.within(0, 2);
         smartPaths.should.containEql('node_modules/lodash/lodash.js');
         smartPaths.should.containEql('lib/commands/init.js');
         smartPaths.should.not.containEql('src/commands/init.js');
@@ -33,7 +33,7 @@ describe('build', () => {
         // check that way more than the required lodash files are grabbed
         dumbPaths
           .filter(filePath => filePath.indexOf('node_modules/lodash') === 0)
-          .length.should.not.eql(1);
+          .length.should.be.within(800, 1200);
         dumbPaths.should.containEql('node_modules/lodash/lodash.js');
         dumbPaths.should.containEql('lib/commands/init.js');
         dumbPaths.should.containEql('src/commands/init.js');
