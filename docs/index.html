@@ -372,9 +372,6 @@ blockquote {
       <pre><code class="lang-bash"><span class="hljs-comment"># install the CLI globally</span>
 npm install -g @zapier/zapier-platform-cli
 
-<span class="hljs-comment"># print all the commands</span>
-zapier <span class="hljs-built_in">help</span>
-
 <span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key. To obtain a key, email partner@zapier.com</span>
 zapier auth
 </code></pre>
@@ -406,13 +403,7 @@ npm install
 </blockquote><p>You should now have a working local app. You can run several local commands to try it out.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># validate the app</span>
-zapier validate
-
-<span class="hljs-comment"># describe the app</span>
-zapier describe
-
-<span class="hljs-comment"># run the local tests</span>
+      <pre><code class="lang-bash"><span class="hljs-comment"># run the local tests</span>
 <span class="hljs-comment"># the same as npm test</span>
 zapier <span class="hljs-built_in">test</span>
 </code></pre>
@@ -427,14 +418,8 @@ zapier <span class="hljs-built_in">test</span>
       <pre><code class="lang-bash"><span class="hljs-comment"># register your app</span>
 zapier register <span class="hljs-string">&quot;Zapier Example&quot;</span>
 
-<span class="hljs-comment"># list your apps</span>
-zapier apps
-
 <span class="hljs-comment"># deploy your app version to Zapier</span>
 zapier deploy
-
-<span class="hljs-comment"># list your versions</span>
-zapier versions
 </code></pre>
     </div>
   </div>
