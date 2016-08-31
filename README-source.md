@@ -65,7 +65,7 @@ zapier watch
 # method calls will also be proxied and logged to stdout for convenience
 ```
 
-Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session!
+Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session ends!
 
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
