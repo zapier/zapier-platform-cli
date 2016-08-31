@@ -31,7 +31,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Using HTTP middleware](#using-http-middleware)
   * [HTTP Request Options](#http-request-options)
   * [HTTP Response Object](#http-response-object)
-- [`z` object](#z-object)
+- [Z Object](#z-object)
 - [Bundle Object](#bundle-object)
 - [Environment](#environment)
   * [Defining Environment Variables](#defining-environment-variables)
@@ -795,12 +795,12 @@ The response object returned by `z.request()` supports the following fields and 
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 * `options`: The original request options object (see above).
 
-## `z` object
+## Z Object
 
 We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
 
-* `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Request](## Making HTTP Requests)
-* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests.
+* `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Requests](#making-http-requests).
+* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#log-statements)
 * `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
 * `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
 errors
