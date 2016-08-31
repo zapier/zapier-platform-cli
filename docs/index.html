@@ -237,6 +237,8 @@ blockquote {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
+<li><a href="#z-object"><code>z</code> object</a></li>
+<li><a href="#bundle-object">Bundle Object</a></li>
 <li><a href="#environment">Environment</a><ul>
 <li><a href="#defining-environment-variables">Defining Environment Variables</a></li>
 <li><a href="#accessing-environment-variables">Accessing Environment Variables</a></li>
@@ -329,6 +331,8 @@ blockquote {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
+<li><a href="#z-object"><code>z</code> object</a></li>
+<li><a href="#bundle-object">Bundle Object</a></li>
 <li><a href="#environment">Environment</a><ul>
 <li><a href="#defining-environment-variables">Defining Environment Variables</a></li>
 <li><a href="#accessing-environment-variables">Accessing Environment Variables</a></li>
@@ -1450,6 +1454,66 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 <li><code>headers</code>: Response headers object. The header keys are all lower case.</li>
 <li><code>getHeader</code>: Retrieve response header, case insensitive: <code>response.getHeader(&apos;My-Header&apos;)</code></li>
 <li><code>options</code>: The original request options object (see above).</li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="-z-object"><code>z</code> object</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument in all function calls in your app.</p><ul>
+<li><code>request</code>: make an HTTP request, see &quot;Making HTTP Requests&quot; above. See <a href="## Making HTTP Requests">Making HTTP Request</a></li>
+<li><code>console</code>: logging console, similar to Nodejs <code>console</code> but logs remotely, as well as to stdout in tests.</li>
+<li><code>JSON</code>: similar API to JSON built in but catches errors with nicer tracebacks.</li>
+<li><code>hash</code>: Helpful handler for doing <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code>
+errors</li>
+<li><code>errors</code>: Error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code></li>
+<li><code>dehydrate</code>: dehydrate a function</li>
+<li><code>dehydrateRequest</code>: dehydrate a request</li>
+<li><code>dehydrateFile</code>: dehydrate a file</li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="bundle-object">Bundle Object</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>This payload will provide user provided data and configuration data.</p><ul>
+<li><code>authData</code> - user provided authentication data, like <code>api_key</code> or even <code>access_token</code> if you are using oauth2 [(read more on authentication)[#authentication]]</li>
+<li><code>inputData</code> - user provided configuration data, like <code>listId</code> or <code>tagSlug</code> as defined by <code>inputData</code>. For example:<pre><code class="lang-javascript">{
+createdBy: <span class="hljs-string">&apos;Bobby Flay&apos;</span>
+style: <span class="hljs-string">&apos;mediterranean&apos;</span>
+}
+</code></pre>
+</li>
+<li><code>inputDataRaw</code> - like <code>inputData</code>, but before rendering <code>{{curlies}}</code>.<pre><code class="lang-javascript">{
+createdBy: <span class="hljs-string">&apos;{{chef_name}}&apos;</span>
+style: <span class="hljs-string">&apos;{{style}}&apos;</span>
+}
+</code></pre>
+</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">

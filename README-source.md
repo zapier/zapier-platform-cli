@@ -430,6 +430,40 @@ The response object returned by `z.request()` supports the following fields and 
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 * `options`: The original request options object (see above).
 
+## `z` object
+
+We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
+
+* `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Request](## Making HTTP Requests)
+* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests.
+* `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
+* `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
+errors
+* `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
+* `dehydrate`: dehydrate a function
+* `dehydrateRequest`: dehydrate a request
+* `dehydrateFile`: dehydrate a file
+
+## Bundle Object
+
+This payload will provide user provided data and configuration data.
+
+* `authData` - user provided authentication data, like `api_key` or even `access_token` if you are using oauth2 [(read more on authentication)[#authentication]]
+* `inputData` - user provided configuration data, like `listId` or `tagSlug` as defined by `inputData`. For example:
+```javascript
+{
+  createdBy: 'Bobby Flay'
+  style: 'mediterranean'
+}
+```
+* `inputDataRaw` - like `inputData`, but before rendering `{{curlies}}`.
+```javascript
+{
+  createdBy: '{{chef_name}}'
+  style: '{{style}}'
+}
+```
+
 ## Environment
 
 Apps can define environment varialbes that are available when the app's code executes. They work just like environment
