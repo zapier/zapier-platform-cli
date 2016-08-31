@@ -64,8 +64,8 @@ const watch = (context) => {
       .then(() => utils.printDone())
       .catch((err) => {
         utils.printDone(false);
-        context.line();
-        context.line(err.stack);
+        context.line(err);
+        // don't print err.stack until we use require('syntax-error') or similar
       });
   });
 
