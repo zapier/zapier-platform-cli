@@ -207,7 +207,11 @@ blockquote {
 </ul>
 </li>
 <li><a href="#registering-an-app">Registering an App</a></li>
-<li><a href="#deploying-an-app-version">Deploying an App Version</a></li>
+<li><a href="#deploying-an-app-version">Deploying an App Version</a><ul>
+<li><a href="#sharing-your-app-version">Sharing your App Version</a></li>
+<li><a href="#promoting-an-app-version">Promoting an App Version</a></li>
+</ul>
+</li>
 <li><a href="#authentication">Authentication</a><ul>
 <li><a href="#basic">Basic</a></li>
 <li><a href="#custom">Custom</a></li>
@@ -294,7 +298,11 @@ blockquote {
 </ul>
 </li>
 <li><a href="#registering-an-app">Registering an App</a></li>
-<li><a href="#deploying-an-app-version">Deploying an App Version</a></li>
+<li><a href="#deploying-an-app-version">Deploying an App Version</a><ul>
+<li><a href="#sharing-your-app-version">Sharing your App Version</a></li>
+<li><a href="#promoting-an-app-version">Promoting an App Version</a></li>
+</ul>
+</li>
 <li><a href="#authentication">Authentication</a><ul>
 <li><a href="#basic">Basic</a></li>
 <li><a href="#custom">Custom</a></li>
@@ -644,7 +652,7 @@ zapier apps
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>An App Version is related to a specific App but is an &quot;immutable&quot; implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can &quot;promote&quot; it to production for use by over 1 million Zapier users.</p>
+      <p>An App Version is related to a specific App but is an &quot;immutable&quot; implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, <strong>every App Version is private</strong> but you can <code>zapier promote</code> it to production for use by over 1 million Zapier users.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># deploy your app version to Zapier</span>
@@ -676,6 +684,55 @@ zapier watch
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="sharing-your-app-version">Sharing your App Version</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>This is how you would share your app with friends, co-workers or clients. This is perfect for quality assurance, testing with active users or just sharing any app you like.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># sends an email this user to let them view the app in the ui privately</span>
+zapier invite user@example.com
+
+<span class="hljs-comment"># sends an email this user to let being an admin of the app</span>
+zapier collaborate user@example.com
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="promoting-an-app-version">Promoting an App Version</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Promotion is how you would share your app with every one of the 1 million+ Zapier users. If this is your first time promoting - you may have to wait for the Zapier team to review and approve your app.</p><p>If this isn&apos;t the first time you&apos;ve promoted your app - you might have users on older versions. You can <code>zapier migrate</code> to either move users over (which can be dangerous if you have breaking changes). Or, you can <code>zapier deprecate</code> to give users some time to move over themselves.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># promote your app version to all Zapier users</span>
+zapier promote 1.0.1
+
+<span class="hljs-comment"># OPTIONAL - migrate your users between one app version to another</span>
+zapier migrate 1.0.0 1.0.1
+
+<span class="hljs-comment"># OR - mark the old version as deprecated</span>
+zapier deprecate 1.0.0 2017-01-01
+</code></pre>
     </div>
   </div>
 </div><div class="row">

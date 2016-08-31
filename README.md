@@ -12,6 +12,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Local App Definition](#local-app-definition)
 - [Registering an App](#registering-an-app)
 - [Deploying an App Version](#deploying-an-app-version)
+  * [Sharing your App Version](#sharing-your-app-version)
+  * [Promoting an App Version](#promoting-an-app-version)
 - [Authentication](#authentication)
   * [Basic](#basic)
   * [Custom](#custom)
@@ -237,7 +239,7 @@ If you'd like to manage your **App**, use these commands:
 
 ## Deploying an App Version
 
-An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can "promote" it to production for use by over 1 million Zapier users.
+An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, **every App Version is private** but you can `zapier promote` it to production for use by over 1 million Zapier users.
 
 ```bash
 # deploy your app version to Zapier
@@ -262,6 +264,37 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 * `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
+
+
+### Sharing your App Version
+
+This is how you would share your app with friends, co-workers or clients. This is perfect for quality assurance, testing with active users or just sharing any app you like.
+
+```bash
+# sends an email this user to let them view the app in the ui privately
+zapier invite user@example.com
+
+# sends an email this user to let being an admin of the app
+zapier collaborate user@example.com
+```
+
+
+### Promoting an App Version
+
+Promotion is how you would share your app with every one of the 1 million+ Zapier users. If this is your first time promoting - you may have to wait for the Zapier team to review and approve your app.
+
+If this isn't the first time you've promoted your app - you might have users on older versions. You can `zapier migrate` to either move users over (which can be dangerous if you have breaking changes). Or, you can `zapier deprecate` to give users some time to move over themselves.
+
+```bash
+# promote your app version to all Zapier users
+zapier promote 1.0.1
+
+# OPTIONAL - migrate your users between one app version to another
+zapier migrate 1.0.0 1.0.1
+
+# OR - mark the old version as deprecated
+zapier deprecate 1.0.0 2017-01-01
+```
 
 
 ## Authentication
