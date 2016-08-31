@@ -6,6 +6,25 @@ const exampleApps = require('../utils/example-apps');
 const constants = require('../constants');
 const appTemplates = require('../app-templates');
 
+const confirmNonEmptyDir = (location) => {
+  if (location === '.') {
+    return utils.isEmptyDir(location)
+      .then(isEmpty => {
+        if (!isEmpty) {
+          return utils.getInput('Current directory not empty, continue anyway? (y/n) ')
+            .then(answer => {
+              if (!answer.match(/^y/i)) {
+                /*eslint no-process-exit: 0 */
+                process.exit(0);
+              }
+            });
+        }
+        return Promise.resolve();
+      });
+  }
+  return Promise.resolve();
+};
+
 const initApp = (location) => {
   const appDir = path.resolve(location);
   const tempAppDir = tmp.tmpNameSync();
@@ -13,8 +32,11 @@ const initApp = (location) => {
   const copyOpts = {clobber: false};
   const template = global.argOpts.template || 'minimal';
 
-  utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
-  return utils.removeDir(tempAppDir)
+  return confirmNonEmptyDir(location).
+    then(() => {
+      utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
+    })
+    .then(() => utils.removeDir(tempAppDir))
     .then(() => utils.ensureDir(tempAppDir))
     .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
     .then(() => utils.printDone())

@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const {promisifyAll} = require('./promisify');
 const fse = promisifyAll(require('fs-extra'));
 
@@ -59,6 +61,10 @@ const ensureDir = (dir) => fse.ensureDirAsync(dir);
 // Delete a directory.
 const removeDir = (dir) => fse.removeAsync(dir);
 
+// Returns true if directory is empty, else false.
+// Rejects if directory does not exist.
+const isEmptyDir = (dir) => fse.readdirAsync(dir).then(items => _.isEmpty(items));
+
 module.exports = {
   writeFile,
   readFile,
@@ -66,5 +72,6 @@ module.exports = {
   ensureDir,
   removeDir,
   validateFileExists,
-  fileExistsSync
+  fileExistsSync,
+  isEmptyDir
 };
