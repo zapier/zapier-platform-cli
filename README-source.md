@@ -205,7 +205,7 @@ If you'd like to manage your **Version**, use these commands:
 A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
 
 
-### Sharing your App Version
+### Sharing an App Version
 
 This is how you would share your app with friends, co-workers or clients. This is perfect for quality assurance, testing with active users or just sharing any app you like.
 

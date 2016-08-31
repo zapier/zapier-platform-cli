@@ -13,7 +13,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Registering an App](#registering-an-app)
 - [Deploying an App Version](#deploying-an-app-version)
   * [Private App Version (default)](#private-app-version-default)
-  * [Sharing your App Version](#sharing-your-app-version)
+  * [Sharing an App Version](#sharing-an-app-version)
   * [Promoting an App Version](#promoting-an-app-version)
 - [Authentication](#authentication)
   * [Basic](#basic)
@@ -274,7 +274,7 @@ If you'd like to manage your **Version**, use these commands:
 A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
 
 
-### Sharing your App Version
+### Sharing an App Version
 
 This is how you would share your app with friends, co-workers or clients. This is perfect for quality assurance, testing with active users or just sharing any app you like.
 
