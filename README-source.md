@@ -200,7 +200,7 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
 
 
-### Private by Default
+### Private App Versions (default)
 
 A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
 
