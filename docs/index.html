@@ -772,16 +772,19 @@ zapier deprecate 1.0.0 2017-01-01
 </blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> authentication = {
+  type: <span class="hljs-string">&apos;basic&apos;</span>,
+  <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
+  test: {
+    url: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
+  }
+  <span class="hljs-comment">// you can provide additional fields, but we&apos;ll provide `username`/`password` automatically</span>
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
-  authentication: {
-    type: <span class="hljs-string">&apos;basic&apos;</span>,
-    <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
-    test: {
-      url: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
-    }
-    <span class="hljs-comment">// you can provide additional fields, but we&apos;ll provide `username`/`password` automatically</span>
-  },
+  authentication: authentication,
+  <span class="hljs-comment">// ...</span>
 };
 </code></pre>
     </div>
@@ -801,25 +804,30 @@ zapier deprecate 1.0.0 2017-01-01
       <p>This is what most &quot;API Key&quot; driven apps should default to using. You&apos;ll likely provide some some custom <code>beforeRequest</code> middleware or a <code>requestTemplate</code> to complete the authentication by adding/computing needed headers.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
-  <span class="hljs-comment">// ...</span>
-  authentication: {
-    type: <span class="hljs-string">&apos;custom&apos;</span>,
-    <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
-    test: {
-      url: <span class="hljs-string">&apos;https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json&apos;</span>
-    },
-    fields: [
-      {key: <span class="hljs-string">&apos;subdomain&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found in your browsers address bar after logging in.&apos;</span>},
-      {key: <span class="hljs-string">&apos;api_key&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found on your settings page.&apos;</span>}
-    ]
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> authentication = {
+  type: <span class="hljs-string">&apos;custom&apos;</span>,
+  <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
+  test: {
+    url: <span class="hljs-string">&apos;https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json&apos;</span>
   },
-  beforeRequest: [
-    (request, z, bundle) =&gt; {
-      request.headers[<span class="hljs-string">&apos;X-Api-Key&apos;</span>] = bundle.authData.api_key;
-      <span class="hljs-keyword">return</span> request;
-    }
+  fields: [
+    {key: <span class="hljs-string">&apos;subdomain&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found in your browsers address bar after logging in.&apos;</span>},
+    {key: <span class="hljs-string">&apos;api_key&apos;</span>, type: <span class="hljs-string">&apos;string&apos;</span>, required: <span class="hljs-literal">true</span>, helpText: <span class="hljs-string">&apos;Found on your settings page.&apos;</span>}
   ]
+};
+
+<span class="hljs-keyword">const</span> addApiKeyToHeader = (request, z, bundle) =&gt; {
+  request.headers[<span class="hljs-string">&apos;X-Api-Key&apos;</span>] = bundle.authData.api_key;
+  <span class="hljs-keyword">return</span> request;
+};
+
+<span class="hljs-keyword">const</span> App = {
+  <span class="hljs-comment">// ...</span>
+  authentication: authentication,
+  beforeRequest: [
+    addApiKeyToHeader,
+  ],
+  <span class="hljs-comment">// ...</span>
 };
 </code></pre>
     </div>
@@ -839,16 +847,19 @@ zapier deprecate 1.0.0 2017-01-01
       <p>Very similar to the &quot;Basic&quot; authentication method above, but uses digest authentication instead of Basic authentication.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> authentication = {
+  type: <span class="hljs-string">&apos;digest&apos;</span>,
+  <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
+  test: {
+    url: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
+  }
+  <span class="hljs-comment">// you can provide additional fields, but Zapier will provide `username`/`password` automatically</span>
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
-  authentication: {
-    type: <span class="hljs-string">&apos;digest&apos;</span>,
-    <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
-    test: {
-      url: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
-    }
-    <span class="hljs-comment">// you can provide additional fields, but Zapier will provide `username`/`password` automatically</span>
-  },
+  authentication: authentication,
+  <span class="hljs-comment">// ...</span>
 };
 </code></pre>
     </div>
@@ -901,50 +912,55 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
       <p>Your auth definition would look something like this:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
-  <span class="hljs-comment">// ...</span>
-  authentication: {
-    type: <span class="hljs-string">&apos;oauth2&apos;</span>,
-    test: {
-      url: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> authentication = {
+  type: <span class="hljs-string">&apos;oauth2&apos;</span>,
+  test: {
+    url: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
+  },
+  <span class="hljs-comment">// you can provide additional fields for inclusion in authData</span>
+  oauth2Config: {
+    <span class="hljs-comment">// &quot;authorizeUrl&quot; could also be a function returning a string url</span>
+    authorizeUrl: {
+      method: <span class="hljs-string">&apos;GET&apos;</span>,
+      url: <span class="hljs-string">&apos;https://example.com/api/oauth2/authorize&apos;</span>,
+      params: {
+        client_id: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
+        state: <span class="hljs-string">&apos;{{bundle.inputData.state}}&apos;</span>,
+        redirect_uri: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>,
+        response_type: <span class="hljs-string">&apos;code&apos;</span>
+      }
     },
-    <span class="hljs-comment">// you can provide additional fields for inclusion in authData</span>
-    oauth2Config: {
-      <span class="hljs-comment">// &quot;authorizeUrl&quot; could also be a function returning a string url</span>
-      authorizeUrl: {
-        method: <span class="hljs-string">&apos;GET&apos;</span>,
-        url: <span class="hljs-string">&apos;https://example.com/api/oauth2/authorize&apos;</span>,
-        params: {
-          client_id: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
-          state: <span class="hljs-string">&apos;{{bundle.inputData.state}}&apos;</span>,
-          redirect_uri: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>,
-          response_type: <span class="hljs-string">&apos;code&apos;</span>
-        }
+    <span class="hljs-comment">// Zapier expects a response providing {access_token: &apos;abcd&apos;}</span>
+    <span class="hljs-comment">// &quot;getAccessToken&quot; could also be a function returning an object</span>
+    getAccessToken: {
+      method: <span class="hljs-string">&apos;POST&apos;</span>,
+      url: <span class="hljs-string">&apos;https://example.com/api/v2/oauth2/token&apos;</span>,
+      body: {
+        code: <span class="hljs-string">&apos;{{bundle.inputData.code}}&apos;</span>,
+        client_id: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
+        client_secret: <span class="hljs-string">&apos;{{process.env.CLIENT_SECRET}}&apos;</span>,
+        redirect_uri: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>,
+        grant_type: <span class="hljs-string">&apos;authorization_code&apos;</span>
       },
-      <span class="hljs-comment">// Zapier expects a response providing {access_token: &apos;abcd&apos;}</span>
-      <span class="hljs-comment">// &quot;getAccessToken&quot; could also be a function returning an object</span>
-      getAccessToken: {
-        method: <span class="hljs-string">&apos;POST&apos;</span>,
-        url: <span class="hljs-string">&apos;https://example.com/api/v2/oauth2/token&apos;</span>,
-        body: {
-          code: <span class="hljs-string">&apos;{{bundle.inputData.code}}&apos;</span>,
-          client_id: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
-          client_secret: <span class="hljs-string">&apos;{{process.env.CLIENT_SECRET}}&apos;</span>,
-          redirect_uri: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>,
-          grant_type: <span class="hljs-string">&apos;authorization_code&apos;</span>
-        },
-        headers: {
-          <span class="hljs-string">&apos;Content-Type&apos;</span>: <span class="hljs-string">&apos;application/x-www-form-urlencoded&apos;</span>
-        }
+      headers: {
+        <span class="hljs-string">&apos;Content-Type&apos;</span>: <span class="hljs-string">&apos;application/x-www-form-urlencoded&apos;</span>
       }
     }
-  },
+  }
+};
+
+<span class="hljs-keyword">const</span> addBearerHeader = (request, z, bundle) =&gt; {
+  request.headers.Authorization = <span class="hljs-string">`Bearer <span class="hljs-subst">${bundle.authData.access_token}</span>`</span>;
+  <span class="hljs-keyword">return</span> request;
+};
+
+<span class="hljs-keyword">const</span> App = {
+  <span class="hljs-comment">// ...</span>
+  authentication: authentication,
   beforeRequest: [
-    (request, z, bundle) =&gt; {
-      request.headers.Authorization = <span class="hljs-string">`Bearer <span class="hljs-subst">${bundle.authData.access_token}</span>`</span>;
-      <span class="hljs-keyword">return</span> request;
-    }
+    addBearerHeader,
   ]
+  <span class="hljs-comment">// ...</span>
 };
 </code></pre>
     </div>
@@ -1022,7 +1038,11 @@ For now, let&apos;s focus on two:</p><ul>
 </ul><p>Here is a complete example of what the list method might look like</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Recipe = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipesRequest = {
+  url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>
+};
+
+<span class="hljs-keyword">const</span> Recipe = {
   <span class="hljs-comment">//...</span>
   list: {
     display: {
@@ -1030,9 +1050,7 @@ For now, let&apos;s focus on two:</p><ul>
       description: <span class="hljs-string">&apos;Triggers when a new recipe is added.&apos;</span>
     },
     operation: {
-      perform: {
-        url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>
-      }
+      perform: listRecipesRequest
     }
   }
 };
@@ -1045,7 +1063,16 @@ For now, let&apos;s focus on two:</p><ul>
       <p>The method is made up of two properties, a <code>display</code> and an <code>operation</code>. The <code>display</code> property (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema">schema</a>) holds the info needed to present the method as an available Trigger in the Zapier Editor. The <code>operation</code> (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema">schema</a>) provides the implementation to make the API call.</p><p>Adding a create method looks very similar.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> Recipe = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> createRecipeRequest = {
+  url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>,
+  method: <span class="hljs-string">&apos;POST&apos;</span>,
+  body: {
+    name: <span class="hljs-string">&apos;Baked Falafel&apos;</span>,
+    style: <span class="hljs-string">&apos;mediterranean&apos;</span>
+  }
+};
+
+<span class="hljs-keyword">const</span> Recipe = {
   <span class="hljs-comment">//...</span>
   list: {
     <span class="hljs-comment">//...</span>
@@ -1056,14 +1083,7 @@ For now, let&apos;s focus on two:</p><ul>
       description: <span class="hljs-string">&apos;Adds a new recipe to our cookbook.&apos;</span>
     },
     operation: {
-      perform: {
-        url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>,
-        method: <span class="hljs-string">&apos;POST&apos;</span>,
-        body: {
-          name: <span class="hljs-string">&apos;Baked Falafel&apos;</span>,
-          style: <span class="hljs-string">&apos;mediterranean&apos;</span>
-        }
-      }
+      perform: createRecipeRequest
     }
   }
 };
@@ -1097,14 +1117,16 @@ data into Zapier (i.e. watch for new recipes). Searches locate individual record
 new records in your system (add a recipe to the catalog).</p><p>The definition for each of these follows the same structure. Here is an example of a trigger:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> recipeListRequest = {
+  url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>,
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">//...</span>
   triggers: {
     new_recipe: {
-      <span class="hljs-comment">// `key` uniquely identifies the trigger to the Zapier backend</span>
-      key: <span class="hljs-string">&apos;new_recipe&apos;</span>,
-      <span class="hljs-comment">// `noun` is the user-friendly word that is used to refer to the resource this trigger relates to</span>
-      noun: <span class="hljs-string">&apos;Recipe&apos;</span>,
+      key: <span class="hljs-string">&apos;new_recipe&apos;</span>, <span class="hljs-comment">// uniquely identifies the trigger</span>
+      noun: <span class="hljs-string">&apos;Recipe&apos;</span>,    <span class="hljs-comment">// user-friendly word that is used to refer to the resource</span>
       <span class="hljs-comment">// `display` controls the presentation in the Zapier Editor</span>
       display: {
         label: <span class="hljs-string">&apos;New Recipe&apos;</span>,
@@ -1112,7 +1134,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       },
       <span class="hljs-comment">// `operation` implements the API call used to fetch the data</span>
       operation: {
-        url: <span class="hljs-string">&apos;http://example.com/recipes&apos;</span>,
+        perform: recipeListRequest
       }
     },
     another_trigger: {
@@ -1177,21 +1199,23 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </ol>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> triggerShorthandRequest = {
+  method: <span class="hljs-string">&apos;GET&apos;</span>,
+  url: <span class="hljs-string">&apos;http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json&apos;</span>,
+  params: {
+    sort_by: <span class="hljs-string">&apos;id&apos;</span>,
+    sort_order: <span class="hljs-string">&apos;DESC&apos;</span>
+  }
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   triggers: {
     example: {
       <span class="hljs-comment">// ...</span>
       operation: {
         <span class="hljs-comment">// ...</span>
-        perform: {
-          method: <span class="hljs-string">&apos;GET&apos;</span>,
-          url: <span class="hljs-string">&apos;http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json&apos;</span>,
-          params: {
-            sort_by: <span class="hljs-string">&apos;id&apos;</span>,
-            sort_order: <span class="hljs-string">&apos;DESC&apos;</span>
-          }
-        }
+        perform: triggerShorthandRequest
       }
     }
   }
@@ -1223,32 +1247,34 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       <p>When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no <code>{{curly}}</code> replacement, no status code checking, no automatic JSON parsing. Use this method when you need more control.</p><p>To make a manual HTTP request, use the <code>request</code> method of the <code>z</code> object:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listExample = (z, bundle) =&gt; {
+  <span class="hljs-keyword">const</span> customHttpOptions = {
+    headers: {
+      <span class="hljs-string">&apos;my-header&apos;</span>: <span class="hljs-string">&apos;from zapier&apos;</span>
+    }
+  };
+
+  <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, customHttpOptions)
+    .then(response =&gt; {
+      <span class="hljs-keyword">if</span> (response.status &gt;= <span class="hljs-number">300</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Unexpected status code <span class="hljs-subst">${response.status}</span>`</span>);
+      }
+
+      <span class="hljs-keyword">const</span> recipes = <span class="hljs-built_in">JSON</span>.parse(response.content);
+      <span class="hljs-comment">// do any custom processing of recipes here...</span>
+
+      <span class="hljs-keyword">return</span> recipes;
+    });
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   triggers: {
     example: {
       <span class="hljs-comment">// ...</span>
       operation: {
         <span class="hljs-comment">// ...</span>
-        perform: (z, bundle) =&gt; {
-          <span class="hljs-keyword">const</span> customHttpOptions = {
-            headers: {
-              <span class="hljs-string">&apos;my-header&apos;</span>: <span class="hljs-string">&apos;from zapier&apos;</span>
-            }
-          };
-
-          <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, customHttpOptions)
-            .then(response =&gt; {
-              <span class="hljs-keyword">if</span> (response.status &gt;= <span class="hljs-number">300</span>) {
-                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Unexpected status code <span class="hljs-subst">${response.status}</span>`</span>);
-              }
-
-              <span class="hljs-keyword">const</span> recipes = <span class="hljs-built_in">JSON</span>.parse(response.content);
-              <span class="hljs-comment">// do any custom processing of recipes here...</span>
-
-              <span class="hljs-keyword">return</span> recipes;
-            });
-        }
+        perform: listExample
       }
     }
   }
@@ -1328,25 +1354,31 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       <p>If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> addHeader = (request) =&gt; {
+  request.headers[<span class="hljs-string">&apos;my-header&apos;</span>] = <span class="hljs-string">&apos;from zapier&apos;</span>;
+  <span class="hljs-keyword">return</span> request;
+};
+
+<span class="hljs-keyword">const</span> mustBe200 = (response) =&gt; {
+  <span class="hljs-keyword">if</span> (response.status !== <span class="hljs-number">200</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Unexpected status code <span class="hljs-subst">${response.status}</span>`</span>);
+  }
+  <span class="hljs-keyword">return</span> response;
+};
+
+<span class="hljs-keyword">const</span> autoParseJson = (response) =&gt; {
+  response.json = <span class="hljs-built_in">JSON</span>.parse(response.content);
+  <span class="hljs-keyword">return</span> response;
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   beforeRequest: [
-    (request) =&gt; {
-      request.headers[<span class="hljs-string">&apos;my-header&apos;</span>] = <span class="hljs-string">&apos;from zapier&apos;</span>;
-      <span class="hljs-keyword">return</span> request;
-    }
+    addHeader,
   ],
   afterRequest: [
-    (response) =&gt; {
-      <span class="hljs-keyword">if</span> (response.status !== <span class="hljs-number">200</span>) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Unexpected status code <span class="hljs-subst">${response.status}</span>`</span>);
-      }
-      <span class="hljs-keyword">return</span> response;
-    },
-    (response) =&gt; {
-      response.json = <span class="hljs-built_in">JSON</span>.parse(response.content);
-      <span class="hljs-keyword">return</span> response;
-    }
+    mustBe200,
+    autoParseJson,
   ]
   <span class="hljs-comment">// ...</span>
 };
@@ -1494,21 +1526,23 @@ zapier env 1.0.0
       <p>Within your app, you can access the environment via the standard <code>process.env</code> - any values set via local <code>export</code> or <code>zapier env</code> will be there.</p><p>For example, you can access the <code>process.env</code> in your perform functions:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listExample = (z, bundle) =&gt; {
+  <span class="hljs-keyword">const</span> httpOptions = {
+    headers: {
+      <span class="hljs-string">&apos;my-header&apos;</span>: process.env.MY_SECRET_VALUE
+    }
+  };
+  <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, httpOptions);
+};
+
+<span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   triggers: {
     example: {
       <span class="hljs-comment">// ...</span>
       operation: {
         <span class="hljs-comment">// ...</span>
-        perform: (z, bundle) =&gt; {
-          <span class="hljs-keyword">const</span> httpOptions = {
-            headers: {
-              <span class="hljs-string">&apos;my-header&apos;</span>: process.env.MY_SECRET_VALUE
-            }
-          };
-          <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, httpOptions);
-        }
+        perform: listExample
       }
     }
   }
