@@ -1,5 +1,6 @@
 const path = require('path');
 const tmp = require('tmp');
+const fse = require('fs-extra');
 
 const utils = require('../utils');
 const exampleApps = require('../utils/example-apps');
@@ -25,7 +26,21 @@ const confirmNonEmptyDir = (location) => {
   return Promise.resolve();
 };
 
-const initApp = (location) => {
+const printFilesCopied = (context, appDir) => {
+  return new Promise((resolve, reject) => {
+    context.line();
+    fse.walk(appDir)
+     .on('data', item => {
+       if (item.stats.isFile()) {
+         context.line(`  Copied ${item.path}`);
+       }
+     })
+     .on('end', resolve)
+     .on('error', reject);
+  });
+};
+
+const initApp = (context, location) => {
   const appDir = path.resolve(location);
   const tempAppDir = tmp.tmpNameSync();
 
@@ -44,6 +59,7 @@ const initApp = (location) => {
     .then(() => utils.ensureDir(appDir))
     .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
     .then(() => utils.removeDir(tempAppDir))
+    .then(() => printFilesCopied(context, appDir))
     .then(() => utils.printDone());
 };
 
@@ -55,7 +71,7 @@ const init = (context, location = '.') => {
   context.line('Let\'s initialize your app!');
   context.line();
 
-  return initApp(location)
+  return initApp(context, location)
     .then(() => {
       context.line('\nFinished! You can edit `index.js` and then `zapier deploy` to build & upload your app!');
     });
