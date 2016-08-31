@@ -85,7 +85,7 @@ Don't forget you'll need to `zapier deploy` to make your changes stick after any
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
 
-## Creating an App
+## Creating a Local App
 
 > Tip: check the [Quickstart](#quickstart) if this is your first time using the platform!
 
@@ -111,7 +111,7 @@ If you'd like to manage your **local App**, use these commands:
 * `zapier validate` - ensure your app is valid
 * `zapier describe` - print some helpful information about your app
 
-### Project Structure
+### Local Project Structure
 
 In your app's folder, you should see this general recommended structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
 
@@ -136,7 +136,7 @@ $ tree .
     └── ...
 ```
 
-### App Definition
+### Local App Definition
 
 The core definition of your `App` will look something like this, and is what your `index.js` should provide as the _only_ export:
 
