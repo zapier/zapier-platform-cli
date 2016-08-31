@@ -12,6 +12,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Local App Definition](#local-app-definition)
 - [Registering an App](#registering-an-app)
 - [Deploying an App Version](#deploying-an-app-version)
+  * [Private by Default](#private-by-default)
   * [Sharing your App Version](#sharing-your-app-version)
   * [Promoting an App Version](#promoting-an-app-version)
 - [Authentication](#authentication)
@@ -264,6 +265,11 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 * `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
+
+
+### Private by Default
+
+A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
 
 
 ### Sharing your App Version
