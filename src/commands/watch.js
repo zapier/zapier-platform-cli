@@ -42,7 +42,6 @@ const watch = (context) => {
   const reloadDefinition = () => {
     return new Promise((resolve, reject) => {
       options.handler({command: 'definition'}, {}, (err, resp) => {
-        utils.printDone();
         if (err) { return reject(err); }
         const currentDefinition = resp.results;
         if (currentDefinition.version !== orgVersion) {
@@ -61,7 +60,13 @@ const watch = (context) => {
     utils.printStarting(`Reloading for ${fileName}`);
     resetHandler()
       .then(reloadDefinition)
-      .then(pingZapierForRPC);
+      .then(pingZapierForRPC)
+      .then(() => utils.printDone())
+      .catch((err) => {
+        utils.printDone(false);
+        context.line();
+        context.line(err.stack);
+      });
   });
 
   // TODO: check we've pushed the current versions.

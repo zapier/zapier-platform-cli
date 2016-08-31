@@ -20,8 +20,15 @@ const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
       }
     });
   }
-  const appRaw = require(entryPath);
-  const zapier = require(`${rootPath}/node_modules/${PLATFORM_PACKAGE}`);
+  let appRaw, zapier;
+  try {
+    appRaw = require(entryPath);
+    zapier = require(`${rootPath}/node_modules/${PLATFORM_PACKAGE}`);
+  } catch (err) {
+    // this err.stack doesn't give a nice traceback at all :-(
+    // maybe we could do require('syntax-error') in the future
+    return (event, ctx, callback) => callback(err);
+  }
   const handler = zapier.createAppHandler(appRaw);
   return (event, ctx, callback) => {
     event = _.merge({}, event, {
