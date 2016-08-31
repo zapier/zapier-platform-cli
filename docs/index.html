@@ -208,6 +208,7 @@ blockquote {
 </li>
 <li><a href="#registering-an-app">Registering an App</a></li>
 <li><a href="#deploying-an-app-version">Deploying an App Version</a><ul>
+<li><a href="#private-by-default">Private by Default</a></li>
 <li><a href="#sharing-your-app-version">Sharing your App Version</a></li>
 <li><a href="#promoting-an-app-version">Promoting an App Version</a></li>
 </ul>
@@ -299,6 +300,7 @@ blockquote {
 </li>
 <li><a href="#registering-an-app">Registering an App</a></li>
 <li><a href="#deploying-an-app-version">Deploying an App Version</a><ul>
+<li><a href="#private-by-default">Private by Default</a></li>
 <li><a href="#sharing-your-app-version">Sharing your App Version</a></li>
 <li><a href="#promoting-an-app-version">Promoting an App Version</a></li>
 </ul>
@@ -613,7 +615,7 @@ npm install
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.</p>
+      <p>Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before <code>zapier deploy</code> to use an App Version which exposes the app in the Zapier interface and editor.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># register your app</span>
@@ -627,7 +629,9 @@ zapier apps
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
+      <blockquote>
+<p>Note: registering your app will only expose basic core administrative functions. You&apos;ll want to <code>zapier deploy</code> some code as an App Version next!</p>
+</blockquote><p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
 <li><code>zapier apps</code> - list the apps in Zapier you can administer</li>
 <li><code>zapier register &quot;Name&quot;</code> - creates a new app in Zapier</li>
 <li><code>zapier link</code> - lists and links a selected app in Zapier to your current folder</li>
@@ -681,6 +685,24 @@ zapier watch
 <li><code>zapier env 1.0.0 [KEY] [value]</code> - set an environment variable to some value</li>
 <li><code>zapier watch</code> - continuously sync your app to the Zapier interface, creating a fast feedback loop</li>
 </ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="private-by-default">Private by Default</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>A simple <code>zapier deploy</code> will only create the App Version in your editor. No one else using Zapier can see it or use it.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       

@@ -218,7 +218,7 @@ module.export = App;
 
 ## Registering an App
 
-Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.
+Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before `zapier deploy` to use an App Version which exposes the app in the Zapier interface and editor.
 
 ```bash
 # register your app
@@ -227,6 +227,8 @@ zapier register "Zapier Example"
 # list your apps
 zapier apps
 ```
+
+> Note: registering your app will only expose basic core administrative functions. You'll want to `zapier deploy` some code as an App Version next!
 
 If you'd like to manage your **App**, use these commands:
 
