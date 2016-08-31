@@ -824,7 +824,9 @@ zapier deprecate 1.0.0 2017-01-01
 };
 
 <span class="hljs-keyword">const</span> addApiKeyToHeader = (request, z, bundle) =&gt; {
-  request.headers[<span class="hljs-string">&apos;X-Api-Key&apos;</span>] = bundle.authData.api_key;
+  request.headers[<span class="hljs-string">&apos;X-Subdomain&apos;</span>] = bundle.authData.subdomain;
+  <span class="hljs-keyword">const</span> basicHash = Buffer(<span class="hljs-string">`<span class="hljs-subst">${bundle.authData.api_key}</span>:x`</span>).toString(<span class="hljs-string">&apos;base64&apos;</span>);
+  request.headers.Authorization = <span class="hljs-string">`Basic <span class="hljs-subst">${basicHash}</span>`</span>;
   <span class="hljs-keyword">return</span> request;
 };
 
