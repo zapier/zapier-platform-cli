@@ -17,9 +17,6 @@ First up is installing the CLI and setting up your auth to create a working "Zap
 # install the CLI globally
 npm install -g @zapier/zapier-platform-cli
 
-# print all the commands
-zapier help
-
 # auth to Zapier's platform with your deploy key. To obtain a key, email partner@zapier.com
 zapier auth
 ```
@@ -43,12 +40,6 @@ npm install
 You should now have a working local app. You can run several local commands to try it out.
 
 ```bash
-# validate the app
-zapier validate
-
-# describe the app
-zapier describe
-
 # run the local tests
 # the same as npm test
 zapier test
@@ -60,14 +51,8 @@ Next, you'll probably want to register your app and upload your version to Zapie
 # register your app
 zapier register "Zapier Example"
 
-# list your apps
-zapier apps
-
 # deploy your app version to Zapier
 zapier deploy
-
-# list your versions
-zapier versions
 ```
 
 If you open the editor in Zapier, you should now see "Zapier Example (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
