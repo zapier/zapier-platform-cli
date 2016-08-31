@@ -11,7 +11,7 @@ const initApp = (location) => {
   const tempAppDir = tmp.tmpNameSync();
 
   const copyOpts = {clobber: false};
-  const template = global.argOpts.template || 'trigger';
+  const template = global.argOpts.template || 'minimal';
 
   utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
   return utils.removeDir(tempAppDir)
@@ -43,7 +43,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: appTemplates, 'default': 'trigger'}
+  template: {help: 'select a starting app template', choices: appTemplates, 'default': 'minimal'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';
