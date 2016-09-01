@@ -2,23 +2,25 @@ const fs = require('fs');
 const utils = require('../utils');
 
 const env = (context, version, key, value) => {
-  if (value !== undefined || global.argOpts.remove) {
+  const isRemove = global.argOpts.remove;
+
+  if (value !== undefined || isRemove) {
     key = key.toUpperCase();
     return utils.checkCredentials()
       .then(() => utils.getLinkedApp())
       .then((app) => {
-        const url = '/apps/' + app.id + '/versions/' + version + '/environment';
-        context.line(`Preparing to set environment ${key} for your ${version} "${app.title}".\n`);
+        const url = `/apps/${app.id}/versions/${version}/environment/${key}`;
+        const verb = isRemove ? 'remove' : 'set';
 
-        const msg = global.argOpts.remove ? `Deleting ${key}` : `Setting ${key} to "${value}"`;
-        utils.printStarting(msg);
+        context.line(`Preparing to ${verb} environment ${key} for your ${version} "${app.title}".\n`);
 
+        const startMsg = isRemove ? `Deleting ${key}` : `Setting ${key} to "${value}"`;
+        utils.printStarting(startMsg);
+
+        const method = isRemove ? 'DELETE' : 'PUT';
         return utils.callAPI(url, {
-          method: 'PUT',
-          body: {
-            key: key,
-            value: value
-          }
+          method,
+          body: value
         });
       })
       .then(() => {
