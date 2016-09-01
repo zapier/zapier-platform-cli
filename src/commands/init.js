@@ -31,8 +31,15 @@ const initApp = (context, location) => {
 
   const copyOpts = {
     clobber: false,
-    onCopy: file => context.line(`  Copied ${file}`),
-    onSkip: file => context.line(`  File ${file} already exists, not copied`)
+    onCopy: file => {
+      utils.printStarting(`Copy ${file}`);
+      utils.printDone();
+    },
+    onSkip: file => {
+      utils.printStarting(`Copy ${file}`);
+      utils.printDone();
+      context.line(`  File ${file} already exists, skipped`);
+    }
   };
 
   const template = global.argOpts.template || 'minimal';
