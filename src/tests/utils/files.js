@@ -43,11 +43,14 @@ describe('files', () => {
 
     files.writeFile(srcFileName, data)
       .then(files.copyDir(srcDir, dstDir))
-      .then(files.readFile(dstFileName).then(buf => {
+      .then(() => files.readFile(dstFileName).then(buf => {
         buf.toString().should.equal(data);
         done();
       }))
-      .catch(done);
+      .catch(err => {
+        console.log('error', err);
+        done(err);
+      });
   });
 
   describe('validateFileExists', () => {

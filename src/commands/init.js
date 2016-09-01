@@ -1,6 +1,5 @@
 const path = require('path');
 const tmp = require('tmp');
-const fse = require('fs-extra');
 
 const utils = require('../utils');
 const exampleApps = require('../utils/example-apps');
@@ -26,25 +25,16 @@ const confirmNonEmptyDir = (location) => {
   return Promise.resolve();
 };
 
-const printFilesCopied = (context, appDir) => {
-  return new Promise((resolve, reject) => {
-    context.line();
-    fse.walk(appDir)
-     .on('data', item => {
-       if (item.stats.isFile()) {
-         context.line(`  Copied ${item.path}`);
-       }
-     })
-     .on('end', resolve)
-     .on('error', reject);
-  });
-};
-
 const initApp = (context, location) => {
   const appDir = path.resolve(location);
   const tempAppDir = tmp.tmpNameSync();
 
-  const copyOpts = {clobber: false};
+  const copyOpts = {
+    clobber: false,
+    onCopy: file => context.line(`  Copied ${file}`),
+    onSkip: file => context.line(`  File ${file} already exists, not copied`)
+  };
+
   const template = global.argOpts.template || 'minimal';
 
   return confirmNonEmptyDir(location).
@@ -57,9 +47,9 @@ const initApp = (context, location) => {
     .then(() => utils.printDone())
     .then(() => utils.printStarting('Copying starter app'))
     .then(() => utils.ensureDir(appDir))
+    .then(() => context.line())
     .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
     .then(() => utils.removeDir(tempAppDir))
-    .then(() => printFilesCopied(context, appDir))
     .then(() => utils.printDone());
 };
 
