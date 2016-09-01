@@ -25,7 +25,7 @@ nvm use v4.3.2
 
 Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and deploying an app to Zapier.
 
-To get started, first make sure that your dev environment meets the [requirements](#Requirements) for running the the platform. Once you have the proper version of Node.js, install the Zapier CLI tool.
+To get started, first make sure that your dev environment meets the [requirements](#requirements) for running the the platform. Once you have the proper version of Node.js, install the Zapier CLI tool.
 
 ```bash
 # install the CLI globally
@@ -118,7 +118,7 @@ Outline:
 
 ## Quickstart
 
-> Be sure to check the [Requirements](#Requirements) before you start!
+> Be sure to check the [Requirements](#requirements) before you start!
 
 First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
 
