@@ -7,11 +7,120 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 <!-- toc -->
 <!-- tocstop -->
 
+
+## Requirements
+
+The Zapier CLI and Platform require Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node installation.
+
+On Mac (via [homebrew](http://brew.sh/)):
+
+```bash
+brew install nvm
+nvm install v4.3.2
+nvm use v4.3.2
+```
+
+
+## Tutorial
+
+Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and deploying an app to Zapier.
+
+To get started, first make sure that your dev environment meets the [requirements](#Requirements) for running the the platform. Once you have the proper version of Node.js, install the Zapier CLI tool.
+
+```bash
+# install the CLI globally
+npm install -g @zapier/zapier-platform-cli
+```
+
+The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
+
+To begin building an app, use the `init` command to setup the needed structure.
+
+```bash
+# Create a directory with the minimum required files
+zapier init example-app
+cd example-app
+```
+
+Inside the directory, you'll see two files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
+
+The other file, `index.js` is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and explore.
+
+
+Outline:
+
+    * Cover the app schema
+        - What's a trigger
+        - What's an action
+        - What's a search
+        - There is auth
+        - *very* briefly say that resources exist, but we'll get to them later
+    * Build a trigger that hits...mockapi.io?
+        - Use request shorthand for perform, no input fields
+    * Introduce a test for that trigger
+        - Write the test
+        - `zapier test`
+    * Deploy app to Zapier
+        - `zapier auth`
+        - `zapier register`
+        - `zapier deploy`
+        - Go to zapier.com and run it
+        - Show how `zapier logs` will list the requests made in production
+    * Introduce the idea of making a change to our app
+        - Update test to expect an query param
+        - Run test, see it fail
+        - Add an input field to trigger
+        - Include the input field in the URL with {{}} syntax (gloss over details for now)
+        - Run test, see it pass
+        - Want to see it on Zapier, so `zapier deploy`
+        - Go view update in Zap Editor (now has an optional need)
+    * Explore {{}} and perform a bit more
+        - Explain how Zapier passes data collected from fields in a Zap to your app
+        - Elude to the idea that there is more context there as well with authData and environment (more on that later)
+    * Introduce the concept of auth
+        - Add a failing test for an auth header
+        - Add the authentication definition to the app
+            - Use {{}} syntax to add the header, and explain that the bundle also contains authData
+        - Run test again to see it pass
+        - `zapier deploy`
+        - Go back to editor to add an account
+        - Explain that there are other auth styles supported, link to docs
+    * Introduce the concept of an action
+        - Define a test
+        - Define an action
+            - Have a few input fields
+            - Use shortand request syntax again
+        - Run test
+        - `zapier deploy`
+    * Maybe: Introduce the idea of `zapier watch`?
+        - "Up to now we've been using `zapier deploy` to upload our changes. There is a faster way with..."
+    * Introduce the concept of perform as a function
+        - Tweak the action to be a function instead, and do something like form-encode the data or have one of the input fields be a datetime that we need to convert
+        - Explain how bundle is the same context as what {{}} has
+        - Explain z.request
+        - Throw in a z.console.log
+        - Run test again, still passes
+            - Point out that we see our console statement as well
+        - `zapier deploy` and try it live
+        - `zapier logs` to see the console output from production
+    * Introduce the concept of a search
+        - Define a test
+        - Build the search
+    * Introduce the concept of beforeRequest
+        - Show how we've had to repeat the auth header three times, we can simplify by doing middleware
+        - Add beforeRequest and remove from other three spots
+        - Run tests, which still pass while asserting auth header is there
+    * Maybe: Introduce concept of resource
+        - Could consolidate all our code into a a single resource
+        - Tests still pass
+        - Explain the benefit of these being linked
+
+
 ## Quickstart
 
-> The Zapier CLI and Platform requires Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
+> Be sure to check the [Requirements](#Requirements) before you start!
 
-First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
+First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
