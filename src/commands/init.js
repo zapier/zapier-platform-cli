@@ -36,9 +36,8 @@ const initApp = (context, location) => {
       utils.printDone();
     },
     onSkip: file => {
-      utils.printStarting(`Copy ${file}`);
-      utils.printDone();
-      context.line(`  File ${file} already exists, skipped`);
+      utils.printStarting(`File ${file} already exists`);
+      utils.printDone(true, 'skipped');
     }
   };
 
@@ -52,11 +51,11 @@ const initApp = (context, location) => {
     .then(() => utils.ensureDir(tempAppDir))
     .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
     .then(() => utils.printDone())
-    .then(() => utils.printStarting('Copying starter app'))
     .then(() => utils.ensureDir(appDir))
     .then(() => context.line())
     .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
     .then(() => utils.removeDir(tempAppDir))
+    .then(() => utils.printStarting('Copying starter app'))
     .then(() => utils.printDone());
 };
 
