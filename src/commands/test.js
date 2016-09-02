@@ -3,7 +3,7 @@ const utils = require('../utils');
 
 const test = (context) => {
   const extraEnv = {};
-  if (global.argOpts['log-to-stdout']) {
+  if (!global.argOpts['disable-log-to-stdout']) {
     extraEnv.LOG_TO_STDOUT = 'true';
   }
   if (global.argOpts['detailed-log-to-stdout']) {
@@ -21,7 +21,7 @@ const test = (context) => {
 test.argsSpec = [
 ];
 test.argOptsSpec = {
-  'log-to-stdout': {flag: true, help: 'print zapier summary logs to standard out'},
+  'disable-log-to-stdout': {flag: true, help: 'disables print zapier summary logs to standard out'},
   'detailed-log-to-stdout': {flag: true, help: 'print zapier detailed logs to standard out'}
 };
 test.help = 'Tests your app via `npm test`.';

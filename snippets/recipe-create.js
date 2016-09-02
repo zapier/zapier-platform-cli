@@ -1,3 +1,12 @@
+const createRecipeRequest = {
+  url: 'http://example.com/recipes',
+  method: 'POST',
+  body: {
+    name: 'Baked Falafel',
+    style: 'mediterranean'
+  }
+};
+
 const Recipe = {
   //...
   list: {
@@ -9,14 +18,7 @@ const Recipe = {
       description: 'Adds a new recipe to our cookbook.'
     },
     operation: {
-      perform: {
-        url: 'http://example.com/recipes',
-        method: 'POST',
-        body: {
-          name: 'Baked Falafel',
-          style: 'mediterranean'
-        }
-      }
+      perform: createRecipeRequest
     }
   }
 };

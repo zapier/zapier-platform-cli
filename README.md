@@ -7,11 +7,14 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 <!-- toc -->
 
 - [Quickstart](#quickstart)
-- [Creating an App](#creating-an-app)
-  * [Project Structure](#project-structure)
-  * [App Definition](#app-definition)
+- [Creating a Local App](#creating-a-local-app)
+  * [Local Project Structure](#local-project-structure)
+  * [Local App Definition](#local-app-definition)
 - [Registering an App](#registering-an-app)
 - [Deploying an App Version](#deploying-an-app-version)
+  * [Private App Version (default)](#private-app-version-default)
+  * [Sharing an App Version](#sharing-an-app-version)
+  * [Promoting an App Version](#promoting-an-app-version)
 - [Authentication](#authentication)
   * [Basic](#basic)
   * [Custom](#custom)
@@ -28,6 +31,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Using HTTP middleware](#using-http-middleware)
   * [HTTP Request Options](#http-request-options)
   * [HTTP Response Object](#http-response-object)
+- [Z Object](#z-object)
+- [Bundle Object](#bundle-object)
 - [Environment](#environment)
   * [Defining Environment Variables](#defining-environment-variables)
   * [Accessing Environment Variables](#accessing-environment-variables)
@@ -52,9 +57,6 @@ First up is installing the CLI and setting up your auth to create a working "Zap
 # install the CLI globally
 npm install -g @zapier/zapier-platform-cli
 
-# print all the commands
-zapier help
-
 # auth to Zapier's platform with your deploy key. To obtain a key, email partner@zapier.com
 zapier auth
 ```
@@ -78,12 +80,6 @@ npm install
 You should now have a working local app. You can run several local commands to try it out.
 
 ```bash
-# validate the app
-zapier validate
-
-# describe the app
-zapier describe
-
 # run the local tests
 # the same as npm test
 zapier test
@@ -95,14 +91,8 @@ Next, you'll probably want to register your app and upload your version to Zapie
 # register your app
 zapier register "Zapier Example"
 
-# list your apps
-zapier apps
-
 # deploy your app version to Zapier
 zapier deploy
-
-# list your versions
-zapier versions
 ```
 
 If you open the editor in Zapier, you should now see "Zapier Example (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
@@ -120,7 +110,7 @@ Don't forget you'll need to `zapier deploy` to make your changes stick after any
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
 
-## Creating an App
+## Creating a Local App
 
 > Tip: check the [Quickstart](#quickstart) if this is your first time using the platform!
 
@@ -146,7 +136,7 @@ If you'd like to manage your **local App**, use these commands:
 * `zapier validate` - ensure your app is valid
 * `zapier describe` - print some helpful information about your app
 
-### Project Structure
+### Local Project Structure
 
 In your app's folder, you should see this general recommended structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
 
@@ -171,7 +161,7 @@ $ tree .
     └── ...
 ```
 
-### App Definition
+### Local App Definition
 
 The core definition of your `App` will look something like this, and is what your `index.js` should provide as the _only_ export:
 
@@ -215,7 +205,7 @@ module.export = App;
 
 ## Registering an App
 
-Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.
+Registering your App with Zapier is a necessary first step which only enables basic administrative functions. It should happen before `zapier deploy` which is to used to actually expose an App Version in the Zapier interface and editor.
 
 ```bash
 # register your app
@@ -224,6 +214,8 @@ zapier register "Zapier Example"
 # list your apps
 zapier apps
 ```
+
+> Note: this doesn't put your app in the editor - see the docs on deploying an App Version to do that!
 
 If you'd like to manage your **App**, use these commands:
 
@@ -237,7 +229,7 @@ If you'd like to manage your **App**, use these commands:
 
 ## Deploying an App Version
 
-An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can "promote" it to production for use by over 1 million Zapier users.
+An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, **every App Version is private** but you can `zapier promote` it to production for use by over 1 million Zapier users.
 
 ```bash
 # deploy your app version to Zapier
@@ -264,6 +256,42 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
 
 
+### Private App Version (default)
+
+A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
+
+
+### Sharing an App Version
+
+This is how you would share your app with friends, co-workers or clients. This is perfect for quality assurance, testing with active users or just sharing any app you like.
+
+```bash
+# sends an email this user to let them view the app in the ui privately
+zapier invite user@example.com
+
+# sends an email this user to let being an admin of the app
+zapier collaborate user@example.com
+```
+
+
+### Promoting an App Version
+
+Promotion is how you would share your app with every one of the 1 million+ Zapier users. If this is your first time promoting - you may have to wait for the Zapier team to review and approve your app.
+
+If this isn't the first time you've promoted your app - you might have users on older versions. You can `zapier migrate` to either move users over (which can be dangerous if you have breaking changes). Or, you can `zapier deprecate` to give users some time to move over themselves.
+
+```bash
+# promote your app version to all Zapier users
+zapier promote 1.0.1
+
+# OPTIONAL - migrate your users between one app version to another
+zapier migrate 1.0.0 1.0.1
+
+# OR - mark the old version as deprecated
+zapier deprecate 1.0.0 2017-01-01
+```
+
+
 ## Authentication
 
 Most applications require some sort of authentication - and Zapier provides a handful of methods for helping your users authenticate with your application. Zapier will provide some of the core behaviors, but you'll likely need to handle the rest.
@@ -274,19 +302,22 @@ Most applications require some sort of authentication - and Zapier provides a ha
 
 Useful if your app requires two pieces of information to authentication: `username` and `password` which only the end user can provide. By default, Zapier will do the standard Basic authentication base64 header encoding for you (via an automatically registered middleware).
 
-> Note: if you do the common `Authorization: Basic apikey:x` you should look at the "Custom" authentication method instead.
+> Note: if you do the common API Key pattern like `Authorization: Basic APIKEYHERE:x` you should look at the "Custom" authentication method instead.
 
 ```javascript
+const authentication = {
+  type: 'basic',
+  // "test" could also be a function
+  test: {
+    url: 'https://example.com/api/accounts/me.json'
+  }
+  // you can provide additional fields, but we'll provide `username`/`password` automatically
+};
+
 const App = {
   // ...
-  authentication: {
-    type: 'basic',
-    // "test" could also be a function
-    test: {
-      url: 'https://example.com/api/accounts/me.json'
-    }
-    // you can provide additional fields, but we'll provide `username`/`password` automatically
-  },
+  authentication: authentication,
+  // ...
 };
 
 ```
@@ -296,25 +327,32 @@ const App = {
 This is what most "API Key" driven apps should default to using. You'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
 
 ```javascript
+const authentication = {
+  type: 'custom',
+  // "test" could also be a function
+  test: {
+    url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
+  },
+  fields: [
+    {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'},
+    {key: 'api_key', type: 'string', required: true, helpText: 'Found on your settings page.'}
+  ]
+};
+
+const addApiKeyToHeader = (request, z, bundle) => {
+  request.headers['X-Subdomain'] = bundle.authData.subdomain;
+  const basicHash = Buffer(`${bundle.authData.api_key}:x`).toString('base64');
+  request.headers.Authorization = `Basic ${basicHash}`;
+  return request;
+};
+
 const App = {
   // ...
-  authentication: {
-    type: 'custom',
-    // "test" could also be a function
-    test: {
-      url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
-    },
-    fields: [
-      {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'},
-      {key: 'api_key', type: 'string', required: true, helpText: 'Found on your settings page.'}
-    ]
-  },
+  authentication: authentication,
   beforeRequest: [
-    (request, z, bundle) => {
-      request.headers['X-Api-Key'] = bundle.authData.api_key;
-      return request;
-    }
-  ]
+    addApiKeyToHeader,
+  ],
+  // ...
 };
 
 ```
@@ -324,16 +362,19 @@ const App = {
 Very similar to the "Basic" authentication method above, but uses digest authentication instead of Basic authentication.
 
 ```javascript
+const authentication = {
+  type: 'digest',
+  // "test" could also be a function
+  test: {
+    url: 'https://example.com/api/accounts/me.json'
+  }
+  // you can provide additional fields, but Zapier will provide `username`/`password` automatically
+};
+
 const App = {
   // ...
-  authentication: {
-    type: 'digest',
-    // "test" could also be a function
-    test: {
-      url: 'https://example.com/api/accounts/me.json'
-    }
-    // you can provide additional fields, but Zapier will provide `username`/`password` automatically
-  },
+  authentication: authentication,
+  // ...
 };
 
 ```
@@ -358,50 +399,55 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 Your auth definition would look something like this:
 
 ```javascript
-const App = {
-  // ...
-  authentication: {
-    type: 'oauth2',
-    test: {
-      url: 'https://example.com/api/accounts/me.json'
+const authentication = {
+  type: 'oauth2',
+  test: {
+    url: 'https://example.com/api/accounts/me.json'
+  },
+  // you can provide additional fields for inclusion in authData
+  oauth2Config: {
+    // "authorizeUrl" could also be a function returning a string url
+    authorizeUrl: {
+      method: 'GET',
+      url: 'https://example.com/api/oauth2/authorize',
+      params: {
+        client_id: '{{process.env.CLIENT_ID}}',
+        state: '{{bundle.inputData.state}}',
+        redirect_uri: '{{bundle.inputData.redirect_uri}}',
+        response_type: 'code'
+      }
     },
-    // you can provide additional fields for inclusion in authData
-    oauth2Config: {
-      // "authorizeUrl" could also be a function returning a string url
-      authorizeUrl: {
-        method: 'GET',
-        url: 'https://example.com/api/oauth2/authorize',
-        params: {
-          client_id: '{{process.env.CLIENT_ID}}',
-          state: '{{bundle.inputData.state}}',
-          redirect_uri: '{{bundle.inputData.redirect_uri}}',
-          response_type: 'code'
-        }
+    // Zapier expects a response providing {access_token: 'abcd'}
+    // "getAccessToken" could also be a function returning an object
+    getAccessToken: {
+      method: 'POST',
+      url: 'https://example.com/api/v2/oauth2/token',
+      body: {
+        code: '{{bundle.inputData.code}}',
+        client_id: '{{process.env.CLIENT_ID}}',
+        client_secret: '{{process.env.CLIENT_SECRET}}',
+        redirect_uri: '{{bundle.inputData.redirect_uri}}',
+        grant_type: 'authorization_code'
       },
-      // Zapier expects a response providing {access_token: 'abcd'}
-      // "getAccessToken" could also be a function returning an object
-      getAccessToken: {
-        method: 'POST',
-        url: 'https://example.com/api/v2/oauth2/token',
-        body: {
-          code: '{{bundle.inputData.code}}',
-          client_id: '{{process.env.CLIENT_ID}}',
-          client_secret: '{{process.env.CLIENT_SECRET}}',
-          redirect_uri: '{{bundle.inputData.redirect_uri}}',
-          grant_type: 'authorization_code'
-        },
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
     }
-  },
+  }
+};
+
+const addBearerHeader = (request, z, bundle) => {
+  request.headers.Authorization = `Bearer ${bundle.authData.access_token}`;
+  return request;
+};
+
+const App = {
+  // ...
+  authentication: authentication,
   beforeRequest: [
-    (request, z, bundle) => {
-      request.headers.Authorization = `Bearer ${bundle.authData.access_token}`;
-      return request;
-    }
+    addBearerHeader,
   ]
+  // ...
 };
 
 ```
@@ -453,6 +499,10 @@ For now, let's focus on two:
 Here is a complete example of what the list method might look like
 
 ```javascript
+const listRecipesRequest = {
+  url: 'http://example.com/recipes'
+};
+
 const Recipe = {
   //...
   list: {
@@ -461,9 +511,7 @@ const Recipe = {
       description: 'Triggers when a new recipe is added.'
     },
     operation: {
-      perform: {
-        url: 'http://example.com/recipes'
-      }
+      perform: listRecipesRequest
     }
   }
 };
@@ -475,6 +523,15 @@ The method is made up of two properties, a `display` and an `operation`. The `di
 Adding a create method looks very similar.
 
 ```javascript
+const createRecipeRequest = {
+  url: 'http://example.com/recipes',
+  method: 'POST',
+  body: {
+    name: 'Baked Falafel',
+    style: 'mediterranean'
+  }
+};
+
 const Recipe = {
   //...
   list: {
@@ -486,14 +543,7 @@ const Recipe = {
       description: 'Adds a new recipe to our cookbook.'
     },
     operation: {
-      perform: {
-        url: 'http://example.com/recipes',
-        method: 'POST',
-        body: {
-          name: 'Baked Falafel',
-          style: 'mediterranean'
-        }
-      }
+      perform: createRecipeRequest
     }
   }
 };
@@ -513,14 +563,16 @@ new records in your system (add a recipe to the catalog).
 The definition for each of these follows the same structure. Here is an example of a trigger:
 
 ```javascript
+const recipeListRequest = {
+  url: 'http://example.com/recipes',
+};
+
 const App = {
   //...
   triggers: {
     new_recipe: {
-      // `key` uniquely identifies the trigger to the Zapier backend
-      key: 'new_recipe',
-      // `noun` is the user-friendly word that is used to refer to the resource this trigger relates to
-      noun: 'Recipe',
+      key: 'new_recipe', // uniquely identifies the trigger
+      noun: 'Recipe',    // user-friendly word that is used to refer to the resource
       // `display` controls the presentation in the Zapier Editor
       display: {
         label: 'New Recipe',
@@ -528,7 +580,7 @@ const App = {
       },
       // `operation` implements the API call used to fetch the data
       operation: {
-        url: 'http://example.com/recipes',
+        perform: recipeListRequest
       }
     },
     another_trigger: {
@@ -568,6 +620,15 @@ This features:
 3. Automatic non-2xx error raising.
 
 ```javascript
+const triggerShorthandRequest = {
+  method: 'GET',
+  url: 'http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json',
+  params: {
+    sort_by: 'id',
+    sort_order: 'DESC'
+  }
+};
+
 const App = {
   // ...
   triggers: {
@@ -575,14 +636,7 @@ const App = {
       // ...
       operation: {
         // ...
-        perform: {
-          method: 'GET',
-          url: 'http://{{bundle.authData.subdomain}}.example.com/v2/api/recipes.json',
-          params: {
-            sort_by: 'id',
-            sort_order: 'DESC'
-          }
-        }
+        perform: triggerShorthandRequest
       }
     }
   }
@@ -601,6 +655,26 @@ When you need to do custom processing of the response, or need to process non-JS
 To make a manual HTTP request, use the `request` method of the `z` object:
 
 ```javascript
+const listExample = (z, bundle) => {
+  const customHttpOptions = {
+    headers: {
+      'my-header': 'from zapier'
+    }
+  };
+
+  return z.request('http://example.com/api/v2/recipes.json', customHttpOptions)
+    .then(response => {
+      if (response.status >= 300) {
+        throw new Error(`Unexpected status code ${response.status}`);
+      }
+
+      const recipes = JSON.parse(response.content);
+      // do any custom processing of recipes here...
+
+      return recipes;
+    });
+};
+
 const App = {
   // ...
   triggers: {
@@ -608,25 +682,7 @@ const App = {
       // ...
       operation: {
         // ...
-        perform: (z, bundle) => {
-          const customHttpOptions = {
-            headers: {
-              'my-header': 'from zapier'
-            }
-          };
-
-          return z.request('http://example.com/api/v2/recipes.json', customHttpOptions)
-            .then(response => {
-              if (response.status >= 300) {
-                throw new Error(`Unexpected status code ${response.status}`);
-              }
-
-              const recipes = JSON.parse(response.content);
-              // do any custom processing of recipes here...
-
-              return recipes;
-            });
-        }
+        perform: listExample
       }
     }
   }
@@ -679,25 +735,31 @@ Note that you need to call `JSON.stringify()` before setting the `body`.
 If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
 
 ```javascript
+const addHeader = (request) => {
+  request.headers['my-header'] = 'from zapier';
+  return request;
+};
+
+const mustBe200 = (response) => {
+  if (response.status !== 200) {
+    throw new Error(`Unexpected status code ${response.status}`);
+  }
+  return response;
+};
+
+const autoParseJson = (response) => {
+  response.json = JSON.parse(response.content);
+  return response;
+};
+
 const App = {
   // ...
   beforeRequest: [
-    (request) => {
-      request.headers['my-header'] = 'from zapier';
-      return request;
-    }
+    addHeader,
   ],
   afterRequest: [
-    (response) => {
-      if (response.status !== 200) {
-        throw new Error(`Unexpected status code ${response.status}`);
-      }
-      return response;
-    },
-    (response) => {
-      response.json = JSON.parse(response.content);
-      return response;
-    }
+    mustBe200,
+    autoParseJson,
   ]
   // ...
 };
@@ -732,6 +794,40 @@ The response object returned by `z.request()` supports the following fields and 
 * `headers`: Response headers object. The header keys are all lower case.
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 * `options`: The original request options object (see above).
+
+## Z Object
+
+We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
+
+* `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Requests](#making-http-requests).
+* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#log-statements)
+* `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
+* `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
+errors
+* `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
+* `dehydrate`: dehydrate a function
+* `dehydrateRequest`: dehydrate a request
+* `dehydrateFile`: dehydrate a file
+
+## Bundle Object
+
+This payload will provide user provided data and configuration data.
+
+* `authData` - user provided authentication data, like `api_key` or even `access_token` if you are using oauth2 [(read more on authentication)[#authentication]]
+* `inputData` - user provided configuration data, like `listId` or `tagSlug` as defined by `inputData`. For example:
+```javascript
+{
+  createdBy: 'Bobby Flay'
+  style: 'mediterranean'
+}
+```
+* `inputDataRaw` - like `inputData`, but before rendering `{{curlies}}`.
+```javascript
+{
+  createdBy: '{{chef_name}}'
+  style: '{{style}}'
+}
+```
 
 ## Environment
 
@@ -773,6 +869,15 @@ Within your app, you can access the environment via the standard `process.env` -
 For example, you can access the `process.env` in your perform functions:
 
 ```javascript
+const listExample = (z, bundle) => {
+  const httpOptions = {
+    headers: {
+      'my-header': process.env.MY_SECRET_VALUE
+    }
+  };
+  return z.request('http://example.com/api/v2/recipes.json', httpOptions);
+};
+
 const App = {
   // ...
   triggers: {
@@ -780,14 +885,7 @@ const App = {
       // ...
       operation: {
         // ...
-        perform: (z, bundle) => {
-          const httpOptions = {
-            headers: {
-              'my-header': process.env.MY_SECRET_VALUE
-            }
-          };
-          return z.request('http://example.com/api/v2/recipes.json', httpOptions);
-        }
+        perform: listExample
       }
     }
   }

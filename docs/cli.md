@@ -711,7 +711,7 @@ $ zapier scaffold resource "Tag" --entry=index.js --dest=resources/tag
 **Arguments**
 
 
-* `--log-to-stdout` -- _optional_, print zapier summary logs to standard out
+* `--disable-log-to-stdout` -- _optional_, disables print zapier summary logs to standard out
 * `--detailed-log-to-stdout` -- _optional_, print zapier detailed logs to standard out
 
 ```bash

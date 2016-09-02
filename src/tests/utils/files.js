@@ -9,7 +9,10 @@ describe('files', () => {
 
   beforeEach(done => {
     tmpDir = path.resolve(os.tmpdir(), 'zapier-platform-cli-files-test');
-    files.ensureDir(tmpDir).then(() => done()).catch(done);
+    files.removeDir(tmpDir)
+      .then(() => files.ensureDir(tmpDir))
+      .then(() => done())
+      .catch(done);
   });
 
   afterEach(done => {
@@ -40,11 +43,14 @@ describe('files', () => {
 
     files.writeFile(srcFileName, data)
       .then(files.copyDir(srcDir, dstDir))
-      .then(files.readFile(dstFileName).then(buf => {
+      .then(() => files.readFile(dstFileName).then(buf => {
         buf.toString().should.equal(data);
         done();
       }))
-      .catch(done);
+      .catch(err => {
+        console.log('error', err);
+        done(err);
+      });
   });
 
   describe('validateFileExists', () => {
@@ -61,6 +67,38 @@ describe('files', () => {
         })
         .catch(err => {
           err.message.should.eql(': File ./i-do-not-exist.txt not found. Oh noes.');
+          done();
+        });
+    });
+
+  });
+
+  describe('isEmptyDir', () => {
+
+    it('should return true when directory is empty', (done) => {
+      files.isEmptyDir(tmpDir)
+        .then(isEmpty => {
+          isEmpty.should.eql(true);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should return false when directory is not empty', (done) => {
+      files.isEmptyDir(__dirname)
+        .then(isEmpty => {
+          isEmpty.should.eql(false);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should return reject when directory does not exist', (done) => {
+      files.isEmptyDir('i-do-no-exist')
+        .then(() => {
+          done('expected an error');
+        })
+        .catch(() => {
           done();
         });
     });

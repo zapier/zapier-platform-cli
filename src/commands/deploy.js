@@ -16,7 +16,7 @@ const createIfNeeded = (context) => {
 };
 
 const deploy = (context) => {
-  context.line('Preparing to build and upload a new version.\n');
+  context.line('Preparing to build and upload your app.\n');
 
   return createIfNeeded(context)
     .then(() => utils.buildAndUploadDir())
@@ -27,10 +27,10 @@ const deploy = (context) => {
 deploy.argsSpec = [];
 deploy.argOptsSpec = _.extend({
 }, build.argOptsSpec);
-deploy.help = 'Build and upload a new version of the current app - does not promote.';
+deploy.help = 'Build and upload the current app - does not promote.';
 deploy.example = 'zapier deploy';
 deploy.docs = `\
-A shortcut for \`zapier build && zapier upload\` - this is our recommended way to deploy a new version. This is a common workflow:
+A shortcut for \`zapier build && zapier upload\` - this is our recommended way to deploy an app. This is a common workflow:
 
 1. Make changes in \`index.js\` or other files.
 2. Run \`npm test\`.
@@ -46,7 +46,7 @@ If you have not yet registered your app, this command will prompt you for your a
 
 ${'```'}bash
 $ zapier deploy
-# Preparing to build and upload a new version.
+# Preparing to build and upload app.
 #
 #   Copying project to temp directory - done!
 #   Installing project dependencies - done!

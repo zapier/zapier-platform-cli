@@ -1,6 +1,7 @@
 // list of template (example) apps
 
 module.exports = [
+  'minimal',
   'resource',
   'trigger',
   'write',

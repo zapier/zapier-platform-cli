@@ -6,22 +6,56 @@ const exampleApps = require('../utils/example-apps');
 const constants = require('../constants');
 const appTemplates = require('../app-templates');
 
-const initApp = (location) => {
+const confirmNonEmptyDir = (location) => {
+  if (location === '.') {
+    return utils.isEmptyDir(location)
+      .then(isEmpty => {
+        if (!isEmpty) {
+          return utils.getInput('Current directory not empty, continue anyway? (y/n) ')
+            .then(answer => {
+              if (!answer.match(/^y/i)) {
+                /*eslint no-process-exit: 0 */
+                process.exit(0);
+              }
+            });
+        }
+        return Promise.resolve();
+      });
+  }
+  return Promise.resolve();
+};
+
+const initApp = (context, location) => {
   const appDir = path.resolve(location);
   const tempAppDir = tmp.tmpNameSync();
 
-  const copyOpts = {clobber: false};
-  const template = global.argOpts.template || 'trigger';
+  const copyOpts = {
+    clobber: false,
+    onCopy: file => {
+      utils.printStarting(`Copy ${file}`);
+      utils.printDone();
+    },
+    onSkip: file => {
+      utils.printStarting(`File ${file} already exists`);
+      utils.printDone(true, 'skipped');
+    }
+  };
 
-  utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
-  return utils.removeDir(tempAppDir)
+  const template = global.argOpts.template || 'minimal';
+
+  return confirmNonEmptyDir(location).
+    then(() => {
+      utils.printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
+    })
+    .then(() => utils.removeDir(tempAppDir))
     .then(() => utils.ensureDir(tempAppDir))
     .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
     .then(() => utils.printDone())
-    .then(() => utils.printStarting('Copying starter app'))
     .then(() => utils.ensureDir(appDir))
+    .then(() => context.line())
     .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
     .then(() => utils.removeDir(tempAppDir))
+    .then(() => utils.printStarting('Copying starter app'))
     .then(() => utils.printDone());
 };
 
@@ -33,7 +67,7 @@ const init = (context, location = '.') => {
   context.line('Let\'s initialize your app!');
   context.line();
 
-  return initApp(location)
+  return initApp(context, location)
     .then(() => {
       context.line('\nFinished! You can edit `index.js` and then `zapier deploy` to build & upload your app!');
     });
@@ -43,7 +77,7 @@ init.argsSpec = [
   {name: 'location', default: '.'},
 ];
 init.argOptsSpec = {
-  template: {help: 'select a starting app template', choices: appTemplates, 'default': 'trigger'}
+  template: {help: 'select a starting app template', choices: appTemplates, 'default': 'minimal'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
 init.example = 'zapier init [location]';

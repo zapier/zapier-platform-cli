@@ -1,3 +1,7 @@
+const listRecipesRequest = {
+  url: 'http://example.com/recipes'
+};
+
 const Recipe = {
   //...
   list: {
@@ -6,9 +10,7 @@ const Recipe = {
       description: 'Triggers when a new recipe is added.'
     },
     operation: {
-      perform: {
-        url: 'http://example.com/recipes'
-      }
+      perform: listRecipesRequest
     }
   }
 };

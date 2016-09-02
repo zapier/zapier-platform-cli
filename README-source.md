@@ -7,18 +7,124 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 <!-- toc -->
 <!-- tocstop -->
 
-## Quickstart
 
-> The Zapier CLI and Platform requires Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) and [homebrew](http://brew.sh/) to manage your Node installation.
+## Requirements
 
-First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zapier editor](https://zapier.com/app/editor).
+The Zapier CLI and Platform require Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node installation.
+
+On Mac (via [homebrew](http://brew.sh/)):
+
+```bash
+brew install nvm
+nvm install v4.3.2
+nvm use v4.3.2
+```
+
+
+## Tutorial
+
+Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and deploying an app to Zapier.
+
+To get started, first make sure that your dev environment meets the [requirements](#requirements) for running the the platform. Once you have the proper version of Node.js, install the Zapier CLI tool.
 
 ```bash
 # install the CLI globally
 npm install -g @zapier/zapier-platform-cli
+```
 
-# print all the commands
-zapier help
+The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
+
+To begin building an app, use the `init` command to setup the needed structure.
+
+```bash
+# Create a directory with the minimum required files
+zapier init example-app
+cd example-app
+```
+
+Inside the directory, you'll see two files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
+
+The other file, `index.js` is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and explore.
+
+
+Outline:
+
+    * Cover the app schema
+        - What's a trigger
+        - What's an action
+        - What's a search
+        - There is auth
+        - *very* briefly say that resources exist, but we'll get to them later
+    * Build a trigger that hits...mockapi.io?
+        - Use request shorthand for perform, no input fields
+    * Introduce a test for that trigger
+        - Write the test
+        - `zapier test`
+    * Deploy app to Zapier
+        - `zapier auth`
+        - `zapier register`
+        - `zapier deploy`
+        - Go to zapier.com and run it
+        - Show how `zapier logs` will list the requests made in production
+    * Introduce the idea of making a change to our app
+        - Update test to expect an query param
+        - Run test, see it fail
+        - Add an input field to trigger
+        - Include the input field in the URL with {{}} syntax (gloss over details for now)
+        - Run test, see it pass
+        - Want to see it on Zapier, so `zapier deploy`
+        - Go view update in Zap Editor (now has an optional need)
+    * Explore {{}} and perform a bit more
+        - Explain how Zapier passes data collected from fields in a Zap to your app
+        - Elude to the idea that there is more context there as well with authData and environment (more on that later)
+    * Introduce the concept of auth
+        - Add a failing test for an auth header
+        - Add the authentication definition to the app
+            - Use {{}} syntax to add the header, and explain that the bundle also contains authData
+        - Run test again to see it pass
+        - `zapier deploy`
+        - Go back to editor to add an account
+        - Explain that there are other auth styles supported, link to docs
+    * Introduce the concept of an action
+        - Define a test
+        - Define an action
+            - Have a few input fields
+            - Use shortand request syntax again
+        - Run test
+        - `zapier deploy`
+    * Maybe: Introduce the idea of `zapier watch`?
+        - "Up to now we've been using `zapier deploy` to upload our changes. There is a faster way with..."
+    * Introduce the concept of perform as a function
+        - Tweak the action to be a function instead, and do something like form-encode the data or have one of the input fields be a datetime that we need to convert
+        - Explain how bundle is the same context as what {{}} has
+        - Explain z.request
+        - Throw in a z.console.log
+        - Run test again, still passes
+            - Point out that we see our console statement as well
+        - `zapier deploy` and try it live
+        - `zapier logs` to see the console output from production
+    * Introduce the concept of a search
+        - Define a test
+        - Build the search
+    * Introduce the concept of beforeRequest
+        - Show how we've had to repeat the auth header three times, we can simplify by doing middleware
+        - Add beforeRequest and remove from other three spots
+        - Run tests, which still pass while asserting auth header is there
+    * Maybe: Introduce concept of resource
+        - Could consolidate all our code into a a single resource
+        - Tests still pass
+        - Explain the benefit of these being linked
+
+
+## Quickstart
+
+> Be sure to check the [Requirements](#requirements) before you start!
+
+First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
+
+```bash
+# install the CLI globally
+npm install -g @zapier/zapier-platform-cli
 
 # auth to Zapier's platform with your deploy key. To obtain a key, email partner@zapier.com
 zapier auth
@@ -43,12 +149,6 @@ npm install
 You should now have a working local app. You can run several local commands to try it out.
 
 ```bash
-# validate the app
-zapier validate
-
-# describe the app
-zapier describe
-
 # run the local tests
 # the same as npm test
 zapier test
@@ -60,14 +160,8 @@ Next, you'll probably want to register your app and upload your version to Zapie
 # register your app
 zapier register "Zapier Example"
 
-# list your apps
-zapier apps
-
 # deploy your app version to Zapier
 zapier deploy
-
-# list your versions
-zapier versions
 ```
 
 If you open the editor in Zapier, you should now see "Zapier Example (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
@@ -80,12 +174,12 @@ zapier watch
 # method calls will also be proxied and logged to stdout for convenience
 ```
 
-Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session!
+Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session ends!
 
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
 
-## Creating an App
+## Creating a Local App
 
 > Tip: check the [Quickstart](#quickstart) if this is your first time using the platform!
 
@@ -111,7 +205,7 @@ If you'd like to manage your **local App**, use these commands:
 * `zapier validate` - ensure your app is valid
 * `zapier describe` - print some helpful information about your app
 
-### Project Structure
+### Local Project Structure
 
 In your app's folder, you should see this general recommended structure. The `index.js` is Zapier's entry point to your app. Zapier expects you to export an `App` definition there.
 
@@ -136,7 +230,7 @@ $ tree .
     └── ...
 ```
 
-### App Definition
+### Local App Definition
 
 The core definition of your `App` will look something like this, and is what your `index.js` should provide as the _only_ export:
 
@@ -149,7 +243,7 @@ The core definition of your `App` will look something like this, and is what you
 
 ## Registering an App
 
-Registering your App with Zapier will enable much of the functionality within Zapier.com. It is a necessary step before deploying an App Version which exposes the app in the Zapier interface.
+Registering your App with Zapier is a necessary first step which only enables basic administrative functions. It should happen before `zapier deploy` which is to used to actually expose an App Version in the Zapier interface and editor.
 
 ```bash
 # register your app
@@ -158,6 +252,8 @@ zapier register "Zapier Example"
 # list your apps
 zapier apps
 ```
+
+> Note: this doesn't put your app in the editor - see the docs on deploying an App Version to do that!
 
 If you'd like to manage your **App**, use these commands:
 
@@ -171,7 +267,7 @@ If you'd like to manage your **App**, use these commands:
 
 ## Deploying an App Version
 
-An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, every App Version is private but you can "promote" it to production for use by over 1 million Zapier users.
+An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, **every App Version is private** but you can `zapier promote` it to production for use by over 1 million Zapier users.
 
 ```bash
 # deploy your app version to Zapier
@@ -198,6 +294,42 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
 
 
+### Private App Version (default)
+
+A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
+
+
+### Sharing an App Version
+
+This is how you would share your app with friends, co-workers or clients. This is perfect for quality assurance, testing with active users or just sharing any app you like.
+
+```bash
+# sends an email this user to let them view the app in the ui privately
+zapier invite user@example.com
+
+# sends an email this user to let being an admin of the app
+zapier collaborate user@example.com
+```
+
+
+### Promoting an App Version
+
+Promotion is how you would share your app with every one of the 1 million+ Zapier users. If this is your first time promoting - you may have to wait for the Zapier team to review and approve your app.
+
+If this isn't the first time you've promoted your app - you might have users on older versions. You can `zapier migrate` to either move users over (which can be dangerous if you have breaking changes). Or, you can `zapier deprecate` to give users some time to move over themselves.
+
+```bash
+# promote your app version to all Zapier users
+zapier promote 1.0.1
+
+# OPTIONAL - migrate your users between one app version to another
+zapier migrate 1.0.0 1.0.1
+
+# OR - mark the old version as deprecated
+zapier deprecate 1.0.0 2017-01-01
+```
+
+
 ## Authentication
 
 Most applications require some sort of authentication - and Zapier provides a handful of methods for helping your users authenticate with your application. Zapier will provide some of the core behaviors, but you'll likely need to handle the rest.
@@ -208,7 +340,7 @@ Most applications require some sort of authentication - and Zapier provides a ha
 
 Useful if your app requires two pieces of information to authentication: `username` and `password` which only the end user can provide. By default, Zapier will do the standard Basic authentication base64 header encoding for you (via an automatically registered middleware).
 
-> Note: if you do the common `Authorization: Basic apikey:x` you should look at the "Custom" authentication method instead.
+> Note: if you do the common API Key pattern like `Authorization: Basic APIKEYHERE:x` you should look at the "Custom" authentication method instead.
 
 ```javascript
 [insert-file:./snippets/basic-auth.js]
@@ -406,6 +538,40 @@ The response object returned by `z.request()` supports the following fields and 
 * `headers`: Response headers object. The header keys are all lower case.
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 * `options`: The original request options object (see above).
+
+## Z Object
+
+We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
+
+* `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Requests](#making-http-requests).
+* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#log-statements)
+* `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
+* `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
+errors
+* `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
+* `dehydrate`: dehydrate a function
+* `dehydrateRequest`: dehydrate a request
+* `dehydrateFile`: dehydrate a file
+
+## Bundle Object
+
+This payload will provide user provided data and configuration data.
+
+* `authData` - user provided authentication data, like `api_key` or even `access_token` if you are using oauth2 [(read more on authentication)[#authentication]]
+* `inputData` - user provided configuration data, like `listId` or `tagSlug` as defined by `inputData`. For example:
+```javascript
+{
+  createdBy: 'Bobby Flay'
+  style: 'mediterranean'
+}
+```
+* `inputDataRaw` - like `inputData`, but before rendering `{{curlies}}`.
+```javascript
+{
+  createdBy: '{{chef_name}}'
+  style: '{{style}}'
+}
+```
 
 ## Environment
 

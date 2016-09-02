@@ -1,3 +1,6 @@
+const _ = require('lodash');
+const path = require('path');
+
 const {promisifyAll} = require('./promisify');
 const fse = promisifyAll(require('fs-extra'));
 
@@ -40,24 +43,86 @@ const writeFile = (fileName, data) => {
   return fse.writeFileAsync(fixHome(fileName), data);
 };
 
+// Returns a promise that ensures a directory exists.
+const ensureDir = (dir) => fse.ensureDirAsync(dir);
+
+const copyFile = (src, dest, mode) => {
+  return new Promise((resolve, reject) => {
+    const readStream = fse.createReadStream(src);
+    const writeStream = fse.createWriteStream(dest, { mode });
+
+    readStream.on('error', reject);
+    writeStream.on('error', reject);
+
+    writeStream.on('open', function () {
+      readStream.pipe(writeStream);
+    });
+
+    writeStream.once('finish', err => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
 // Returns a promise that copies a directory.
-const copyDir = (src, dest, options) => {
-  options = options || {};
+const copyDir = (src, dst, options) => {
   const defaultFilter = (dir) => {
     const isntPackage = dir.indexOf('node_modules') === -1;
     const isntBuild = dir.indexOf('.zip') === -1;
     return isntPackage && isntBuild;
   };
-  options.filter = options.filter || defaultFilter;
 
-  return fse.copyAsync(src, dest, options);
+  options = _.defaults(options || {}, {
+    clobber: false,
+    filter: defaultFilter,
+    onCopy: () => {},
+    onSkip: () => {}
+  });
+
+  return ensureDir(dst)
+    .then(() => fse.readdirAsync(src))
+    .then(files => {
+      const promises = files.map(file => {
+        const srcItem = path.resolve(src, file);
+        const dstItem = path.resolve(dst, file);
+        const stat = fse.lstatSync(srcItem);
+        const dstExists = fileExistsSync(dstItem);
+
+        if (!options.filter(srcItem)) {
+          return Promise.resolve();
+        }
+
+        if (dstExists && options.clobber) {
+          fse.removeSync(dstItem);
+        } else if (dstExists) {
+          options.onSkip(dstItem);
+          return Promise.resolve();
+        }
+
+        if (stat.isDirectory()) {
+          return ensureDir(dstItem)
+            .then(() => copyDir(srcItem, dstItem, options));
+        } else {
+          return copyFile(srcItem, dstItem, stat.mode)
+            .then(() => {
+              options.onCopy(dstItem);
+            });
+        }
+      });
+
+      return Promise.all(promises);
+    });
 };
-
-// Returns a promise that ensures a directory exists.
-const ensureDir = (dir) => fse.ensureDirAsync(dir);
 
 // Delete a directory.
 const removeDir = (dir) => fse.removeAsync(dir);
+
+// Returns true if directory is empty, else false.
+// Rejects if directory does not exist.
+const isEmptyDir = (dir) => fse.readdirAsync(dir).then(items => _.isEmpty(items));
 
 module.exports = {
   writeFile,
@@ -66,5 +131,6 @@ module.exports = {
   ensureDir,
   removeDir,
   validateFileExists,
-  fileExistsSync
+  fileExistsSync,
+  isEmptyDir
 };

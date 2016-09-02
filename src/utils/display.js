@@ -236,11 +236,20 @@ const printStarting = (msg) => {
   }, spinSpeed);
 };
 
-const printDone = (success = true) => {
+const printDone = (success = true, message) => {
   if (!spinner) { return; }
   clearSpinner();
   writeNextSpinnerTick(true);
-  console.log(success ? colors.green(' done!') : colors.red(' fail!'));
+
+  if (message) {
+    message = `  ${message}`;
+  }
+
+  const logMsg = success ?
+    colors.green(message || '  done!') :
+    colors.red(message || '  fail!');
+
+  console.log(logMsg);
 };
 
 // Get input from a user.
