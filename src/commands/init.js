@@ -52,7 +52,6 @@ const initApp = (context, location) => {
     .then(() => exampleApps.downloadAndUnzipTo(template, tempAppDir))
     .then(() => utils.printDone())
     .then(() => utils.ensureDir(appDir))
-    .then(() => context.line())
     .then(() => utils.copyDir(tempAppDir, appDir, copyOpts))
     .then(() => utils.removeDir(tempAppDir))
     .then(() => utils.printStarting('Copying starter app'))
