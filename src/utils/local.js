@@ -58,7 +58,7 @@ const createAWSError = (error) => {
 
   return {
     errorMessage: error.message,
-    errorType: error.constructor.name,
+    errorType: error.name,
     stackTrace
   };
 };
@@ -71,7 +71,7 @@ const localAppRPCServer = (options) => {
       callback(null, {'results': 'Success!'});
     },
     invoke: (args, callback) => {
-      let [event] = args;
+      const [event] = args;
       options.log();
       options.log(colors.green('==Method'));
       options.log(event.method);
