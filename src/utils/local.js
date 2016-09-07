@@ -52,6 +52,17 @@ const localAppCommand = (event) => {
   });
 };
 
+// translate a JS Error into what would be returned from lambda
+const createAWSError = (error) => {
+  const stackTrace = error.stack.split('\n').slice(1).map(line => line.replace(/^\s+at\s/, ''));
+
+  return {
+    errorMessage: error.message,
+    errorType: error.constructor.name,
+    stackTrace
+  };
+};
+
 // Stands up a local RPC server for app commands.
 const localAppRPCServer = (options) => {
 
@@ -76,9 +87,13 @@ const localAppRPCServer = (options) => {
           options.log(prettyJSONstringify(resp.results));
           options.log();
         }
-        // TODO: this needs to somehow match how AWS returns its
-        // errors - or we need to do it in zapier/zapier
-        callback(err, resp);
+        if (err) {
+          // match how AWS returns its errors
+          const awsError = createAWSError(err);
+          callback(null, awsError);
+        } else {
+          callback(err, resp);
+        }
       });
     }
   });
