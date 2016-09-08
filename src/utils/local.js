@@ -54,7 +54,7 @@ const localAppCommand = (event) => {
 
 // translate a JS Error into what would be returned from lambda
 const createAWSError = (error) => {
-  const stackTrace = error.stack.split('\n').slice(1).map(line => line.replace(/^\s+at\s/, ''));
+  const stackTrace = error.stack.split(/\n\s+at\s/).slice(1);
 
   return {
     errorMessage: error.message,
