@@ -64,12 +64,13 @@ const scaffold = (context, type, name) => {
       // we should look at jscodeshift or friends to do this instead
 
       // insert Resource = require() line at top
-      const importerLine = `const ${templateContext.CAMEL} = require('./${dest}');`;
+      const varName = `${templateContext.CAMEL}${utils.camelCase(type)}`;
+      const importerLine = `const ${varName} = require('./${dest}');`;
       lines.splice(0, 0, importerLine);
 
       // insert '[Resource.key]: Resource,' after 'resources:' line
       const injectAfter = `${typeMap[type]}: {`;
-      const injectorLine = `[${templateContext.CAMEL}.key]: ${templateContext.CAMEL},`;
+      const injectorLine = `[${varName}.key]: ${varName},`;
       const linesDefIndex = _.findIndex(lines, (line) => _.endsWith(line, injectAfter));
       if (linesDefIndex === -1) {
         utils.printDone(false);
