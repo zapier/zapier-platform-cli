@@ -7,6 +7,7 @@ const utils = require('../utils');
 
 const defaultPort = 7545;
 
+// TODO: would be nice to have a /tmp/zapier-watch.pid
 const watch = (context) => {
   context.line('Watching and running your app locally. Zapier will tunnel JS calls here.\n');
 
