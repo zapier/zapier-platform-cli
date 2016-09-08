@@ -87,7 +87,7 @@ const scaffold = (context, type, name) => {
 };
 scaffold.argsSpec = [
   {name: 'type', help: 'what type of thing are you creating', required: true, choices: [
-    'index',
+    // 'index',
     // 'oauth2',
     'resource',
     'trigger',

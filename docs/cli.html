@@ -1006,7 +1006,7 @@ $ zapier logs --type=http --detailed --format=plain
 </ul><p>You can mix and match several options to customize the created scaffold for your project.</p><blockquote>
 <p>Note, we may fail to rewrite your <code>index.js</code> so you may need to handle the require and registration yourself.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>type [{index,resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
+<li><code>type [{resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
 <li><code>name [&quot;Some Name&quot;]</code> -- <strong>required</strong>, the name of the new thing to create</li>
 <li><code>--dest={type}s/{name}</code> -- <em>optional</em>, sets the new file&apos;s path, default is <code>{type}s/{name}</code></li>
 <li><code>--entry=index.js</code> -- <em>optional</em>, where to import the new file, default is <code>index.js</code></li>

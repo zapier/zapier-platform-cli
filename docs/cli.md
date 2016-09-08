@@ -678,7 +678,7 @@ You can mix and match several options to customize the created scaffold for your
 
 **Arguments**
 
-* `type [{index,resource,trigger,search,write}]` -- **required**, what type of thing are you creating
+* `type [{resource,trigger,search,write}]` -- **required**, what type of thing are you creating
 * `name ["Some Name"]` -- **required**, the name of the new thing to create
 * `--dest={type}s/{name}` -- _optional_, sets the new file's path, default is `{type}s/{name}`
 * `--entry=index.js` -- _optional_, where to import the new file, default is `index.js`
