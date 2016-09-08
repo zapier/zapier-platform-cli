@@ -203,8 +203,9 @@ blockquote {
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#tutorial">Tutorial</a><ul>
 <li><a href="#installing-the-cli">Installing the CLI</a></li>
-<li><a href="#starting-your-app">Starting your App</a></li>
-<li><a href="#modifying-your-app">Modifying your App</a></li>
+<li><a href="#starting-an-app">Starting an App</a></li>
+<li><a href="#adding-a-trigger">Adding a Trigger</a></li>
+<li><a href="#modifying-a-trigger">Modifying a Trigger</a></li>
 </ul>
 </li>
 <li><a href="#quickstart">Quickstart</a></li>
@@ -304,8 +305,9 @@ blockquote {
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#tutorial">Tutorial</a><ul>
 <li><a href="#installing-the-cli">Installing the CLI</a></li>
-<li><a href="#starting-your-app">Starting your App</a></li>
-<li><a href="#modifying-your-app">Modifying your App</a></li>
+<li><a href="#starting-an-app">Starting an App</a></li>
+<li><a href="#adding-a-trigger">Adding a Trigger</a></li>
+<li><a href="#modifying-a-trigger">Modifying a Trigger</a></li>
 </ul>
 </li>
 <li><a href="#quickstart">Quickstart</a></li>
@@ -452,7 +454,7 @@ zapier auth
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="starting-your-app">Starting your App</h3>
+      <h3 id="starting-an-app">Starting an App</h3>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -484,7 +486,7 @@ zapier init example-app
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="modifying-your-app">Modifying your App</h3>
+      <h3 id="adding-a-trigger">Adding a Trigger</h3>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -536,7 +538,7 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now, let&apos;s return to our <code>index.js</code> and add make sure we add two lines of code:</p><ol>
+      <p>Now, let&apos;s return to our <code>index.js</code> and add two new lines of code:</p><ol>
 <li>The <code>require()</code> for the trigger</li>
 <li>The registration of the trigger in <code>App</code></li>
 </ol>
@@ -629,7 +631,18 @@ If you<span class="hljs-string">&apos;d like to add more, try the `zapier scaffo
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Outline:</p>
+      <h3 id="modifying-a-trigger">Modifying a Trigger</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <blockquote>
+<p>TODO.</p>
+</blockquote><p>Outline:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>* Cover the app schema
@@ -643,19 +656,17 @@ If you<span class="hljs-string">&apos;d like to add more, try the `zapier scaffo
 * Introduce a test for that trigger
     - Write the test
     - `zapier test`
-* Deploy app to Zapier
-    - `zapier register`
-    - `zapier deploy`
-    - Go to zapier.com and run it
-    - Show how `zapier logs` will list the requests made in production
 * Introduce the idea of making a change to our app
     - Update test to expect an query param
     - Run test, see it fail
     - Add an input field to trigger
     - Include the input field in the URL with {{}} syntax (gloss over details for now)
     - Run test, see it pass
-    - Want to see it on Zapier, so `zapier deploy`
-    - Go view update in Zap Editor (now has an optional need)
+* Deploy app to Zapier
+    - `zapier register`
+    - `zapier deploy`
+    - Go to zapier.com and run it
+    - Show how `zapier logs` will list the requests made in production
 * Explore {{}} and perform a bit more
     - Explain how Zapier passes data collected from fields in a Zap to your app
     - Elude to the idea that there is more context there as well with authData and environment (more on that later)

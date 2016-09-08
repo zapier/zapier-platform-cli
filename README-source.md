@@ -47,7 +47,7 @@ zapier auth
 Now your CLI is installed and ready to go!
 
 
-### Starting your App
+### Starting an App
 
 To begin building an app, use the `init` command to setup the needed structure.
 
@@ -66,7 +66,7 @@ Before we go any further - we'll need to install all the dependencies for our ap
 npm install
 ```
 
-### Modifying your App
+### Adding a Trigger
 
 Right next to `package.json` should be `index.js` which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's take a look!
 
@@ -107,7 +107,7 @@ module.exports = {
 };
 ```
 
-Now, let's return to our `index.js` and add make sure we add two lines of code:
+Now, let's return to our `index.js` and add two new lines of code:
 
 1. The `require()` for the trigger
 2. The registration of the trigger in `App`
@@ -185,6 +185,9 @@ $ zapier test
 
 ```
 
+### Modifying a Trigger
+
+> TODO.
 
 Outline:
 
@@ -199,19 +202,17 @@ Outline:
     * Introduce a test for that trigger
         - Write the test
         - `zapier test`
-    * Deploy app to Zapier
-        - `zapier register`
-        - `zapier deploy`
-        - Go to zapier.com and run it
-        - Show how `zapier logs` will list the requests made in production
     * Introduce the idea of making a change to our app
         - Update test to expect an query param
         - Run test, see it fail
         - Add an input field to trigger
         - Include the input field in the URL with {{}} syntax (gloss over details for now)
         - Run test, see it pass
-        - Want to see it on Zapier, so `zapier deploy`
-        - Go view update in Zap Editor (now has an optional need)
+    * Deploy app to Zapier
+        - `zapier register`
+        - `zapier deploy`
+        - Go to zapier.com and run it
+        - Show how `zapier logs` will list the requests made in production
     * Explore {{}} and perform a bit more
         - Explain how Zapier passes data collected from fields in a Zap to your app
         - Elude to the idea that there is more context there as well with authData and environment (more on that later)
