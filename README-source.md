@@ -59,9 +59,122 @@ cd example-app
 
 Inside the directory, you'll see two files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
 
-The other file, `index.js` is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and explore.
+The other file, `index.js` is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's explore!
 
+You'll see a few things in `index.js`, we'll briefly describe each here:
 
+ * we export a single `App` definition which will be interpreted by Zapier
+ * in `App` definition, `beforeRequest` & `afterResponse` are hooks into the HTTP client
+ * in `App` definition, `resources` are purely optional but convenient ways to describe CRUD-like objects in your app
+ * in `App` definition, `triggers` will describe ways to trigger off of data in your app
+ * in `App` definition, `searches` will describe ways to find data in your app
+ * in `App` definition, `writes` will desciribe ways to create data in your app
+
+Let's start with a **basic trigger** using a mocked API:
+
+```bash
+mkdir triggers
+touch triggers/recipe.js
+```
+
+Now open your `triggers/recipe.js` and paste this:
+
+```javascript
+const listRecipes = (z, bundle) => {
+  const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes');
+  return promise.then((response) => JSON.parse(response.content));
+};
+
+module.exports = {
+  key: 'recipe',
+  noun: 'Recipe',
+  display: {
+    label: 'New Recipe',
+    description: 'Trigger when a new recipe is added.'
+  },
+  operation: {
+    perform: listRecipes
+  }
+};
+```
+
+Now, let's return to our `index.js` and add make sure we add both:
+
+1. The `require()` for the trigger
+2. The registration of the trigger in `App`
+
+```javascript
+const recipe = require('./triggers/recipe'); // new line of code!
+const App = {
+  // ...
+  triggers: {
+    [recipe.key]: recipe // new line of code!
+  },
+  // ...
+};
+module.exports = App;
+```
+
+To confirm you're new trigger is being picked up, try:
+
+```bash
+$ zapier describe
+A description of your app listed below.
+
+Triggers
+
+┌────────┬────────────┬──────────┬───────────────────────────────────┐
+│ Noun   │ Label      │ Resource │ Available Methods                 │
+├────────┼────────────┼──────────┼───────────────────────────────────┤
+│ Recipe │ New Recipe │ n/a      │ triggers.recipe.operation.perform │
+└────────┴────────────┴──────────┴───────────────────────────────────┘
+
+Searches
+
+Nothing found for searches, maybe try the `zapier scaffold` command?
+
+Writes
+
+Nothing found for writes, maybe try the `zapier scaffold` command?
+
+If you'd like to add more, try the `zapier scaffold` command to kickstart!
+```
+
+Now, let's add a test to make sure our code is working properly, go ahead and take a look at `test/index.js` and add this test:
+
+```javascript
+  // ...
+  it('should load recipes', (done) => {
+    const bundle = {};
+
+    appTester('triggers.recipe', bundle)
+      .then(results => {
+        results.length.should.above(1);
+
+        const firstRecipe = results[0];
+        firstRecipe.name.should.eql('name 1');
+        firstRecipe.directions.should.eql('directions 1');
+
+        done();
+      })
+      .catch(done);
+  });
+  // ...
+```
+
+And you should be able to run the tests with `zapier test`:
+
+```
+$ zapier test
+
+  My App
+    ✓ should test something
+200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
+    ✓ should load recipes (312ms)
+
+  2 passing (324ms)
+
+```
 
 Outline:
 

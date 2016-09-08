@@ -471,7 +471,143 @@ zapier init example-app
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Inside the directory, you&apos;ll see two files. <code>package.json</code> is a typical requirements file of any Node.js application. The one interesting dependency is the <code>@zapier/zapier-platform-core</code>, which is what makes your app work with the Zapier Platform.</p><p>The other file, <code>index.js</code> is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and explore.</p><p>Outline:</p>
+      <p>Inside the directory, you&apos;ll see two files. <code>package.json</code> is a typical requirements file of any Node.js application. The one interesting dependency is the <code>@zapier/zapier-platform-core</code>, which is what makes your app work with the Zapier Platform.</p><p>The other file, <code>index.js</code> is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let&apos;s explore!</p><p>You&apos;ll see a few things in <code>index.js</code>, we&apos;ll briefly describe each here:</p><ul>
+<li>we export a single <code>App</code> definition which will be interpreted by Zapier</li>
+<li>in <code>App</code> definition, <code>beforeRequest</code> &amp; <code>afterResponse</code> are hooks into the HTTP client</li>
+<li>in <code>App</code> definition, <code>resources</code> are purely optional but convenient ways to describe CRUD-like objects in your app</li>
+<li>in <code>App</code> definition, <code>triggers</code> will describe ways to trigger off of data in your app</li>
+<li>in <code>App</code> definition, <code>searches</code> will describe ways to find data in your app</li>
+<li>in <code>App</code> definition, <code>writes</code> will desciribe ways to create data in your app</li>
+</ul><p>Let&apos;s start with a <strong>basic trigger</strong> using a mocked API:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">mkdir triggers
+touch triggers/recipe.js
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Now open your <code>triggers/recipe.js</code> and paste this:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = (z, bundle) =&gt; {
+  <span class="hljs-keyword">const</span> promise = z.request(<span class="hljs-string">&apos;http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes&apos;</span>);
+  <span class="hljs-keyword">return</span> promise.then((response) =&gt; <span class="hljs-built_in">JSON</span>.parse(response.content));
+};
+
+<span class="hljs-built_in">module</span>.exports = {
+  key: <span class="hljs-string">&apos;recipe&apos;</span>,
+  noun: <span class="hljs-string">&apos;Recipe&apos;</span>,
+  display: {
+    label: <span class="hljs-string">&apos;New Recipe&apos;</span>,
+    description: <span class="hljs-string">&apos;Trigger when a new recipe is added.&apos;</span>
+  },
+  operation: {
+    perform: listRecipes
+  }
+};
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Now, let&apos;s return to our <code>index.js</code> and add make sure we add both:</p><ol>
+<li>The <code>require()</code> for the trigger</li>
+<li>The registration of the trigger in <code>App</code></li>
+</ol>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> recipe = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./triggers/recipe&apos;</span>); <span class="hljs-comment">// new line of code!</span>
+<span class="hljs-keyword">const</span> App = {
+  <span class="hljs-comment">// ...</span>
+  triggers: {
+    [recipe.key]: recipe <span class="hljs-comment">// new line of code!</span>
+  },
+  <span class="hljs-comment">// ...</span>
+};
+<span class="hljs-built_in">module</span>.exports = App;
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To confirm you&apos;re new trigger is being picked up, try:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">$ zapier describe
+A description of your app listed below.
+
+Triggers
+
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502; Noun   &#x2502; Label      &#x2502; Resource &#x2502; Available Methods                 &#x2502;
+&#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;
+&#x2502; Recipe &#x2502; New Recipe &#x2502; n/a      &#x2502; triggers.recipe.operation.perform &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+
+Searches
+
+Nothing found <span class="hljs-keyword">for</span> searches, maybe try the `zapier scaffold` <span class="hljs-built_in">command</span>?
+
+Writes
+
+Nothing found <span class="hljs-keyword">for</span> writes, maybe try the `zapier scaffold` <span class="hljs-built_in">command</span>?
+
+If you<span class="hljs-string">&apos;d like to add more, try the `zapier scaffold` command to kickstart!</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Now, let&apos;s add a test to make sure our code is working properly, go ahead and take a look at <code>test/index.js</code> and add this test:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript">  <span class="hljs-comment">// ...</span>
+  it(<span class="hljs-string">&apos;should load recipes&apos;</span>, (done) =&gt; {
+    <span class="hljs-keyword">const</span> bundle = {};
+
+    appTester(<span class="hljs-string">&apos;triggers.recipe&apos;</span>, bundle)
+      .then(results =&gt; {
+        results.length.should.above(<span class="hljs-number">1</span>);
+
+        <span class="hljs-keyword">const</span> firstRecipe = results[<span class="hljs-number">0</span>];
+        firstRecipe.name.should.eql(<span class="hljs-string">&apos;name 1&apos;</span>);
+        firstRecipe.directions.should.eql(<span class="hljs-string">&apos;directions 1&apos;</span>);
+
+        done();
+      })
+      .catch(done);
+  });
+  <span class="hljs-comment">// ...</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>And you should be able to run the tests with <code>zapier test</code>:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>$ zapier test
+
+  My App
+    &#x2713; should test something
+200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
+    &#x2713; should load recipes (312ms)
+
+  2 passing (324ms)
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Outline:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>* Cover the app schema

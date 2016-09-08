@@ -15,7 +15,7 @@ const describe = (context) => {
   return Promise.resolve()
     .then(() => utils.localAppCommand({command: 'definition'}))
     .then((definition) => {
-      context.line(`A description of your app "${definition.title}" listed below.\n`);
+      context.line(`A description of your app listed below.\n`);
 
       // context.line(utils.prettyJSONstringify(definition));
       // TODO: auth and app title/description
