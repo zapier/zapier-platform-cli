@@ -242,12 +242,12 @@ const printDone = (success = true, message) => {
   writeNextSpinnerTick(true);
 
   if (message) {
-    message = `  ${message}`;
+    message = ` ${message}`;
   }
 
   const logMsg = success ?
-    colors.green(message || '  done!') :
-    colors.red(message || '  fail!');
+    colors.green(message || ' done!') :
+    colors.red(message || ' fail!');
 
   console.log(logMsg);
 };
