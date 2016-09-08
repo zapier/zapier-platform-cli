@@ -396,7 +396,7 @@ After running this, you'll have a new example app in your directory. If you re-r
 
 **Arguments**
 
-* `location [value]` -- _optional_, Default is `.`
+* `location [value]` -- **required**, Default is `.`
 * `--template={minimal,resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}` -- _optional_, select a starting app template, default is `minimal`
 
 ```bash

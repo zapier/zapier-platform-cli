@@ -58,7 +58,7 @@ const initApp = (context, location) => {
     .then(() => utils.printDone());
 };
 
-const init = (context, location = '.') => {
+const init = (context, location) => {
   context.line('Welcome to the Zapier Platform! :-D');
   context.line();
   context.line(constants.ART);
@@ -73,7 +73,7 @@ const init = (context, location = '.') => {
 };
 
 init.argsSpec = [
-  {name: 'location', default: '.'},
+  {name: 'location', default: '.', required: true},
 ];
 init.argOptsSpec = {
   template: {help: 'select a starting app template', choices: appTemplates, 'default': 'minimal'}

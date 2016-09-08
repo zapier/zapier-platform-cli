@@ -10,6 +10,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Tutorial](#tutorial)
   * [Installing the CLI](#installing-the-cli)
   * [Starting your App](#starting-your-app)
+  * [Modifying your App](#modifying-your-app)
 - [Quickstart](#quickstart)
 - [Creating a Local App](#creating-a-local-app)
   * [Local Project Structure](#local-project-structure)
@@ -97,12 +98,21 @@ To begin building an app, use the `init` command to setup the needed structure.
 ```bash
 # create a directory with the minimum required files
 zapier init example-app
+# move into the new directory
 cd example-app
 ```
 
-Inside the directory, you'll see two files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
+Inside the directory, you'll see a few files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
 
-The other file, `index.js` is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's explore!
+Before we go any further - we'll need to install all the dependencies for our app:
+
+```
+npm install
+```
+
+### Modifying your App
+
+Right next to `package.json` should be `index.js` which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's take a look!
 
 You'll see a few things in `index.js`, we'll briefly describe each here:
 
@@ -141,7 +151,7 @@ module.exports = {
 };
 ```
 
-Now, let's return to our `index.js` and add make sure we add both:
+Now, let's return to our `index.js` and add make sure we add two lines of code:
 
 1. The `require()` for the trigger
 2. The registration of the trigger in `App`
@@ -218,6 +228,7 @@ $ zapier test
   2 passing (324ms)
 
 ```
+
 
 Outline:
 
