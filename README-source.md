@@ -25,6 +25,9 @@ nvm use v4.3.2
 
 Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and deploying an app to Zapier.
 
+
+### Installing the CLI
+
 To get started, first make sure that your dev environment meets the [requirements](#requirements) for running the the platform. Once you have the proper version of Node.js, install the Zapier CLI tool.
 
 ```bash
@@ -34,10 +37,22 @@ npm install -g @zapier/zapier-platform-cli
 
 The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
 
+Now that your CLI is installed - you'll need to identify yourself via the CLI.
+
+```bash
+# auth to Zapier's platform with your deploy key, to obtain a key contact partners@zapier.com
+zapier auth
+```
+
+Now your CLI is installed and ready to go!
+
+
+### Starting your App
+
 To begin building an app, use the `init` command to setup the needed structure.
 
 ```bash
-# Create a directory with the minimum required files
+# create a directory with the minimum required files
 zapier init example-app
 cd example-app
 ```
@@ -45,6 +60,7 @@ cd example-app
 Inside the directory, you'll see two files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
 
 The other file, `index.js` is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and explore.
+
 
 
 Outline:
@@ -61,7 +77,6 @@ Outline:
         - Write the test
         - `zapier test`
     * Deploy app to Zapier
-        - `zapier auth`
         - `zapier register`
         - `zapier deploy`
         - Go to zapier.com and run it

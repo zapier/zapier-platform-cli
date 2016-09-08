@@ -200,6 +200,12 @@ blockquote {
   <body>
     <div class="docs-toc">
       <ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#tutorial">Tutorial</a><ul>
+<li><a href="#installing-the-cli">Installing the CLI</a></li>
+<li><a href="#starting-your-app">Starting your App</a></li>
+</ul>
+</li>
 <li><a href="#quickstart">Quickstart</a></li>
 <li><a href="#creating-a-local-app">Creating a Local App</a><ul>
 <li><a href="#local-project-structure">Local Project Structure</a></li>
@@ -294,6 +300,12 @@ blockquote {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#tutorial">Tutorial</a><ul>
+<li><a href="#installing-the-cli">Installing the CLI</a></li>
+<li><a href="#starting-your-app">Starting your App</a></li>
+</ul>
+</li>
 <li><a href="#quickstart">Quickstart</a></li>
 <li><a href="#creating-a-local-app">Creating a Local App</a><ul>
 <li><a href="#local-project-structure">Local Project Structure</a></li>
@@ -359,6 +371,179 @@ blockquote {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="requirements">Requirements</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>The Zapier CLI and Platform require Node <code>v4.3.2</code> or higher. We recommend using <a href="https://github.com/creationix/nvm">nvm</a> to manage your Node installation.</p><p>On Mac (via <a href="http://brew.sh/">homebrew</a>):</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">brew install nvm
+nvm install v4.3.2
+nvm use v4.3.2
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="tutorial">Tutorial</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Welcome to the Zapier Platform! In this tutorial, we&apos;ll walk you through the process of building, testing, and deploying an app to Zapier.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="installing-the-cli">Installing the CLI</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To get started, first make sure that your dev environment meets the <a href="#requirements">requirements</a> for running the the platform. Once you have the proper version of Node.js, install the Zapier CLI tool.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># install the CLI globally</span>
+npm install -g @zapier/zapier-platform-cli
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try <code>zapier help</code>.</p><p>Now that your CLI is installed - you&apos;ll need to identify yourself via the CLI.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key, to obtain a key contact partners@zapier.com</span>
+zapier auth
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Now your CLI is installed and ready to go!</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="starting-your-app">Starting your App</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To begin building an app, use the <code>init</code> command to setup the needed structure.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># create a directory with the minimum required files</span>
+zapier init example-app
+<span class="hljs-built_in">cd</span> example-app
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Inside the directory, you&apos;ll see two files. <code>package.json</code> is a typical requirements file of any Node.js application. The one interesting dependency is the <code>@zapier/zapier-platform-core</code>, which is what makes your app work with the Zapier Platform.</p><p>The other file, <code>index.js</code> is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and explore.</p><p>Outline:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>* Cover the app schema
+    - What&apos;s a trigger
+    - What&apos;s an action
+    - What&apos;s a search
+    - There is auth
+    - *very* briefly say that resources exist, but we&apos;ll get to them later
+* Build a trigger that hits...mockapi.io?
+    - Use request shorthand for perform, no input fields
+* Introduce a test for that trigger
+    - Write the test
+    - `zapier test`
+* Deploy app to Zapier
+    - `zapier register`
+    - `zapier deploy`
+    - Go to zapier.com and run it
+    - Show how `zapier logs` will list the requests made in production
+* Introduce the idea of making a change to our app
+    - Update test to expect an query param
+    - Run test, see it fail
+    - Add an input field to trigger
+    - Include the input field in the URL with {{}} syntax (gloss over details for now)
+    - Run test, see it pass
+    - Want to see it on Zapier, so `zapier deploy`
+    - Go view update in Zap Editor (now has an optional need)
+* Explore {{}} and perform a bit more
+    - Explain how Zapier passes data collected from fields in a Zap to your app
+    - Elude to the idea that there is more context there as well with authData and environment (more on that later)
+* Introduce the concept of auth
+    - Add a failing test for an auth header
+    - Add the authentication definition to the app
+        - Use {{}} syntax to add the header, and explain that the bundle also contains authData
+    - Run test again to see it pass
+    - `zapier deploy`
+    - Go back to editor to add an account
+    - Explain that there are other auth styles supported, link to docs
+* Introduce the concept of an action
+    - Define a test
+    - Define an action
+        - Have a few input fields
+        - Use shortand request syntax again
+    - Run test
+    - `zapier deploy`
+* Maybe: Introduce the idea of `zapier watch`?
+    - &quot;Up to now we&apos;ve been using `zapier deploy` to upload our changes. There is a faster way with...&quot;
+* Introduce the concept of perform as a function
+    - Tweak the action to be a function instead, and do something like form-encode the data or have one of the input fields be a datetime that we need to convert
+    - Explain how bundle is the same context as what {{}} has
+    - Explain z.request
+    - Throw in a z.console.log
+    - Run test again, still passes
+        - Point out that we see our console statement as well
+    - `zapier deploy` and try it live
+    - `zapier logs` to see the console output from production
+* Introduce the concept of a search
+    - Define a test
+    - Build the search
+* Introduce the concept of beforeRequest
+    - Show how we&apos;ve had to repeat the auth header three times, we can simplify by doing middleware
+    - Add beforeRequest and remove from other three spots
+    - Run tests, which still pass while asserting auth header is there
+* Maybe: Introduce concept of resource
+    - Could consolidate all our code into a a single resource
+    - Tests still pass
+    - Explain the benefit of these being linked
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="quickstart">Quickstart</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -369,8 +554,8 @@ blockquote {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>The Zapier CLI and Platform requires Node <code>v4.3.2</code> or higher. We recommend using <a href="https://github.com/creationix/nvm">nvm</a> and <a href="http://brew.sh/">homebrew</a> to manage your Node installation.</p>
-</blockquote><p>First up is installing the CLI and setting up your auth to create a working &quot;Zapier Example&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zapier editor</a>.</p>
+<p>Be sure to check the <a href="#requirements">Requirements</a> before you start!</p>
+</blockquote><p>First up is installing the CLI and setting up your auth to create a working &quot;Zapier Example&quot; application. It will be private to you and visible in your live <a href="https://zapier.com/app/editor">Zap editor</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># install the CLI globally</span>
@@ -444,7 +629,7 @@ zapier watch
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Don&apos;t forget you&apos;ll need to <code>zapier deploy</code> to make your changes stick after any <code>zapier watch</code> session!</p><blockquote>
+      <p>Don&apos;t forget you&apos;ll need to <code>zapier deploy</code> to make your changes stick after any <code>zapier watch</code> session ends!</p><blockquote>
 <p>Go check out our <a href="docs/cli.md">full CLI reference documentation</a> to see all the other commands!</p>
 </blockquote>
     </div>

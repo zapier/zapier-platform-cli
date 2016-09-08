@@ -144,11 +144,11 @@ $ zapier collaborate user@example.com --remove
 
 ## deploy
 
-  > Build and upload a new version of the current app - does not promote.
+  > Build and upload the current app - does not promote.
 
   **Usage:** `zapier deploy`
 
-  A shortcut for `zapier build && zapier upload` - this is our recommended way to deploy a new version. This is a common workflow:
+  A shortcut for `zapier build && zapier upload` - this is our recommended way to deploy an app. This is a common workflow:
 
 1. Make changes in `index.js` or other files.
 2. Run `npm test`.
@@ -164,7 +164,7 @@ If you have not yet registered your app, this command will prompt you for your a
 
 ```bash
 $ zapier deploy
-# Preparing to build and upload a new version.
+# Preparing to build and upload app.
 #
 #   Copying project to temp directory - done!
 #   Installing project dependencies - done!
@@ -397,7 +397,7 @@ After running this, you'll have a new example app in your directory. If you re-r
 **Arguments**
 
 * `location [value]` -- _optional_, Default is `.`
-* `--template={resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}` -- _optional_, select a starting app template, default is `trigger`
+* `--template={minimal,resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}` -- _optional_, select a starting app template, default is `minimal`
 
 ```bash
 $ zapier init example-dir --template=helloworld
