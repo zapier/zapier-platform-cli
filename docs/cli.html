@@ -933,10 +933,12 @@ $ zapier logs --type=http --detailed --format=plain
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Promotes a specific version to production rotation.</p>
+<p>Promotes a specific version to global access.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier promote 1.0.0</code></p><p>  Promotes an app version into production (non-private) rotation, which means new users can use this.</p><ul>
-<li>This <strong>does not</strong> build/upload or push a version to Zapier - you should <code>zapier deploy</code> first.</li>
+<li>This <strong>does</strong> mark the version as the official global version - all other versions &amp; users are grandfathered.</li>
+<li>This <strong>does not</strong> build/upload or deploy a version to Zapier - you should <code>zapier deploy</code> first.</li>
 <li>This <strong>does not</strong> move old users over to this version - <code>zapier migrate 1.0.0 1.0.1</code> does that.</li>
+<li>This <strong>does not</strong> recommend old users stop using this version - <code>zapier deprecate 1.0.0 2017-01-01</code> does that.</li>
 </ul><p>Promotes are an inherently safe operation for all existing users of your app.</p><blockquote>
 <p>If this is your first time promoting - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to go global. We&apos;ll respond within a few business days.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
@@ -950,7 +952,7 @@ $ zapier logs --type=http --detailed --format=plain
 <span class="hljs-comment">#   Deploying 1.0.0 - done!</span>
 <span class="hljs-comment">#   Deploy successful!</span>
 <span class="hljs-comment"># </span>
-<span class="hljs-comment"># Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to put it into rotation.</span>
+<span class="hljs-comment"># Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to move users to this version.</span>
 </code></pre>
     </div>
   </div>
@@ -999,7 +1001,7 @@ $ zapier logs --type=http --detailed --format=plain
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Adds a sample resource, trigger, action or search to your app.</p>
+<p>Adds a starting resource, trigger, action or search to your app.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier scaffold {resource|trigger|search|write} &quot;Name&quot;</code></p><p>  The scaffold command does two general things:</p><ul>
 <li>Creates a new destination file like <code>resources/contact.js</code></li>
 <li>(Attempts to) import and register it inside your entry <code>index.js</code></li>

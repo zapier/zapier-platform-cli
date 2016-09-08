@@ -20,20 +20,22 @@ const promote = (context, version) => {
     .then(() => {
       utils.printDone();
       context.line(`  Deploy successful!\n`);
-      context.line('Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.');
+      context.line('Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to move users to this version.');
     });
 };
 promote.argsSpec = [
   {name: 'version', example: '1.0.0', required: true},
 ];
 promote.argOptsSpec = {};
-promote.help = 'Promotes a specific version to production rotation.';
+promote.help = 'Promotes a specific version to global access.';
 promote.example = 'zapier promote 1.0.0';
 promote.docs = `\
 Promotes an app version into production (non-private) rotation, which means new users can use this.
 
-* This **does not** build/upload or push a version to Zapier - you should \`zapier deploy\` first.
+* This **does** mark the version as the official global version - all other versions & users are grandfathered.
+* This **does not** build/upload or deploy a version to Zapier - you should \`zapier deploy\` first.
 * This **does not** move old users over to this version - \`zapier migrate 1.0.0 1.0.1\` does that.
+* This **does not** recommend old users stop using this version - \`zapier deprecate 1.0.0 2017-01-01\` does that.
 
 Promotes are an inherently safe operation for all existing users of your app.
 
@@ -51,7 +53,7 @@ $ zapier promote 1.0.0
 #   Deploying 1.0.0 - done!
 #   Deploy successful!
 # 
-# Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to put it into rotation.
+# Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to move users to this version.
 ${'```'}
 `;
 

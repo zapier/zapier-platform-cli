@@ -10,7 +10,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Requirements
 
-The Zapier CLI and Platform require Node `v4.3.2` or higher. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node installation.
+The Zapier CLI and Platform requires Node `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node installation.
 
 On Mac (via [homebrew](http://brew.sh/)):
 

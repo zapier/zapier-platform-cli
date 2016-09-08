@@ -605,14 +605,16 @@ $ zapier migrate 1.0.0 1.0.1 15%
 
 ## promote
 
-  > Promotes a specific version to production rotation.
+  > Promotes a specific version to global access.
 
   **Usage:** `zapier promote 1.0.0`
 
   Promotes an app version into production (non-private) rotation, which means new users can use this.
 
-* This **does not** build/upload or push a version to Zapier - you should `zapier deploy` first.
+* This **does** mark the version as the official global version - all other versions & users are grandfathered.
+* This **does not** build/upload or deploy a version to Zapier - you should `zapier deploy` first.
 * This **does not** move old users over to this version - `zapier migrate 1.0.0 1.0.1` does that.
+* This **does not** recommend old users stop using this version - `zapier deprecate 1.0.0 2017-01-01` does that.
 
 Promotes are an inherently safe operation for all existing users of your app.
 
@@ -630,7 +632,7 @@ $ zapier promote 1.0.0
 #   Deploying 1.0.0 - done!
 #   Deploy successful!
 # 
-# Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to put it into rotation.
+# Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to move users to this version.
 ```
 
 
@@ -663,7 +665,7 @@ $ zapier register "Example"
 
 ## scaffold
 
-  > Adds a sample resource, trigger, action or search to your app.
+  > Adds a starting resource, trigger, action or search to your app.
 
   **Usage:** `zapier scaffold {resource|trigger|search|write} "Name"`
 

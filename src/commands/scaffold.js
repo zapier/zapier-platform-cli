@@ -101,7 +101,7 @@ scaffold.argOptsSpec = {
   dest: {help: 'sets the new file\'s path', default: '{type}s/{name}'},
   entry: {help: 'where to import the new file', default: 'index.js'},
 };
-scaffold.help = 'Adds a sample resource, trigger, action or search to your app.';
+scaffold.help = 'Adds a starting resource, trigger, action or search to your app.';
 scaffold.usage = 'zapier scaffold {resource|trigger|search|write} "Name"';
 scaffold.example = 'zapier scaffold resource "Contact"';
 scaffold.docs = `\
