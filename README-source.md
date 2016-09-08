@@ -124,35 +124,17 @@ const App = {
 module.exports = App;
 ```
 
-To confirm you're new trigger is being picked up, try:
-
-```bash
-$ zapier describe
-A description of your app listed below.
-
-Triggers
-
-┌────────┬────────────┬──────────┬───────────────────────────────────┐
-│ Noun   │ Label      │ Resource │ Available Methods                 │
-├────────┼────────────┼──────────┼───────────────────────────────────┤
-│ Recipe │ New Recipe │ n/a      │ triggers.recipe.operation.perform │
-└────────┴────────────┴──────────┴───────────────────────────────────┘
-
-Searches
-
-Nothing found for searches, maybe try the `zapier scaffold` command?
-
-Writes
-
-Nothing found for writes, maybe try the `zapier scaffold` command?
-
-If you'd like to add more, try the `zapier scaffold` command to kickstart!
-```
-
-Now, let's add a test to make sure our code is working properly, go ahead and take a look at `test/index.js` and add this test:
+Now, let's add a test to make sure our code is working properly, go ahead and take a look at `test/index.js` and paste this:
 
 ```javascript
-  // ...
+require('should');
+
+const zapier = require('@zapier/zapier-platform-core');
+
+const appTester = zapier.createAppTester(require('../index'));
+
+describe('triggers', () => {
+
   it('should load recipes', (done) => {
     const bundle = {};
 
@@ -168,28 +150,146 @@ Now, let's add a test to make sure our code is working properly, go ahead and ta
       })
       .catch(done);
   });
-  // ...
+
+});
 ```
 
 And you should be able to run the tests with `zapier test`:
 
 ```
-$ zapier test
-
-  My App
-    ✓ should test something
-200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
-    ✓ should load recipes (312ms)
-
-  2 passing (324ms)
-
+zapier test
+#
+#   triggers
+# 200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
+#     ✓ should load recipes (312ms)
+# 
+#   1 passing (312ms)
+#
 ```
 
 ### Modifying a Trigger
 
-> TODO.
+Let's say we want to let our users tweak the styles of recipes they are triggering on, a classic way to do that with Zapier is to provide a input field they can select from.
 
-Outline:
+Let's re-open your `triggers/recipe.js` and paste this:
+
+```javascript
+const listRecipes = (z, bundle) => {
+  const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes', {
+    // NEW CODE
+    params: {
+      style: bundle.inputData.style
+    }
+  });
+  return promise.then((response) => JSON.parse(response.content));
+};
+
+module.exports = {
+  key: 'recipe',
+  noun: 'Recipe',
+  display: {
+    label: 'New Recipe',
+    description: 'Trigger when a new recipe is added.'
+  },
+  operation: {
+    // NEW CODE
+    inputFields: [
+      {key: 'style', type: 'string'}
+    ],
+    perform: listRecipes
+  }
+};
+```
+
+Let's tweak the test in `test/index.js` and paste this in:
+
+```javascript
+require('should');
+
+const zapier = require('@zapier/zapier-platform-core');
+
+const appTester = zapier.createAppTester(require('../index'));
+
+describe('triggers', () => {
+
+  it('should load recipes', (done) => {
+    const bundle = {
+      // NEW CODE
+      inputData: {
+        style: 'mediterranean'
+      }
+    };
+
+    appTester('triggers.recipe', bundle)
+      .then(results => {
+        results.length.should.above(1);
+
+        const firstRecipe = results[0];
+        firstRecipe.name.should.eql('name 1');
+        firstRecipe.directions.should.eql('directions 1');
+
+        done();
+      })
+      .catch(done);
+  });
+
+});
+```
+
+And now, you can run your test again and make sure you didn't break anything:
+
+```
+zapier test
+# 
+#   triggers
+# 200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
+#     ✓ should load recipes (312ms)
+# 
+#   1 passing (312ms)
+#
+```
+
+Looking real good locally! Let's move on.
+
+### Deploying an App
+
+Of course, while developing a Zapier app locally is pretty easy - the end goal is usually to use it in Zapier UI with the thousands of other integrations! Since we have a working local app - deploying to Zapier is very straightforward.
+
+First, you'll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we'll learn about later promotion, collaboration, and environment variables.
+
+```bash
+zapier register "Example App"
+# Registering a new app on Zapier named "Example App"
+# 
+#   Confirming registation of app "Example App" -  done!
+#   Linking app to current directory with `.zapierapprc` -  done!
+# 
+# Finished! Now that your app is registered with Zapier, you can `zapier deploy` a version!
+```
+
+Now, we have to deploy a version of your app - you can can have many versions of an app which simplifies breaking changes and testing in the future - for now we just need a single version deployed so let's start there.
+
+```bash
+zapier deploy
+# Preparing to build and upload your app.
+# 
+#   Copying project to temp directory -  done!
+#   Installing project dependencies -  done!
+#   Applying entry point file -  done!
+#   Validating project -  done!
+#   Building app definition.json -  done!
+#   Zipping project and dependencies -  done!
+#   Cleaning up temp directory -  done!
+#   Uploading version 1.0.0 -  done!
+# 
+# Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
+```
+
+Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to try creating an Zap using your app version. 
+
+
+
+## Tutorial Outline:
 
     * Cover the app schema
         - What's a trigger
