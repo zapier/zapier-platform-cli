@@ -31,7 +31,7 @@ const auth = (context) => {
     .then(utils.checkCredentials)
     .then(() => {
       context.line();
-      context.line(SUCCESS + ' Now try `zapier init`/`zapier register "Example"` or `zapier link`.');
+      context.line(SUCCESS + ' Now try `zapier init` to start a new local app.');
     });
 };
 auth.argsSpec = [];

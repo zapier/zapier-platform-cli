@@ -68,7 +68,7 @@ const init = (context, location = '.') => {
 
   return initApp(context, location)
     .then(() => {
-      context.line('\nFinished! You can edit `index.js` and then `zapier deploy` to build & upload your app!');
+      context.line('\nFinished! You might need to `npm install` then try `zapier test`!');
     });
 };
 

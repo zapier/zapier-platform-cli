@@ -25,7 +25,7 @@ const register = (context, title) => {
     })
     .then(() => {
       utils.printDone();
-      context.line('\nFinished! You can edit `index.js` then `zapier deploy` to build & upload a version of your app!');
+      context.line('\nFinished! Now that your app is registered with Zapier, you can `zapier deploy` a version!');
     });
 };
 register.argsSpec = [

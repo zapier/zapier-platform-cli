@@ -21,7 +21,7 @@ const deploy = (context) => {
   return createIfNeeded(context)
     .then(() => utils.buildAndUploadDir())
     .then(() => {
-      context.line('\nBuild and upload complete! Try loading the Zapier editor now, or try `zapier promote` to put it into rotation or `zapier migrate` to move users over.');
+      context.line('\nBuild and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!');
     });
 };
 deploy.argsSpec = [];
