@@ -42,8 +42,6 @@ A shortcut for \`zapier build && zapier upload\` - this is our recommended way t
 
 If you have not yet registered your app, this command will prompt you for your app title and register the app.
 
-> Note: You might consider \`zapier watch\` for a faster development cycle!
-
 ${'```'}bash
 $ zapier deploy
 # Preparing to build and upload app.

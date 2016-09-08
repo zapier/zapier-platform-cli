@@ -86,7 +86,6 @@ $ zapier help
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
-# │ watch       │ zapier watch                          │ Watch the current directory and send changes live to Zapier.               │
 # └─────────────┴───────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 ${'```'}
 `;

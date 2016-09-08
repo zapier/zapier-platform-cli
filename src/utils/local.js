@@ -8,7 +8,7 @@ const {PLATFORM_PACKAGE} = require('../constants');
 const {prettyJSONstringify} = require('./display');
 const {promisify} = require('./promisify');
 
-const makeTunnelUrl = promisify(require('ngrok').connect);
+const makeTunnelUrl = (...args) => promisify(require('ngrok').connect(...args));
 
 const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   const entryPath = `${process.cwd()}/index`;
