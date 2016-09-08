@@ -224,7 +224,6 @@ blockquote {
 <li><a href="#upload">upload</a></li>
 <li><a href="#validate">validate</a></li>
 <li><a href="#versions">versions</a></li>
-<li><a href="#watch">watch</a></li>
 </ul>
 </li>
 </ul>
@@ -437,9 +436,7 @@ $ zapier collaborate user@example.com --remove
 <li>Go to 1 and repeat.</li>
 </ol><blockquote>
 <p>Note: this is always a safe operation as live/production apps are protected from deployes. You must use <code>zapier promote</code> or <code>zapier migrate</code> to impact live users.</p>
-</blockquote><p>If you have not yet registered your app, this command will prompt you for your app title and register the app.</p><blockquote>
-<p>Note: You might consider <code>zapier watch</code> for a faster development cycle!</p>
-</blockquote>
+</blockquote><p>If you have not yet registered your app, this command will prompt you for your app title and register the app.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier deploy
@@ -642,7 +639,6 @@ $ zapier <span class="hljs-built_in">help</span>
 <span class="hljs-comment"># &#x2502; upload      &#x2502; zapier upload                         &#x2502; Upload the last build as a version.                                        &#x2502;</span>
 <span class="hljs-comment"># &#x2502; validate    &#x2502; zapier validate                       &#x2502; Validates the current project.                                             &#x2502;</span>
 <span class="hljs-comment"># &#x2502; versions    &#x2502; zapier versions                       &#x2502; Lists all the versions of the current app.                                 &#x2502;</span>
-<span class="hljs-comment"># &#x2502; watch       &#x2502; zapier watch                          &#x2502; Watch the current directory and send changes live to Zapier.               &#x2502;</span>
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 </code></pre>
     </div>
@@ -1010,7 +1006,7 @@ $ zapier logs --type=http --detailed --format=plain
 </ul><p>You can mix and match several options to customize the created scaffold for your project.</p><blockquote>
 <p>Note, we may fail to rewrite your <code>index.js</code> so you may need to handle the require and registration yourself.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>type [{index,oauth2,resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
+<li><code>type [{index,resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
 <li><code>name [&quot;Some Name&quot;]</code> -- <strong>required</strong>, the name of the new thing to create</li>
 <li><code>--dest={type}s/{name}</code> -- <em>optional</em>, sets the new file&apos;s path, default is <code>{type}s/{name}</code></li>
 <li><code>--entry=index.js</code> -- <em>optional</em>, where to import the new file, default is <code>index.js</code></li>
@@ -1164,44 +1160,6 @@ $ zapier validate
 <span class="hljs-comment"># &#x251C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2524;</span>
 <span class="hljs-comment"># &#x2502; 1.0.0   &#x2502; 3.0.0    &#x2502; 0     &#x2502; non-production &#x2502; null             &#x2502; 2016-01-01T22:19:36 &#x2502;</span>
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="watch">watch</h2>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <blockquote>
-<p>Watch the current directory and send changes live to Zapier.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier watch</code></p><p>  This command watches the current directory, on changes it does two things:</p><ul>
-<li>Sends any new changes to Zapier, instantly updating the UI in your Zapier editor.</li>
-<li>Tunnels all Javascript calls through your local environment with logs to stdout.</li>
-</ul><p>This makes for a great development experience, letting you make and observe changes much faster than a <code>zapier deploy</code></p><blockquote>
-<p>Note: this is only temporary and has no effect on other users at Zapier! You&apos;ll want to do <code>zapier deploy</code> to make your changes permanent and universal.</p>
-</blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>--port=7545</code> -- <em>optional</em>, what port should we host/listen for tunneling, default is <code>7545</code></li>
-</ul>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">$ zapier watch --port=9090
-<span class="hljs-comment"># Watching and running your app locally. Zapier will tunnel JS calls here.</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment">#   Starting local server on port 9090 - done!</span>
-<span class="hljs-comment">#   Starting local tunnel for port 9090 - done!</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment"># Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment">#   Reloading for index.js - done!</span>
-<span class="hljs-comment">#   Reloading for resources/form.js - done!</span>
-<span class="hljs-comment">#   Reloading for index.js - done!</span>
 </code></pre>
     </div>
   </div>

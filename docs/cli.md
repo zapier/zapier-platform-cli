@@ -160,8 +160,6 @@ $ zapier collaborate user@example.com --remove
 
 If you have not yet registered your app, this command will prompt you for your app title and register the app.
 
-> Note: You might consider `zapier watch` for a faster development cycle!
-
 ```bash
 $ zapier deploy
 # Preparing to build and upload app.
@@ -346,7 +344,6 @@ $ zapier help
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │
-# │ watch       │ zapier watch                          │ Watch the current directory and send changes live to Zapier.               │
 # └─────────────┴───────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -681,7 +678,7 @@ You can mix and match several options to customize the created scaffold for your
 
 **Arguments**
 
-* `type [{index,oauth2,resource,trigger,search,write}]` -- **required**, what type of thing are you creating
+* `type [{index,resource,trigger,search,write}]` -- **required**, what type of thing are you creating
 * `name ["Some Name"]` -- **required**, the name of the new thing to create
 * `--dest={type}s/{name}` -- _optional_, sets the new file's path, default is `{type}s/{name}`
 * `--entry=index.js` -- _optional_, where to import the new file, default is `index.js`
@@ -813,39 +810,4 @@ $ zapier versions
 # ├─────────┼──────────┼───────┼────────────────┼──────────────────┼─────────────────────┤
 # │ 1.0.0   │ 3.0.0    │ 0     │ non-production │ null             │ 2016-01-01T22:19:36 │
 # └─────────┴──────────┴───────┴────────────────┴──────────────────┴─────────────────────┘
-```
-
-
-## watch
-
-  > Watch the current directory and send changes live to Zapier.
-
-  **Usage:** `zapier watch`
-
-  This command watches the current directory, on changes it does two things:
-
-* Sends any new changes to Zapier, instantly updating the UI in your Zapier editor.
-* Tunnels all Javascript calls through your local environment with logs to stdout.
-
-This makes for a great development experience, letting you make and observe changes much faster than a `zapier deploy`
-
-> Note: this is only temporary and has no effect on other users at Zapier! You'll want to do `zapier deploy` to make your changes permanent and universal.
-
-**Arguments**
-
-
-* `--port=7545` -- _optional_, what port should we host/listen for tunneling, default is `7545`
-
-```bash
-$ zapier watch --port=9090
-# Watching and running your app locally. Zapier will tunnel JS calls here.
-#
-#   Starting local server on port 9090 - done!
-#   Starting local tunnel for port 9090 - done!
-#
-# Running! Make changes local and you should see them reflect almost instantly in the Zapier editor.
-#
-#   Reloading for index.js - done!
-#   Reloading for resources/form.js - done!
-#   Reloading for index.js - done!
 ```
