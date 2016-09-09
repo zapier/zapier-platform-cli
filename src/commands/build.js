@@ -15,7 +15,7 @@ build.argOptsSpec = {
 build.help = 'Builds a deployable zip from the current directory.';
 build.example = 'zapier build';
 build.docs = `\
-Builds a ready to upload zip file, does not upload now deploy the zip file. Generally you'd use \`zapier deploy\` which does this and \`zapier upload\` together.
+Builds a ready to upload zip file, does not upload / deploy the zip file. Generally you'd use \`zapier deploy\` which does this and \`zapier upload\` together.
 
 It does the following steps:
 

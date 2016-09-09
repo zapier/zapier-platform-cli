@@ -79,13 +79,13 @@ init.argOptsSpec = {
   template: {help: 'select a starting app template', choices: appTemplates, 'default': 'minimal'}
 };
 init.help = 'Initializes a new zapier app in a directory.';
-init.example = 'zapier init [location]';
+init.example = 'zapier init path';
 init.docs = `\
 Initializes a new zapier app. If you specify a template, will download and install app from that template.
 
 After running this, you\'ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this doesn't register the app with Zapier - try \`zapier register "Example"\` and \`zapier deploy\` for that!
+> Note: this doesn't register or deploy the app with Zapier - try \`zapier register "Example"\` and \`zapier deploy\` for that!
 
 **Arguments**
 
@@ -93,12 +93,18 @@ ${utils.argsFragment(init.argsSpec)}
 ${utils.argOptsFragment(init.argOptsSpec)}
 
 ${'```'}bash
-$ zapier init example-dir --template=helloworld
-# Let\'s create your app!
-#
-#   Cloning starter app from zapier/example-app - done!
-#
-# Finished!
+$ zapier init example-app --template=minimal
+# Let's initialize your app!
+# 
+#   Downloading zapier/zapier-platform-example-app-minimal starter app - done!
+#   Copy /users/username/code/example-app/.gitignore - done!
+#   Copy /users/username/code/example-app/README.md - done!
+#   Copy /users/username/code/example-app/index.js - done!
+#   Copy /users/username/code/example-app/package.json - done!
+#   Copy /users/username/code/example-app/test/index.js - done!
+#   Copying starter app - done!
+# 
+# Finished! You might need to \`npm install\` then try \`zapier test\`!
 ${'```'}
 `;
 

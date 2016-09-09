@@ -72,11 +72,11 @@ ${'```'}bash
 $ zapier env 1.0.0
 # The env of your "Example" listed below.
 #
-# ┌─────────┬─────────┬────────────┐
-# │ Version │ Key     │ Value      │
-# ├─────────┼─────────┼────────────┤
+# ┌─────────┬───────────────┬───────┐
+# │ Version │ Key           │ Value │
+# ├─────────┼───────────────┼───────┤
 # │ 1.0.0   │ CLIENT_SECRET │ 12345 │
-# └─────────┴─────────┴────────────┘
+# └─────────┴───────────────┴───────┘
 #
 # Try setting an env with the \`zapier env 1.0.0 CLIENT_SECRET 12345\` command.
 

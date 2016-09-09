@@ -65,24 +65,24 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                          │
+# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                            │
 # │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
-# │ deploy      │ zapier deploy                         │ Build and upload a new version of the current app - does not promote.      │
+# │ deploy      │ zapier deploy                         │ Build and upload the current app - does not promote.                       │
 # │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
 # │ env         │ zapier env 1.0.0 CLIENT_SECRET 12345  │ Read and write environment variables.                                      │
 # │ help        │ zapier help [command]                 │ Lists all the commands you can use.                                        │
 # │ history     │ zapier history                        │ Prints all recent history for your app.                                    │
-# │ init        │ zapier init [location]                │ Initializes a new zapier app in a directory.                               │
+# │ init        │ zapier init location                  │ Initializes a new zapier app in a directory.                               │
 # │ invite      │ zapier invite [user@example.com]      │ Manage the invitees/testers on your project. Can optionally --remove.      │
 # │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
 # │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
-# │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to production rotation.                        │
+# │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to global access.                              │
 # │ register    │ zapier register "Example"             │ Registers a new app in your account.                                       │
-# │ scaffold    │ zapier scaffold resource "Contact"    │ Adds a sample resource, trigger, action or search to your app.             │
-# │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                           │
+# │ scaffold    │ zapier scaffold resource "Contact"    │ Adds a starting resource, trigger, action or search to your app.           │
+# │ test        │ zapier test                           │ Tests your app via \`npm test\`.                                             │
 # │ upload      │ zapier upload                         │ Upload the last build as a version.                                        │
 # │ validate    │ zapier validate                       │ Validates the current project.                                             │
 # │ versions    │ zapier versions                       │ Lists all the versions of the current app.                                 │

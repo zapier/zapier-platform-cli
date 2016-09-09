@@ -33,7 +33,7 @@ deploy.docs = `\
 A shortcut for \`zapier build && zapier upload\` - this is our recommended way to deploy an app. This is a common workflow:
 
 1. Make changes in \`index.js\` or other files.
-2. Run \`npm test\`.
+2. Run \`zapier test\`.
 3. Run \`zapier deploy\`.
 4. QA/experiment in the Zapier.com Zap editor.
 5. Go to 1 and repeat.

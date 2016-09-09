@@ -11,7 +11,7 @@ const promote = (context, version) => {
     .then((app) => {
       context.line(`Preparing to promote version ${version} your app "${app.title}".\n`);
       const url = `/apps/${app.id}/versions/${version}/promote/production`;
-      utils.printStarting(`promote ${version}`);
+      utils.printStarting(`Promoting ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',
         body: {}
@@ -19,7 +19,7 @@ const promote = (context, version) => {
     })
     .then(() => {
       utils.printDone();
-      context.line(`  Deploy successful!\n`);
+      context.line(`  Promition successful!\n`);
       context.line('Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to move users to this version.');
     });
 };
@@ -30,7 +30,7 @@ promote.argOptsSpec = {};
 promote.help = 'Promotes a specific version to global access.';
 promote.example = 'zapier promote 1.0.0';
 promote.docs = `\
-Promotes an app version into production (non-private) rotation, which means new users can use this.
+Promotes an app version into production (non-private) rotation, which means new users can use this app version.
 
 * This **does** mark the version as the official global version - all other versions & users are grandfathered.
 * This **does not** build/upload or deploy a version to Zapier - you should \`zapier deploy\` first.
@@ -50,8 +50,8 @@ ${'```'}bash
 $ zapier promote 1.0.0
 # Preparing to promote version 1.0.0 your app "Example".
 # 
-#   Deploying 1.0.0 - done!
-#   Deploy successful!
+#   Promoting 1.0.0 - done!
+#   Promition successful!
 # 
 # Optionally try the \`zapier migrate 1.0.0 1.0.1 [10%]\` command to move users to this version.
 ${'```'}

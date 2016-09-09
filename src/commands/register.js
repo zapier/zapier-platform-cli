@@ -38,7 +38,7 @@ register.example = 'zapier register "Example"';
 register.docs = `\
 This command registers your app with Zapier. After running this, you can run \`zapier deploy\` to deploy a version of your app that you can use in your Zapier editor.
 
-> This will change the  \`./${constants.CURRENT_APP_FILE}\` (which identifies the app assosciated with the current directory).
+> This will change the  \`./${constants.CURRENT_APP_FILE}\` (which identifies the app associated with the current directory).
 
 **Arguments**
 
