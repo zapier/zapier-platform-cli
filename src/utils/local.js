@@ -6,9 +6,10 @@ const jayson = require('jayson');
 const {PLATFORM_PACKAGE} = require('../constants');
 
 const {prettyJSONstringify} = require('./display');
-const {promisify} = require('./promisify');
+// const {promisify} = require('./promisify');
 
-const makeTunnelUrl = (...args) => promisify(require('ngrok').connect(...args));
+// const makeTunnelUrl = (...args) => promisify(require('ngrok').connect(...args));
+const makeTunnelUrl = () => Promise.resolve('maybe later');
 
 const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   const entryPath = `${process.cwd()}/index`;
