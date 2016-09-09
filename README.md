@@ -1,5 +1,7 @@
 # Zapier Platform CLI
 
+> This is currently pre-release software! You can fill out https://zapier.typeform.com/to/Z4TZBm if you'd like early access.
+
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
 ## Table of Contents
