@@ -209,7 +209,6 @@ blockquote {
 <li><a href="#deploying-an-app">Deploying an App</a></li>
 </ul>
 </li>
-<li><a href="#tutorial-outline">Tutorial Outline:</a></li>
 <li><a href="#quickstart">Quickstart</a></li>
 <li><a href="#creating-a-local-app">Creating a Local App</a><ul>
 <li><a href="#local-project-structure">Local Project Structure</a></li>
@@ -313,7 +312,6 @@ blockquote {
 <li><a href="#deploying-an-app">Deploying an App</a></li>
 </ul>
 </li>
-<li><a href="#tutorial-outline">Tutorial Outline:</a></li>
 <li><a href="#quickstart">Quickstart</a></li>
 <li><a href="#creating-a-local-app">Creating a Local App</a><ul>
 <li><a href="#local-project-structure">Local Project Structure</a></li>
@@ -431,7 +429,7 @@ nvm use v4.3.2
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># install the CLI globally</span>
-npm install -g @zapier/zapier-platform-cli
+npm install -g zapier-platform-cli
 </code></pre>
     </div>
   </div>
@@ -480,7 +478,7 @@ zapier init example-app
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Inside the directory, you&apos;ll see a few files. <code>package.json</code> is a typical requirements file of any Node.js application. The one interesting dependency is the <code>@zapier/zapier-platform-core</code>, which is what makes your app work with the Zapier Platform.</p><p>Before we go any further - we&apos;ll need to install all the dependencies for our app:</p>
+      <p>Inside the directory, you&apos;ll see a few files. <code>package.json</code> is a typical requirements file of any Node.js application. The one interesting dependency is the <code>zapier-platform-core</code>, which is what makes your app work with the Zapier Platform.</p><p>Before we go any further - we&apos;ll need to install all the dependencies for our app:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>npm install
@@ -568,7 +566,7 @@ touch triggers/recipe.js
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
 
-<span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>);
+<span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>);
 
 <span class="hljs-keyword">const</span> appTester = zapier.createAppTester(<span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;../index&apos;</span>));
 
@@ -662,7 +660,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
 
-<span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>);
+<span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>);
 
 <span class="hljs-keyword">const</span> appTester = zapier.createAppTester(<span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;../index&apos;</span>));
 
@@ -778,86 +776,6 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="tutorial-outline-">Tutorial Outline:</h2>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height is-empty docs-primary">
-      
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code>* Cover the app schema
-    - What&apos;s a trigger
-    - What&apos;s an action
-    - What&apos;s a search
-    - There is auth
-    - *very* briefly say that resources exist, but we&apos;ll get to them later
-* Build a trigger that hits...mockapi.io?
-    - Use request shorthand for perform, no input fields
-* Introduce a test for that trigger
-    - Write the test
-    - `zapier test`
-* Introduce the idea of making a change to our app
-    - Update test to expect an query param
-    - Run test, see it fail
-    - Add an input field to trigger
-    - Include the input field in the URL with {{}} syntax (gloss over details for now)
-    - Run test, see it pass
-* Deploy app to Zapier
-    - `zapier register`
-    - `zapier deploy`
-    - Go to zapier.com and run it
-    - Show how `zapier logs` will list the requests made in production
-* Explore {{}} and perform a bit more
-    - Explain how Zapier passes data collected from fields in a Zap to your app
-    - Elude to the idea that there is more context there as well with authData and environment (more on that later)
-* Introduce the concept of auth
-    - Add a failing test for an auth header
-    - Add the authentication definition to the app
-        - Use {{}} syntax to add the header, and explain that the bundle also contains authData
-    - Run test again to see it pass
-    - `zapier deploy`
-    - Go back to editor to add an account
-    - Explain that there are other auth styles supported, link to docs
-* Introduce the concept of an action
-    - Define a test
-    - Define an action
-        - Have a few input fields
-        - Use shortand request syntax again
-    - Run test
-    - `zapier deploy`
-* Maybe: Introduce the idea of `zapier watch`?
-    - &quot;Up to now we&apos;ve been using `zapier deploy` to upload our changes. There is a faster way with...&quot;
-* Introduce the concept of perform as a function
-    - Tweak the action to be a function instead, and do something like form-encode the data or have one of the input fields be a datetime that we need to convert
-    - Explain how bundle is the same context as what {{}} has
-    - Explain z.request
-    - Throw in a z.console.log
-    - Run test again, still passes
-        - Point out that we see our console statement as well
-    - `zapier deploy` and try it live
-    - `zapier logs` to see the console output from production
-* Introduce the concept of a search
-    - Define a test
-    - Build the search
-* Introduce the concept of beforeRequest
-    - Show how we&apos;ve had to repeat the auth header three times, we can simplify by doing middleware
-    - Add beforeRequest and remove from other three spots
-    - Run tests, which still pass while asserting auth header is there
-* Maybe: Introduce concept of resource
-    - Could consolidate all our code into a a single resource
-    - Tests still pass
-    - Explain the benefit of these being linked
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="quickstart">Quickstart</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -873,7 +791,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># install the CLI globally</span>
-npm install -g @zapier/zapier-platform-cli
+npm install -g zapier-platform-cli
 
 <span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key. To obtain a key, email partner@zapier.com</span>
 zapier auth
@@ -1049,7 +967,7 @@ npm install
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// both version strings are required</span>
   version: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./package.json&apos;</span>).version,
-  platformVersion: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>).version,
+  platformVersion: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>).version,
 
   <span class="hljs-comment">// see &quot;Authentication&quot; section below</span>
   authentication: {
@@ -2254,7 +2172,7 @@ You can run these tests in a CI tool like <a href="https://travis-ci.com/">Travi
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-comment">// we use should assertions</span>
 <span class="hljs-keyword">const</span> should = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
-<span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@zapier/zapier-platform-core&apos;</span>);
+<span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>);
 
 <span class="hljs-comment">// createAppTester() makes it easier to test your app. It takes your</span>
 <span class="hljs-comment">// raw app definition, and returns a function that will test you app.</span>

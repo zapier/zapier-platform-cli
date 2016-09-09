@@ -1,5 +1,5 @@
+.travis*
 .zapier*
-scratch/*
 src/*
 lib/tests/*
 *.zip

@@ -10,7 +10,7 @@ const STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-
 const AUTH_LOCATION_RAW = '~/.zapierrc';
 const AUTH_LOCATION = process.env.ZAPIER_AUTH_LOCATION || path.resolve(os.homedir(), '.zapierrc');
 const CURRENT_APP_FILE = process.env.ZAPIER_CURRENT_APP_FILE || '.zapierapprc';
-const PLATFORM_PACKAGE = '@zapier/zapier-platform-core';
+const PLATFORM_PACKAGE = 'zapier-platform-core';
 const DEFINITION_PATH = 'build/definition.json';
 const BUILD_PATH = 'build/build.zip';
 

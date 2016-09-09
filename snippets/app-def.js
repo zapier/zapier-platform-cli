@@ -1,7 +1,7 @@
 const App = {
   // both version strings are required
   version: require('./package.json').version,
-  platformVersion: require('@zapier/zapier-platform-core').version,
+  platformVersion: require('zapier-platform-core').version,
 
   // see "Authentication" section below
   authentication: {

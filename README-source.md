@@ -32,7 +32,7 @@ To get started, first make sure that your dev environment meets the [requirement
 
 ```bash
 # install the CLI globally
-npm install -g @zapier/zapier-platform-cli
+npm install -g zapier-platform-cli
 ```
 
 The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
@@ -58,7 +58,7 @@ zapier init example-app
 cd example-app
 ```
 
-Inside the directory, you'll see a few files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `@zapier/zapier-platform-core`, which is what makes your app work with the Zapier Platform.
+Inside the directory, you'll see a few files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `zapier-platform-core`, which is what makes your app work with the Zapier Platform.
 
 Before we go any further - we'll need to install all the dependencies for our app:
 
@@ -129,7 +129,7 @@ Now, let's add a test to make sure our code is working properly, go ahead and ta
 ```javascript
 require('should');
 
-const zapier = require('@zapier/zapier-platform-core');
+const zapier = require('zapier-platform-core');
 
 const appTester = zapier.createAppTester(require('../index'));
 
@@ -206,7 +206,7 @@ Let's tweak the test in `test/index.js` and paste this in:
 ```javascript
 require('should');
 
-const zapier = require('@zapier/zapier-platform-core');
+const zapier = require('zapier-platform-core');
 
 const appTester = zapier.createAppTester(require('../index'));
 
@@ -288,73 +288,6 @@ zapier deploy
 Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to try creating an Zap using your app version. 
 
 
-
-## Tutorial Outline:
-
-    * Cover the app schema
-        - What's a trigger
-        - What's an action
-        - What's a search
-        - There is auth
-        - *very* briefly say that resources exist, but we'll get to them later
-    * Build a trigger that hits...mockapi.io?
-        - Use request shorthand for perform, no input fields
-    * Introduce a test for that trigger
-        - Write the test
-        - `zapier test`
-    * Introduce the idea of making a change to our app
-        - Update test to expect an query param
-        - Run test, see it fail
-        - Add an input field to trigger
-        - Include the input field in the URL with {{}} syntax (gloss over details for now)
-        - Run test, see it pass
-    * Deploy app to Zapier
-        - `zapier register`
-        - `zapier deploy`
-        - Go to zapier.com and run it
-        - Show how `zapier logs` will list the requests made in production
-    * Explore {{}} and perform a bit more
-        - Explain how Zapier passes data collected from fields in a Zap to your app
-        - Elude to the idea that there is more context there as well with authData and environment (more on that later)
-    * Introduce the concept of auth
-        - Add a failing test for an auth header
-        - Add the authentication definition to the app
-            - Use {{}} syntax to add the header, and explain that the bundle also contains authData
-        - Run test again to see it pass
-        - `zapier deploy`
-        - Go back to editor to add an account
-        - Explain that there are other auth styles supported, link to docs
-    * Introduce the concept of an action
-        - Define a test
-        - Define an action
-            - Have a few input fields
-            - Use shortand request syntax again
-        - Run test
-        - `zapier deploy`
-    * Maybe: Introduce the idea of `zapier watch`?
-        - "Up to now we've been using `zapier deploy` to upload our changes. There is a faster way with..."
-    * Introduce the concept of perform as a function
-        - Tweak the action to be a function instead, and do something like form-encode the data or have one of the input fields be a datetime that we need to convert
-        - Explain how bundle is the same context as what {{}} has
-        - Explain z.request
-        - Throw in a z.console.log
-        - Run test again, still passes
-            - Point out that we see our console statement as well
-        - `zapier deploy` and try it live
-        - `zapier logs` to see the console output from production
-    * Introduce the concept of a search
-        - Define a test
-        - Build the search
-    * Introduce the concept of beforeRequest
-        - Show how we've had to repeat the auth header three times, we can simplify by doing middleware
-        - Add beforeRequest and remove from other three spots
-        - Run tests, which still pass while asserting auth header is there
-    * Maybe: Introduce concept of resource
-        - Could consolidate all our code into a a single resource
-        - Tests still pass
-        - Explain the benefit of these being linked
-
-
 ## Quickstart
 
 > Be sure to check the [Requirements](#requirements) before you start!
@@ -363,7 +296,7 @@ First up is installing the CLI and setting up your auth to create a working "Zap
 
 ```bash
 # install the CLI globally
-npm install -g @zapier/zapier-platform-cli
+npm install -g zapier-platform-cli
 
 # auth to Zapier's platform with your deploy key. To obtain a key, email partner@zapier.com
 zapier auth

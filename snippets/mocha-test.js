@@ -1,6 +1,6 @@
 // we use should assertions
 const should = require('should');
-const zapier = require('@zapier/zapier-platform-core');
+const zapier = require('zapier-platform-core');
 
 // createAppTester() makes it easier to test your app. It takes your
 // raw app definition, and returns a function that will test you app.

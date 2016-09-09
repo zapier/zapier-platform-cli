@@ -42,7 +42,7 @@ These are the generated docs for all Zapier platform CLI commands.
 You can install the CLI with \`npm\`.
 
 ${'```'}bash
-$ npm install -g @zapier/zapier-platform-cli
+$ npm install -g zapier-platform-cli
 ${'```'}
 
 # Commands

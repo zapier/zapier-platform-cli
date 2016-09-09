@@ -44,11 +44,11 @@ const setVersion = (template, rootTmpDir) => {
       const packageJsonFile = path.resolve(rootTmpDir, `${repoName}/package.json`);
       const packageJson = require(packageJsonFile);
 
-      if (packageJson.dependencies['@zapier/zapier-platform-core'] === newVersion) {
+      if (packageJson.dependencies['zapier-platform-core'] === newVersion) {
         return 'skip';
       }
 
-      packageJson.dependencies['@zapier/zapier-platform-core'] = newVersion;
+      packageJson.dependencies['zapier-platform-core'] = newVersion;
       const json = JSON.stringify(packageJson, null, 2);
       fse.writeFileSync(packageJsonFile, json);
     })
