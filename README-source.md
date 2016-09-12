@@ -42,7 +42,7 @@ The CLI is the primary tool for managing your apps on Zapier. With it, you can v
 Now that your CLI is installed - you'll need to identify yourself via the CLI.
 
 ```bash
-# auth to Zapier's platform with your deploy key, to obtain a key contact partners@zapier.com
+# auth to Zapier's platform with your deploy key. To obtain a key contact partners@zapier.com
 zapier auth
 ```
 
@@ -255,9 +255,9 @@ Looking real good locally! Let's move on.
 
 ### Deploying an App
 
-Of course, while developing a Zapier app locally is pretty easy - the end goal is usually to use it in Zapier UI with the thousands of other integrations! Since we have a working local app - deploying to Zapier is very straightforward.
+Of course, while developing a Zapier app locally is pretty easy, the end goal is usually to use it on zapier.com with the thousands of other integrations! So let's take our working local app and deploy it to Zapier.
 
-First, you'll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we'll learn about later promotion, collaboration, and environment variables.
+First, you'll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we'll learn about later including promotion, collaboration, and environment variables.
 
 ```bash
 zapier register "Example App"
@@ -269,7 +269,7 @@ zapier register "Example App"
 # Finished! Now that your app is registered with Zapier, you can `zapier deploy` a version!
 ```
 
-Now, we have to deploy a version of your app - you can can have many versions of an app which simplifies breaking changes and testing in the future - for now we just need a single version deployed so let's start there.
+Next, we have to deploy a version of your app. You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.
 
 ```bash
 zapier deploy
@@ -287,7 +287,7 @@ zapier deploy
 # Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
 ```
 
-Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to try creating an Zap using your app version. 
+Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap using your app. 
 
 
 ## Quickstart
