@@ -438,7 +438,7 @@ npm install -g zapier-platform-cli
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try <code>zapier help</code>.</p><p>Now that your CLI is installed - you&apos;ll need to identify yourself via the CLI.</p>
+      <p>The CLI is the primary tool for managing your apps. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try <code>zapier help</code>.</p><p>Now that your CLI is installed - you&apos;ll need to identify yourself via the CLI.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key. To obtain a key contact partners@zapier.com</span>
@@ -480,7 +480,7 @@ zapier init example-app
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Inside the directory, you&apos;ll see a few files. <code>package.json</code> is a typical requirements file of any Node.js application. The one interesting dependency is the <code>zapier-platform-core</code>, which is what makes your app work with the Zapier Platform.</p><p>Before we go any further - we&apos;ll need to install all the dependencies for our app:</p>
+      <p>Inside the directory, you&apos;ll see a few files. <code>package.json</code> is a typical requirements file of any Node.js application. It&apos;s pre-populated with a few dependencies, most notably the <code>zapier-platform-core</code>, which is what makes your app work with the Zapier Platform. There is also an <code>index.js</code> file and a test directory (more on those later).</p><p>Before we go any further, we need to install the dependencies for our app:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>npm install
@@ -499,14 +499,14 @@ zapier init example-app
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Right next to <code>package.json</code> should be <code>index.js</code> which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let&apos;s take a look!</p><p>You&apos;ll see a few things in <code>index.js</code>, we&apos;ll briefly describe each here:</p><ul>
+      <p>Right next to <code>package.json</code> should be <code>index.js</code> which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let&apos;s take a look!</p><p>You&apos;ll see a few things in <code>index.js</code>:</p><ul>
 <li>we export a single <code>App</code> definition which will be interpreted by Zapier</li>
 <li>in <code>App</code> definition, <code>beforeRequest</code> &amp; <code>afterResponse</code> are hooks into the HTTP client</li>
-<li>in <code>App</code> definition, <code>resources</code> are purely optional but convenient ways to describe CRUD-like objects in your app</li>
 <li>in <code>App</code> definition, <code>triggers</code> will describe ways to trigger off of data in your app</li>
 <li>in <code>App</code> definition, <code>searches</code> will describe ways to find data in your app</li>
 <li>in <code>App</code> definition, <code>writes</code> will desciribe ways to create data in your app</li>
-</ul><p>Let&apos;s start with a <strong>basic trigger</strong> using a mocked API:</p>
+<li>in <code>App</code> definition, <code>resources</code> are purely optional but convenient ways to describe CRUD-like objects in your app</li>
+</ul><p>Let&apos;s start with a basic <strong>trigger.</strong> We will configure it to read data from a mocked API:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">mkdir triggers
@@ -517,7 +517,7 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now open your <code>triggers/recipe.js</code> and paste this:</p>
+      <p>Open your <code>triggers/recipe.js</code> and paste this:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = (z, bundle) =&gt; {
@@ -542,13 +542,15 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now, let&apos;s return to our <code>index.js</code> and add two new lines of code:</p><ol>
-<li>The <code>require()</code> for the trigger</li>
-<li>The registration of the trigger in <code>App</code></li>
+      <p>Return to our <code>index.js</code> and add two new lines of code:</p><ol>
+<li>The <code>require()</code> for the trigger at the top of the file</li>
+<li>The registration of the trigger in <code>App</code> by editing the existing <code>triggers</code> property</li>
 </ol>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> recipe = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./triggers/recipe&apos;</span>); <span class="hljs-comment">// new line of code!</span>
+
+<span class="hljs-comment">// Edit the App definition to register our trigger</span>
 <span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   triggers: {
@@ -556,14 +558,13 @@ touch triggers/recipe.js
   },
   <span class="hljs-comment">// ...</span>
 };
-<span class="hljs-built_in">module</span>.exports = App;
 </code></pre>
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now, let&apos;s add a test to make sure our code is working properly, go ahead and take a look at <code>test/index.js</code> and paste this:</p>
+      <p>Now, let&apos;s add a test to make sure our code is working properly. Take a look at <code>test/index.js</code> and paste this:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
@@ -572,7 +573,7 @@ touch triggers/recipe.js
 
 <span class="hljs-keyword">const</span> appTester = zapier.createAppTester(<span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;../index&apos;</span>));
 
-describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
+describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 
   it(<span class="hljs-string">&apos;should load recipes&apos;</span>, (done) =&gt; {
     <span class="hljs-keyword">const</span> bundle = {};
@@ -597,7 +598,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>And you should be able to run the tests with <code>zapier test</code>:</p>
+      <p>You should be able to run the tests with <code>zapier test</code> and see them pass:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>zapier test
@@ -623,7 +624,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Let&apos;s say we want to let our users tweak the styles of recipes they are triggering on, a classic way to do that with Zapier is to provide a input field they can select from.</p><p>Let&apos;s re-open your <code>triggers/recipe.js</code> and paste this:</p>
+      <p>Let&apos;s say we want to let our users tweak the styles of recipes they are triggering on. A classic way to do that with Zapier is to provide a input field the user can select from.</p><p>Re-open your <code>triggers/recipe.js</code> and paste this:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = (z, bundle) =&gt; {
@@ -657,7 +658,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Let&apos;s tweak the test in <code>test/index.js</code> and paste this in:</p>
+      <p>Tweak the test in <code>test/index.js</code> and paste this in:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
@@ -696,7 +697,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>And now, you can run your test again and make sure you didn&apos;t break anything:</p>
+      <p>You can run your test again and make sure everything still works:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>zapier test
@@ -713,7 +714,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Looking real good locally! Let&apos;s move on.</p>
+      <p>Looking good locally! Let&apos;s move on.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -731,7 +732,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Of course, while developing a Zapier app locally is pretty easy, the end goal is usually to use it on zapier.com with the thousands of other integrations! So let&apos;s take our working local app and deploy it to Zapier.</p><p>First, you&apos;ll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we&apos;ll learn about later including promotion, collaboration, and environment variables.</p>
+      <p>So far, everything we have done has been local, on your machine. It&apos;s been fun, but we want our app on zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.</p><p>First, you need to register your app with Zapier. This enables all the admin tooling like deployment, as well as other tooling we&apos;ll learn about later including promotion, collaboration, and environment variables.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier register <span class="hljs-string">&quot;Example App&quot;</span>
@@ -769,7 +770,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now that your app version is properly deployed you can log in and visit <a href="https://zapier.com/app/editor">https://zapier.com/app/editor</a> to create a Zap using your app. </p>
+      <p>Now that your app version is properly deployed you can log in and visit <a href="https://zapier.com/app/editor">https://zapier.com/app/editor</a> to create a Zap using your app!</p><p>Congrats, you&apos;ve completed the tutorial. At this point we recommend reading up on the <a href="#z-object">Z Object</a> and <a href="#bundle-object">Bundle Object</a> to get a better idea of what is possible within the <code>perform</code> functions. You can also check out the other <a href="#example-apps">example apps</a> to see how to incorporate authentication into your app and how to implement things like searches and writes.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -1870,16 +1871,15 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument in all function calls in your app.</p><ul>
-<li><code>request</code>: make an HTTP request, see &quot;Making HTTP Requests&quot; above. See <a href="#making-http-requests">Making HTTP Requests</a>.</li>
-<li><code>console</code>: logging console, similar to Nodejs <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#console-log-statements">Log Sttatements</a></li>
-<li><code>JSON</code>: similar API to JSON built in but catches errors with nicer tracebacks.</li>
-<li><code>hash</code>: Helpful handler for doing <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code>
-errors</li>
+      <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument to all function calls in your app.</p><ul>
+<li><code>request</code>: An HTTP client with some Zapier-specific goodies. See <a href="#making-http-requests">Making HTTP Requests</a>.</li>
+<li><code>console</code>: Logging console, similar to Nodejs <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#console-log-statements">Log Sttatements</a></li>
+<li><code>JSON</code>: Similar to the JSON built-in, but catches errors and produces nicer tracebacks.</li>
+<li><code>hash</code>: Crypto tool for doing things like <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code></li>
 <li><code>errors</code>: Error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code></li>
-<li><code>dehydrate</code>: dehydrate a function</li>
-<li><code>dehydrateRequest</code>: dehydrate a request</li>
-<li><code>dehydrateFile</code>: dehydrate a file</li>
+<li><code>dehydrate</code>: Dehydrate a function</li>
+<li><code>dehydrateRequest</code>: Dehydrate a request</li>
+<li><code>dehydrateFile</code>: Dehydrate a file</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -1898,9 +1898,9 @@ errors</li>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>This payload will provide user provided data and configuration data.</p><ul>
-<li><code>authData</code> - user provided authentication data, like <code>api_key</code> or even <code>access_token</code> if you are using oauth2 [(read more on authentication)[#authentication]]</li>
-<li><code>inputData</code> - user provided configuration data, like <code>listId</code> or <code>tagSlug</code> as defined by <code>inputData</code>. For example:<pre><code class="lang-javascript">{
+      <p>This object holds the user&apos;s auth details and the data to for the API requests.</p><ul>
+<li><code>authData</code> - user-provided authentication data, like <code>api_key</code> or <code>access_token</code>. [(Read more on authentication)[#authentication]]</li>
+<li><code>inputData</code> - user-provided data for this particular run of the trigger/search/write, as defined by the inputFields. For example:<pre><code class="lang-javascript">{
 createdBy: <span class="hljs-string">&apos;Bobby Flay&apos;</span>
 style: <span class="hljs-string">&apos;mediterranean&apos;</span>
 }

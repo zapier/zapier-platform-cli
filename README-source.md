@@ -37,7 +37,7 @@ To get started, first make sure that your dev environment meets the [requirement
 npm install -g zapier-platform-cli
 ```
 
-The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
+The CLI is the primary tool for managing your apps. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
 
 Now that your CLI is installed - you'll need to identify yourself via the CLI.
 
@@ -60,9 +60,9 @@ zapier init example-app
 cd example-app
 ```
 
-Inside the directory, you'll see a few files. `package.json` is a typical requirements file of any Node.js application. The one interesting dependency is the `zapier-platform-core`, which is what makes your app work with the Zapier Platform.
+Inside the directory, you'll see a few files. `package.json` is a typical requirements file of any Node.js application. It's pre-populated with a few dependencies, most notably the `zapier-platform-core`, which is what makes your app work with the Zapier Platform. There is also an `index.js` file and a test directory (more on those later).
 
-Before we go any further - we'll need to install all the dependencies for our app:
+Before we go any further, we need to install the dependencies for our app:
 
 ```
 npm install
@@ -72,23 +72,23 @@ npm install
 
 Right next to `package.json` should be `index.js` which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's take a look!
 
-You'll see a few things in `index.js`, we'll briefly describe each here:
+You'll see a few things in `index.js`:
 
  * we export a single `App` definition which will be interpreted by Zapier
  * in `App` definition, `beforeRequest` & `afterResponse` are hooks into the HTTP client
- * in `App` definition, `resources` are purely optional but convenient ways to describe CRUD-like objects in your app
  * in `App` definition, `triggers` will describe ways to trigger off of data in your app
  * in `App` definition, `searches` will describe ways to find data in your app
  * in `App` definition, `writes` will desciribe ways to create data in your app
+ * in `App` definition, `resources` are purely optional but convenient ways to describe CRUD-like objects in your app
 
-Let's start with a **basic trigger** using a mocked API:
+Let's start with a basic **trigger.** We will configure it to read data from a mocked API:
 
 ```bash
 mkdir triggers
 touch triggers/recipe.js
 ```
 
-Now open your `triggers/recipe.js` and paste this:
+Open your `triggers/recipe.js` and paste this:
 
 ```javascript
 const listRecipes = (z, bundle) => {
@@ -109,13 +109,15 @@ module.exports = {
 };
 ```
 
-Now, let's return to our `index.js` and add two new lines of code:
+Return to our `index.js` and add two new lines of code:
 
-1. The `require()` for the trigger
-2. The registration of the trigger in `App`
+1. The `require()` for the trigger at the top of the file
+2. The registration of the trigger in `App` by editing the existing `triggers` property
 
 ```javascript
 const recipe = require('./triggers/recipe'); // new line of code!
+
+// Edit the App definition to register our trigger
 const App = {
   // ...
   triggers: {
@@ -123,10 +125,9 @@ const App = {
   },
   // ...
 };
-module.exports = App;
 ```
 
-Now, let's add a test to make sure our code is working properly, go ahead and take a look at `test/index.js` and paste this:
+Now, let's add a test to make sure our code is working properly. Take a look at `test/index.js` and paste this:
 
 ```javascript
 require('should');
@@ -135,7 +136,7 @@ const zapier = require('zapier-platform-core');
 
 const appTester = zapier.createAppTester(require('../index'));
 
-describe('triggers', () => {
+describe('My App', () => {
 
   it('should load recipes', (done) => {
     const bundle = {};
@@ -156,7 +157,7 @@ describe('triggers', () => {
 });
 ```
 
-And you should be able to run the tests with `zapier test`:
+You should be able to run the tests with `zapier test` and see them pass:
 
 ```
 zapier test
@@ -171,9 +172,9 @@ zapier test
 
 ### Modifying a Trigger
 
-Let's say we want to let our users tweak the styles of recipes they are triggering on, a classic way to do that with Zapier is to provide a input field they can select from.
+Let's say we want to let our users tweak the styles of recipes they are triggering on. A classic way to do that with Zapier is to provide a input field the user can select from.
 
-Let's re-open your `triggers/recipe.js` and paste this:
+Re-open your `triggers/recipe.js` and paste this:
 
 ```javascript
 const listRecipes = (z, bundle) => {
@@ -203,7 +204,7 @@ module.exports = {
 };
 ```
 
-Let's tweak the test in `test/index.js` and paste this in:
+Tweak the test in `test/index.js` and paste this in:
 
 ```javascript
 require('should');
@@ -238,7 +239,7 @@ describe('triggers', () => {
 });
 ```
 
-And now, you can run your test again and make sure you didn't break anything:
+You can run your test again and make sure everything still works:
 
 ```
 zapier test
@@ -251,13 +252,13 @@ zapier test
 #
 ```
 
-Looking real good locally! Let's move on.
+Looking good locally! Let's move on.
 
 ### Deploying an App
 
-Of course, while developing a Zapier app locally is pretty easy, the end goal is usually to use it on zapier.com with the thousands of other integrations! So let's take our working local app and deploy it to Zapier.
+So far, everything we have done has been local, on your machine. It's been fun, but we want our app on zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.
 
-First, you'll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we'll learn about later including promotion, collaboration, and environment variables.
+First, you need to register your app with Zapier. This enables all the admin tooling like deployment, as well as other tooling we'll learn about later including promotion, collaboration, and environment variables.
 
 ```bash
 zapier register "Example App"
@@ -287,7 +288,11 @@ zapier deploy
 # Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
 ```
 
-Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap using your app. 
+Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap using your app!
+
+### Next Steps
+
+Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate authentication into your app and how to implement things like searches and writes.
 
 
 ## Quickstart
@@ -696,24 +701,23 @@ The response object returned by `z.request()` supports the following fields and 
 
 ## Z Object
 
-We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
+We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your app.
 
-* `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Requests](#making-http-requests).
-* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#console-log-statements)
-* `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
-* `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
-errors
+* `request`: An HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
+* `console`: Logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#console-log-statements)
+* `JSON`: Similar to the JSON built-in, but catches errors and produces nicer tracebacks.
+* `hash`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
 * `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
-* `dehydrate`: dehydrate a function
-* `dehydrateRequest`: dehydrate a request
-* `dehydrateFile`: dehydrate a file
+* `dehydrate`: Dehydrate a function
+* `dehydrateRequest`: Dehydrate a request
+* `dehydrateFile`: Dehydrate a file
 
 ## Bundle Object
 
-This payload will provide user provided data and configuration data.
+This object holds the user's auth details and the data to for the API requests.
 
-* `authData` - user provided authentication data, like `api_key` or even `access_token` if you are using oauth2 [(read more on authentication)[#authentication]]
-* `inputData` - user provided configuration data, like `listId` or `tagSlug` as defined by `inputData`. For example:
+* `authData` - user-provided authentication data, like `api_key` or `access_token`. [(Read more on authentication)[#authentication]]
+* `inputData` - user-provided data for this particular run of the trigger/search/write, as defined by the inputFields. For example:
 ```javascript
 {
   createdBy: 'Bobby Flay'
