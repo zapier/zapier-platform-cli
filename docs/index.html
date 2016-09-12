@@ -254,7 +254,7 @@ blockquote {
 </ul>
 </li>
 <li><a href="#logging">Logging</a><ul>
-<li><a href="#log-statements">Log Statements</a></li>
+<li><a href="#console-log-statements">Console Log Statements</a></li>
 <li><a href="#viewing-logs">Viewing Logs</a></li>
 </ul>
 </li>
@@ -359,7 +359,7 @@ blockquote {
 </ul>
 </li>
 <li><a href="#logging">Logging</a><ul>
-<li><a href="#log-statements">Log Statements</a></li>
+<li><a href="#console-log-statements">Console Log Statements</a></li>
 <li><a href="#viewing-logs">Viewing Logs</a></li>
 </ul>
 </li>
@@ -441,7 +441,7 @@ npm install -g zapier-platform-cli
       <p>The CLI is the primary tool for managing your apps on Zapier. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try <code>zapier help</code>.</p><p>Now that your CLI is installed - you&apos;ll need to identify yourself via the CLI.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key, to obtain a key contact partners@zapier.com</span>
+      <pre><code class="lang-bash"><span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key. To obtain a key contact partners@zapier.com</span>
 zapier auth
 </code></pre>
     </div>
@@ -731,7 +731,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Of course, while developing a Zapier app locally is pretty easy - the end goal is usually to use it in Zapier UI with the thousands of other integrations! Since we have a working local app - deploying to Zapier is very straightforward.</p><p>First, you&apos;ll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we&apos;ll learn about later promotion, collaboration, and environment variables.</p>
+      <p>Of course, while developing a Zapier app locally is pretty easy, the end goal is usually to use it on zapier.com with the thousands of other integrations! So let&apos;s take our working local app and deploy it to Zapier.</p><p>First, you&apos;ll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we&apos;ll learn about later including promotion, collaboration, and environment variables.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier register <span class="hljs-string">&quot;Example App&quot;</span>
@@ -747,7 +747,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now, we have to deploy a version of your app - you can can have many versions of an app which simplifies breaking changes and testing in the future - for now we just need a single version deployed so let&apos;s start there.</p>
+      <p>Next, we have to deploy a version of your app. You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier deploy
@@ -769,7 +769,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now that your app version is properly deployed you can log in and visit <a href="https://zapier.com/app/editor">https://zapier.com/app/editor</a> to try creating an Zap using your app version. </p>
+      <p>Now that your app version is properly deployed you can log in and visit <a href="https://zapier.com/app/editor">https://zapier.com/app/editor</a> to create a Zap using your app. </p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -849,21 +849,7 @@ zapier deploy
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>If you open the editor in Zapier, you should now see &quot;Zapier Example (1.0.0)&quot; listed and usable! We recommend using our built in <code>watch</code> command to iterate on the app.</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># watch and sync up your local app to zapier</span>
-zapier watch
-
-<span class="hljs-comment"># now make changes locally, and see them reflected live in Zapier</span>
-<span class="hljs-comment"># method calls will also be proxied and logged to stdout for convenience</span>
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Don&apos;t forget you&apos;ll need to <code>zapier deploy</code> to make your changes stick after any <code>zapier watch</code> session ends!</p><blockquote>
+      <blockquote>
 <p>Go check out our <a href="docs/cli.md">full CLI reference documentation</a> to see all the other commands!</p>
 </blockquote>
     </div>
@@ -1072,12 +1058,6 @@ zapier deploy
 
 <span class="hljs-comment"># list your versions</span>
 zapier versions
-
-<span class="hljs-comment"># watch and sync up your local app to zapier</span>
-zapier watch
-
-<span class="hljs-comment"># now make changes locally, and see them reflected live in Zapier</span>
-<span class="hljs-comment"># method calls will also be proxied and logged to stdout for convenience</span>
 </code></pre>
     </div>
   </div>
@@ -1091,7 +1071,6 @@ zapier watch
 <li><code>zapier migrate [1.0.0] [1.0.1] [100%]</code> - move users between versions, regardless of deployment status</li>
 <li><code>zapier deprecate [1.0.0] [YYYY-MM-DD]</code> - mark a version as deprecated, but let users continue to use it (we&apos;ll email them)</li>
 <li><code>zapier env 1.0.0 [KEY] [value]</code> - set an environment variable to some value</li>
-<li><code>zapier watch</code> - continuously sync your app to the Zapier interface, creating a fast feedback loop</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -1893,7 +1872,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument in all function calls in your app.</p><ul>
 <li><code>request</code>: make an HTTP request, see &quot;Making HTTP Requests&quot; above. See <a href="#making-http-requests">Making HTTP Requests</a>.</li>
-<li><code>console</code>: logging console, similar to Nodejs <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#log-statements">Log Sttatements</a></li>
+<li><code>console</code>: logging console, similar to Nodejs <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#console-log-statements">Log Sttatements</a></li>
 <li><code>JSON</code>: similar API to JSON built in but catches errors with nicer tracebacks.</li>
 <li><code>hash</code>: Helpful handler for doing <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code>
 errors</li>
@@ -2054,7 +2033,7 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>TODO: describe rough logging outline.</p>
+      <p>There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the <code>z.console</code> method (<a href="#console-log-statements">see below for details</a>). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use <code>z.request()</code> or shorthand request objects).</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2063,7 +2042,7 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="log-statements">Log Statements</h3>
+      <h3 id="console-log-statements">Console Log Statements</h3>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2082,7 +2061,7 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The <code>z.console</code> object has all the same methods and works just like the Node.js <a href="https://nodejs.org/dist/latest-v4.x/docs/api/console.html"><code>Console</code></a> class - the only difference is we&apos;ll log to our distrubuted datastore and you can view them via <code>zapier logs</code> (more below).</p><p>Zapier automatically logs all HTTP requests (as long as you use <code>z.request()</code> or shorthand request objects).</p>
+      <p>The <code>z.console</code> object has all the same methods and works just like the Node.js <a href="https://nodejs.org/dist/latest-v4.x/docs/api/console.html"><code>Console</code></a> class - the only difference is we&apos;ll log to our distrubuted datastore and you can view them via <code>zapier logs</code> (more below).</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       

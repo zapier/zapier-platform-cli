@@ -699,7 +699,7 @@ The response object returned by `z.request()` supports the following fields and 
 We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
 
 * `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Requests](#making-http-requests).
-* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#log-statements)
+* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#console-log-statements)
 * `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
 * `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
 errors
@@ -773,9 +773,9 @@ For example, you can access the `process.env` in your perform functions:
 
 ## Logging
 
-TODO: describe rough logging outline.
+There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-log-statements)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request()` or shorthand request objects).
 
-### Log Statements
+### Console Log Statements
 
 To manually print a log statement in your code, use `z.console`:
 
@@ -784,8 +784,6 @@ To manually print a log statement in your code, use `z.console`:
 ```
 
 The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/dist/latest-v4.x/docs/api/console.html) class - the only difference is we'll log to our distrubuted datastore and you can view them via `zapier logs` (more below).
-
-Zapier automatically logs all HTTP requests (as long as you use `z.request()` or shorthand request objects).
 
 ### Viewing Logs
 

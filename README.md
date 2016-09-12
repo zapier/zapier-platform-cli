@@ -46,7 +46,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Defining Environment Variables](#defining-environment-variables)
   * [Accessing Environment Variables](#accessing-environment-variables)
 - [Logging](#logging)
-  * [Log Statements](#log-statements)
+  * [Console Log Statements](#console-log-statements)
   * [Viewing Logs](#viewing-logs)
 - [Testing](#testing)
   * [Writing Unit Tests](#writing-unit-tests)
@@ -88,7 +88,7 @@ The CLI is the primary tool for managing your apps on Zapier. With it, you can v
 Now that your CLI is installed - you'll need to identify yourself via the CLI.
 
 ```bash
-# auth to Zapier's platform with your deploy key, to obtain a key contact partners@zapier.com
+# auth to Zapier's platform with your deploy key. To obtain a key contact partners@zapier.com
 zapier auth
 ```
 
@@ -301,9 +301,9 @@ Looking real good locally! Let's move on.
 
 ### Deploying an App
 
-Of course, while developing a Zapier app locally is pretty easy - the end goal is usually to use it in Zapier UI with the thousands of other integrations! Since we have a working local app - deploying to Zapier is very straightforward.
+Of course, while developing a Zapier app locally is pretty easy, the end goal is usually to use it on zapier.com with the thousands of other integrations! So let's take our working local app and deploy it to Zapier.
 
-First, you'll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we'll learn about later promotion, collaboration, and environment variables.
+First, you'll need to register your app with Zapier. This enables all the admin tooling like deployment - but also tooling we'll learn about later including promotion, collaboration, and environment variables.
 
 ```bash
 zapier register "Example App"
@@ -315,7 +315,7 @@ zapier register "Example App"
 # Finished! Now that your app is registered with Zapier, you can `zapier deploy` a version!
 ```
 
-Now, we have to deploy a version of your app - you can can have many versions of an app which simplifies breaking changes and testing in the future - for now we just need a single version deployed so let's start there.
+Next, we have to deploy a version of your app. You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.
 
 ```bash
 zapier deploy
@@ -333,7 +333,7 @@ zapier deploy
 # Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
 ```
 
-Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to try creating an Zap using your app version. 
+Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap using your app. 
 
 
 ## Quickstart
@@ -383,18 +383,6 @@ zapier register "Zapier Example"
 # deploy your app version to Zapier
 zapier deploy
 ```
-
-If you open the editor in Zapier, you should now see "Zapier Example (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
-
-```bash
-# watch and sync up your local app to zapier
-zapier watch
-
-# now make changes locally, and see them reflected live in Zapier
-# method calls will also be proxied and logged to stdout for convenience
-```
-
-Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session ends!
 
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
@@ -526,12 +514,6 @@ zapier deploy
 
 # list your versions
 zapier versions
-
-# watch and sync up your local app to zapier
-zapier watch
-
-# now make changes locally, and see them reflected live in Zapier
-# method calls will also be proxied and logged to stdout for convenience
 ```
 
 If you'd like to manage your **Version**, use these commands:
@@ -542,7 +524,6 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
-* `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
 
 
 ### Private App Version (default)
@@ -1089,7 +1070,7 @@ The response object returned by `z.request()` supports the following fields and 
 We provide several methods off of the `z` object, which is provided as the first argument in all function calls in your app.
 
 * `request`: make an HTTP request, see "Making HTTP Requests" above. See [Making HTTP Requests](#making-http-requests).
-* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#log-statements)
+* `console`: logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#console-log-statements)
 * `JSON`: similar API to JSON built in but catches errors with nicer tracebacks.
 * `hash`: Helpful handler for doing `z.hash('sha256', 'my password')`
 errors
@@ -1184,9 +1165,9 @@ const App = {
 
 ## Logging
 
-TODO: describe rough logging outline.
+There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-log-statements)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request()` or shorthand request objects).
 
-### Log Statements
+### Console Log Statements
 
 To manually print a log statement in your code, use `z.console`:
 
@@ -1195,8 +1176,6 @@ To manually print a log statement in your code, use `z.console`:
 ```
 
 The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/dist/latest-v4.x/docs/api/console.html) class - the only difference is we'll log to our distrubuted datastore and you can view them via `zapier logs` (more below).
-
-Zapier automatically logs all HTTP requests (as long as you use `z.request()` or shorthand request objects).
 
 ### Viewing Logs
 
