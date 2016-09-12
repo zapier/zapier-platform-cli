@@ -88,7 +88,7 @@ const copyDir = (src, dst, options) => {
       const promises = files.map(file => {
         const srcItem = path.resolve(src, file);
         const dstItem = path.resolve(dst, file);
-        const stat = fse.lstatSync(srcItem);
+        const stat = fse.statSync(srcItem);
         const dstExists = fileExistsSync(dstItem);
 
         if (!options.filter(srcItem)) {

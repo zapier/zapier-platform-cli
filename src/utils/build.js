@@ -176,12 +176,24 @@ const build = (zipPath, wdir) => {
   zipPath = zipPath || constants.BUILD_PATH;
   const osTmpDir = fse.realpathSync(os.tmpdir());
   const tmpDir = path.join(osTmpDir, 'zapier-' + crypto.randomBytes(4).toString('hex'));
+
   return ensureDir(tmpDir)
     .then(() => {
       printStarting('Copying project to temp directory');
-      return copyDir(wdir, tmpDir);
+
+      let filter;
+      if (process.env.SKIP_NPM_INSTALL) {
+        filter = (dir) => {
+          const isntBuild = dir.indexOf('.zip') === -1;
+          return isntBuild;
+        };
+      }
+      return copyDir(wdir, tmpDir, {filter});
     })
     .then(() => {
+      if (process.env.SKIP_NPM_INSTALL) {
+        return {};
+      }
       printDone();
       printStarting('Installing project dependencies');
       return runCommand('npm', ['install', '--production'], {cwd: tmpDir});

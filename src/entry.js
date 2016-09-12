@@ -10,6 +10,10 @@ const utils = require('./utils');
 
 module.exports = (argv) => {
   process.on('exit', utils.clearSpinner);
+  process.on('SIGINT', () => {
+    utils.clearSpinner();
+    process.exit();
+  });
 
   if (!utils.isValidNodeVersion()) {
     console.error(colors.red(
