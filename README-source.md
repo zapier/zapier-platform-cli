@@ -338,18 +338,6 @@ zapier register "Zapier Example"
 zapier deploy
 ```
 
-If you open the editor in Zapier, you should now see "Zapier Example (1.0.0)" listed and usable! We recommend using our built in `watch` command to iterate on the app.
-
-```bash
-# watch and sync up your local app to zapier
-zapier watch
-
-# now make changes locally, and see them reflected live in Zapier
-# method calls will also be proxied and logged to stdout for convenience
-```
-
-Don't forget you'll need to `zapier deploy` to make your changes stick after any `zapier watch` session ends!
-
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
 
@@ -449,12 +437,6 @@ zapier deploy
 
 # list your versions
 zapier versions
-
-# watch and sync up your local app to zapier
-zapier watch
-
-# now make changes locally, and see them reflected live in Zapier
-# method calls will also be proxied and logged to stdout for convenience
 ```
 
 If you'd like to manage your **Version**, use these commands:
@@ -465,7 +447,6 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
-* `zapier watch` - continuously sync your app to the Zapier interface, creating a fast feedback loop
 
 
 ### Private App Version (default)
