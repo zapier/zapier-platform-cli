@@ -15,6 +15,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Adding a Trigger](#adding-a-trigger)
   * [Modifying a Trigger](#modifying-a-trigger)
   * [Deploying an App](#deploying-an-app)
+  * [Next Steps](#next-steps)
 - [Quickstart](#quickstart)
 - [Creating a Local App](#creating-a-local-app)
   * [Local Project Structure](#local-project-structure)
@@ -336,7 +337,9 @@ zapier deploy
 
 Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap using your app!
 
-Congrats, you've completed the tutorial. At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate authentication into your app and how to implement things like searches and writes.
+### Next Steps
+
+Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate authentication into your app and how to implement things like searches and writes.
 
 
 ## Quickstart
