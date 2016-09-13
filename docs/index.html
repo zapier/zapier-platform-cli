@@ -610,7 +610,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 #   triggers
 # 200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
 #     &#x2713; should load recipes (312ms)
-# 
+#
 #   1 passing (312ms)
 #
 </code></pre>
@@ -705,11 +705,11 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>zapier test
-# 
+#
 #   triggers
 # 200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
 #     &#x2713; should load recipes (312ms)
-# 
+#
 #   1 passing (312ms)
 #
 </code></pre>
@@ -741,10 +741,10 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier register <span class="hljs-string">&quot;Example App&quot;</span>
 <span class="hljs-comment"># Registering a new app on Zapier named &quot;Example App&quot;</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Confirming registation of app &quot;Example App&quot; -  done!</span>
 <span class="hljs-comment">#   Linking app to current directory with `.zapierapprc` -  done!</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># Finished! Now that your app is registered with Zapier, you can `zapier deploy` a version!</span>
 </code></pre>
     </div>
@@ -757,7 +757,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier deploy
 <span class="hljs-comment"># Preparing to build and upload your app.</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Copying project to temp directory -  done!</span>
 <span class="hljs-comment">#   Installing project dependencies -  done!</span>
 <span class="hljs-comment">#   Applying entry point file -  done!</span>
@@ -766,7 +766,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 <span class="hljs-comment">#   Zipping project and dependencies -  done!</span>
 <span class="hljs-comment">#   Cleaning up temp directory -  done!</span>
 <span class="hljs-comment">#   Uploading version 1.0.0 -  done!</span>
-<span class="hljs-comment"># </span>
+<span class="hljs-comment">#</span>
 <span class="hljs-comment"># Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!</span>
 </code></pre>
     </div>
@@ -1678,7 +1678,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no <code>{{curly}}</code> replacement, no status code checking, no automatic JSON parsing. Use this method when you need more control.</p><p>To make a manual HTTP request, use the <code>request</code> method of the <code>z</code> object:</p>
+      <p>When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no status code checking, no automatic JSON parsing. Use this method when you need more control. Manual requests do perform lazy <code>{{curly}}</code> replacement.</p><p>To make a manual HTTP request, use the <code>request</code> method of the <code>z</code> object:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listExample = (z, bundle) =&gt; {

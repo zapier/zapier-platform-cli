@@ -171,7 +171,7 @@ zapier test
 #   triggers
 # 200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
 #     ✓ should load recipes (312ms)
-# 
+#
 #   1 passing (312ms)
 #
 ```
@@ -251,11 +251,11 @@ You can run your test again and make sure everything still works:
 
 ```
 zapier test
-# 
+#
 #   triggers
 # 200 GET http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes
 #     ✓ should load recipes (312ms)
-# 
+#
 #   1 passing (312ms)
 #
 ```
@@ -271,10 +271,10 @@ First, you need to register your app with Zapier. This enables all the admin too
 ```bash
 zapier register "Example App"
 # Registering a new app on Zapier named "Example App"
-# 
+#
 #   Confirming registation of app "Example App" -  done!
 #   Linking app to current directory with `.zapierapprc` -  done!
-# 
+#
 # Finished! Now that your app is registered with Zapier, you can `zapier deploy` a version!
 ```
 
@@ -283,7 +283,7 @@ Next, we have to deploy a version of your app. You can can have many versions of
 ```bash
 zapier deploy
 # Preparing to build and upload your app.
-# 
+#
 #   Copying project to temp directory -  done!
 #   Installing project dependencies -  done!
 #   Applying entry point file -  done!
@@ -292,7 +292,7 @@ zapier deploy
 #   Zipping project and dependencies -  done!
 #   Cleaning up temp directory -  done!
 #   Uploading version 1.0.0 -  done!
-# 
+#
 # Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
 ```
 
@@ -301,7 +301,6 @@ Now that your app version is properly deployed you can log in and visit [https:/
 ### Next Steps
 
 Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate authentication into your app and how to implement things like searches and writes.
-
 
 ## Quickstart
 
@@ -652,7 +651,7 @@ An error will be raised if the response is not valid JSON, so _do not use shorth
 
 ### Manual HTTP Requests
 
-When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no `{{curly}}` replacement, no status code checking, no automatic JSON parsing. Use this method when you need more control.
+When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no status code checking, no automatic JSON parsing. Use this method when you need more control. Manual requests do perform lazy `{{curly}}` replacement.
 
 To make a manual HTTP request, use the `request` method of the `z` object:
 
