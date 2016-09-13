@@ -59,7 +59,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Requirements
 
-The Zapier CLI and Platform requires Node `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node installation.
+The Zapier CLI and Platform requires Node.js `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node.js installation.
 
 On Mac (via [homebrew](http://brew.sh/)):
 
@@ -117,7 +117,7 @@ npm install
 
 ### Adding a Trigger
 
-Right next to `package.json` should be `index.js` which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's take a look!
+Right next to `package.json` should be `index.js`, which is the entrypoint to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's take a look!
 
 You'll see a few things in `index.js`:
 
@@ -128,19 +128,19 @@ You'll see a few things in `index.js`:
  * in `App` definition, `writes` will desciribe ways to create data in your app
  * in `App` definition, `resources` are purely optional but convenient ways to describe CRUD-like objects in your app
 
-Let's start with a basic **trigger.** We will configure it to read data from a mocked API:
+Let's start by adding a **trigger.** We will configure it to read data from a mocked API:
 
 ```bash
 mkdir triggers
 touch triggers/recipe.js
 ```
 
-Open your `triggers/recipe.js` and paste this:
+Open `triggers/recipe.js` and paste this in:
 
 ```javascript
 const listRecipes = (z, bundle) => {
   const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes');
-  return promise.then((response) => JSON.parse(response.content));
+  return promise.then((response) => z.JSON.parse(response.content));
 };
 
 module.exports = {
@@ -156,7 +156,13 @@ module.exports = {
 };
 ```
 
-Return to our `index.js` and add two new lines of code:
+To break down what is happening in this snippet, look first at the function definition for `listRecipes`. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result. It receives two arguments, a `z` object and a `bundle` object. The [Z Object](#z-object) is a collection of utilities needed when working with APIs. In our snippet, we use `z.request` to make the HTTP call and `z.JSON` to parse the response. The [Bundle Object](#bundle-object) contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet, the Bundle is basically an empty object since we don't require any of those to make our GET request.
+
+> Note about Z Object: While it is possible to accomplish the same tasks using alternate Node.js libraries, it's preferable to use the `z` object as there are features built into these utilities that augment the Zapier experience. For example, logging of HTTP calls and better handling of JSON parsing failures. [Read the docs](#z-object) for more info.
+
+Now that we understand our function, take a brief look at the second part of our snippet; the export. Essentially, we export some meta-data plus our `listRecipes` function. We'll explain later how Zapier uses this meta-data. For now, know that it satisifies the minimum info required to define a trigger.
+
+With our trigger defined, we need to incorporate it into our app. Return to `index.js` and add two new lines of code:
 
 1. The `require()` for the trigger at the top of the file
 2. The registration of the trigger in `App` by editing the existing `triggers` property
@@ -219,7 +225,7 @@ zapier test
 
 ### Modifying a Trigger
 
-Let's say we want to let our users tweak the styles of recipes they are triggering on. A classic way to do that with Zapier is to provide a input field the user can select from.
+Let's say we want to let our users tweak the style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.
 
 Re-open your `triggers/recipe.js` and paste this:
 
@@ -251,7 +257,7 @@ module.exports = {
 };
 ```
 
-Tweak the test in `test/index.js` and paste this in:
+To ensure everything still works, tweak the test in `test/index.js` and paste this in:
 
 ```javascript
 require('should');
@@ -1076,7 +1082,7 @@ The response object returned by `z.request()` supports the following fields and 
 We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your app.
 
 * `request`: An HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
-* `console`: Logging console, similar to Nodejs `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#console-log-statements)
+* `console`: Logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Sttatements](#console-log-statements)
 * `JSON`: Similar to the JSON built-in, but catches errors and produces nicer tracebacks.
 * `hash`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
 * `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
