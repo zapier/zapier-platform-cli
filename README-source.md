@@ -296,11 +296,62 @@ zapier deploy
 # Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
 ```
 
-Now that your app version is properly deployed you can log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap using your app!
+Now that your app version is properly deployed, log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap and check our progress. You'll see the app listed as an available option for the first step. Selecting it, you'll see the "New Recipe" trigger. At this point, we've come full cirle on the trigger defintion from earlier. Remember that, as part of the meta-data, we defined a `display` property with a label and help text. Those properties control the info you see inside the Zapier UI.
 
-### Next Steps
+As you click through, you'll see our input field "style" appear, which you can fill out. Once you finish setting up the step and test it, Zapier will run the `listReceipes` function associated with the trigger, which will make the API request and return the result to Zapier. If you are curious to see what HTTP requests Zapier makes at any point, you can use the `zapier logs` command to find out.
 
-Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate authentication into your app and how to implement things like searches and writes.
+```bash
+zapier logs --type=http
+
+# The logs of your app "Example App" listed below.
+#
+# ┌────────┬────────┬────────────────────────────────────────────────────────┬───────────────┬─────────┬──────────────────────────────────────┬───────────────────────────┐
+# │ Status │ Method │ URL                                                    │ Querystring   │ Version │ Step                                 │ Timestamp                 │
+# ├────────┼────────┼────────────────────────────────────────────────────────┼───────────────┼─────────┼──────────────────────────────────────┼───────────────────────────┤
+# │ 200    │ GET    │ http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes │ style=italian │ 1.0.0   │ a9055e16-fc0d-4fb2-a3e6-9d442d1f70e8 │ 2016-09-13T15:11:30-05:00 │
+# └────────┴────────┴────────────────────────────────────────────────────────┴───────────────┴─────────┴──────────────────────────────────────┴───────────────────────────┘
+#   Most recent logs near the bottom.
+```
+
+Good work, we've built a trigger locally and deployed it to Zapier.
+
+### Adding Authentication
+
+Up to this point we've ignored something that is usually crucial to APIs: authentication. Zapier supports a number of different [authentication schemes](#authentication). For our app, we are going to set it up to include an API Key in a header.
+
+The first thing we need to do is define the `authentication` section on the app. Open `index.js` and edit `App` to include this snippet:
+
+```javascript
+
+const App = {
+  // ...
+  authentication: {
+    type: 'custom',
+    fields: [
+        {key: 'apiKey', type: 'string'}
+    ],
+    test: (z, bundle) => {
+        const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/me')
+        return promise.then((response) => {
+            if(response.status !== 200) {
+                throw new Error('Invalid API Key')
+            }
+        });
+    }
+  },
+  // ...
+};
+```
+
+In the above snippet, we define our authentication field in the `fields` section. This works similar to the `inputFields` of triggers. When users connect their account to Zapier, they'll be prompted to fill in this field, and the value they enter becomes available in the `bundle`.
+
+The `test` function is used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error. 
+
+With that setup, we now need to make sure that our API is included in all the requests our app makes.
+
+### Tutorial Next Steps
+
+Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate different authentication schemes into your app and how to implement things like searches and writes.
 
 ## Quickstart
 
