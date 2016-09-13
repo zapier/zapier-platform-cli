@@ -3,7 +3,7 @@ const path = require('path');
 
 const DEBUG = (process.env.ZAPIER_DEBUG || 'false') === 'true';
 
-const BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'https://beta.zapier.com';
+const BASE_ENDPOINT = process.env.ZAPIER_BASE_ENDPOINT || 'https://testing.zapier.com';
 const API_PATH = '/api/platform/v3';
 const ENDPOINT = process.env.ZAPIER_ENDPOINT || BASE_ENDPOINT + API_PATH;
 const STARTER_REPO = process.env.ZAPIER_STARTER_REPO || 'zapier/zapier-platform-example-app';
