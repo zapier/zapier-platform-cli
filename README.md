@@ -370,21 +370,20 @@ Up to this point we've ignored something that is usually crucial to APIs: authen
 The first thing we need to do is define the `authentication` section on the app. Open `index.js` and edit `App` to include this snippet:
 
 ```javascript
-
 const App = {
   // ...
   authentication: {
     type: 'custom',
     fields: [
-        {key: 'apiKey', type: 'string'}
+      {key: 'apiKey', type: 'string'}
     ],
     test: (z, bundle) => {
-        const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/me')
-        return promise.then((response) => {
-            if(response.status !== 200) {
-                throw new Error('Invalid API Key')
-            }
-        });
+      const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/me');
+      return promise.then((response) => {
+        if (response.status !== 200) {
+          throw new Error('Invalid API Key');
+        }
+      });
     }
   },
   // ...
@@ -395,7 +394,36 @@ In the above snippet, we define our authentication field in the `fields` section
 
 The `test` function is used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.
 
-With that setup, we now need to make sure that our API is included in all the requests our app makes.
+With that setup, we now need to make sure that our API is included in all the requests our app makes. Open `index.js` and edit `App` to add this code:
+
+```javascript
+// NEW CODE
+const addApiKeyToHeader = (request, z, bundle) => {
+  const basicHash = Buffer(`${bundle.authData.apiKey}:x`).toString('base64');
+  request.headers.Authorization = `Basic ${basicHash}`;
+  return request;
+};
+
+const App = {
+  // ...
+  beforeRequest: [
+    addApiKeyToHeader // new line of code
+  ],
+  // ...
+};
+```
+
+The `addApiKeyToHeader` function encodes the user entered api key and puts it in a request header. The details of how to encode and what header to put it in will vary depending your your API.
+
+We need to make sure this auth header gets added to _every_ request to our API. To do this, we add our function to `beforeRequest`. `App.beforeRequest` is a list of functions that are called before every HTTP request, letting you add headers, query params, etc.
+
+Next, we need to re-deploy our app.
+
+```bash
+zapier deploy
+```
+
+Go back to your Zap at `https://zapier.com`. You'll see a new 'Connect Account' item in your 'New Recipe' trigger. Click that, and it will open up a window for you to enter your API key. Enter a value and continue. Go to 'Test this Step' and select 'Fetch & Continue'. It will run the trigger again, but this time it will set the API key in the header for the request. Congrats, you have added authentication to your app!
 
 ### Tutorial Next Steps
 
