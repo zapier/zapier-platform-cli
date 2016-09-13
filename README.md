@@ -59,7 +59,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Requirements
 
-The Zapier CLI and Platform requires Node.js `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node.js installation.
+The Zapier CLI and Platform require Node.js `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node.js installation.
 
 On Mac (via [homebrew](http://brew.sh/)):
 
@@ -257,7 +257,9 @@ module.exports = {
 };
 ```
 
-To ensure everything still works, tweak the test in `test/index.js` and paste this in:
+Notice that we include an input field called "style" to our trigger definition. Adding that field means that the bundle can contain data we can use in our GET requests. How the bundle gets its data is a bit complicated, so we'll summarize for now. When developing locally, you can manually supply a bundle in your tests (we will do that below). In production, the data comes from users Zaps. In a Zap, the user fills out a form field called "Style" and whatever value is entered there is what eventually ends up in the bundle.
+
+Since we are developing locally, let's tweak the test to verify everything still works. Re-open `test/index.js` and paste this in:
 
 ```javascript
 require('should');

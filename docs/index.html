@@ -390,7 +390,7 @@ blockquote {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The Zapier CLI and Platform requires Node.js <code>v4.3.2</code>. We recommend using <a href="https://github.com/creationix/nvm">nvm</a> to manage your Node.js installation.</p><p>On Mac (via <a href="http://brew.sh/">homebrew</a>):</p>
+      <p>The Zapier CLI and Platform require Node.js <code>v4.3.2</code>. We recommend using <a href="https://github.com/creationix/nvm">nvm</a> to manage your Node.js installation.</p><p>On Mac (via <a href="http://brew.sh/">homebrew</a>):</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">brew install nvm
@@ -662,7 +662,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>To ensure everything still works, tweak the test in <code>test/index.js</code> and paste this in:</p>
+      <p>Notice that we include an input field called &quot;style&quot; to our trigger definition. Adding that field means that the bundle can contain data we can use in our GET requests. How the bundle gets its data is a bit complicated, so we&apos;ll summarize for now. When developing locally, you can manually supply a bundle in your tests (we will do that below). In production, the data comes from users Zaps. In a Zap, the user fills out a form field called &quot;Style&quot; and whatever value is entered there is what eventually ends up in the bundle.</p><p>Since we are developing locally, let&apos;s tweak the test to verify everything still works. Re-open <code>test/index.js</code> and paste this in:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
