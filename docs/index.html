@@ -546,7 +546,7 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>To break down what is happening in this snippet, look first at the function definition for <code>listRecipes</code>. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result. It receives two arguments, a <code>z</code> object and a <code>bundle</code> object. The <a href="#z-object">Z Object</a> is a collection of utilities needed when working with APIs. In our snippet, we use <code>z.request</code> to make the HTTP call and <code>z.JSON</code> to parse the response. The <a href="#bundle-object">Bundle Object</a> contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet the Bundle is not used, since we don&apos;t require any of those to make our GET request.</p><blockquote>
+      <p>To break down what is happening in this snippet, look first at the function definition for <code>listRecipes</code>. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result. It receives two arguments, a <code>z</code> object and a <code>bundle</code> object. The <a href="#z-object">Z Object</a> is a collection of utilities needed when working with APIs. In our snippet, we use <code>z.request</code> to make the HTTP call and <code>z.JSON</code> to parse the response. The <a href="#bundle-object">Bundle Object</a> contains any data needed to make API calls, like authentication credentials or data for a POST body. pIn our snippet the Bundle is not used, since we don&apos;t require any of those to make our GET request.</p><blockquote>
 <p>Note about Z Object: While it is possible to accomplish the same tasks using alternate Node.js libraries, it&apos;s preferable to use the <code>z</code> object as there are features built into these utilities that augment the Zapier experience. For example, logging of HTTP calls and better handling of JSON parsing failures. <a href="#z-object">Read the docs</a> for more info.</p>
 </blockquote><p>Now that we understand our function, take a brief look at the second part of our snippet; the export. Essentially, we export some meta-data plus our <code>listRecipes</code> function. We&apos;ll explain later how Zapier uses this meta-data. For now, know that it satisifies the minimum info required to define a trigger.</p><p>With our trigger defined, we need to incorporate it into our app. Return to <code>index.js</code> and add two new lines of code:</p><ol>
 <li>The <code>require()</code> for the trigger at the top of the file</li>
@@ -896,12 +896,11 @@ zapier auth
       <p>Your Zapier CLI should be installed and ready to go at this point. Next up, we&apos;ll create our first app!</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># make your folder</span>
-mkdir zapier-example
-<span class="hljs-built_in">cd</span> zapier-example
+      <pre><code class="lang-bash"><span class="hljs-comment"># create a directory with the minimum required files</span>
+zapier init example-app
 
-<span class="hljs-comment"># create the needed files from a template</span>
-zapier init --template=trigger
+<span class="hljs-comment"># move into the new directory</span>
+<span class="hljs-built_in">cd</span> example-app
 
 <span class="hljs-comment"># install all the libraries needed for your app</span>
 npm install
@@ -925,13 +924,10 @@ zapier <span class="hljs-built_in">test</span>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Next, you&apos;ll probably want to register your app and upload your version to Zapier itself so you can start testing live.</p>
+      <p>Next, you&apos;ll probably want to upload app to Zapier itself so you can start testing live.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># register your app</span>
-zapier register <span class="hljs-string">&quot;Zapier Example&quot;</span>
-
-<span class="hljs-comment"># deploy your app version to Zapier</span>
+      <pre><code class="lang-bash"><span class="hljs-comment"># deploy your app to Zapier</span>
 zapier deploy
 </code></pre>
     </div>

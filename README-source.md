@@ -109,7 +109,7 @@ module.exports = {
 };
 ```
 
-To break down what is happening in this snippet, look first at the function definition for `listRecipes`. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result. It receives two arguments, a `z` object and a `bundle` object. The [Z Object](#z-object) is a collection of utilities needed when working with APIs. In our snippet, we use `z.request` to make the HTTP call and `z.JSON` to parse the response. The [Bundle Object](#bundle-object) contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet the Bundle is not used, since we don't require any of those to make our GET request.
+To break down what is happening in this snippet, look first at the function definition for `listRecipes`. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result. It receives two arguments, a `z` object and a `bundle` object. The [Z Object](#z-object) is a collection of utilities needed when working with APIs. In our snippet, we use `z.request` to make the HTTP call and `z.JSON` to parse the response. The [Bundle Object](#bundle-object) contains any data needed to make API calls, like authentication credentials or data for a POST body. pIn our snippet the Bundle is not used, since we don't require any of those to make our GET request.
 
 > Note about Z Object: While it is possible to accomplish the same tasks using alternate Node.js libraries, it's preferable to use the `z` object as there are features built into these utilities that augment the Zapier experience. For example, logging of HTTP calls and better handling of JSON parsing failures. [Read the docs](#z-object) for more info.
 
@@ -370,12 +370,11 @@ zapier auth
 Your Zapier CLI should be installed and ready to go at this point. Next up, we'll create our first app!
 
 ```bash
-# make your folder
-mkdir zapier-example
-cd zapier-example
+# create a directory with the minimum required files
+zapier init example-app
 
-# create the needed files from a template
-zapier init --template=trigger
+# move into the new directory
+cd example-app
 
 # install all the libraries needed for your app
 npm install
@@ -391,13 +390,10 @@ You should now have a working local app. You can run several local commands to t
 zapier test
 ```
 
-Next, you'll probably want to register your app and upload your version to Zapier itself so you can start testing live.
+Next, you'll probably want to upload app to Zapier itself so you can start testing live.
 
 ```bash
-# register your app
-zapier register "Zapier Example"
-
-# deploy your app version to Zapier
+# deploy your app to Zapier
 zapier deploy
 ```
 
