@@ -11,20 +11,20 @@ const childProcess = utils.promisifyAll(require('child_process'));
 const appTemplates = require('../lib/app-templates');
 
 const validateAppTemplate = (template, rootTmpDir) => {
-  const appDir = path.resolve(rootTmpDir, template);
+  //const appDir = path.resolve(rootTmpDir, template);
   const zapierCmd = path.resolve(__dirname, '../zapier.js');
 
   const logFile = path.resolve(__dirname, '..', `${template}.log`);
   const logStream = fse.createWriteStream(logFile);
 
   console.log(`Validating ${template} app template, writing logs to ${logFile}`);
-  fse.ensureDirSync(appDir);
   return fse.ensureFileAsync(logFile)
     .then(() => {
       return new Promise((resolve, reject) => {
-        const cmd = `${zapierCmd} init --template=${template} --debug && npm install && ${zapierCmd} validate && export CLIENT_ID=1234 CLIENT_SECRET=asdf && ${zapierCmd} test --debug`;
-        const child = childProcess.exec(cmd, {cwd: appDir}, err => {
+        const cmd = `${zapierCmd} init ${template} --template=${template} --debug && cd ${template} && npm install && ${zapierCmd} validate && export CLIENT_ID=1234 CLIENT_SECRET=asdf && ${zapierCmd} test`;
+        const child = childProcess.exec(cmd, {cwd: rootTmpDir}, err => {
           if (err) {
+            console.log('error starting child process:', err);
             reject(err);
           }
           resolve();
@@ -47,6 +47,7 @@ global.argOpts = {};
 
 const rootTmpDir = tmp.tmpNameSync();
 fse.removeSync(rootTmpDir);
+fse.ensureDirSync(rootTmpDir);
 
 const tasks = _.map(appTemplates, template => validateAppTemplate(template, rootTmpDir));
 
