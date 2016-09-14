@@ -57,7 +57,7 @@ const watch = (context) => {
   reloadDefinition();
 
   nodeWatch(process.cwd(), {}, (filePath) => {
-    const fileName = filePath.replace(process.cwd() + '/', '');
+    const fileName = filePath.replace(process.cwd() + path.sep, '');
     utils.printStarting(`Reloading for ${fileName}`);
     resetHandler()
       .then(reloadDefinition)

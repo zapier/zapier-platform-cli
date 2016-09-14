@@ -24,7 +24,7 @@ const runCommand = (command, args, options) => {
   options = options || {};
   if (global.argOpts.debug) {
     console.log('\n');
-    console.log(`Running ${colors.bold(command + args.join(' '))} command in ${colors.bold(options.cwd || process.cwd())}:\n`);
+    console.log(`Running ${colors.bold(command + ' ' + args.join(' '))} command in ${colors.bold(options.cwd || process.cwd())}:\n`);
   }
   return new Promise((resolve, reject) => {
     const result = cp.spawn(command, args, options);

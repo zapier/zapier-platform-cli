@@ -41,8 +41,8 @@ const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
 // TODO: needs to include package.json files too i think
 //   https://github.com/serverless/serverless-optimizer-plugin?
 const requiredFiles = (cwd, entryPoints) => {
-  if (!cwd.match(/\/$/)) {
-    cwd += '/';
+  if (!_.endsWith(cwd, path.sep)) {
+    cwd += path.sep;
   }
 
   const argv = {
@@ -92,7 +92,7 @@ const requiredFiles = (cwd, entryPoints) => {
 const listFiles = (dir) => {
   return new Promise((resolve, reject) => {
     const paths = [];
-    const cwd = dir + '/';
+    const cwd = dir + path.sep;
     fse.walk(dir)
       .on('data', (item) => {
         if (!item.stats.isDirectory()) {
@@ -239,7 +239,7 @@ const build = (zipPath, wdir) => {
     .then(() => {
       printDone();
       printStarting('Zipping project and dependencies');
-      return makeZip(tmpDir, wdir + '/' + zipPath);
+      return makeZip(tmpDir, wdir + path.sep + zipPath);
     })
     .then(() => {
       printDone();
