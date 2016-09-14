@@ -277,15 +277,17 @@ Notice that we now include and use an input field called "style". We have to add
 Since we are developing locally, let's tweak the test to verify everything still works. Re-open `test/index.js` and paste this in:
 
 ```javascript
-require('should');
+
+const should = require('should');
 
 const zapier = require('zapier-platform-core');
 
 const appTester = zapier.createAppTester(require('../index'));
 
-describe('triggers', () => {
+describe('My App', () => {
 
   it('should load recipes', (done) => {
+    const triggerPointer = 'triggers.recipe';
     const bundle = {
       // NEW CODE
       inputData: {
@@ -293,13 +295,14 @@ describe('triggers', () => {
       }
     };
 
-    appTester('triggers.recipe', bundle)
+    appTester(triggerPointer, bundle)
       .then(results => {
-        results.length.should.above(1);
+        should(results.length).above(1);
 
-        const firstRecipe = results[0];
-        firstRecipe.name.should.eql('name 1');
-        firstRecipe.directions.should.eql('directions 1');
+        const firstResult = results[0];
+        console.log('test result: ', firstResult)
+        should(firstResult.name).eql('name 1');
+        should(firstResult.directions).eql('directions 1');
 
         done();
       })

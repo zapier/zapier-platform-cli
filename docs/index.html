@@ -677,15 +677,17 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </ul><p>Since we are developing locally, let&apos;s tweak the test to verify everything still works. Re-open <code>test/index.js</code> and paste this in:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
+      <pre><code class="lang-javascript">
+<span class="hljs-keyword">const</span> should = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
 
 <span class="hljs-keyword">const</span> zapier = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>);
 
 <span class="hljs-keyword">const</span> appTester = zapier.createAppTester(<span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;../index&apos;</span>));
 
-describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
+describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 
   it(<span class="hljs-string">&apos;should load recipes&apos;</span>, (done) =&gt; {
+    <span class="hljs-keyword">const</span> triggerPointer = <span class="hljs-string">&apos;triggers.recipe&apos;</span>;
     <span class="hljs-keyword">const</span> bundle = {
       <span class="hljs-comment">// NEW CODE</span>
       inputData: {
@@ -693,13 +695,14 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
       }
     };
 
-    appTester(<span class="hljs-string">&apos;triggers.recipe&apos;</span>, bundle)
+    appTester(triggerPointer, bundle)
       .then(results =&gt; {
-        results.length.should.above(<span class="hljs-number">1</span>);
+        should(results.length).above(<span class="hljs-number">1</span>);
 
-        <span class="hljs-keyword">const</span> firstRecipe = results[<span class="hljs-number">0</span>];
-        firstRecipe.name.should.eql(<span class="hljs-string">&apos;name 1&apos;</span>);
-        firstRecipe.directions.should.eql(<span class="hljs-string">&apos;directions 1&apos;</span>);
+        <span class="hljs-keyword">const</span> firstResult = results[<span class="hljs-number">0</span>];
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;test result: &apos;</span>, firstResult)
+        should(firstResult.name).eql(<span class="hljs-string">&apos;name 1&apos;</span>);
+        should(firstResult.directions).eql(<span class="hljs-string">&apos;directions 1&apos;</span>);
 
         done();
       })
