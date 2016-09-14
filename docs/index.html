@@ -525,6 +525,7 @@ touch triggers/recipe.js
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = (z, bundle) =&gt; {
+  z.console.log(<span class="hljs-string">&apos;hello from a console log!&apos;</span>);
   <span class="hljs-keyword">const</span> promise = z.request(<span class="hljs-string">&apos;http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes&apos;</span>);
   <span class="hljs-keyword">return</span> promise.then((response) =&gt; z.JSON.parse(response.content));
 };
@@ -593,7 +594,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
         should(results.length).above(<span class="hljs-number">1</span>);
 
         <span class="hljs-keyword">const</span> firstResult = results[<span class="hljs-number">0</span>];
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;result: &apos;</span>, firstResult)
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;test result: &apos;</span>, firstResult)
         should(firstResult.name).eql(<span class="hljs-string">&apos;name 1&apos;</span>);
         should(firstResult.directions).eql(<span class="hljs-string">&apos;directions 1&apos;</span>);
 
@@ -639,6 +640,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = (z, bundle) =&gt; {
+  z.console.log(<span class="hljs-string">&apos;hello from a console log!&apos;</span>);
   <span class="hljs-keyword">const</span> promise = z.request(<span class="hljs-string">&apos;http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes&apos;</span>, {
     <span class="hljs-comment">// NEW CODE</span>
     params: {
@@ -746,7 +748,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>So far, everything we have done has been local, on your machine. It&apos;s been fun, but we want our app on zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.</p><p>Let&apos;s deploy a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.</p><blockquote>
+      <p>So far, everything we have done has been local, on your machine. It&apos;s been fun, but we want our app on Zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.</p><p>Let&apos;s deploy a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.</p><blockquote>
 <p>If this is your first time deploying your app version - we will ask you to provide a name so we can register your app - this is a one time thing!</p>
 </blockquote>
     </div>
@@ -754,14 +756,14 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
       <pre><code class="lang-bash">zapier deploy
 <span class="hljs-comment"># Preparing to build and upload your app.</span>
 <span class="hljs-comment">#</span>
-<span class="hljs-comment">#   Copying project to temp directory -  done!</span>
-<span class="hljs-comment">#   Installing project dependencies -  done!</span>
-<span class="hljs-comment">#   Applying entry point file -  done!</span>
-<span class="hljs-comment">#   Validating project -  done!</span>
-<span class="hljs-comment">#   Building app definition.json -  done!</span>
-<span class="hljs-comment">#   Zipping project and dependencies -  done!</span>
-<span class="hljs-comment">#   Cleaning up temp directory -  done!</span>
-<span class="hljs-comment">#   Uploading version 1.0.0 -  done!</span>
+<span class="hljs-comment">#   Copying project to temp directory - done!</span>
+<span class="hljs-comment">#   Installing project dependencies - done!</span>
+<span class="hljs-comment">#   Applying entry point file - done!</span>
+<span class="hljs-comment">#   Validating project - done!</span>
+<span class="hljs-comment">#   Building app definition.json - done!</span>
+<span class="hljs-comment">#   Zipping project and dependencies - done!</span>
+<span class="hljs-comment">#   Cleaning up temp directory - done!</span>
+<span class="hljs-comment">#   Uploading version 1.0.0 - done!</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment"># Build and upload complete! You should see it in your Zapier editor at https://testing.zapier.com/app/editor now!</span>
 </code></pre>
@@ -904,7 +906,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Be sure to check the <a href="#requirements">Requirements</a> before you start!</p>
+<p>Be sure to check the <a href="#requirements">Requirements</a> before you start! Also, we recommend the <a href="#tutorial">Tutorial</a> for a more thorough introduction.</p>
 </blockquote><p>First up is installing the CLI and setting up your auth to create a working &quot;Zapier Example&quot; application. It will be private to you and visible in your live <a href="https://testing.zapier.com/app/editor">Zap editor</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">

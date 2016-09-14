@@ -140,6 +140,7 @@ Open `triggers/recipe.js` and paste this in:
 
 ```javascript
 const listRecipes = (z, bundle) => {
+  z.console.log('hello from a console log!');
   const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes');
   return promise.then((response) => z.JSON.parse(response.content));
 };
@@ -208,7 +209,7 @@ describe('My App', () => {
         should(results.length).above(1);
 
         const firstResult = results[0];
-        console.log('result: ', firstResult)
+        console.log('test result: ', firstResult)
         should(firstResult.name).eql('name 1');
         should(firstResult.directions).eql('directions 1');
 
@@ -241,6 +242,7 @@ Re-open your `triggers/recipe.js` and paste this:
 
 ```javascript
 const listRecipes = (z, bundle) => {
+  z.console.log('hello from a console log!');
   const promise = z.request('http://57b20fb546b57d1100a3c405.mockapi.io/api/recipes', {
     // NEW CODE
     params: {
@@ -324,7 +326,7 @@ Looking good locally! Let's move on.
 
 ### Deploying an App
 
-So far, everything we have done has been local, on your machine. It's been fun, but we want our app on zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.
+So far, everything we have done has been local, on your machine. It's been fun, but we want our app on Zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.
 
 Let's deploy a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.
 
@@ -334,14 +336,14 @@ Let's deploy a version of your app! You can can have many versions of an app, wh
 zapier deploy
 # Preparing to build and upload your app.
 #
-#   Copying project to temp directory -  done!
-#   Installing project dependencies -  done!
-#   Applying entry point file -  done!
-#   Validating project -  done!
-#   Building app definition.json -  done!
-#   Zipping project and dependencies -  done!
-#   Cleaning up temp directory -  done!
-#   Uploading version 1.0.0 -  done!
+#   Copying project to temp directory - done!
+#   Installing project dependencies - done!
+#   Applying entry point file - done!
+#   Validating project - done!
+#   Building app definition.json - done!
+#   Zipping project and dependencies - done!
+#   Cleaning up temp directory - done!
+#   Uploading version 1.0.0 - done!
 #
 # Build and upload complete! You should see it in your Zapier editor at https://testing.zapier.com/app/editor now!
 ```
@@ -437,7 +439,7 @@ Congrats, you've completed the tutorial! At this point we recommend reading up o
 
 ## Quickstart
 
-> Be sure to check the [Requirements](#requirements) before you start!
+> Be sure to check the [Requirements](#requirements) before you start! Also, we recommend the [Tutorial](#tutorial) for a more thorough introduction.
 
 First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://testing.zapier.com/app/editor).
 
