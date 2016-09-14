@@ -1,7 +1,7 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-const QUESTION = 'What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctl-C to cancel)';
+const QUESTION = 'What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctrl-C to cancel)';
 const SUCCESS = `Your deploy key has been saved to ${constants.AUTH_LOCATION}.`;
 const auth = (context) => {
   const checks = [

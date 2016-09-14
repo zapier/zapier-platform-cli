@@ -14,7 +14,7 @@ const pickApp = (context, apps, appMap) => {
     ['Linked', 'linked'],
   ]);
 
-  const action = () => utils.getInput('Which app number do you want to link? (Ctl-C to cancel)\n\n');
+  const action = () => utils.getInput('Which app number do you want to link? (Ctrl-C to cancel)\n\n');
   const stop = (answer) => appMap[answer] || hasCancelled(answer);
 
   return utils.promiseDoWhile(action, stop);
@@ -79,7 +79,7 @@ $ zapier link
 # └────────┴─────────────┴────────────┴─────────────────────┴────────┘
 #      ...or type any title to create new app!
 #
-# Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)
+# Which app number do you want to link? You also may type a new app title to create one. (Ctrl-C to cancel)
 #
   1
 #

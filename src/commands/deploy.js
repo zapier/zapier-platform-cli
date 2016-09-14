@@ -9,7 +9,7 @@ const build = require('./build');
 const createIfNeeded = (context) => {
   if (!utils.fileExistsSync(constants.CURRENT_APP_FILE)) {
     context.line('Looks like this is your first deploy. Let\'s register your app on Zapier.');
-    return utils.getInput('Enter app title (Ctl-C to cancel):\n\n  ')
+    return utils.getInput('Enter app title (Ctrl-C to cancel):\n\n  ')
       .then(title => register(context, title));
   }
   return Promise.resolve();
