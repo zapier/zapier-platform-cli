@@ -109,11 +109,18 @@ module.exports = {
 };
 ```
 
-To break down what is happening in this snippet, look first at the function definition for `listRecipes`. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result. It receives two arguments, a `z` object and a `bundle` object. The [Z Object](#z-object) is a collection of utilities needed when working with APIs. In our snippet, we use `z.request` to make the HTTP call and `z.JSON` to parse the response. The [Bundle Object](#bundle-object) contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet the Bundle is not used, since we don't require any of those to make our GET request.
+Let's break down what is happening in this snippet!
+
+First, look first at the function definition for `listRecipes`. You see that it handles the API work, making the HTTP request and returning a promise that will eventually yield a result.
+
+It receives two arguments, a `z` object and a `bundle` object.
+
+* The [Z Object](#z-object) is a collection of utilities needed when working with APIs. In our snippet, we use `z.request` to make the HTTP call and `z.JSON` to parse the response.
+* The [Bundle Object](#bundle-object) contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet the Bundle is not used, since we don't require any of those to make our simple GET request.
 
 > Note about Z Object: While it is possible to accomplish the same tasks using alternate Node.js libraries, it's preferable to use the `z` object as there are features built into these utilities that augment the Zapier experience. For example, logging of HTTP calls and better handling of JSON parsing failures. [Read the docs](#z-object) for more info.
 
-Now that we understand our function, take a brief look at the second part of our snippet; the export. Essentially, we export some meta-data plus our `listRecipes` function. We'll explain later how Zapier uses this meta-data. For now, know that it satisfies the minimum info required to define a trigger.
+Second, look at the second part of our snippet; the export. Essentially, we export some metadata plus our `listRecipes` function. We'll explain later how Zapier uses this metadata. For now, know that it satisfies the minimum info required to define a trigger.
 
 With our trigger defined, we need to incorporate it into our app. Return to `index.js` and add two new lines of code:
 
@@ -136,7 +143,7 @@ const App = {
 Now, let's add a test to make sure our code is working properly. Take a look at `test/index.js` and paste this:
 
 ```javascript
-require('should');
+const should = require('should');
 
 const zapier = require('zapier-platform-core');
 
@@ -145,15 +152,17 @@ const appTester = zapier.createAppTester(require('../index'));
 describe('My App', () => {
 
   it('should load recipes', (done) => {
+    const triggerPointer = 'triggers.recipe';
     const bundle = {};
 
-    appTester('triggers.recipe', bundle)
+    appTester(triggerPointer, bundle)
       .then(results => {
-        results.length.should.above(1);
+        should(results.length).above(1);
 
-        const firstRecipe = results[0];
-        firstRecipe.name.should.eql('name 1');
-        firstRecipe.directions.should.eql('directions 1');
+        const firstResult = results[0];
+        console.log('result: ', firstResult)
+        should(firstResult.name).eql('name 1');
+        should(firstResult.directions).eql('directions 1');
 
         done();
       })
@@ -210,7 +219,10 @@ module.exports = {
 };
 ```
 
-Notice that we include an input field called "style" to our trigger definition. Adding that field means that the bundle can contain data we can use in our GET requests. How the bundle gets its data is a bit complicated, so we'll summarize for now. When developing locally, you can manually supply a bundle in your tests (we will do that below). In production, the data comes from users Zaps. In a Zap, the user fills out a form field called "Style" and whatever value is entered there is what eventually ends up in the bundle.
+Notice that we now include and use an input field called "style". We have to add it in two places:
+
+* In the `inputFields` on `operation` - this defines the field as exposed in the Zapier UI. The user will see a form asking them to provide a "Style".
+* In the `listRecipes` function - we use the provided style via the bundle `bundle.inputData.style`. Since the field is not required - it could be null!
 
 Since we are developing locally, let's tweak the test to verify everything still works. Re-open `test/index.js` and paste this in:
 
@@ -266,19 +278,9 @@ Looking good locally! Let's move on.
 
 So far, everything we have done has been local, on your machine. It's been fun, but we want our app on zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.
 
-First, you need to register your app with Zapier. This enables all the admin tooling like deployment, as well as other tooling we'll learn about later including promotion, collaboration, and environment variables.
+Let's deploy a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.
 
-```bash
-zapier register "Example App"
-# Registering a new app on Zapier named "Example App"
-#
-#   Confirming registration of app "Example App" -  done!
-#   Linking app to current directory with `.zapierapprc` -  done!
-#
-# Finished! Now that your app is registered with Zapier, you can `zapier deploy` a version!
-```
-
-Next, we have to deploy a version of your app. You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.
+> If this is your first time deploying your app version - we will ask you to provide a name so we can register your app - this is a one time thing!
 
 ```bash
 zapier deploy
@@ -293,10 +295,12 @@ zapier deploy
 #   Cleaning up temp directory -  done!
 #   Uploading version 1.0.0 -  done!
 #
-# Build and upload complete! You should see it in your Zapier editor at https://zapier.com/app/editor now!
+# Build and upload complete! You should see it in your Zapier editor at https://testing.zapier.com/app/editor now!
 ```
 
-Now that your app version is properly deployed, log in and visit [https://zapier.com/app/editor](https://zapier.com/app/editor) to create a Zap and check our progress. You'll see the app listed as an available option for the first step. Selecting it, you'll see the "New Recipe" trigger. At this point, we've come full circle on the trigger definition from earlier. Remember that, as part of the meta-data, we defined a `display` property with a label and help text. Those properties control the info you see inside the Zapier UI.
+Now that your app version is properly deployed, log in and visit [https://testing.zapier.com/app/editor](https://testing.zapier.com/app/editor) to create a Zap and check our progress.
+
+You'll see the app listed as an available option for the first step. Selecting it, you'll see the "New Recipe" trigger. At this point, we've come full circle on the trigger definition from earlier. Remember that, as part of the metadata, we defined a `display` property with a label and help text. Those properties control the info you see inside the Zapier UI.
 
 As you click through, you'll see our input field "style" appear, which you can fill out. Once you finish setting up the step and test it, Zapier will run the `listReceipes` function associated with the trigger, which will make the API request and return the result to Zapier. If you are curious to see what HTTP requests Zapier makes at any point, you can use the `zapier logs` command to find out.
 
@@ -375,17 +379,19 @@ To check our progress, we need to re-deploy our app.
 zapier deploy
 ```
 
-Go back to your Zap at `https://zapier.com`. You'll see a new 'Connect Account' item in your 'New Recipe' trigger. Click the button, and it will open up a window for you to enter your API key. Enter a value and continue. Go to 'Test this Step' and select 'Fetch & Continue'. It will run the trigger again, but this time it will set the API key in the header for the request. Congrats, you have added authentication to your app!
+Go back to your Zap at `https://testing.zapier.com`. You'll see a new 'Connect Account' item in your 'New Recipe' trigger. Click the button, and it will open up a window for you to enter your API key. Enter a value and continue. Go to 'Test this Step' and select 'Fetch & Continue'. It will run the trigger again, but this time it will set the API key in the header for the request. Congrats, you have added authentication to your app!
+
 
 ### Tutorial Next Steps
 
 Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate different authentication schemes into your app and how to implement things like searches and writes.
 
+
 ## Quickstart
 
 > Be sure to check the [Requirements](#requirements) before you start!
 
-First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
+First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://testing.zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
