@@ -315,7 +315,7 @@ blockquote {
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">$ zapier auth
-<span class="hljs-comment"># What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctl-C to cancel)</span>
+<span class="hljs-comment"># What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctrl-C to cancel)</span>
 <span class="hljs-comment">#  &lt;type here&gt;</span>
 <span class="hljs-comment"># Your deploy key has been saved to ~/.zapierrc. Now try `zapier init .` to start a new local app.</span>
 </code></pre>
@@ -797,7 +797,7 @@ $ zapier invite user@example.com --remove
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 <span class="hljs-comment">#      ...or type any title to create new app!</span>
 <span class="hljs-comment">#</span>
-<span class="hljs-comment"># Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)</span>
+<span class="hljs-comment"># Which app number do you want to link? You also may type a new app title to create one. (Ctrl-C to cancel)</span>
 <span class="hljs-comment">#</span>
   1
 <span class="hljs-comment">#</span>
@@ -1049,8 +1049,8 @@ $ zapier scaffold resource <span class="hljs-string">&quot;Tag&quot;</span> --en
       <blockquote>
 <p>Tests your app via <code>npm test</code>.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier test</code></p><p>  This command is effectively the same as <code>npm test</code> (which we normally recommend mocha tests) - except we can wire in some custom tests to validate your app.</p><p><strong>Arguments</strong></p><ul>
-<li><code>--disable-log-to-stdout</code> -- <em>optional</em>, disables print zapier summary logs to standard out</li>
-<li><code>--detailed-log-to-stdout</code> -- <em>optional</em>, print zapier detailed logs to standard out</li>
+<li><code>--quiet</code> -- <em>optional</em>, do not print zapier detailed logs to standard out</li>
+<li><code>--very-quiet</code> -- <em>optional</em>, do not print zapier summary or detail logs to standard out</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">

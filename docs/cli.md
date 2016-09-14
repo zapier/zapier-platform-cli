@@ -52,7 +52,7 @@ $ zapier apps
 
 ```bash
 $ zapier auth
-# What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctl-C to cancel)
+# What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctrl-C to cancel)
 #  <type here>
 # Your deploy key has been saved to ~/.zapierrc. Now try `zapier init .` to start a new local app.
 ```
@@ -486,7 +486,7 @@ $ zapier link
 # └────────┴─────────────┴────────────┴─────────────────────┴────────┘
 #      ...or type any title to create new app!
 #
-# Which app number do you want to link? You also may type a new app title to create one. (Ctl-C to cancel)
+# Which app number do you want to link? You also may type a new app title to create one. (Ctrl-C to cancel)
 #
   1
 #
@@ -716,8 +716,8 @@ $ zapier scaffold resource "Tag" --entry=index.js --dest=resources/tag
 **Arguments**
 
 
-* `--disable-log-to-stdout` -- _optional_, disables print zapier summary logs to standard out
-* `--detailed-log-to-stdout` -- _optional_, print zapier detailed logs to standard out
+* `--quiet` -- _optional_, do not print zapier detailed logs to standard out
+* `--very-quiet` -- _optional_, do not print zapier summary or detail logs to standard out
 
 ```bash
 $ zapier test

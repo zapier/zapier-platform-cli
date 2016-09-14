@@ -2336,20 +2336,30 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>When running a unit test via <code>zapier test</code>, <code>z.console</code> statements print to <code>stdout</code>. To see the HTTP logs when running tests do:</p>
+      <p>When running a unit test via <code>zapier test</code>, <code>z.console</code> statements and detailed HTTP logs print to <code>stdout</code>:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code>zapier test --log-to-stdout
+      <pre><code>zapier test
 </code></pre>
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>To also see the detailed HTTP logs do:</p>
+      <p>Sometimes you don&apos;t want that much logging, for example in a CI test. To suppress the detailed HTTP logs do:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code>zapier test --log-to-stdout --detailed-log-to-stdout
+      <pre><code>zapier test --quiet
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To also suppress the HTTP summary logs do:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>zapier test --very-quiet
 </code></pre>
     </div>
   </div>

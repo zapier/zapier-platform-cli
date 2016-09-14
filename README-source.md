@@ -930,16 +930,23 @@ zapier test
 
 ### Viewing HTTP Logs in Unit Tests
 
-When running a unit test via `zapier test`, `z.console` statements print to `stdout`. To see the HTTP logs when running tests do:
+
+When running a unit test via `zapier test`, `z.console` statements and detailed HTTP logs print to `stdout`:
 
 ```
-zapier test --log-to-stdout
+zapier test
 ```
 
-To also see the detailed HTTP logs do:
+Sometimes you don't want that much logging, for example in a CI test. To suppress the detailed HTTP logs do:
 
 ```
-zapier test --log-to-stdout --detailed-log-to-stdout
+zapier test --quiet
+```
+
+To also suppress the HTTP summary logs do:
+
+```
+zapier test --very-quiet
 ```
 
 ## Example Apps
