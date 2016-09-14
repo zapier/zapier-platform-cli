@@ -31,6 +31,7 @@ const {
 
 const {
   runCommand,
+  isWindows
 } = require('./misc');
 
 const stripPath = (cwd, filePath) => filePath.split(cwd).pop();
@@ -229,6 +230,10 @@ const build = (zipPath, wdir) => {
       // tries to do a reproducible build at least
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
+
+      if (isWindows()) {
+        return {}; // TODO err, what should we do on windows?
+      }
       return runCommand('find', ['.', '-exec', 'touch', '-t', '201601010000', '{}', '+'], {cwd: tmpDir});
     })
     .then(() => {
