@@ -136,7 +136,7 @@ mkdir triggers
 touch triggers/recipe.js
 ```
 
-Open `triggers/recipe.js` and paste this in:
+Open `triggers/recipe.js` and paste in:
 
 ```javascript
 const listRecipes = (z, bundle) => {
@@ -171,7 +171,9 @@ It receives two arguments, a `z` object and a `bundle` object.
 
 Second, look at the second part of our snippet; the export. Essentially, we export some metadata plus our `listRecipes` function. We'll explain later how Zapier uses this metadata. For now, know that it satisfies the minimum info required to define a trigger.
 
-With our trigger defined, we need to incorporate it into our app. Return to `index.js` and add two new lines of code:
+With our trigger defined, we need to incorporate it into our app.
+
+In `index.js`, edit the file with two new lines of code:
 
 1. The `require()` for the trigger at the top of the file
 2. The registration of the trigger in `App` by editing the existing `triggers` property
@@ -189,7 +191,9 @@ const App = {
 };
 ```
 
-Now, let's add a test to make sure our code is working properly. Take a look at `test/index.js` and paste this:
+Now, let's add a test to make sure our code is working properly.
+
+In `test/index.js`, replace the file with:
 
 ```javascript
 const should = require('should');
@@ -238,7 +242,7 @@ zapier test
 
 Let's say we want to let our users tweak the style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.
 
-Re-open your `triggers/recipe.js` and paste this:
+In `triggers/recipe.js`, replace the file with:
 
 ```javascript
 const listRecipes = (z, bundle) => {
@@ -274,7 +278,9 @@ Notice that we now include and use an input field called "style". We have to add
 * In the `inputFields` on `operation` - this defines the field as exposed in the Zapier UI. The user will see a form asking them to provide a "Style".
 * In the `listRecipes` function - we use the provided style via the bundle `bundle.inputData.style`. Since the field is not required - it could be null!
 
-Since we are developing locally, let's tweak the test to verify everything still works. Re-open `test/index.js` and paste this in:
+Since we are developing locally, let's tweak the test to verify everything still works.
+
+In `test/index.js`, replace the file with:
 
 ```javascript
 
@@ -376,7 +382,9 @@ Good work, we've built a trigger locally and deployed it to Zapier.
 
 Up to this point we've ignored something that is usually crucial to APIs: authentication. Zapier supports a number of different [authentication schemes](#authentication). For our app, we are going to set it up to include an API Key in a header.
 
-The first thing we need to do is define the `authentication` section on the app. Open `index.js` and edit `App` to include this snippet:
+The first thing we need to do is define the `authentication` section on the app.
+
+In `index.js`, edit `App` to include:
 
 ```javascript
 const App = {
@@ -403,7 +411,9 @@ In the above snippet, we define our authentication field in the `fields` section
 
 The `test` function is used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.
 
-With that setup, we now need to make sure that our API is included in all the requests our app makes. Open `index.js` and edit `App` to add this code:
+With that setup, we now need to make sure that our API is included in all the requests our app makes.
+
+In `index.js`, edit `App` to include:
 
 ```javascript
 // NEW CODE
