@@ -4,14 +4,23 @@ const _ = require('lodash');
 const colors = require('colors/safe');
 const path = require('path');
 const fse = require('fs-extra');
+const os = require('os');
 
 const {PLATFORM_PACKAGE} = require('../constants');
 
 const camelCase = (str) => _.capitalize(_.camelCase(str));
 const snakeCase = (str) => _.snakeCase(str);
 
+const isWindows = () => {
+  return os.platform().match(/^win/i);
+};
+
 // Run a bash command with a promise.
 const runCommand = (command, args, options) => {
+  if (isWindows()) {
+    command += '.cmd';
+  }
+
   options = options || {};
   if (global.argOpts.debug) {
     console.log('\n');
@@ -147,5 +156,6 @@ module.exports = {
   npmInstall,
   promiseDoWhile,
   promiseForever,
-  entryPoint
+  entryPoint,
+  isWindows
 };
