@@ -28,6 +28,11 @@ const downloadAndUnzipTo = (key, destDir) => {
     .then(() => fse.removeAsync(tempDir));
 };
 
+const removeReadme = (dir) => {
+  return fse.removeAsync(path.join(dir, 'README.md'));
+};
+
 module.exports = {
-  downloadAndUnzipTo
+  downloadAndUnzipTo,
+  removeReadme
 };
