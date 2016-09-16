@@ -552,19 +552,25 @@ touch triggers/recipe.js
 <li>The <a href="#bundle-object">Bundle Object</a> contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet the Bundle is not used, since we don&apos;t require any of those to make our simple GET request.</li>
 </ul><blockquote>
 <p>Note about Z Object: While it is possible to accomplish the same tasks using alternate Node.js libraries, it&apos;s preferable to use the <code>z</code> object as there are features built into these utilities that augment the Zapier experience. For example, logging of HTTP calls and better handling of JSON parsing failures. <a href="#z-object">Read the docs</a> for more info.</p>
-</blockquote><p>Second, look at the second part of our snippet; the export. Essentially, we export some metadata plus our <code>listRecipes</code> function. We&apos;ll explain later how Zapier uses this metadata. For now, know that it satisfies the minimum info required to define a trigger.</p><p>With our trigger defined, we need to incorporate it into our app.</p><p>In <code>index.js</code>, edit the file with two new lines of code:</p><ol>
-<li>The <code>require()</code> for the trigger at the top of the file</li>
-<li>The registration of the trigger in <code>App</code> by editing the existing <code>triggers</code> property</li>
-</ol>
+</blockquote><p>Second, look at the second part of our snippet; the export. Essentially, we export some metadata plus our <code>listRecipes</code> function. We&apos;ll explain later how Zapier uses this metadata. For now, know that it satisfies the minimum info required to define a trigger.</p><p>With our trigger defined, we need to incorporate it into our app.</p><p>In <code>index.js</code>, edit the file to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> recipe = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./triggers/recipe&apos;</span>); <span class="hljs-comment">// new line of code!</span>
-
-<span class="hljs-comment">// Edit the App definition to register our trigger</span>
+      <pre><code class="lang-javascript"><span class="hljs-comment">// Place this at the top of index.js</span>
+<span class="hljs-keyword">const</span> recipe = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./triggers/recipe&apos;</span>);
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>With the trigger imported, we need to register it on our app by editing the existing <code>triggers</code> property.</p><p>In <code>index.js</code>, edit <code>App</code> to include:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript"><span class="hljs-comment">// Edit the App definition to register our trigger</span>
 <span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   triggers: {
-    [recipe.key]: recipe <span class="hljs-comment">// new line of code!</span>
+    [recipe.key]: recipe <span class="hljs-comment">// new line of code</span>
   },
   <span class="hljs-comment">// ...</span>
 };
@@ -610,7 +616,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>You should be able to run the tests with <code>zapier test</code> and see them pass:</p>
+      <p>You should be able to run the test with <code>zapier test</code> and see it pass:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code>zapier test
@@ -636,7 +642,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Let&apos;s say we want to let our users tweak the style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.</p><p>In <code>triggers/recipe.js</code>, replace the file with:</p>
+      <p>Let&apos;s say we want to let our users tweak the cuisine style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.</p><p>In <code>triggers/recipe.js</code>, replace the file with:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = (z, bundle) =&gt; {
@@ -839,17 +845,29 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>In the above snippet, we define our authentication field in the <code>fields</code> section. This works similar to the <code>inputFields</code> of triggers. When users connect their account to Zapier, they&apos;ll be prompted to fill in this field, and the value they enter becomes available in the <code>bundle</code>.</p><p>The <code>test</code> function is used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.</p><p>With that setup, we now need to make sure that our API is included in all the requests our app makes.</p><p>In <code>index.js</code>, edit <code>App</code> to include:</p>
+      <p>In the above snippet, we define the two required properties of <code>authentication</code>:</p><ul>
+<li><code>fields</code> is where we define our auth fields. This works similar to the <code>inputFields</code> of triggers. When users connect their account to Zapier, they&apos;ll be prompted to fill in this field, and the value they enter becomes available in the <code>bundle</code>.</li>
+<li><code>test</code> is a function used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.</li>
+</ul><p>With that setup, we now need to make sure that our API key is included in all the requests our app makes.</p><p>In <code>index.js</code>, edit the file to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-comment">// NEW CODE</span>
+      <pre><code class="lang-javascript"><span class="hljs-comment">// Add this helper function above the App definition</span>
 <span class="hljs-keyword">const</span> addApiKeyToHeader = (request, z, bundle) =&gt; {
-  <span class="hljs-keyword">const</span> basicHash = Buffer(<span class="hljs-string">`<span class="hljs-subst">${bundle.authData.apiKey}</span>:x`</span>).toString(<span class="hljs-string">&apos;base64&apos;</span>);
-  request.headers.Authorization = <span class="hljs-string">`Basic <span class="hljs-subst">${basicHash}</span>`</span>;
+  request.headers[<span class="hljs-string">&apos;MY-AUTH-HEADER&apos;</span>] = bundle.authData.apiKey;
   <span class="hljs-keyword">return</span> request;
 };
 
-<span class="hljs-keyword">const</span> App = {
+<span class="hljs-comment">// const App = ...</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Above we define a helper function, <code>addApiKeyToHeader</code>, that puts the user-provided API key in a request header called <code>MY-AUTH-HEADER</code>. The name chosen is illustrative, it can be whatever the API you are integrating with requires. Alternatively, you could put it in a query parameter instead of a header, and/or encoded it first.</p><p>To make our helper function take effect, we need to register it on our app.</p><p>In <code>index.js</code>, edit <code>App</code> to include:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
   beforeRequest: [
     addApiKeyToHeader <span class="hljs-comment">// new line of code</span>
@@ -862,7 +880,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The <code>addApiKeyToHeader</code> function encodes the user-provided api key and puts it in a request header. The details of how to encode and what header to put it in will vary depending your your API.</p><p>We need to make sure this auth header gets added to <em>every</em> request to our API. To do this, we add our function to <code>beforeRequest</code>. <code>App.beforeRequest</code> is a list of functions that are called before every HTTP request, letting you add headers, query params, etc.</p><p>To check our progress, we need to re-deploy our app.</p>
+      <p><code>beforeRequest</code> is a list of functions that are called before every HTTP request, letting you add headers, query params, etc. to all outbound requests. In our case, every HTTP request will now have the API key added in a header.</p><p>To check our progress, we need to re-deploy our app.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier deploy
@@ -872,7 +890,45 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Go back to your Zap at <code>https://testing.zapier.com</code>. You&apos;ll see a new &apos;Connect Account&apos; item in your &apos;New Recipe&apos; trigger. Click the button, and it will open up a window for you to enter your API key. Enter a value and continue. Go to &apos;Test this Step&apos; and select &apos;Fetch &amp; Continue&apos;. It will run the trigger again, but this time it will set the API key in the header for the request. Congrats, you have added authentication to your app!</p>
+      <p>Go back to your Zap at <code>https://testing.zapier.com</code>. You&apos;ll see a new &apos;Connect Account&apos; item in your &apos;New Recipe&apos; trigger. Add an account for our app (enter any value you like for the API key, the mock API does not care).</p><p>As soon as you add the account, Zapier will run our app&apos;s <code>authentication.test</code> function to confirm the credentials are valid.</p><p>We can verify the header is present in the request by looking at the logs again.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash">zapier logs --type=http --detailed --limit=1
+
+<span class="hljs-comment"># The logs of your app &quot;Example App&quot; listed below.</span>
+<span class="hljs-comment"># </span>
+<span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
+<span class="hljs-comment"># &#x2502; Status              &#x2502; 200                                                                                    &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Method              &#x2502; GET                                                                                    &#x2502;</span>
+<span class="hljs-comment"># &#x2502; URL                 &#x2502; http://57b20fb546b57d1100a3c405.mockapi.io/api/me                                      &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Querystring         &#x2502;                                                                                        &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Version             &#x2502; 1.0.0                                                                                  &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Step                &#x2502;                                                                                        &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Timestamp           &#x2502; 2016-09-16T15:57:51-05:00                                                              &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Request Headers     &#x2502; user-agent: Zapier                                                                     &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; MY-AUTH-HEADER: :censored:6:b1af149262:                                                &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Request Body        &#x2502;                                                                                        &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Response Headers    &#x2502; server: Cowboy                                                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; connection: close                                                                      &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; x-powered-by: Express                                                                  &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; access-control-allow-origin: *                                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; access-control-allow-methods: GET,PUT,POST,DELETE,OPTIONS                              &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; access-control-allow-headers: X-Requested-With,Content-Type,Cache-Control,access_token &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; content-type: application/json                                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; content-length: 59                                                                     &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; etag: &quot;-80491811&quot;                                                                      &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; vary: Accept-Encoding                                                                  &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; date: Fri, 16 Sep 2016 20:57:51 GMT                                                    &#x2502;</span>
+<span class="hljs-comment"># &#x2502;                     &#x2502; via: 1.1 vegur                                                                         &#x2502;</span>
+<span class="hljs-comment"># &#x2502; Response Body       &#x2502; [{&quot;id&quot;:&quot;1&quot;,&quot;createdAt&quot;:1473801403,&quot;userName&quot;:&quot;userName 1&quot;}]                            &#x2502;</span>
+<span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>You can see from the detailed log that the request included our auth header. The value appears as <code>:censored:6:b1af149262:</code>, which is intentional. Zapier does not log authentincation credentials in plain text.</p><p>With that, we&apos;ve successfully added authentication to our app!</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       

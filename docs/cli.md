@@ -402,7 +402,6 @@ $ zapier init example-app --template=minimal
 # 
 #   Downloading zapier/zapier-platform-example-app-minimal starter app - done!
 #   Copy /users/username/code/example-app/.gitignore - done!
-#   Copy /users/username/code/example-app/README.md - done!
 #   Copy /users/username/code/example-app/index.js - done!
 #   Copy /users/username/code/example-app/package.json - done!
 #   Copy /users/username/code/example-app/test/index.js - done!

@@ -125,19 +125,23 @@ Second, look at the second part of our snippet; the export. Essentially, we expo
 
 With our trigger defined, we need to incorporate it into our app.
 
-In `index.js`, edit the file with two new lines of code:
-
-1. The `require()` for the trigger at the top of the file
-2. The registration of the trigger in `App` by editing the existing `triggers` property
+In `index.js`, edit the file to include:
 
 ```javascript
-const recipe = require('./triggers/recipe'); // new line of code!
+// Place this at the top of index.js
+const recipe = require('./triggers/recipe');
+```
 
+With the trigger imported, we need to register it on our app by editing the existing `triggers` property.
+
+In `index.js`, edit `App` to include:
+
+```javascript
 // Edit the App definition to register our trigger
 const App = {
   // ...
   triggers: {
-    [recipe.key]: recipe // new line of code!
+    [recipe.key]: recipe // new line of code
   },
   // ...
 };
@@ -177,7 +181,7 @@ describe('My App', () => {
 });
 ```
 
-You should be able to run the tests with `zapier test` and see them pass:
+You should be able to run the test with `zapier test` and see it pass:
 
 ```
 zapier test
@@ -192,7 +196,7 @@ zapier test
 
 ### Modifying a Trigger
 
-Let's say we want to let our users tweak the style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.
+Let's say we want to let our users tweak the cuisine style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.
 
 In `triggers/recipe.js`, replace the file with:
 
@@ -359,22 +363,32 @@ const App = {
 };
 ```
 
-In the above snippet, we define our authentication field in the `fields` section. This works similar to the `inputFields` of triggers. When users connect their account to Zapier, they'll be prompted to fill in this field, and the value they enter becomes available in the `bundle`.
+In the above snippet, we define the two required properties of `authentication`:
 
-The `test` function is used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.
+* `fields` is where we define our auth fields. This works similar to the `inputFields` of triggers. When users connect their account to Zapier, they'll be prompted to fill in this field, and the value they enter becomes available in the `bundle`.
+* `test` is a function used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.
 
-With that setup, we now need to make sure that our API is included in all the requests our app makes.
+With that setup, we now need to make sure that our API key is included in all the requests our app makes.
+
+In `index.js`, edit the file to include:
+
+```javascript
+// Add this helper function above the App definition
+const addApiKeyToHeader = (request, z, bundle) => {
+  request.headers['MY-AUTH-HEADER'] = bundle.authData.apiKey;
+  return request;
+};
+
+// const App = ...
+```
+
+Above we define a helper function, `addApiKeyToHeader`, that puts the user-provided API key in a request header called `MY-AUTH-HEADER`. The name chosen is illustrative, it can be whatever the API you are integrating with requires. Alternatively, you could put it in a query parameter instead of a header, and/or encoded it first.
+
+To make our helper function take effect, we need to register it on our app.
 
 In `index.js`, edit `App` to include:
 
 ```javascript
-// NEW CODE
-const addApiKeyToHeader = (request, z, bundle) => {
-  const basicHash = Buffer(`${bundle.authData.apiKey}:x`).toString('base64');
-  request.headers.Authorization = `Basic ${basicHash}`;
-  return request;
-};
-
 const App = {
   // ...
   beforeRequest: [
@@ -384,9 +398,7 @@ const App = {
 };
 ```
 
-The `addApiKeyToHeader` function encodes the user-provided api key and puts it in a request header. The details of how to encode and what header to put it in will vary depending your your API.
-
-We need to make sure this auth header gets added to _every_ request to our API. To do this, we add our function to `beforeRequest`. `App.beforeRequest` is a list of functions that are called before every HTTP request, letting you add headers, query params, etc.
+`beforeRequest` is a list of functions that are called before every HTTP request, letting you add headers, query params, etc. to all outbound requests. In our case, every HTTP request will now have the API key added in a header.
 
 To check our progress, we need to re-deploy our app.
 
@@ -394,8 +406,47 @@ To check our progress, we need to re-deploy our app.
 zapier deploy
 ```
 
-Go back to your Zap at `https://testing.zapier.com`. You'll see a new 'Connect Account' item in your 'New Recipe' trigger. Click the button, and it will open up a window for you to enter your API key. Enter a value and continue. Go to 'Test this Step' and select 'Fetch & Continue'. It will run the trigger again, but this time it will set the API key in the header for the request. Congrats, you have added authentication to your app!
+Go back to your Zap at `https://testing.zapier.com`. You'll see a new 'Connect Account' item in your 'New Recipe' trigger. Add an account for our app (enter any value you like for the API key, the mock API does not care).
 
+As soon as you add the account, Zapier will run our app's `authentication.test` function to confirm the credentials are valid.
+
+We can verify the header is present in the request by looking at the logs again.
+
+```bash
+zapier logs --type=http --detailed --limit=1
+
+# The logs of your app "Example App" listed below.
+# 
+# ┌─────────────────────┬────────────────────────────────────────────────────────────────────────────────────────┐
+# │ Status              │ 200                                                                                    │
+# │ Method              │ GET                                                                                    │
+# │ URL                 │ http://57b20fb546b57d1100a3c405.mockapi.io/api/me                                      │
+# │ Querystring         │                                                                                        │
+# │ Version             │ 1.0.0                                                                                  │
+# │ Step                │                                                                                        │
+# │ Timestamp           │ 2016-09-16T15:57:51-05:00                                                              │
+# │ Request Headers     │ user-agent: Zapier                                                                     │
+# │                     │ MY-AUTH-HEADER: :censored:6:b1af149262:                                                │
+# │ Request Body        │                                                                                        │
+# │ Response Headers    │ server: Cowboy                                                                         │
+# │                     │ connection: close                                                                      │
+# │                     │ x-powered-by: Express                                                                  │
+# │                     │ access-control-allow-origin: *                                                         │
+# │                     │ access-control-allow-methods: GET,PUT,POST,DELETE,OPTIONS                              │
+# │                     │ access-control-allow-headers: X-Requested-With,Content-Type,Cache-Control,access_token │
+# │                     │ content-type: application/json                                                         │
+# │                     │ content-length: 59                                                                     │
+# │                     │ etag: "-80491811"                                                                      │
+# │                     │ vary: Accept-Encoding                                                                  │
+# │                     │ date: Fri, 16 Sep 2016 20:57:51 GMT                                                    │
+# │                     │ via: 1.1 vegur                                                                         │
+# │ Response Body       │ [{"id":"1","createdAt":1473801403,"userName":"userName 1"}]                            │
+# └─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+You can see from the detailed log that the request included our auth header. The value appears as `:censored:6:b1af149262:`, which is intentional. Zapier does not log authentincation credentials in plain text.
+
+With that, we've successfully added authentication to our app!
 
 ### Tutorial Next Steps
 
