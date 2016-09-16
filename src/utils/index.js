@@ -10,5 +10,7 @@ module.exports = _.extend(
   require('./local'),
   require('./args'),
   require('./build'),
-  require('./promisify')
+  require('./promisify'),
+  require('./init'),
+  require('./convert')
 );

@@ -23,4 +23,5 @@ module.exports = {
   history: require('./history'),
   logs: require('./logs'),
   env: require('./env'),
+  convert: require('./convert')
 };

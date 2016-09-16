@@ -1,3 +1,5 @@
+<%= REQUIRES %>
+
 const App = {
   version: require('./package.json').version,
   platformVersion: require('zapier-platform-core').version,
@@ -6,13 +8,16 @@ const App = {
   },
 
   triggers: {
+    <%= TRIGGERS %>
   },
 
   searches: {
+    <%= SEARCHES %>
   },
 
   writes: {
-  },
+    <%= WRITES %>
+  }
 
 };
 

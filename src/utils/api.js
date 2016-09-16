@@ -34,12 +34,14 @@ const readCredentials = (credentials) => {
 // Calls the underlying platform REST API with proper authentication.
 const callAPI = (route, options) => {
   options = options || {};
+  const url = options.url || constants.ENDPOINT + route;
+
   let requestOptions;
   return readCredentials()
     .then((credentials) => {
       requestOptions = {
         method: options.method || 'GET',
-        url: constants.ENDPOINT + route,
+        url,
         body: options.body ? JSON.stringify(options.body) : null,
         headers: {
           Accept: 'application/json',
