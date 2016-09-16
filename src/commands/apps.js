@@ -23,7 +23,7 @@ apps.argOptsSpec = {};
 apps.help = 'Lists all the apps you can access.';
 apps.example = 'zapier apps';
 apps.docs = `\
-Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with \`zapier link\`.
+Lists any apps that you have admin access to. Also checks the current directory for a linked app, which you can control with \`zapier link\`.
 
 **Arguments**
 

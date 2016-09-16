@@ -28,7 +28,7 @@ migrate.argsSpec = [
   {name: 'percent', example: '100%', default: '100%', help: 'percent of users to migrate'},
 ];
 migrate.argOptsSpec = {};
-migrate.help = 'Migrate users from one version to another.';
+migrate.help = 'Migrate users from one version of your app to another.';
 migrate.example = 'zapier migrate 1.0.0 1.0.1 [10%]';
 migrate.docs = `\
 Starts a migration to move users between different versions of your app. You may also "revert" by simply swapping the from/to verion strings in the command line arguments (IE: \`zapier migrate 1.0.1 1.0.0\`).
@@ -37,7 +37,7 @@ Only migrate users between non-breaking versions, use \`zapier deprecate\` if yo
 
 Migrations can take between 5-10 minutes, so be patient and check \`zapier history\` to track the status.
 
-> Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
+> Tip! We recommend migrating a small subset of users first, then watching error logs of the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
 
 **Arguments**
 

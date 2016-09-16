@@ -275,8 +275,8 @@ blockquote {
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Lists all the apps you can access.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier apps</code></p><p>  Lists any apps that you have admin access to. Also checks for the current directory for a linked app, which you can control with <code>zapier link</code>.</p><p><strong>Arguments</strong></p><ul>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier apps</code></p><p>  Lists any apps that you have admin access to. Also checks the current directory for a linked app, which you can control with <code>zapier link</code>.</p><p><strong>Arguments</strong></p><ul>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -309,7 +309,7 @@ blockquote {
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Configure your <code>~/.zapierrc</code> with a deploy key.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier auth</code></p><p>  This is an interactive prompt which will set up your account deploy keys and credentials.</p><blockquote>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier auth</code></p><p>  This is an interactive prompt which will set up your deploy key.</p><blockquote>
 <p>This will change the  <code>~/.zapierrc</code> (home directory identifies the deploy key &amp; user).</p>
 </blockquote>
     </div>
@@ -335,7 +335,7 @@ blockquote {
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Builds a deployable zip from the current directory.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier build</code></p><p>  Builds a ready to upload zip file, does not upload / deploy the zip file. Generally you&apos;d use <code>zapier deploy</code> which does this and <code>zapier upload</code> together.</p><p>It does the following steps:</p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier build</code></p><p>  Builds a ready-to-upload zip file, but does not upload / deploy the zip file. Generally you&apos;d use <code>zapier deploy</code> which does this and <code>zapier upload</code> together.</p><p>It does the following steps:</p><ul>
 <li>Creates a temporary folder</li>
 <li>Copies all code into the temporary folder</li>
 <li>Adds an entry point <code>zapierwrapper.js</code></li>
@@ -379,11 +379,11 @@ blockquote {
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Manage the collaborators on your project. Can optionally --remove.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>  Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Arguments</strong></p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier collaborate [user@example.com]</code></p><p>  Give any user registered on Zapier the ability to collaborate on your app. Commonly, this is useful for teammates, contractors, or other developers who might want to make changes on your app. Only admin access is supported. If you&apos;d only like to provide read-only or testing access, try <code>zapier invite</code>.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all collaborators</li>
 <li><code>email [user@example.com]</code> -- <em>optional</em>, which user to add/remove</li>
-<li><code>--remove</code> -- <em>optional</em>, optionally elect to remove this user</li>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--remove</code> -- <em>optional</em>, elect to remove this user</li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -435,7 +435,7 @@ $ zapier collaborate user@example.com --remove
 <li>QA/experiment in the Zapier.com Zap editor.</li>
 <li>Go to 1 and repeat.</li>
 </ol><blockquote>
-<p>Note: this is always a safe operation as live/production apps are protected from deployes. You must use <code>zapier promote</code> or <code>zapier migrate</code> to impact live users.</p>
+<p>Note: this is always a safe operation as live/production apps are protected from deploys. You must use <code>zapier promote</code> or <code>zapier migrate</code> to impact live users.</p>
 </blockquote><p>If you have not yet registered your app, this command will prompt you for your app title and register the app.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -468,12 +468,12 @@ $ zapier collaborate user@example.com --remove
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Mark a non-production version of your app as deprecated by a certain date.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier deprecate 1.0.0 2017-01-20</code></p><p>  A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the impending deprecation.</p><blockquote>
+<p>Mark a non-production version of your app as deprecated, with removal by a certain date.</p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier deprecate 1.0.0 2017-01-20</code></p><p>  A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the deprecation.</p><blockquote>
 <p>Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>version [1.0.0]</code> -- <strong>required</strong>, the version to deprecate</li>
-<li><code>deprecation_date [2017-01-20]</code> -- <strong>required</strong>, what date should we deprecate on</li>
+<li><code>deprecation_date [2017-01-20]</code> -- <strong>required</strong>, date Zapier will remove the version</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -483,7 +483,7 @@ $ zapier collaborate user@example.com --remove
 <span class="hljs-comment">#   Deprecating 1.0.0 - done!</span>
 <span class="hljs-comment">#   Deprecation successful!</span>
 <span class="hljs-comment"># </span>
-<span class="hljs-comment"># We&apos;ll let users know that this version is no longer recommended and will cease working by 2017-01-20.</span>
+<span class="hljs-comment"># We&apos;ll let users know that this version is no longer recommended and will cease to work on 2017-01-20.</span>
 </code></pre>
     </div>
   </div>
@@ -501,7 +501,7 @@ $ zapier collaborate user@example.com --remove
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Describes the current app.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier describe</code></p><p>  Prints a human readable enumeration of your app&apos;s triggers, searches and actions as seen by our system. Useful to understand how your resources convert and relate to different actions.</p><blockquote>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier describe</code></p><p>  Prints a human readable enumeration of your app&apos;s triggers, searches, and actions as seen by Zapier. Useful to understand how your resources convert and relate to different actions.</p><blockquote>
 <p>These are the same actions we&apos;d display in our editor!</p>
 </blockquote><ul>
 <li><code>Noun</code> -- your action&apos;s noun</li>
@@ -509,7 +509,7 @@ $ zapier collaborate user@example.com --remove
 <li><code>Resource</code> -- the resource (if any) this action is tied to</li>
 <li><code>Available Methods</code> -- testable methods for this action</li>
 </ul><p><strong>Arguments</strong></p><ul>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -552,12 +552,11 @@ $ zapier collaborate user@example.com --remove
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Read and write environment variables.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier env 1.0.0 CLIENT_SECRET 12345</code></p><p>  Manage the environment of your app so that <code>process.env</code> can access the keys, making it easy to match a local environment with working environment via <code>CLIENT_SECRET=12345 npm test</code>.</p><p><strong>Arguments</strong></p><ul>
-<li><em>none</em> -- print a table of all environment variables, regardless of app version</li>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier env 1.0.0 CLIENT_SECRET 12345</code></p><p>  Manage the environment of your app so that <code>process.env</code> has the necessary variables, making it easy to match a local environment with a production environment via <code>CLIENT_SECRET=12345 zapier test</code>.</p><p><strong>Arguments</strong></p><ul>
 <li><code>version [1.0.0]</code> -- <strong>required</strong>, the app version&apos;s environment to work on</li>
 <li><code>key [CLIENT_SECRET]</code> -- <em>optional</em>, the uppercase key of the environment variable to set</li>
 <li><code>value [12345]</code> -- <em>optional</em>, the raw value to set to the key</li>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -603,7 +602,7 @@ $ zapier env 1.0.0 CLIENT_SECRET 12345
 </ul><p>The <code>zapier auth</code> and <code>zapier register &quot;Example&quot;</code> or <code>zapier link</code> commands will help manage those files. All commands listed below.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all commands</li>
 <li><code>cmd [value]</code> -- <em>optional</em>, the command to view docs for</li>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -656,9 +655,9 @@ $ zapier <span class="hljs-built_in">help</span>
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Prints all recent history for your app.</p>
+<p>Prints all edit history for your app.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier history</code></p><p>  Get the history of your app, listing all the changes made over the lifetime of your app. This includes everything from creation, updates, migrations, collaborator and invitee changes as well as who made the change and when.</p><p><strong>Arguments</strong></p><ul>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -691,12 +690,12 @@ $ zapier <span class="hljs-built_in">help</span>
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Initializes a new zapier app in a directory.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier init path</code></p><p>  Initializes a new zapier app. If you specify a template, will download and install app from that template.</p><p>After running this, you&apos;ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.</p><blockquote>
+<p>Initializes a new Zapier app in a directory.</p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier init path</code></p><p>  Initializes a new Zapier app. If you specify a template, will download and install the app from that template.</p><p>After running this, you&apos;ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.</p><blockquote>
 <p>Note: this doesn&apos;t register or deploy the app with Zapier - try <code>zapier register &quot;Example&quot;</code> and <code>zapier deploy</code> for that!</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>location [value]</code> -- <strong>required</strong>, Default is <code>.</code></li>
-<li><code>--template={minimal,resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}</code> -- <em>optional</em>, select a starting app template, default is <code>minimal</code></li>
+<li><code>location [value]</code> -- <strong>required</strong>,</li>
+<li><code>--template={minimal,resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}</code> -- <em>optional</em>, select a starting app template. Default is <code>minimal</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -728,11 +727,11 @@ $ zapier <span class="hljs-built_in">help</span>
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Manage the invitees/testers on your project. Can optionally --remove.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier invite [user@example.com]</code></p><p>  Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you&apos;d only like to provide admin access, try <code>zapier collaborate</code>.</p><p><strong>Arguments</strong></p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier invite [user@example.com]</code></p><p>  Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors, or other team members who might want to test, QA, or view your apps. If you&apos;d like to provide full admin access, try <code>zapier collaborate</code>.</p><p><strong>Arguments</strong></p><ul>
 <li><em>none</em> -- print all invitees</li>
 <li><code>email [user@example.com]</code> -- <em>optional</em>, which user to add/remove</li>
-<li><code>--remove</code> -- <em>optional</em>, optionally elect to remove this user</li>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--remove</code> -- <em>optional</em>, elect to remove this user</li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -777,10 +776,10 @@ $ zapier invite user@example.com --remove
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Link the current directory to an app you have access to.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier link</code></p><p>  Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you&apos;d just <code>git clone git@github.com:example-inc/example.git</code> which would have a <code>.zapierapprc</code> file already included. If not, you&apos;d need to be an admin on the app and use this command to regenerate the <code>.zapierapprc</code> file.</p><p>Or, if you are making an app from scratch - you&apos;d prefer the <code>zapier init</code>.</p><blockquote>
-<p>This will change the  <code>./.zapierapprc</code> (which identifies the app assosciated with the current directory).</p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier link</code></p><p>  Link the current directory to an app you have access to. It is fairly uncommon to run this command - more often you&apos;d just <code>git clone git@github.com:example-inc/example.git</code> which would have a <code>.zapierapprc</code> file already included. If not, you&apos;d need to be an admin on the app and use this command to regenerate the <code>.zapierapprc</code> file.</p><p>Or, if you are making an app from scratch - you should prefer <code>zapier init</code>.</p><blockquote>
+<p>This will change the <code>./.zapierapprc</code> (which identifies the app assosciated with the current directory).</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -825,12 +824,12 @@ $ zapier invite user@example.com --remove
 <p>Does not collect or list the errors found locally during <code>zapier test</code>.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>--version=value</code> -- <em>optional</em>, display only this version&apos;s logs (default is all versions)</li>
-<li><code>--status={any,success,error}</code> -- <em>optional</em>, display only success logs (status code &lt; 400 / info) or error (status code &gt; 400 / tracebacks), default is <code>any</code></li>
-<li><code>--type={console,http}</code> -- <em>optional</em>, display only console or http logs, default is <code>console</code></li>
+<li><code>--status={any,success,error}</code> -- <em>optional</em>, display only success logs (status code &lt; 400 / info) or error (status code &gt; 400 / tracebacks). Default is <code>any</code></li>
+<li><code>--type={console,http}</code> -- <em>optional</em>, display only console or http logs. Default is <code>console</code></li>
 <li><code>--detailed</code> -- <em>optional</em>, show detailed logs (like request/response body and headers)</li>
-<li><code>--user=user@example.com</code> -- <em>optional</em>, display only this user&apos;s logs, default is <code>me</code></li>
-<li><code>--limit=50</code> -- <em>optional</em>, control the maximum result size, default is <code>50</code></li>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--user=user@example.com</code> -- <em>optional</em>, display only this user&apos;s logs. Default is <code>me</code></li>
+<li><code>--limit=50</code> -- <em>optional</em>, control the maximum result size. Default is <code>50</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -906,13 +905,13 @@ $ zapier logs --type=http --detailed --format=plain
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Migrate users from one version to another.</p>
+<p>Migrate users from one version of your app to another.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier migrate 1.0.0 1.0.1 [10%]</code></p><p>  Starts a migration to move users between different versions of your app. You may also &quot;revert&quot; by simply swapping the from/to verion strings in the command line arguments (IE: <code>zapier migrate 1.0.1 1.0.0</code>).</p><p>Only migrate users between non-breaking versions, use <code>zapier deprecate</code> if you have breaking changes!</p><p>Migrations can take between 5-10 minutes, so be patient and check <code>zapier history</code> to track the status.</p><blockquote>
-<p>Tip! We recommend migrating a small subset of users first, then watching error logs for the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.</p>
+<p>Tip! We recommend migrating a small subset of users first, then watching error logs of the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>fromVersion [1.0.0]</code> -- <strong>required</strong>, the version <strong>from</strong> which to migrate users</li>
 <li><code>toVersion [1.0.1]</code> -- <strong>required</strong>, the version <strong>to</strong> which to migrate users</li>
-<li><code>percent [100%]</code> -- <em>optional</em>, percent of users to migrateDefault is <code>100%</code></li>
+<li><code>percent [100%]</code> -- <em>optional</em>, percent of users to migrate. Default is <code>100%</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -975,7 +974,7 @@ $ zapier logs --type=http --detailed --format=plain
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Registers a new app in your account.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier register &quot;Example&quot;</code></p><p>  This command registers your app with Zapier. After running this, you can run <code>zapier deploy</code> to deploy a version of your app that you can use in your Zapier editor.</p><blockquote>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier register &quot;Example&quot;</code></p><p>  This command registers your app with Zapier. After running this, you can run <code>zapier deploy</code> to deploy a version of your app that you can use in the Zapier editor.</p><blockquote>
 <p>This will change the  <code>./.zapierapprc</code> (which identifies the app associated with the current directory).</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>title [&quot;My App Name&quot;]</code> -- <strong>required</strong>,</li>
@@ -1015,8 +1014,8 @@ $ zapier logs --type=http --detailed --format=plain
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>type [{resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
 <li><code>name [&quot;Some Name&quot;]</code> -- <strong>required</strong>, the name of the new thing to create</li>
-<li><code>--dest={type}s/{name}</code> -- <em>optional</em>, sets the new file&apos;s path, default is <code>{type}s/{name}</code></li>
-<li><code>--entry=index.js</code> -- <em>optional</em>, where to import the new file, default is <code>index.js</code></li>
+<li><code>--dest={type}s/{name}</code> -- <em>optional</em>, sets the new file&apos;s path. Default is <code>{type}s/{name}</code></li>
+<li><code>--entry=index.js</code> -- <em>optional</em>, where to import the new file. Default is <code>index.js</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -1047,7 +1046,7 @@ $ zapier scaffold resource <span class="hljs-string">&quot;Tag&quot;</span> --en
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Tests your app via <code>npm test</code>.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier test</code></p><p>  This command is effectively the same as <code>npm test</code> (which we normally recommend mocha tests) - except we can wire in some custom tests to validate your app.</p><p><strong>Arguments</strong></p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier test</code></p><p>  This command is effectively the same as <code>npm test</code>, except we wire in some custom tests to validate your app. We recommend using mocha as your testing framework.</p><p><strong>Arguments</strong></p><ul>
 <li><code>--quiet</code> -- <em>optional</em>, do not print zapier detailed logs to standard out</li>
 <li><code>--very-quiet</code> -- <em>optional</em>, do not print zapier summary or detail logs to standard out</li>
 </ul>
@@ -1082,7 +1081,7 @@ $ zapier scaffold resource <span class="hljs-string">&quot;Tag&quot;</span> --en
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Upload the last build as a version.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier upload</code></p><p>  Upload the zip file already built by <code>zapier build</code> in build/build.zip. The versions and other app details are read by Zapier from the zip file.</p><blockquote>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier upload</code></p><p>  Upload the zip file already built by <code>zapier build</code> in build/build.zip. The version and other app details are read by Zapier from the zip file.</p><blockquote>
 <p>Note: we generally recommend using <code>zapier deploy</code> which does both <code>zapier build &amp;&amp; zapier upload</code> in one step.</p>
 </blockquote>
     </div>
@@ -1109,9 +1108,9 @@ $ zapier scaffold resource <span class="hljs-string">&quot;Tag&quot;</span> --en
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Validates the current project.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier validate</code></p><p>  Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that is run during <code>zapier build</code>, <code>zapier uploard</code>, <code>zapier deploy</code> or even as a test in <code>npm test</code>.</p><p><strong>Arguments</strong></p><ul>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<p>Validates the current app.</p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier validate</code></p><p>  Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that runs during <code>zapier build</code>, <code>zapier uploard</code>, <code>zapier deploy</code> or even as a test in <code>zapier test</code>.</p><p><strong>Arguments</strong></p><ul>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>
@@ -1153,7 +1152,7 @@ $ zapier validate
       <blockquote>
 <p>Lists all the versions of the current app.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier versions</code></p><p>  Lists the versions of your app available for use in the Zapier editor.</p><p><strong>Arguments</strong></p><ul>
-<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
+<li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
 <li><code>--debug</code> -- <em>optional</em>, print debug API calls and tracebacks</li>
 </ul>

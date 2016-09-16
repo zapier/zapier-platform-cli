@@ -2,7 +2,7 @@ const utils = require('../utils');
 
 const deprecate = (context, version, deprecation_date) => {
   if (!deprecation_date) {
-    context.line('Error: No version or deprecation date - provide either a version like "1.0.0" and "2017-01-20"...\n');
+    context.line('Error: No version or deprecation date - provide a version like "1.0.0" and "2017-01-20"...\n');
     return Promise.resolve(true);
   }
   return utils.checkCredentials()
@@ -21,18 +21,18 @@ const deprecate = (context, version, deprecation_date) => {
     .then(() => {
       utils.printDone();
       context.line('  Deprecation successful!\n');
-      context.line(`We'll let users know that this version is no longer recommended and will cease working by ${deprecation_date}.`);
+      context.line(`We'll let users know that this version is no longer recommended and will cease to work on ${deprecation_date}.`);
     });
 };
 deprecate.argsSpec = [
   {name: 'version', example: '1.0.0', required: true, help: 'the version to deprecate'},
-  {name: 'deprecation_date', example: '2017-01-20', required: true, help: 'what date should we deprecate on'},
+  {name: 'deprecation_date', example: '2017-01-20', required: true, help: 'date Zapier will remove the version'},
 ];
 deprecate.argOptsSpec = {};
-deprecate.help = 'Mark a non-production version of your app as deprecated by a certain date.';
+deprecate.help = 'Mark a non-production version of your app as deprecated, with removal by a certain date.';
 deprecate.example = 'zapier deprecate 1.0.0 2017-01-20';
 deprecate.docs = `\
-A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the impending deprecation.
+A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the deprecation.
 
 > Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
 
@@ -48,7 +48,7 @@ $ zapier deprecate 1.0.0 2017-01-20
 #   Deprecating 1.0.0 - done!
 #   Deprecation successful!
 # 
-# We'll let users know that this version is no longer recommended and will cease working by 2017-01-20.
+# We'll let users know that this version is no longer recommended and will cease to work on 2017-01-20.
 ${'```'}
 `;
 

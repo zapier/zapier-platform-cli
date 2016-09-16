@@ -39,7 +39,7 @@ auth.argOptsSpec = {};
 auth.help = `Configure your \`${constants.AUTH_LOCATION_RAW}\` with a deploy key.`;
 auth.example = 'zapier auth';
 auth.docs = `\
-This is an interactive prompt which will set up your account deploy keys and credentials.
+This is an interactive prompt which will set up your deploy key.
 
 > This will change the  \`${constants.AUTH_LOCATION_RAW}\` (home directory identifies the deploy key & user).
 

@@ -38,7 +38,7 @@ A shortcut for \`zapier build && zapier upload\` - this is our recommended way t
 4. QA/experiment in the Zapier.com Zap editor.
 5. Go to 1 and repeat.
 
-> Note: this is always a safe operation as live/production apps are protected from deployes. You must use \`zapier promote\` or \`zapier migrate\` to impact live users.
+> Note: this is always a safe operation as live/production apps are protected from deploys. You must use \`zapier promote\` or \`zapier migrate\` to impact live users.
 
 If you have not yet registered your app, this command will prompt you for your app title and register the app.
 

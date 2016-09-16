@@ -6,7 +6,7 @@ const invite = makeAccess('invite', 'invitee');
 invite.help = 'Manage the invitees/testers on your project. Can optionally --remove.';
 invite.example = 'zapier invite [user@example.com]';
 invite.docs = `\
-Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors or other team members who might want to make test, QA or view your apps. If you'd only like to provide admin access, try \`zapier collaborate\`.
+Invite any user registered on Zapier to test your app. Commonly, this is useful for teammates, contractors, or other team members who might want to test, QA, or view your apps. If you'd like to provide full admin access, try \`zapier collaborate\`.
 
 **Arguments**
 

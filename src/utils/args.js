@@ -111,7 +111,7 @@ const argsFragment = (argsSpec) => {
   return _.map(argsSpec, (spec) => {
     let val = spec.example || 'value';
     val = (spec.choices && spec.choices.length) ? choicesStr(spec.choices) : val;
-    let def = spec.default ? `Default is \`${spec.default}\`` : '';
+    let def = spec.default ? `. Default is \`${spec.default}\`` : '';
     return `* \`${spec.name} [${quoteStr(val)}]\` -- ${spec.required ? '**required**' : '_optional_'}, ${spec.help || ''}${def}`;
   }).join('\n').trim();
 };
@@ -122,7 +122,7 @@ const argOptsFragment = (argOptsSpec) => {
     let val = spec.example || spec.default || 'value';
     val = (spec.choices && spec.choices.length) ? choicesStr(spec.choices) : val;
     val = spec.flag ? '' : `=${quoteStr(val)}`;
-    let def = spec.default ? `, default is \`${spec.default}\`` : '';
+    let def = spec.default ? `. Default is \`${spec.default}\`` : '';
     return `* \`--${name}${val}\` -- ${spec.required ? '**required**' : '_optional_'}, ${spec.help || ''}${def}`;
   }).join('\n').trim();
 };

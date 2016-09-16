@@ -60,11 +60,10 @@ env.argOptsSpec = {
 env.help = 'Read and write environment variables.';
 env.example = 'zapier env 1.0.0 CLIENT_SECRET 12345';
 env.docs = `\
-Manage the environment of your app so that \`process.env\` can access the keys, making it easy to match a local environment with working environment via \`CLIENT_SECRET=12345 npm test\`.
+Manage the environment of your app so that \`process.env\` has the necessary variables, making it easy to match a local environment with a production environment via \`CLIENT_SECRET=12345 zapier test\`.
 
 **Arguments**
 
-* _none_ -- print a table of all environment variables, regardless of app version
 ${utils.argsFragment(env.argsSpec)}
 ${utils.defaultArgOptsFragment()}
 
