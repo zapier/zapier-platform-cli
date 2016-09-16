@@ -47,19 +47,19 @@ const logs = (context) => {
 };
 logs.argsSpec = [];
 logs.argOptsSpec = {
-  version: {help: 'display only this version\'s logs'},
-  status: {help: 'display only success (<400/info) logs or error (>400/tracebacks)', choices: ['any', 'success', 'error'], default: 'any'},
+  version: {help: 'display only this version\'s logs (default is all versions)'},
+  status: {help: 'display only success logs (status code < 400 / info) or error (status code > 400 / tracebacks)', choices: ['any', 'success', 'error'], default: 'any'},
   type: {help: 'display only console or http logs', choices: ['console', 'http'], default: 'console'},
-  detailed: {help: 'show detailed logs (like http body)', flag: true},
-  user: {help: 'display only this users logs', example: 'user@example.com', 'default': 'me'},
+  detailed: {help: 'show detailed logs (like request/response body and headers)', flag: true},
+  user: {help: 'display only this user\'s logs', example: 'user@example.com', 'default': 'me'},
   limit: {help: 'control the maximum result size', default: 50},
 };
 logs.help = 'Prints recent logs. See help for filter arguments.';
 logs.example = 'zapier logs';
 logs.docs = `\
-Get the logs that are automatically collected during the running of your app. Either explicitly during \`z.context.line()\`, automatically via \`z.request()\` or any sort of traceback or error.
+Get the logs that are automatically collected during the running of your app. Either explicitly during \`z.console.log()\`, automatically via \`z.request()\`, or any sort of traceback or error.
 
-> Does not collect or list the errors found locally during \`npm test\`.
+> Does not collect or list the errors found locally during \`zapier test\`.
 
 **Arguments**
 

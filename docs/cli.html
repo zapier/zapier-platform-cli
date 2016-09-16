@@ -821,14 +821,14 @@ $ zapier invite user@example.com --remove
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Prints recent logs. See help for filter arguments.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier logs</code></p><p>  Get the logs that are automatically collected during the running of your app. Either explicitly during <code>z.context.line()</code>, automatically via <code>z.request()</code> or any sort of traceback or error.</p><blockquote>
-<p>Does not collect or list the errors found locally during <code>npm test</code>.</p>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier logs</code></p><p>  Get the logs that are automatically collected during the running of your app. Either explicitly during <code>z.console.log()</code>, automatically via <code>z.request()</code>, or any sort of traceback or error.</p><blockquote>
+<p>Does not collect or list the errors found locally during <code>zapier test</code>.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>--version=value</code> -- <em>optional</em>, display only this version&apos;s logs</li>
-<li><code>--status={any,success,error}</code> -- <em>optional</em>, display only success (<400 info)="" logs="" or="" error="" (="">400/tracebacks), default is <code>any</code></400></li>
+<li><code>--version=value</code> -- <em>optional</em>, display only this version&apos;s logs (default is all versions)</li>
+<li><code>--status={any,success,error}</code> -- <em>optional</em>, display only success logs (status code &lt; 400 / info) or error (status code &gt; 400 / tracebacks), default is <code>any</code></li>
 <li><code>--type={console,http}</code> -- <em>optional</em>, display only console or http logs, default is <code>console</code></li>
-<li><code>--detailed</code> -- <em>optional</em>, show detailed logs (like http body)</li>
-<li><code>--user=user@example.com</code> -- <em>optional</em>, display only this users logs, default is <code>me</code></li>
+<li><code>--detailed</code> -- <em>optional</em>, show detailed logs (like request/response body and headers)</li>
+<li><code>--user=user@example.com</code> -- <em>optional</em>, display only this user&apos;s logs, default is <code>me</code></li>
 <li><code>--limit=50</code> -- <em>optional</em>, control the maximum result size, default is <code>50</code></li>
 <li><code>--format={plain,json,raw,table,row}</code> -- <em>optional</em>, display format, default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
