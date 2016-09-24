@@ -25,7 +25,7 @@ const register = (context, title) => {
     })
     .then(() => {
       utils.printDone();
-      context.line('\nFinished! Now that your app is registered with Zapier, you can `zapier deploy` a version!');
+      context.line('\nFinished! Now that your app is registered with Zapier, you can `zapier push` a version!');
     });
 };
 register.argsSpec = [
@@ -36,7 +36,7 @@ register.argOptsSpec = {
 register.help = 'Registers a new app in your account.';
 register.example = 'zapier register "Example"';
 register.docs = `\
-This command registers your app with Zapier. After running this, you can run \`zapier deploy\` to deploy a version of your app that you can use in the Zapier editor.
+This command registers your app with Zapier. After running this, you can run \`zapier push\` to push a version of your app that you can use in the Zapier editor.
 
 > This will change the  \`./${constants.CURRENT_APP_FILE}\` (which identifies the app associated with the current directory).
 

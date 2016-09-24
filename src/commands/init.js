@@ -37,7 +37,7 @@ Initializes a new Zapier app. If you specify a template, will download and insta
 
 After running this, you\'ll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this doesn't register or deploy the app with Zapier - try \`zapier register "Example"\` and \`zapier deploy\` for that!
+> Note: this doesn't register or deploy the app with Zapier - try \`zapier register "Example"\` and \`zapier push\` for that!
 
 **Arguments**
 

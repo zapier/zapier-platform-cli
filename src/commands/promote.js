@@ -33,7 +33,7 @@ promote.docs = `\
 Promotes an app version into production (non-private) rotation, which means new users can use this app version.
 
 * This **does** mark the version as the official global version - all other versions & users are grandfathered.
-* This **does not** build/upload or deploy a version to Zapier - you should \`zapier deploy\` first.
+* This **does not** build/upload or deploy a version to Zapier - you should \`zapier push\` first.
 * This **does not** move old users over to this version - \`zapier migrate 1.0.0 1.0.1\` does that.
 * This **does not** recommend old users stop using this version - \`zapier deprecate 1.0.0 2017-01-01\` does that.
 

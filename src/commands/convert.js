@@ -35,7 +35,7 @@ Creates a new Zapier app from an existing V2 app. The new app contains code stub
 
 After running this, you\'ll have a new app in your directory, with stubs for your trigger and actions.  If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this doesn't register or deploy the app with Zapier - try \`zapier register "Example"\` and \`zapier deploy\` for that!
+> Note: this doesn't register or push the app with Zapier - try \`zapier register "Example"\` and \`zapier push\` for that!
 
 `;
 

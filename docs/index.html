@@ -413,7 +413,7 @@ nvm use v4.3.2
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Welcome to the Zapier Platform! In this tutorial, we&apos;ll walk you through the process of building, testing, and deploying an app to Zapier.</p>
+      <p>Welcome to the Zapier Platform! In this tutorial, we&apos;ll walk you through the process of building, testing, and pushing an app to Zapier.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -442,7 +442,7 @@ npm install -g zapier-platform-cli
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The CLI is the primary tool for managing your apps. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try <code>zapier help</code>.</p><p>Now that your CLI is installed - you&apos;ll need to identify yourself via the CLI.</p>
+      <p>The CLI is the primary tool for managing your apps. With it, you can validate and test apps locally, push apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try <code>zapier help</code>.</p><p>Now that your CLI is installed - you&apos;ll need to identify yourself via the CLI.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># auth to Zapier&apos;s platform with your deploy key. To obtain a key contact partners@zapier.com</span>
@@ -757,12 +757,12 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>So far, everything we have done has been local, on your machine. It&apos;s been fun, but we want our app on Zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.</p><p>Let&apos;s deploy a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.</p><blockquote>
-<p>If this is your first time deploying your app version - we will ask you to provide a name so we can register your app - this is a one time thing!</p>
+      <p>So far, everything we have done has been local, on your machine. It&apos;s been fun, but we want our app on Zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and push it to Zapier.</p><p>Let&apos;s push a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version pushed.</p><blockquote>
+<p>If this is your first time pushing your app version - we will ask you to provide a name so we can register your app - this is a one time thing!</p>
 </blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">zapier deploy
+      <pre><code class="lang-bash">zapier push
 <span class="hljs-comment"># Preparing to build and upload your app.</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment">#   Copying project to temp directory - done!</span>
@@ -781,7 +781,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now that your app version is properly deployed, log in and visit <a href="https://testing.zapier.com/app/editor">https://testing.zapier.com/app/editor</a> to create a Zap and check our progress.</p><p>You&apos;ll see the app listed as an available option for the first step. Selecting it, you&apos;ll see the &quot;New Recipe&quot; trigger. At this point, we&apos;ve come full circle on the trigger definition from earlier. Remember that, as part of the metadata, we defined a <code>display</code> property with a label and help text. Those properties control the info you see inside the Zapier UI.</p><p>As you click through, you&apos;ll see our input field &quot;style&quot; appear, which you can fill out. Once you finish setting up the step and test it, Zapier will run the <code>listReceipes</code> function associated with the trigger, which will make the API request and return the result to Zapier. If you are curious to see what HTTP requests Zapier makes at any point, you can use the <code>zapier logs</code> command to find out.</p>
+      <p>Now that your app version is properly pushed, log in and visit <a href="https://testing.zapier.com/app/editor">https://testing.zapier.com/app/editor</a> to create a Zap and check our progress.</p><p>You&apos;ll see the app listed as an available option for the first step. Selecting it, you&apos;ll see the &quot;New Recipe&quot; trigger. At this point, we&apos;ve come full circle on the trigger definition from earlier. Remember that, as part of the metadata, we defined a <code>display</code> property with a label and help text. Those properties control the info you see inside the Zapier UI.</p><p>As you click through, you&apos;ll see our input field &quot;style&quot; appear, which you can fill out. Once you finish setting up the step and test it, Zapier will run the <code>listReceipes</code> function associated with the trigger, which will make the API request and return the result to Zapier. If you are curious to see what HTTP requests Zapier makes at any point, you can use the <code>zapier logs</code> command to find out.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier logs --type=http
@@ -800,7 +800,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Good work, we&apos;ve built a trigger locally and deployed it to Zapier.</p>
+      <p>Good work, we&apos;ve built a trigger locally and pushed it to Zapier.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -880,10 +880,10 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p><code>beforeRequest</code> is a list of functions that are called before every HTTP request, letting you add headers, query params, etc. to all outbound requests. In our case, every HTTP request will now have the API key added in a header.</p><p>To check our progress, we need to re-deploy our app.</p>
+      <p><code>beforeRequest</code> is a list of functions that are called before every HTTP request, letting you add headers, query params, etc. to all outbound requests. In our case, every HTTP request will now have the API key added in a header.</p><p>To check our progress, we need to re-push our app.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">zapier deploy
+      <pre><code class="lang-bash">zapier push
 </code></pre>
     </div>
   </div>
@@ -1014,8 +1014,8 @@ zapier <span class="hljs-built_in">test</span>
       <p>Next, you&apos;ll probably want to upload app to Zapier itself so you can start testing live.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># deploy your app to Zapier</span>
-zapier deploy
+      <pre><code class="lang-bash"><span class="hljs-comment"># push your app to Zapier</span>
+zapier push
 </code></pre>
     </div>
   </div>
@@ -1182,7 +1182,7 @@ npm install
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Registering your App with Zapier is a necessary first step which only enables basic administrative functions. It should happen before <code>zapier deploy</code> which is to used to actually expose an App Version in the Zapier interface and editor.</p>
+      <p>Registering your App with Zapier is a necessary first step which only enables basic administrative functions. It should happen before <code>zapier push</code> which is to used to actually expose an App Version in the Zapier interface and editor.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># register your app</span>
@@ -1197,13 +1197,13 @@ zapier apps
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Note: this doesn&apos;t put your app in the editor - see the docs on deploying an App Version to do that!</p>
+<p>Note: this doesn&apos;t put your app in the editor - see the docs on pushing an App Version to do that!</p>
 </blockquote><p>If you&apos;d like to manage your <strong>App</strong>, use these commands:</p><ul>
 <li><code>zapier apps</code> - list the apps in Zapier you can administer</li>
 <li><code>zapier register &quot;Name&quot;</code> - creates a new app in Zapier</li>
 <li><code>zapier link</code> - lists and links a selected app in Zapier to your current folder</li>
 <li><code>zapier history</code> - print the history of your app</li>
-<li><code>zapier collaborate [user@example.com]</code> - add admins to your app who can deploy</li>
+<li><code>zapier collaborate [user@example.com]</code> - add admins to your app who can push</li>
 <li><code>zapier invite [user@example.com]</code> - add users to try your app before promotion</li>
 </ul>
     </div>
@@ -1226,8 +1226,8 @@ zapier apps
       <p>An App Version is related to a specific App but is an &quot;immutable&quot; implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, <strong>every App Version is private</strong> but you can <code>zapier promote</code> it to production for use by over 1 million Zapier users.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># deploy your app version to Zapier</span>
-zapier deploy
+      <pre><code class="lang-bash"><span class="hljs-comment"># push your app version to Zapier</span>
+zapier push
 
 <span class="hljs-comment"># list your versions</span>
 zapier versions
@@ -1239,7 +1239,7 @@ zapier versions
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>If you&apos;d like to manage your <strong>Version</strong>, use these commands:</p><ul>
 <li><code>zapier versions</code> - list the versions for the current directory&apos;s app</li>
-<li><code>zapier deploy</code> - deploy the current version the of current directory&apos;s app &amp; version (read from <code>package.json</code>)</li>
+<li><code>zapier push</code> - push the current version the of current directory&apos;s app &amp; version (read from <code>package.json</code>)</li>
 <li><code>zapier promote [1.0.0]</code> - mark a version as the &quot;production&quot; version</li>
 <li><code>zapier migrate [1.0.0] [1.0.1] [100%]</code> - move users between versions, regardless of deployment status</li>
 <li><code>zapier deprecate [1.0.0] [YYYY-MM-DD]</code> - mark a version as deprecated, but let users continue to use it (we&apos;ll email them)</li>
@@ -1262,7 +1262,7 @@ zapier versions
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>A simple <code>zapier deploy</code> will only create the App Version in your editor. No one else using Zapier can see it or use it.</p>
+      <p>A simple <code>zapier push</code> will only create the App Version in your editor. No one else using Zapier can see it or use it.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2105,7 +2105,7 @@ style: <span class="hljs-string">&apos;{{style}}&apos;</span>
       <p>Apps can define environment variables that are available when the app&apos;s code executes. They work just like environment
 variables defined on the command line. They are useful when you have data like an OAuth client ID and secret that you
 don&apos;t want to commit to source control. Environment variables can also be used as a quick way to toggle between a
-a staging and production environment during app development.</p><p>It is important to note that <strong>variables are defined on a per-version basis!</strong> When you deploy a new version, the
+a staging and production environment during app development.</p><p>It is important to note that <strong>variables are defined on a per-version basis!</strong> When you push a new version, the
 existing variables from the previous version are copied, so you don&apos;t have to manually add them. However, edits
 made to one version&apos;s environment will not affect the other versions.</p>
     </div>

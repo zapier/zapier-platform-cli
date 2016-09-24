@@ -13,7 +13,7 @@ const versions = (context) => {
         ['Timestamp', 'date'],
       ]);
       if (!data.versions.length) {
-        context.line('\nTry adding an version with the `zapier deploy` command.');
+        context.line('\nTry adding an version with the `zapier push` command.');
       }
     });
 };

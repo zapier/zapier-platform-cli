@@ -60,11 +60,11 @@ $ zapier auth
 
 ## build
 
-  > Builds a deployable zip from the current directory.
+  > Builds a pushable zip from the current directory.
 
   **Usage:** `zapier build`
 
-  Builds a ready-to-upload zip file, but does not upload / deploy the zip file. Generally you'd use `zapier deploy` which does this and `zapier upload` together.
+  Builds a ready-to-upload zip file, but does not upload / push the zip file. Generally you'd use `zapier push` which does this and `zapier upload` together.
 
 It does the following steps:
 
@@ -142,39 +142,17 @@ $ zapier collaborate user@example.com --remove
 ```
 
 
-## deploy
+## convert
 
-  > Build and upload the current app - does not promote.
+  > Converts a Zapier Platform V2 app to a V3 app, stubs only.
 
-  **Usage:** `zapier deploy`
+  **Usage:** `zapier convert appid path`
 
-  A shortcut for `zapier build && zapier upload` - this is our recommended way to deploy an app. This is a common workflow:
+  Creates a new Zapier app from an existing V2 app. The new app contains code stubs only.
 
-1. Make changes in `index.js` or other files.
-2. Run `zapier test`.
-3. Run `zapier deploy`.
-4. QA/experiment in the Zapier.com Zap editor.
-5. Go to 1 and repeat.
+After running this, you'll have a new app in your directory, with stubs for your trigger and actions.  If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this is always a safe operation as live/production apps are protected from deploys. You must use `zapier promote` or `zapier migrate` to impact live users.
-
-If you have not yet registered your app, this command will prompt you for your app title and register the app.
-
-```bash
-$ zapier deploy
-# Preparing to build and upload app.
-#
-#   Copying project to temp directory - done!
-#   Installing project dependencies - done!
-#   Applying entry point file - done!
-#   Validating project - done!
-#   Building app definition.json - done!
-#   Zipping project and dependencies - done!
-#   Cleaning up temp directory - done!
-#   Uploading version 1.0.0 - done!
-#
-# Build and upload complete! Try loading the Zapier editor now, or try `zapier promote` to put it into rotation or `zapier migrate` to move users over
-```
+> Note: this doesn't register or push the app with Zapier - try `zapier register "Example"` and `zapier push` for that!
 
 
 ## deprecate
@@ -323,9 +301,9 @@ $ zapier help
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
 # │ auth        │ zapier auth                           │ Configure your `~/.zapierrc` with a deploy key.                            │
-# │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
+# │ build       │ zapier build                          │ Builds a uploadable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
-# │ deploy      │ zapier deploy                         │ Build and upload the current app - does not promote.                       │
+# │ push        │ zapier push                           │ Build and upload the current app - does not promote.                       │
 # │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
 # │ env         │ zapier env 1.0.0 CLIENT_SECRET 12345  │ Read and write environment variables.                                      │
@@ -388,7 +366,7 @@ $ zapier history
 
 After running this, you'll have a new example app in your directory. If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this doesn't register or deploy the app with Zapier - try `zapier register "Example"` and `zapier deploy` for that!
+> Note: this doesn't register or deploy the app with Zapier - try `zapier register "Example"` and `zapier push` for that!
 
 **Arguments**
 
@@ -398,14 +376,14 @@ After running this, you'll have a new example app in your directory. If you re-r
 ```bash
 $ zapier init example-app --template=minimal
 # Let's initialize your app!
-# 
+#
 #   Downloading zapier/zapier-platform-example-app-minimal starter app - done!
 #   Copy /users/username/code/example-app/.gitignore - done!
 #   Copy /users/username/code/example-app/index.js - done!
 #   Copy /users/username/code/example-app/package.json - done!
 #   Copy /users/username/code/example-app/test/index.js - done!
 #   Copying starter app - done!
-# 
+#
 # Finished! You might need to `npm install` then try `zapier test`!
 ```
 
@@ -491,7 +469,7 @@ $ zapier link
 #   Selecting existing app "Example" - done!
 #   Setting up `.zapierapprc` file - done!
 #
-# Finished! You can `zapier deploy` now to build & upload a version!
+# Finished! You can `zapier push` now to build & upload a version!
 ```
 
 
@@ -603,7 +581,7 @@ $ zapier migrate 1.0.0 1.0.1 15%
 # 
 #   Starting migration from 1.0.0 to 1.0.1 for 15% - done!
 # 
-# Deploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.
+# Migration successfully queued, please check `zapier history` to track the status. Normal migrations take between 5-10 minutes.
 ```
 
 
@@ -616,7 +594,7 @@ $ zapier migrate 1.0.0 1.0.1 15%
   Promotes an app version into production (non-private) rotation, which means new users can use this app version.
 
 * This **does** mark the version as the official global version - all other versions & users are grandfathered.
-* This **does not** build/upload or deploy a version to Zapier - you should `zapier deploy` first.
+* This **does not** build/upload or deploy a version to Zapier - you should `zapier push` first.
 * This **does not** move old users over to this version - `zapier migrate 1.0.0 1.0.1` does that.
 * This **does not** recommend old users stop using this version - `zapier deprecate 1.0.0 2017-01-01` does that.
 
@@ -640,13 +618,48 @@ $ zapier promote 1.0.0
 ```
 
 
+## push
+
+  > Build and upload the current app - does not promote.
+
+  **Usage:** `zapier push`
+
+  A shortcut for `zapier build && zapier upload` - this is our recommended way to push an app. This is a common workflow:
+
+1. Make changes in `index.js` or other files.
+2. Run `zapier test`.
+3. Run `zapier push`.
+4. QA/experiment in the Zapier.com Zap editor.
+5. Go to 1 and repeat.
+
+> Note: this is always a safe operation as live/production apps are protected from pushes. You must use `zapier promote` or `zapier migrate` to impact live users.
+
+If you have not yet registered your app, this command will prompt you for your app title and register the app.
+
+```bash
+$ zapier push
+# Preparing to build and upload app.
+#
+#   Copying project to temp directory - done!
+#   Installing project dependencies - done!
+#   Applying entry point file - done!
+#   Validating project - done!
+#   Building app definition.json - done!
+#   Zipping project and dependencies - done!
+#   Cleaning up temp directory - done!
+#   Uploading version 1.0.0 - done!
+#
+# Build and upload complete! Try loading the Zapier editor now, or try `zapier promote` to put it into rotation or `zapier migrate` to move users over
+```
+
+
 ## register
 
   > Registers a new app in your account.
 
   **Usage:** `zapier register "Example"`
 
-  This command registers your app with Zapier. After running this, you can run `zapier deploy` to deploy a version of your app that you can use in the Zapier editor.
+  This command registers your app with Zapier. After running this, you can run `zapier push` to push a version of your app that you can use in the Zapier editor.
 
 > This will change the  `./.zapierapprc` (which identifies the app associated with the current directory).
 
@@ -741,7 +754,7 @@ $ zapier test
 
   Upload the zip file already built by `zapier build` in build/build.zip. The version and other app details are read by Zapier from the zip file.
 
-> Note: we generally recommend using `zapier deploy` which does both `zapier build && zapier upload` in one step.
+> Note: we generally recommend using `zapier push` which does both `zapier build && zapier upload` in one step.
 
 ```bash
 $ zapier upload
@@ -759,7 +772,7 @@ $ zapier upload
 
   **Usage:** `zapier validate`
 
-  Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that runs during `zapier build`, `zapier uploard`, `zapier deploy` or even as a test in `zapier test`.
+  Runs the standard validation routine powered by json-schema that checks your app for any structural errors. This is the same routine that runs during `zapier build`, `zapier uploard`, `zapier push` or even as a test in `zapier test`.
 
 **Arguments**
 

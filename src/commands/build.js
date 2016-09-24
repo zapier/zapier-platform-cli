@@ -12,10 +12,10 @@ build.argsSpec = [];
 build.argOptsSpec = {
   'disable-dependency-detection': {flag: true, help: 'disables walking required files to slim the build'}
 };
-build.help = 'Builds a deployable zip from the current directory.';
+build.help = 'Builds a pushable zip from the current directory.';
 build.example = 'zapier build';
 build.docs = `\
-Builds a ready-to-upload zip file, but does not upload / deploy the zip file. Generally you'd use \`zapier deploy\` which does this and \`zapier upload\` together.
+Builds a ready-to-upload zip file, but does not upload / push the zip file. Generally you'd use \`zapier push\` which does this and \`zapier upload\` together.
 
 It does the following steps:
 

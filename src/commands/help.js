@@ -66,9 +66,9 @@ $ zapier help
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
 # │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                            │
-# │ build       │ zapier build                          │ Builds a deployable zip from the current directory.                        │
+# │ build       │ zapier build                          │ Builds a uploadable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
-# │ deploy      │ zapier deploy                         │ Build and upload the current app - does not promote.                       │
+# │ push        │ zapier push                           │ Build and upload the current app - does not promote.                       │
 # │ deprecate   │ zapier deprecate 1.0.0 2017-01-20     │ Mark a non-production version of your app as deprecated by a certain date. │
 # │ describe    │ zapier describe                       │ Describes the current app.                                                 │
 # │ env         │ zapier env 1.0.0 CLIENT_SECRET 12345  │ Read and write environment variables.                                      │

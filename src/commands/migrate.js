@@ -19,7 +19,7 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
     })
     .then(() => {
       utils.printDone();
-      context.line('\nDeploy successfully queued, please check `zapier history` to track the status. Normal deploys take between 5-10 minutes.');
+      context.line('\nMigration successfully queued, please check `zapier history` to track the status. Normal migrations take between 5-10 minutes.');
     });
 };
 migrate.argsSpec = [
@@ -50,7 +50,7 @@ $ zapier migrate 1.0.0 1.0.1 15%
 # 
 #   Starting migration from 1.0.0 to 1.0.1 for 15% - done!
 # 
-# Deploy successfully queued, please check \`zapier history\` to track the status. Normal deploys take between 5-10 minutes.
+# Migration successfully queued, please check \`zapier history\` to track the status. Normal migrations take between 5-10 minutes.
 ${'```'}
 `;
 

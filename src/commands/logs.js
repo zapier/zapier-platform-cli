@@ -36,7 +36,7 @@ const logs = (context) => {
         ];
       }
 
-      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.console.log()` and doing a `zapier deploy`!\n');
+      const ifEmpty = colors.grey('No logs found. Try adding some `z.request()`, `z.console.log()` and doing a `zapier push`!\n');
 
       const listLogs = [].concat(data.logs);
       listLogs.reverse();

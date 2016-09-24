@@ -73,7 +73,7 @@ nvm use v4.3.2
 
 ## Tutorial
 
-Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and deploying an app to Zapier.
+Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and pushing an app to Zapier.
 
 
 ### Installing the CLI
@@ -85,7 +85,7 @@ To get started, first make sure that your dev environment meets the [requirement
 npm install -g zapier-platform-cli
 ```
 
-The CLI is the primary tool for managing your apps. With it, you can validate and test apps locally, deploy apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
+The CLI is the primary tool for managing your apps. With it, you can validate and test apps locally, push apps so they are available on Zapier, and view logs for debugging. To see a list of all the available commands, try `zapier help`.
 
 Now that your CLI is installed - you'll need to identify yourself via the CLI.
 
@@ -339,14 +339,14 @@ Looking good locally! Let's move on.
 
 ### Deploying an App
 
-So far, everything we have done has been local, on your machine. It's been fun, but we want our app on Zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and deploy it to Zapier.
+So far, everything we have done has been local, on your machine. It's been fun, but we want our app on Zapier.com so we can use it with the thousands of other integrations! To do so, we need to take our working local app and push it to Zapier.
 
-Let's deploy a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version deployed.
+Let's push a version of your app! You can can have many versions of an app, which simplifies making breaking changes and testing in the future. For now, we just need a single version pushed.
 
-> If this is your first time deploying your app version - we will ask you to provide a name so we can register your app - this is a one time thing!
+> If this is your first time pushing your app version - we will ask you to provide a name so we can register your app - this is a one time thing!
 
 ```bash
-zapier deploy
+zapier push
 # Preparing to build and upload your app.
 #
 #   Copying project to temp directory - done!
@@ -361,7 +361,7 @@ zapier deploy
 # Build and upload complete! You should see it in your Zapier editor at https://testing.zapier.com/app/editor now!
 ```
 
-Now that your app version is properly deployed, log in and visit [https://testing.zapier.com/app/editor](https://testing.zapier.com/app/editor) to create a Zap and check our progress.
+Now that your app version is properly pushed, log in and visit [https://testing.zapier.com/app/editor](https://testing.zapier.com/app/editor) to create a Zap and check our progress.
 
 You'll see the app listed as an available option for the first step. Selecting it, you'll see the "New Recipe" trigger. At this point, we've come full circle on the trigger definition from earlier. Remember that, as part of the metadata, we defined a `display` property with a label and help text. Those properties control the info you see inside the Zapier UI.
 
@@ -380,7 +380,7 @@ zapier logs --type=http
 #   Most recent logs near the bottom.
 ```
 
-Good work, we've built a trigger locally and deployed it to Zapier.
+Good work, we've built a trigger locally and pushed it to Zapier.
 
 ### Adding Authentication
 
@@ -448,10 +448,10 @@ const App = {
 
 `beforeRequest` is a list of functions that are called before every HTTP request, letting you add headers, query params, etc. to all outbound requests. In our case, every HTTP request will now have the API key added in a header.
 
-To check our progress, we need to re-deploy our app.
+To check our progress, we need to re-push our app.
 
 ```bash
-zapier deploy
+zapier push
 ```
 
 Go back to your Zap at `https://testing.zapier.com`. You'll see a new 'Connect Account' item in your 'New Recipe' trigger. Add an account for our app (enter any value you like for the API key, the mock API does not care).
@@ -541,8 +541,8 @@ zapier test
 Next, you'll probably want to upload app to Zapier itself so you can start testing live.
 
 ```bash
-# deploy your app to Zapier
-zapier deploy
+# push your app to Zapier
+zapier push
 ```
 
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
@@ -643,7 +643,7 @@ module.export = App;
 
 ## Registering an App
 
-Registering your App with Zapier is a necessary first step which only enables basic administrative functions. It should happen before `zapier deploy` which is to used to actually expose an App Version in the Zapier interface and editor.
+Registering your App with Zapier is a necessary first step which only enables basic administrative functions. It should happen before `zapier push` which is to used to actually expose an App Version in the Zapier interface and editor.
 
 ```bash
 # register your app
@@ -653,7 +653,7 @@ zapier register "Zapier Example"
 zapier apps
 ```
 
-> Note: this doesn't put your app in the editor - see the docs on deploying an App Version to do that!
+> Note: this doesn't put your app in the editor - see the docs on pushing an App Version to do that!
 
 If you'd like to manage your **App**, use these commands:
 
@@ -661,7 +661,7 @@ If you'd like to manage your **App**, use these commands:
 * `zapier register "Name"` - creates a new app in Zapier
 * `zapier link` - lists and links a selected app in Zapier to your current folder
 * `zapier history` - print the history of your app
-* `zapier collaborate [user@example.com]` - add admins to your app who can deploy
+* `zapier collaborate [user@example.com]` - add admins to your app who can push
 * `zapier invite [user@example.com]` - add users to try your app before promotion
 
 
@@ -670,8 +670,8 @@ If you'd like to manage your **App**, use these commands:
 An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, **every App Version is private** but you can `zapier promote` it to production for use by over 1 million Zapier users.
 
 ```bash
-# deploy your app version to Zapier
-zapier deploy
+# push your app version to Zapier
+zapier push
 
 # list your versions
 zapier versions
@@ -680,7 +680,7 @@ zapier versions
 If you'd like to manage your **Version**, use these commands:
 
 * `zapier versions` - list the versions for the current directory's app
-* `zapier deploy` - deploy the current version the of current directory's app & version (read from `package.json`)
+* `zapier push` - push the current version the of current directory's app & version (read from `package.json`)
 * `zapier promote [1.0.0]` - mark a version as the "production" version
 * `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
@@ -689,7 +689,7 @@ If you'd like to manage your **Version**, use these commands:
 
 ### Private App Version (default)
 
-A simple `zapier deploy` will only create the App Version in your editor. No one else using Zapier can see it or use it.
+A simple `zapier push` will only create the App Version in your editor. No one else using Zapier can see it or use it.
 
 
 ### Sharing an App Version
@@ -1266,7 +1266,7 @@ variables defined on the command line. They are useful when you have data like a
 don't want to commit to source control. Environment variables can also be used as a quick way to toggle between a
 a staging and production environment during app development.
 
-It is important to note that **variables are defined on a per-version basis!** When you deploy a new version, the
+It is important to note that **variables are defined on a per-version basis!** When you push a new version, the
 existing variables from the previous version are copied, so you don't have to manually add them. However, edits
 made to one version's environment will not affect the other versions.
 
