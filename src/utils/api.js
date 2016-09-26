@@ -26,9 +26,7 @@ const readCredentials = (credentials) => {
     credentials ||
     readFile(constants.AUTH_LOCATION, 'Please run `zapier auth`.')
       .then((buf) => {
-        const data = JSON.parse(buf.toString());
-        process.env.ZAPIER_DEPLOY_KEY = data.deployKey;
-        return data;
+        return JSON.parse(buf.toString());
       })
   );
 };

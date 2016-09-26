@@ -3,6 +3,7 @@ const utils = require('../utils');
 
 const test = (context) => {
   const extraEnv = {};
+
   if (!global.argOpts['very-quiet']) {
     extraEnv.LOG_TO_STDOUT = 'true';
   }
@@ -10,12 +11,18 @@ const test = (context) => {
     extraEnv.DETAILED_LOG_TO_STDOUT = 'true';
   }
 
-  const env = _.extend({}, process.env, extraEnv);
-  return utils.runCommand('npm', ['run', '--silent', 'test'], {stdio: 'inherit', env})
-    .then((stdout) => {
-      if (stdout) {
-        context.line(stdout);
-      }
+  return utils.readCredentials()
+    .then((credentials) => {
+      extraEnv.ZAPIER_DEPLOY_KEY = credentials.deployKey;
+    })
+    .then(() => {
+      const env = _.extend({}, process.env, extraEnv);
+      return utils.runCommand('npm', ['run', '--silent', 'test'], {stdio: 'inherit', env})
+        .then((stdout) => {
+          if (stdout) {
+            context.line(stdout);
+          }
+        });
     });
 };
 test.argsSpec = [
