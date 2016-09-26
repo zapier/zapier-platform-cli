@@ -20,13 +20,15 @@ const {
 } = require('./display');
 
 
-// Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
+// Reads the JSON file at ~/.zapierrc (AUTH_LOCATION).
 const readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
     readFile(constants.AUTH_LOCATION, 'Please run `zapier auth`.')
       .then((buf) => {
-        return JSON.parse(buf.toString());
+        const data = JSON.parse(buf.toString());
+        process.env.ZAPIER_DEPLOY_KEY = data.deployKey;
+        return data;
       })
   );
 };
