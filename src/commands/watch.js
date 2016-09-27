@@ -58,6 +58,7 @@ const watch = (context) => {
 
   utils.nodeWatch(process.cwd(), {}, (filePath) => {
     const fileName = filePath.replace(process.cwd() + path.sep, '');
+    if (fileName.startsWith('.git')) { return; }
     utils.printStarting(`Reloading for ${fileName}`);
     resetHandler()
       .then(reloadDefinition)
