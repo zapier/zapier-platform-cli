@@ -31,9 +31,9 @@ const watch = (context) => {
   };
   resetHandler();
 
-  const pingZapierForRPC = () => {
+  const pingZapierForTunnel = () => {
     if (!localProxyUrl) { return Promise.resolve(); }
-    const url = `/apps/${localAppId}/versions/${orgVersion}/rpc`;
+    const url = `/apps/${localAppId}/versions/${orgVersion}/tunnel`;
     return utils.callAPI(url, {method: 'PUT', body: {
       url: localProxyUrl,
       definition: localDefinition || {},
@@ -62,7 +62,7 @@ const watch = (context) => {
     utils.printStarting(`Reloading for ${fileName}`);
     resetHandler()
       .then(reloadDefinition)
-      .then(pingZapierForRPC)
+      .then(pingZapierForTunnel)
       .then(() => utils.printDone())
       .catch((err) => {
         utils.printDone(false);
@@ -79,7 +79,7 @@ const watch = (context) => {
       utils.printStarting('Starting local server on port ' + options.port);
       return Promise.all([
         app,
-        utils.localAppRPCServer(options)
+        utils.localAppTunnelServer(options)
       ]);
     })
     .then(([app, server]) => {
@@ -102,7 +102,7 @@ const watch = (context) => {
       context.line();
 
       // We must ping Zapier with the new deets a minimum of every 15 seconds.
-      return utils.promiseForever(pingZapierForRPC, 15000);
+      return utils.promiseForever(pingZapierForTunnel, 15000);
     });
 };
 watch.hide = true;

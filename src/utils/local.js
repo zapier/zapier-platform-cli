@@ -64,8 +64,8 @@ const createAWSError = (error) => {
   };
 };
 
-// Stands up a local RPC server for app commands.
-const localAppRPCServer = (options) => {
+// Stands up a local tunnel server for app commands.
+const localAppTunnelServer = (options) => {
   const jayson = require('jayson');
 
   const server = jayson.server({
@@ -111,5 +111,5 @@ module.exports = {
   makeTunnelUrl,
   getLocalAppHandler,
   localAppCommand,
-  localAppRPCServer,
+  localAppTunnelServer,
 };
