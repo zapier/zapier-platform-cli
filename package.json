@@ -32,9 +32,8 @@
     "cli-table2": "0.2.0",
     "colors": "1.1.2",
     "fs-extra": "0.30.0",
-    "jayson": "2.0.2",
     "lodash": "4.15.0",
-    "node-fetch": "1.6.0",
+    "node-fetch": "1.6.1",
     "string-length": "1.0.1",
     "through2": "2.0.1",
     "tmp": "0.0.28"
@@ -48,7 +47,10 @@
     "litdoc": "1.5.2",
     "markdown-toc": "0.12.16",
     "mocha": "3.0.2",
-    "should": "11.1.0"
+    "should": "11.1.0",
+    "jayson": "2.0.2",
+    "ngrok": "2.2.3",
+    "node-watch": "0.4.0"
   },
   "bin": {
     "zapier": "zapier.js"

@@ -16,6 +16,7 @@ const block = (str) => '> ' + str.split('\n').join('\n> ');
 // Takes all the cmd.docs and puts them into a big md file.
 const generateCliMarkdown = () => {
   return _.orderBy(Object.keys(commands))
+    .filter((name) => !commands[name].hide)
     .map((name) => {
       const command = commands[name];
       return `\

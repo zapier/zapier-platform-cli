@@ -1,7 +1,6 @@
 /*eslint no-unused-vars: 0 */
 const path = require('path');
 const colors = require('colors');
-const nodeWatch = require('node-watch');
 
 const utils = require('../utils');
 
@@ -33,6 +32,7 @@ const watch = (context) => {
   resetHandler();
 
   const pingZapierForRPC = () => {
+    if (!localProxyUrl) { return Promise.resolve(); }
     const url = `/apps/${localAppId}/versions/${orgVersion}/rpc`;
     return utils.callAPI(url, {method: 'PUT', body: {
       url: localProxyUrl,
@@ -56,7 +56,7 @@ const watch = (context) => {
   };
   reloadDefinition();
 
-  nodeWatch(process.cwd(), {}, (filePath) => {
+  utils.nodeWatch(process.cwd(), {}, (filePath) => {
     const fileName = filePath.replace(process.cwd() + path.sep, '');
     utils.printStarting(`Reloading for ${fileName}`);
     resetHandler()
@@ -104,6 +104,7 @@ const watch = (context) => {
       return utils.promiseForever(pingZapierForRPC, 15000);
     });
 };
+watch.hide = true;
 watch.argsSpec = [];
 watch.argOptsSpec = {
   port: {help: 'what port should we host/listen for tunneling', default: defaultPort},

@@ -1,15 +1,15 @@
 const _ = require('lodash');
 const colors = require('colors');
 const path = require('path');
-const jayson = require('jayson');
 
 const {PLATFORM_PACKAGE} = require('../constants');
 
 const {prettyJSONstringify} = require('./display');
-// const {promisify} = require('./promisify');
 
-// const makeTunnelUrl = (...args) => promisify(require('ngrok').connect(...args));
-const makeTunnelUrl = () => Promise.resolve('maybe later');
+const {promisify} = require('./promisify');
+
+const nodeWatch = (...args) => require('node-watch')(...args);
+const makeTunnelUrl = (...args) => promisify(require('ngrok').connect)(...args);
 
 const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   const entryPath = `${process.cwd()}/index`;
@@ -66,6 +66,7 @@ const createAWSError = (error) => {
 
 // Stands up a local RPC server for app commands.
 const localAppRPCServer = (options) => {
+  const jayson = require('jayson');
 
   const server = jayson.server({
     test: (args, callback) => {
@@ -106,6 +107,7 @@ const localAppRPCServer = (options) => {
 };
 
 module.exports = {
+  nodeWatch,
   makeTunnelUrl,
   getLocalAppHandler,
   localAppCommand,

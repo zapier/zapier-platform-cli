@@ -5,8 +5,7 @@ module.exports = {
   register: require('./register'),
   scaffold: require('./scaffold'),
   describe: require('./describe'),
-  // hiding for now until we can work out the bugs
-  // watch: require('./watch'),
+  watch: require('./watch'),
   test: require('./test'),
   link: require('./link'),
   apps: require('./apps'),

@@ -19,6 +19,7 @@ const help = (context, cmd) => {
     .then(() => {
       context.line();
       const allCommands = _.orderBy(Object.keys(commands))
+        .filter((name) => !commands[name].hide)
         .map((name) => {
           return {
             name,
