@@ -2,7 +2,7 @@ const _ = require('lodash');
 const path = require('path');
 const {camelCase, snakeCase} = require('./misc');
 const {readFile, writeFile, ensureDir} = require('./files');
-const {printStarting} = require('./display');
+const {printStarting, printDone} = require('./display');
 
 // map v2 names to v3 names
 const typeNamesMap = {
@@ -19,9 +19,13 @@ const renderTemplate = (templateFile, templateContext, fileName, dir) => {
     .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(templateContext))
     .then(rendered => {
       printStarting(`Writing ${fileName}`);
-      return ensureDir(path.dirname(destFile))
+      return rendered;
+    })
+    .then(rendered => {
+      ensureDir(path.dirname(destFile))
         .then(() => writeFile(destFile, rendered));
-    });
+    })
+    .then(() => printDone());
 };
 
 const convertItem = (type, name, newAppDir) => {

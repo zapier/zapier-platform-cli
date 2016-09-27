@@ -39,16 +39,10 @@ const initApp = (context, location, createApp) => {
     }
   };
 
-  const template = global.argOpts.template || 'minimal';
-
-  return confirmNonEmptyDir(location).
-    then(() => {
-      printStarting(`Downloading zapier/zapier-platform-example-app-${template} starter app`);
-    })
+  return confirmNonEmptyDir(location)
     .then(() => removeDir(tempAppDir))
     .then(() => ensureDir(tempAppDir))
     .then(() => createApp(tempAppDir))
-    .then(() => printDone())
     .then(() => ensureDir(appDir))
     .then(() => copyDir(tempAppDir, appDir, copyOpts))
     .then(() => removeDir(tempAppDir))

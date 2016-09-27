@@ -11,10 +11,14 @@ const convert = (context, appid, location) => {
 
   const createApp = (tempAppDir) => {
     const url = constants.BASE_ENDPOINT + `/api/developer/v1/apps/${appid}/dump`;
-    return utils.callAPI(null, {url}).then(legacyApp => {
-      return utils.convertApp(legacyApp, tempAppDir)
-        .then(() => utils.copyDir(tempAppDir, location));
-    });
+
+    utils.printStarting(`Downloading v2 app from ${url}`);
+    return utils.callAPI(null, {url})
+      .then(legacyApp => {
+        utils.printDone();
+        return legacyApp;
+      })
+      .then(legacyApp => utils.convertApp(legacyApp, tempAppDir));
   };
 
   return utils.initApp(context, location, createApp)

@@ -98,7 +98,9 @@ const copyDir = (src, dst, options) => {
         if (dstExists && options.clobber) {
           fse.removeSync(dstItem);
         } else if (dstExists) {
-          options.onSkip(dstItem);
+          if (!stat.isDirectory()) {
+            options.onSkip(dstItem);
+          }
           return Promise.resolve();
         }
 
