@@ -22,7 +22,7 @@ module.exports = {
 
   operation: {
     inputFields: [
-      {key: 'name', required: true}
+<%= FIELDS %>
     ],
     perform: create<%= CAMEL %>
   }

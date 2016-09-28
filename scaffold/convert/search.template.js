@@ -21,7 +21,7 @@ module.exports = {
 
   operation: {
     inputFields: [
-      {key: 'name', required: true, helpText: 'Find the <%= NOUN %> with this name.'}
+<%= FIELDS %>
     ],
     perform: search<%= CAMEL %>
   }

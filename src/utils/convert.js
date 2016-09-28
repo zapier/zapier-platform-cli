@@ -4,54 +4,103 @@ const {camelCase, snakeCase} = require('./misc');
 const {readFile, writeFile, ensureDir} = require('./files');
 const {printStarting, printDone} = require('./display');
 
+const MIN_HELP_TEXT_LENGTH = 10;
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 
-// map v2 names to v3 names
-const typeNamesMap = {
+// map v2 field types to v2 types
+const typesMap = {
+  Unicode: 'string',
+  Textarea: 'text',
+  Integer: 'integer',
+  Float: 'number',
+  Boolean: 'boolean',
+  DateTime: 'datetime',
+  File: 'file',
+  Password: 'password'
+};
+
+// map v2 step names to v3 names
+const stepNamesMap = {
   triggers: 'trigger',
   searches: 'search',
   actions: 'write'
 };
 
-const renderTemplate = (templateFile, templateContext, fileName, dir) => {
-  const destFile = path.join(dir, fileName);
-
+const renderTemplate = (templateFile, templateContext) => {
   return readFile(templateFile)
     .then(templateBuf => templateBuf.toString())
-    .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(templateContext))
-    .then(rendered => {
-      printStarting(`Writing ${fileName}`);
-      return rendered;
-    })
-    .then(rendered => {
-      ensureDir(path.dirname(destFile))
-        .then(() => writeFile(destFile, rendered));
-    })
-    .then(() => printDone());
+    .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(templateContext));
 };
 
-const convertItem = (type, name, newAppDir) => {
+const createFile = (content, fileName, dir) => {
+  const destFile = path.join(dir, fileName);
+
+  return ensureDir(path.dirname(destFile))
+    .then(() => writeFile(destFile, content))
+    .then(() => {
+      printStarting(`Writing ${fileName}`);
+      printDone();
+    });
+};
+
+const padHelpText = (text) => {
+  const msg = `(help text must be at least ${MIN_HELP_TEXT_LENGTH} characters)`;
+  if (!_.isString(text)) {
+    return msg;
+  }
+  if (text.length < MIN_HELP_TEXT_LENGTH) {
+    return `${text} ${msg}`;
+  }
+  return text;
+};
+
+const renderField = (definition, key) => {
   const templateContext = {
-    KEY: snakeCase(name),
-    CAMEL: camelCase(name),
-    NOUN: _.capitalize(name),
-    LOWER_NOUN: name.toLowerCase()
+    KEY: key,
+    LABEL: definition.label,
+    HELP_TEXT: padHelpText(definition.help_text),
+    TYPE: typesMap[definition.type] || 'string',
+    REQUIRED: Boolean(definition.required)
   };
 
-  // where will we write/required the new file?
-  const destMap = {
-    trigger: `triggers/${templateContext.KEY}`,
-    search: `searches/${templateContext.KEY}`,
-    write: `writes/${templateContext.KEY}`,
+  const templateFile = path.join(TEMPLATE_DIR, '/field.template.js');
+  return renderTemplate(templateFile, templateContext)
+    .then(content => content.replace(/\n$/, ''));
+};
+
+// convert a trigger, write or search
+const renderStep = (type, definition, key) => {
+  const templateContext = {
+    KEY: snakeCase(key),
+    CAMEL: camelCase(key),
+    NOUN: _.capitalize(key),
+    LOWER_NOUN: key.toLowerCase()
   };
 
   const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
-  const dest = destMap[type] + '.js';
 
-  return renderTemplate(templateFile, templateContext, dest, newAppDir);
+  return Promise.all(_.map(definition.fields, renderField))
+    .then(fields => {
+      templateContext.FIELDS = fields.join(',\n');
+      return renderTemplate(templateFile, templateContext);
+    });
 };
 
-const createIndex = (legacyApp, newAppDir) => {
+// write a new trigger, write or search
+const writeStep = (type, definition, key, newAppDir) => {
+  const stepTypeMap = {
+    trigger: 'triggers',
+    search: 'searches',
+    write: 'writes'
+  };
+
+  const fileName = `${stepTypeMap[type]}/${snakeCase(key)}.js`;
+
+  return renderStep(type, definition, key)
+    .then(content => createFile(content, fileName, newAppDir));
+};
+
+const renderIndex = (legacyApp) => {
   const importLines = [];
 
   const dirMap = {
@@ -66,7 +115,7 @@ const createIndex = (legacyApp, newAppDir) => {
     WRITES: ''
   };
 
-  _.each(typeNamesMap, (v3Type, v2Type) => {
+  _.each(stepNamesMap, (v3Type, v2Type) => {
     const lines = [];
 
     _.each(legacyApp[v2Type], (definition, name) => {
@@ -84,33 +133,44 @@ const createIndex = (legacyApp, newAppDir) => {
   templateContext.REQUIRES = importLines.join('\n');
 
   const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
-  return renderTemplate(templateFile, templateContext, 'index.js', newAppDir);
+  return renderTemplate(templateFile, templateContext);
 };
 
-const createPackageJson = (legacyApp, newAppDir) => {
+const writeIndex = (legacyApp, newAppDir) => {
+  return renderIndex(legacyApp)
+    .then(content => createFile(content, 'index.js', newAppDir));
+};
+
+const renderPackageJson = (legacyApp) => {
   const templateContext = {
     NAME: _.kebabCase(legacyApp.general.title),
     DESCRIPTION: legacyApp.general.description
   };
 
   const templateFile = path.join(TEMPLATE_DIR, '/package.template.json');
-  return renderTemplate(templateFile, templateContext, 'package.json', newAppDir);
+  return renderTemplate(templateFile, templateContext);
+};
+
+const writePackageJson = (legacyApp, newAppDir) => {
+  return renderPackageJson(legacyApp)
+    .then(content => createFile(content, 'package.json', newAppDir));
 };
 
 const convertApp = (legacyApp, newAppDir) => {
   const promises = [];
-  _.each(typeNamesMap, (v3Type, v2Type) => {
-    _.each(legacyApp[v2Type], (definition, name) => {
-      promises.push(convertItem(v3Type, name, newAppDir));
+  _.each(stepNamesMap, (v3Type, v2Type) => {
+    _.each(legacyApp[v2Type], (definition, key) => {
+      promises.push(writeStep(v3Type, definition, key, newAppDir));
     });
   });
 
-  promises.push(createIndex(legacyApp, newAppDir));
-  promises.push(createPackageJson(legacyApp, newAppDir));
+  promises.push(writeIndex(legacyApp, newAppDir));
+  promises.push(writePackageJson(legacyApp, newAppDir));
 
   return Promise.all(promises);
 };
 
 module.exports = {
+  renderField,
   convertApp
 };

@@ -21,7 +21,7 @@ module.exports = {
 
   operation: {
     inputFields: [
-      {key: 'tagName', required: true, helpText: 'Only trigger on <%= NOUN %> with this tag.'}
+<%= FIELDS %>
     ],
     perform: trigger<%= CAMEL %>
   }
