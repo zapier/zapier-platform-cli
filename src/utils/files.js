@@ -100,8 +100,8 @@ const copyDir = (src, dst, options) => {
         } else if (dstExists) {
           if (!stat.isDirectory()) {
             options.onSkip(dstItem);
+            return Promise.resolve();
           }
-          return Promise.resolve();
         }
 
         if (stat.isDirectory()) {

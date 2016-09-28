@@ -55,7 +55,6 @@ $ zapier init example-app --template=minimal
 #   Copy /users/username/code/example-app/index.js - done!
 #   Copy /users/username/code/example-app/package.json - done!
 #   Copy /users/username/code/example-app/test/index.js - done!
-#   Copying starter app - done!
 #
 # Finished! You might need to \`npm install\` then try \`zapier test\`!
 ${'```'}

@@ -45,9 +45,7 @@ const initApp = (context, location, createApp) => {
     .then(() => createApp(tempAppDir))
     .then(() => ensureDir(appDir))
     .then(() => copyDir(tempAppDir, appDir, copyOpts))
-    .then(() => removeDir(tempAppDir))
-    .then(() => printStarting('Copying starter app'))
-    .then(() => printDone());
+    .then(() => removeDir(tempAppDir));
 };
 
 module.exports = {
