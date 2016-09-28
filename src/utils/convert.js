@@ -4,6 +4,8 @@ const {camelCase, snakeCase} = require('./misc');
 const {readFile, writeFile, ensureDir} = require('./files');
 const {printStarting, printDone} = require('./display');
 
+const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
+
 // map v2 names to v3 names
 const typeNamesMap = {
   triggers: 'trigger',
@@ -43,7 +45,7 @@ const convertItem = (type, name, newAppDir) => {
     write: `writes/${templateContext.KEY}`,
   };
 
-  const templateFile = path.join(__dirname, `../../scaffold/${type}.template.js`);
+  const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
   const dest = destMap[type] + '.js';
 
   return renderTemplate(templateFile, templateContext, dest, newAppDir);
@@ -81,7 +83,7 @@ const createIndex = (legacyApp, newAppDir) => {
 
   templateContext.REQUIRES = importLines.join('\n');
 
-  const templateFile = path.join(__dirname, '../../scaffold/index.template.js');
+  const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
   return renderTemplate(templateFile, templateContext, 'index.js', newAppDir);
 };
 
@@ -91,7 +93,7 @@ const createPackageJson = (legacyApp, newAppDir) => {
     DESCRIPTION: legacyApp.general.description
   };
 
-  const templateFile = path.join(__dirname, '../../scaffold/package.template.json');
+  const templateFile = path.join(TEMPLATE_DIR, '/package.template.json');
   return renderTemplate(templateFile, templateContext, 'package.json', newAppDir);
 };
 
