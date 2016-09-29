@@ -54,18 +54,28 @@ const padHelpText = (text) => {
   return text;
 };
 
-const renderField = (definition, key) => {
-  const templateContext = {
-    KEY: key,
-    LABEL: definition.label,
-    HELP_TEXT: padHelpText(definition.help_text),
-    TYPE: typesMap[definition.type] || 'string',
-    REQUIRED: Boolean(definition.required)
-  };
+const renderProp = (key, value) => `${key}: ${value}`;
 
-  const templateFile = path.join(TEMPLATE_DIR, '/field.template.js');
-  return renderTemplate(templateFile, templateContext)
-    .then(content => content.replace(/\n$/, ''));
+const quote = s => `'${s}'`;
+
+const renderField = (definition, key) => {
+  let props = [
+    renderProp('key', quote(key)),
+    renderProp('label', quote(definition.label)),
+    renderProp('helpText', quote(padHelpText(definition.help_text))),
+    renderProp('type', quote(typesMap[definition.type] || 'string')),
+    renderProp('required', Boolean(definition.required))
+  ];
+
+  if (definition.placeholder) {
+    props.push(renderProp('placeholder', quote(definition.placeholder)));
+  }
+
+  props = props.map(s => ' '.repeat(8) + s);
+
+  return `      {
+${props.join(',\n')}
+      }`;
 };
 
 // convert a trigger, write or search
@@ -78,12 +88,9 @@ const renderStep = (type, definition, key) => {
   };
 
   const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
-
-  return Promise.all(_.map(definition.fields, renderField))
-    .then(fields => {
-      templateContext.FIELDS = fields.join(',\n');
-      return renderTemplate(templateFile, templateContext);
-    });
+  const fields = _.map(definition.fields, renderField);
+  templateContext.FIELDS = fields.join(',\n');
+  return renderTemplate(templateFile, templateContext);
 };
 
 // write a new trigger, write or search
