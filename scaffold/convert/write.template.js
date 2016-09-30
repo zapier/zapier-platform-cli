@@ -24,6 +24,7 @@ module.exports = {
     inputFields: [
 <%= FIELDS %>
     ],
+<%= SAMPLE %>
     perform: create<%= CAMEL %>
   }
 };

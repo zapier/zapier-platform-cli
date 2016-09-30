@@ -23,6 +23,7 @@ module.exports = {
     inputFields: [
 <%= FIELDS %>
     ],
+<%= SAMPLE %>
     perform: search<%= CAMEL %>
   }
 };

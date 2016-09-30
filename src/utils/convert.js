@@ -9,14 +9,14 @@ const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 
 // map v2 field types to v2 types
 const typesMap = {
-  Unicode: 'string',
-  Textarea: 'text',
-  Integer: 'integer',
-  Float: 'number',
-  Boolean: 'boolean',
-  DateTime: 'datetime',
-  File: 'file',
-  Password: 'password'
+  unicode: 'string',
+  textarea: 'text',
+  integer: 'integer',
+  float: 'number',
+  boolean: 'boolean',
+  datetime: 'datetime',
+  file: 'file',
+  password: 'password'
 };
 
 // map v2 step names to v3 names
@@ -59,11 +59,13 @@ const renderProp = (key, value) => `${key}: ${value}`;
 const quote = s => `'${s}'`;
 
 const renderField = (definition, key) => {
+  const type = definition.type && typesMap[definition.type.toLowerCase()] || 'string';
+
   let props = [
     renderProp('key', quote(key)),
     renderProp('label', quote(definition.label)),
     renderProp('helpText', quote(padHelpText(definition.help_text))),
-    renderProp('type', quote(typesMap[definition.type] || 'string')),
+    renderProp('type', quote(type)),
     renderProp('required', Boolean(definition.required))
   ];
 
@@ -78,18 +80,38 @@ ${props.join(',\n')}
       }`;
 };
 
+const renderSampleField = (def) => {
+  const type = typesMap[def.type];
+
+  return `      ${def.key}: {
+        type: ${quote(type)},
+        label: ${quote(def.label)}
+      }`;
+};
+
+const renderSample = (definition) => {
+  const fields = _.map(definition.sample_result_fields, renderSampleField);
+
+  return `    sample: {
+${fields.join(',\n')}
+    }`;
+};
+
 // convert a trigger, write or search
 const renderStep = (type, definition, key) => {
+  const fields = _.map(definition.fields, renderField);
+  const sample = !_.isEmpty(definition.sample_result_fields) ? renderSample(definition) + ',\n' : '';
+
   const templateContext = {
     KEY: snakeCase(key),
     CAMEL: camelCase(key),
     NOUN: _.capitalize(key),
-    LOWER_NOUN: key.toLowerCase()
+    LOWER_NOUN: key.toLowerCase(),
+    FIELDS: fields.join(',\n'),
+    SAMPLE: sample
   };
 
   const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
-  const fields = _.map(definition.fields, renderField);
-  templateContext.FIELDS = fields.join(',\n');
   return renderTemplate(templateFile, templateContext);
 };
 
