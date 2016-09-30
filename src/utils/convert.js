@@ -61,13 +61,15 @@ const quote = s => `'${s}'`;
 const renderField = (definition, key) => {
   const type = definition.type && typesMap[definition.type.toLowerCase()] || 'string';
 
-  let props = [
-    renderProp('key', quote(key)),
-    renderProp('label', quote(definition.label)),
-    renderProp('helpText', quote(padHelpText(definition.help_text))),
-    renderProp('type', quote(type)),
-    renderProp('required', Boolean(definition.required))
-  ];
+  let props = [];
+
+  props.push(renderProp('key', quote(key)));
+  if (definition.label) {
+    props.push(renderProp('label', quote(definition.label)));
+  }
+  props.push(renderProp('helpText', quote(padHelpText(definition.help_text))));
+  props.push(renderProp('type', quote(type)));
+  props.push(renderProp('required', Boolean(definition.required)));
 
   if (definition.placeholder) {
     props.push(renderProp('placeholder', quote(definition.placeholder)));
@@ -201,5 +203,7 @@ const convertApp = (legacyApp, newAppDir) => {
 
 module.exports = {
   renderField,
+  renderSample,
+  renderStep,
   convertApp
 };
