@@ -78,25 +78,72 @@ const renderField = (definition, key) => {
   props = props.map(s => ' '.repeat(8) + s);
 
   return `      {
-${props.join(',\n')}
-      }`;
+    ${props.join(',\n')}
+  }`;
 };
 
 const renderSampleField = (def) => {
   const type = typesMap[def.type];
 
   return `      ${def.key}: {
-        type: ${quote(type)},
-        label: ${quote(def.label)}
-      }`;
+    type: ${quote(type)},
+    label: ${quote(def.label)}
+  }`;
 };
 
 const renderSample = (definition) => {
   const fields = _.map(definition.sample_result_fields, renderSampleField);
 
   return `    sample: {
-${fields.join(',\n')}
-    }`;
+    ${fields.join(',\n')}
+  }`;
+};
+
+const renderBasicAuth = (definition) => {
+  const fields = _.map(definition.auth_fields, renderField);
+
+  const auth = `{
+    type: 'basic',
+    test: {
+      url: 'http://www.example.com/auth' // TODO just an example, you'll need to supply the real URL
+    },
+    fields: [
+      ${fields.join(',\n')}
+    ]
+  }`;
+
+  return Promise.resolve(auth);
+};
+
+const renderOAuth2 = (definition) => {
+  const authorizeUrl = _.get(definition, ['general', 'auth_urls', 'authorization_url'], 'TODO');
+  const accessTokenUrl = _.get(definition, ['general', 'auth_urls', 'access_token_url'], 'TODO');
+
+  const templateContext = {
+    AUTHORIZE_URL: authorizeUrl,
+    ACCESS_TOKEN_URL: accessTokenUrl
+  };
+
+  const templateFile = path.join(TEMPLATE_DIR, '/oauth2.template.js');
+  return renderTemplate(templateFile, templateContext);
+};
+
+const renderAuth = (definition) => {
+  const authTypeMap = {
+    'Basic Auth': 'basic',
+    'OAuth V2': 'oauth2'
+  };
+  const type = authTypeMap[definition.general.auth_type];
+
+  if (type === 'basic') {
+    return renderBasicAuth(definition);
+  } else if (type === 'oauth2') {
+    return renderOAuth2(definition);
+  } else {
+    return Promise.resolve(`{
+      // TODO: complete auth settings
+    }`);
+  }
 };
 
 // convert a trigger, write or search
@@ -132,39 +179,42 @@ const writeStep = (type, definition, key, newAppDir) => {
 };
 
 const renderIndex = (legacyApp) => {
-  const importLines = [];
+  return renderAuth(legacyApp).then(auth => {
+    const importLines = [];
 
-  const dirMap = {
-    trigger: 'triggers',
-    search: 'searches',
-    write: 'writes'
-  };
+    const dirMap = {
+      trigger: 'triggers',
+      search: 'searches',
+      write: 'writes'
+    };
 
-  const templateContext = {
-    TRIGGERS: '',
-    SEARCHES: '',
-    WRITES: ''
-  };
+    const templateContext = {
+      AUTHENTICATION: auth,
+      TRIGGERS: '',
+      SEARCHES: '',
+      WRITES: ''
+    };
 
-  _.each(stepNamesMap, (v3Type, v2Type) => {
-    const lines = [];
+    _.each(stepNamesMap, (v3Type, v2Type) => {
+      const lines = [];
 
-    _.each(legacyApp[v2Type], (definition, name) => {
-      const varName = `${camelCase(name)}${_.capitalize(camelCase(v3Type))}`;
-      const requireFile = `${dirMap[v3Type]}/${snakeCase(name)}`;
-      importLines.push(`const ${varName} = require('./${requireFile}');`);
+      _.each(legacyApp[v2Type], (definition, name) => {
+        const varName = `${camelCase(name)}${_.capitalize(camelCase(v3Type))}`;
+        const requireFile = `${dirMap[v3Type]}/${snakeCase(name)}`;
+        importLines.push(`const ${varName} = require('./${requireFile}');`);
 
-      lines.push(`[${varName}.key]: ${varName},`);
+        lines.push(`[${varName}.key]: ${varName},`);
+      });
+
+      const section = dirMap[v3Type].toUpperCase();
+      templateContext[section] = lines.join(',\n');
     });
 
-    const section = dirMap[v3Type].toUpperCase();
-    templateContext[section] = lines.join(',\n');
+    templateContext.REQUIRES = importLines.join('\n');
+
+    const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
+    return renderTemplate(templateFile, templateContext);
   });
-
-  templateContext.REQUIRES = importLines.join('\n');
-
-  const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
-  return renderTemplate(templateFile, templateContext);
 };
 
 const writeIndex = (legacyApp, newAppDir) => {
@@ -204,6 +254,7 @@ const convertApp = (legacyApp, newAppDir) => {
 module.exports = {
   renderField,
   renderSample,
+  renderAuth,
   renderStep,
   convertApp
 };
