@@ -78,25 +78,25 @@ const renderField = (definition, key) => {
   props = props.map(s => ' '.repeat(8) + s);
 
   return `      {
-    ${props.join(',\n')}
-  }`;
+${props.join(',\n')}
+      }`;
 };
 
 const renderSampleField = (def) => {
   const type = typesMap[def.type];
 
   return `      ${def.key}: {
-    type: ${quote(type)},
-    label: ${quote(def.label)}
-  }`;
+        type: ${quote(type)},
+        label: ${quote(def.label)}
+      }`;
 };
 
 const renderSample = (definition) => {
   const fields = _.map(definition.sample_result_fields, renderSampleField);
 
   return `    sample: {
-    ${fields.join(',\n')}
-  }`;
+${fields.join(',\n')}
+    }`;
 };
 
 const renderBasicAuth = (definition) => {
