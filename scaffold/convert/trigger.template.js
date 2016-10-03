@@ -1,3 +1,5 @@
+// Trigger stub created by 'zapier convert'. This is just a stub - you will need to edit!
+
 // triggers on <%= LOWER_NOUN %> with a certain tag
 const trigger<%= CAMEL %> = (z, bundle) => {
   const responsePromise = z.request({

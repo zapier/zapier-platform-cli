@@ -1,3 +1,5 @@
+// Created by 'zapier convert'. This is just a stub - you will need to edit!
+
 <%= REQUIRES %>
 
 const App = {
