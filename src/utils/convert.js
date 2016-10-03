@@ -151,13 +151,18 @@ const renderStep = (type, definition, key) => {
   const fields = _.map(definition.fields, renderField);
   const sample = !_.isEmpty(definition.sample_result_fields) ? renderSample(definition) + ',\n' : '';
 
+  const url = definition.url ?
+        quote(definition.url) + ',' :
+        `'http://example.com/api/${key}.json', // TODO this is just an example`;
+
   const templateContext = {
     KEY: snakeCase(key),
     CAMEL: camelCase(key),
     NOUN: _.capitalize(key),
     LOWER_NOUN: key.toLowerCase(),
     FIELDS: fields.join(',\n'),
-    SAMPLE: sample
+    SAMPLE: sample,
+    URL: url
   };
 
   const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
