@@ -19,8 +19,8 @@ const App = {
     <%= SEARCHES %>
   },
 
-  writes: {
-    <%= WRITES %>
+  creates: {
+    <%= CREATES %>
   }
 
 };

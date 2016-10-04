@@ -78,7 +78,7 @@ You'll see a few things in `index.js`:
  * in `App` definition, `beforeRequest` & `afterResponse` are hooks into the HTTP client
  * in `App` definition, `triggers` will describe ways to trigger off of data in your app
  * in `App` definition, `searches` will describe ways to find data in your app
- * in `App` definition, `writes` will describe ways to create data in your app
+ * in `App` definition, `creates` will describe ways to create data in your app
  * in `App` definition, `resources` are purely optional but convenient ways to describe CRUD-like objects in your app
 
 Let's start by adding a **trigger.** We will configure it to read data from a mocked API:
@@ -450,7 +450,7 @@ With that, we've successfully added authentication to our app!
 
 ### Tutorial Next Steps
 
-Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate different authentication schemes into your app and how to implement things like searches and writes.
+Congrats, you've completed the tutorial! At this point we recommend reading up on the [Z Object](#z-object) and [Bundle Object](#bundle-object) to get a better idea of what is possible within the `perform` functions. You can also check out the other [example apps](#example-apps) to see how to incorporate different authentication schemes into your app and how to implement things like searches and creates.
 
 
 ## Quickstart
@@ -744,14 +744,14 @@ Adding a create method looks very similar.
 [insert-file:./snippets/recipe-create.js]
 ```
 
-Every method you define on a `resource` Zapier converts to the appropriate Trigger, Write, or Search. Our examples
-above would result in an app with a New Recipe Trigger and an Add Recipe Write.
+Every method you define on a `resource` Zapier converts to the appropriate Trigger, Create, or Search. Our examples
+above would result in an app with a New Recipe Trigger and an Add Recipe Create.
 
 
-## Triggers/Searches/Writes
+## Triggers/Searches/Creates
 
-Triggers, Searches, and Writes are the way an app defines what it is able to do. Triggers read
-data into Zapier (i.e. watch for new recipes). Searches locate individual records (find recipe by title). Writes create
+Triggers, Searches, and Creates are the way an app defines what it is able to do. Triggers read
+data into Zapier (i.e. watch for new recipes). Searches locate individual records (find recipe by title). Creates create
 new records in your system (add a recipe to the catalog).
 
 The definition for each of these follows the same structure. Here is an example of a trigger:
@@ -761,7 +761,7 @@ The definition for each of these follows the same structure. Here is an example 
 ```
 
 You can find more details on the definition for each by looking at the [Trigger Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#triggerschema),
-[Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Write Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#writeschema).
+[Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Create Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#createschema).
 
 
 ## Making HTTP Requests
@@ -871,7 +871,7 @@ We provide several methods off of the `z` object, which is provided as the first
 This object holds the user's auth details and the data to for the API requests.
 
 * `authData` - user-provided authentication data, like `api_key` or `access_token`. [(Read more on authentication)[#authentication]]
-* `inputData` - user-provided data for this particular run of the trigger/search/write, as defined by the inputFields. For example:
+* `inputData` - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:
 ```javascript
 {
   createdBy: 'Bobby Flay'
@@ -1020,7 +1020,7 @@ Check out the following example applications to help you get started:
 * [Resource Example](https://github.com/zapier/zapier-platform-example-app-resource) - `zapier init --template=resource`
 * [Trigger Example](https://github.com/zapier/zapier-platform-example-app-trigger) - `zapier init --template=trigger`
 * [Search Example](https://github.com/zapier/zapier-platform-example-app-search) - `zapier init --template=search`
-* [Write Example](https://github.com/zapier/zapier-platform-example-app-write) - `zapier init --template=write`
+* [Create Example](https://github.com/zapier/zapier-platform-example-app-create) - `zapier init --template=create`
 * [Middleware Example](https://github.com/zapier/zapier-platform-example-app-middleware) - `zapier init --template=middleware`
 * [Basic Auth Example](https://github.com/zapier/zapier-platform-example-app-basic-auth) - `zapier init --template=basic-auth`
 * [Custom Auth Example](https://github.com/zapier/zapier-platform-example-app-custom-auth) - `zapier init --template=custom-auth`

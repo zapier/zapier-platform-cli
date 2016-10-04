@@ -19,12 +19,12 @@ const App = {
   resources: {
   },
 
-  // See "Triggers/Searches/Writes" section below
+  // See "Triggers/Searches/Creates" section below
   triggers: {
   },
   searches: {
   },
-  writes: {
+  creates: {
   }
 };
 

@@ -22,7 +22,7 @@ const describe = (context) => {
 
       // resources.form.list.operation.perform
 
-      const types = ['triggers', 'searches', 'writes'];
+      const types = ['triggers', 'searches', 'creates'];
 
       types.forEach((type) => {
         context.line(colors.bold(_.capitalize(type)) + '\n');
@@ -82,9 +82,9 @@ $ zapier describe
 # 
 #  Nothing found for searches, maybe try the \`zapier scaffold\` command?
 # 
-# Writes
+# Creates
 # 
-#  Nothing found for writes, maybe try the \`zapier scaffold\` command?
+#  Nothing found for creates, maybe try the \`zapier scaffold\` command?
 # 
 # If you'd like to add more, try the \`zapier scaffold\` command to kickstart!
 ${'```'}

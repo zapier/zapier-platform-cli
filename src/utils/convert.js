@@ -23,7 +23,7 @@ const typesMap = {
 const stepNamesMap = {
   triggers: 'trigger',
   searches: 'search',
-  actions: 'write'
+  actions: 'create'
 };
 
 const renderTemplate = (templateFile, templateContext) => {
@@ -146,7 +146,7 @@ const renderAuth = (definition) => {
   }
 };
 
-// convert a trigger, write or search
+// convert a trigger, create or search
 const renderStep = (type, definition, key) => {
   const fields = _.map(definition.fields, renderField);
   const sample = !_.isEmpty(definition.sample_result_fields) ? renderSample(definition) + ',\n' : '';
@@ -169,12 +169,12 @@ const renderStep = (type, definition, key) => {
   return renderTemplate(templateFile, templateContext);
 };
 
-// write a new trigger, write or search
+// write a new trigger, create, or search
 const writeStep = (type, definition, key, newAppDir) => {
   const stepTypeMap = {
     trigger: 'triggers',
     search: 'searches',
-    write: 'writes'
+    create: 'creates'
   };
 
   const fileName = `${stepTypeMap[type]}/${snakeCase(key)}.js`;
@@ -190,14 +190,14 @@ const renderIndex = (legacyApp) => {
     const dirMap = {
       trigger: 'triggers',
       search: 'searches',
-      write: 'writes'
+      create: 'creates'
     };
 
     const templateContext = {
       AUTHENTICATION: auth,
       TRIGGERS: '',
       SEARCHES: '',
-      WRITES: ''
+      CREATES: ''
     };
 
     _.each(stepNamesMap, (v3Type, v2Type) => {

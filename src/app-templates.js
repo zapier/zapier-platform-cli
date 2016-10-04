@@ -4,7 +4,7 @@ module.exports = [
   'minimal',
   'resource',
   'trigger',
-  'write',
+  'create',
   'search',
   'middleware',
   'basic-auth',

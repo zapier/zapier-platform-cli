@@ -21,15 +21,15 @@ const scaffold = (context, type, name) => {
     resource: 'resources',
     trigger: 'triggers',
     search: 'searches',
-    write: 'writes',
+    create: 'creates',
   };
 
-  // where will we write/required the new file?
+  // where will we create/required the new file?
   const destMap = {
     resource: `resources/${templateContext.KEY}`,
     trigger: `triggers/${templateContext.KEY}`,
     search: `searches/${templateContext.KEY}`,
-    write: `writes/${templateContext.KEY}`,
+    create: `creates/${templateContext.KEY}`,
   };
 
   if (!typeMap[type]) {
@@ -93,7 +93,7 @@ scaffold.argsSpec = [
     'resource',
     'trigger',
     'search',
-    'write'
+    'create'
   ]},
   {name: 'name', help: 'the name of the new thing to create', required: true, example: 'Some Name'},
 ];
@@ -102,7 +102,7 @@ scaffold.argOptsSpec = {
   entry: {help: 'where to import the new file', default: 'index.js'},
 };
 scaffold.help = 'Adds a starting resource, trigger, action or search to your app.';
-scaffold.usage = 'zapier scaffold {resource|trigger|search|write} "Name"';
+scaffold.usage = 'zapier scaffold {resource|trigger|search|create} "Name"';
 scaffold.example = 'zapier scaffold resource "Contact"';
 scaffold.docs = `\
 The scaffold command does two general things:

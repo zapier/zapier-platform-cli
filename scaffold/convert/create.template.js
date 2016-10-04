@@ -1,4 +1,4 @@
-// Write stub created by 'zapier convert'. This is just a stub - you will need to edit!
+// "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
 
 // create a particular <%= LOWER_NOUN %> by name
 const create<%= CAMEL %> = (z, bundle) => {
