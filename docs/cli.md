@@ -221,9 +221,9 @@ $ zapier describe
 # 
 #  Nothing found for searches, maybe try the `zapier scaffold` command?
 # 
-# Writes
+# Creates
 # 
-#  Nothing found for writes, maybe try the `zapier scaffold` command?
+#  Nothing found for creates, maybe try the `zapier scaffold` command?
 # 
 # If you'd like to add more, try the `zapier scaffold` command to kickstart!
 ```
@@ -371,7 +371,7 @@ After running this, you'll have a new example app in your directory. If you re-r
 **Arguments**
 
 * `location [value]` -- **required**,
-* `--template={minimal,resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}` -- _optional_, select a starting app template. Default is `minimal`
+* `--template={minimal,resource,trigger,create,search,middleware,basic-auth,custom-auth,oauth2}` -- _optional_, select a starting app template. Default is `minimal`
 
 ```bash
 $ zapier init example-app --template=minimal
@@ -382,7 +382,6 @@ $ zapier init example-app --template=minimal
 #   Copy /users/username/code/example-app/index.js - done!
 #   Copy /users/username/code/example-app/package.json - done!
 #   Copy /users/username/code/example-app/test/index.js - done!
-#   Copying starter app - done!
 #
 # Finished! You might need to `npm install` then try `zapier test`!
 ```
@@ -684,7 +683,7 @@ $ zapier register "Example"
 
   > Adds a starting resource, trigger, action or search to your app.
 
-  **Usage:** `zapier scaffold {resource|trigger|search|write} "Name"`
+  **Usage:** `zapier scaffold {resource|trigger|search|create} "Name"`
 
   The scaffold command does two general things:
 
@@ -697,7 +696,7 @@ You can mix and match several options to customize the created scaffold for your
 
 **Arguments**
 
-* `type [{resource,trigger,search,write}]` -- **required**, what type of thing are you creating
+* `type [{resource,trigger,search,create}]` -- **required**, what type of thing are you creating
 * `name ["Some Name"]` -- **required**, the name of the new thing to create
 * `--dest={type}s/{name}` -- _optional_, sets the new file's path. Default is `{type}s/{name}`
 * `--entry=index.js` -- _optional_, where to import the new file. Default is `index.js`

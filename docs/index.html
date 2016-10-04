@@ -236,7 +236,7 @@ blockquote {
 <li><a href="#resource-definition">Resource Definition</a></li>
 </ul>
 </li>
-<li><a href="#triggerssearcheswrites">Triggers/Searches/Writes</a></li>
+<li><a href="#triggerssearchescreates">Triggers/Searches/Creates</a></li>
 <li><a href="#making-http-requests">Making HTTP Requests</a><ul>
 <li><a href="#shorthand-http-requests">Shorthand HTTP Requests</a></li>
 <li><a href="#manual-http-requests">Manual HTTP Requests</a><ul>
@@ -343,7 +343,7 @@ blockquote {
 <li><a href="#resource-definition">Resource Definition</a></li>
 </ul>
 </li>
-<li><a href="#triggerssearcheswrites">Triggers/Searches/Writes</a></li>
+<li><a href="#triggerssearchescreates">Triggers/Searches/Creates</a></li>
 <li><a href="#making-http-requests">Making HTTP Requests</a><ul>
 <li><a href="#shorthand-http-requests">Shorthand HTTP Requests</a></li>
 <li><a href="#manual-http-requests">Manual HTTP Requests</a><ul>
@@ -508,7 +508,7 @@ zapier init example-app
 <li>in <code>App</code> definition, <code>beforeRequest</code> &amp; <code>afterResponse</code> are hooks into the HTTP client</li>
 <li>in <code>App</code> definition, <code>triggers</code> will describe ways to trigger off of data in your app</li>
 <li>in <code>App</code> definition, <code>searches</code> will describe ways to find data in your app</li>
-<li>in <code>App</code> definition, <code>writes</code> will describe ways to create data in your app</li>
+<li>in <code>App</code> definition, <code>creates</code> will describe ways to create data in your app</li>
 <li>in <code>App</code> definition, <code>resources</code> are purely optional but convenient ways to describe CRUD-like objects in your app</li>
 </ul><p>Let&apos;s start by adding a <strong>trigger.</strong> We will configure it to read data from a mocked API:</p>
     </div>
@@ -946,7 +946,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Congrats, you&apos;ve completed the tutorial! At this point we recommend reading up on the <a href="#z-object">Z Object</a> and <a href="#bundle-object">Bundle Object</a> to get a better idea of what is possible within the <code>perform</code> functions. You can also check out the other <a href="#example-apps">example apps</a> to see how to incorporate different authentication schemes into your app and how to implement things like searches and writes.</p>
+      <p>Congrats, you&apos;ve completed the tutorial! At this point we recommend reading up on the <a href="#z-object">Z Object</a> and <a href="#bundle-object">Bundle Object</a> to get a better idea of what is possible within the <code>perform</code> functions. You can also check out the other <a href="#example-apps">example apps</a> to see how to incorporate different authentication schemes into your app and how to implement things like searches and creates.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -1146,12 +1146,12 @@ npm install
   resources: {
   },
 
-  <span class="hljs-comment">// See &quot;Triggers/Searches/Writes&quot; section below</span>
+  <span class="hljs-comment">// See &quot;Triggers/Searches/Creates&quot; section below</span>
   triggers: {
   },
   searches: {
   },
-  writes: {
+  creates: {
   }
 };
 
@@ -1677,8 +1677,8 @@ For now, let&apos;s focus on two:</p><ul>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Every method you define on a <code>resource</code> Zapier converts to the appropriate Trigger, Write, or Search. Our examples
-above would result in an app with a New Recipe Trigger and an Add Recipe Write.</p>
+      <p>Every method you define on a <code>resource</code> Zapier converts to the appropriate Trigger, Create, or Search. Our examples
+above would result in an app with a New Recipe Trigger and an Add Recipe Create.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -1687,7 +1687,7 @@ above would result in an app with a New Recipe Trigger and an Add Recipe Write.<
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="triggers-searches-writes">Triggers/Searches/Writes</h2>
+      <h2 id="triggers-searches-creates">Triggers/Searches/Creates</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -1696,8 +1696,8 @@ above would result in an app with a New Recipe Trigger and an Add Recipe Write.<
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Triggers, Searches, and Writes are the way an app defines what it is able to do. Triggers read
-data into Zapier (i.e. watch for new recipes). Searches locate individual records (find recipe by title). Writes create
+      <p>Triggers, Searches, and Creates are the way an app defines what it is able to do. Triggers read
+data into Zapier (i.e. watch for new recipes). Searches locate individual records (find recipe by title). Creates create
 new records in your system (add a recipe to the catalog).</p><p>The definition for each of these follows the same structure. Here is an example of a trigger:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -1733,7 +1733,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>You can find more details on the definition for each by looking at the <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#triggerschema">Trigger Schema</a>,
-<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema">Search Schema</a>, and <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#writeschema">Write Schema</a>.</p>
+<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema">Search Schema</a>, and <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#createschema">Create Schema</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2072,7 +2072,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>This object holds the user&apos;s auth details and the data to for the API requests.</p><ul>
 <li><code>authData</code> - user-provided authentication data, like <code>api_key</code> or <code>access_token</code>. [(Read more on authentication)[#authentication]]</li>
-<li><code>inputData</code> - user-provided data for this particular run of the trigger/search/write, as defined by the inputFields. For example:<pre><code class="lang-javascript">{
+<li><code>inputData</code> - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:<pre><code class="lang-javascript">{
 createdBy: <span class="hljs-string">&apos;Bobby Flay&apos;</span>
 style: <span class="hljs-string">&apos;mediterranean&apos;</span>
 }
@@ -2438,7 +2438,7 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
 <li><a href="https://github.com/zapier/zapier-platform-example-app-resource">Resource Example</a> - <code>zapier init --template=resource</code></li>
 <li><a href="https://github.com/zapier/zapier-platform-example-app-trigger">Trigger Example</a> - <code>zapier init --template=trigger</code></li>
 <li><a href="https://github.com/zapier/zapier-platform-example-app-search">Search Example</a> - <code>zapier init --template=search</code></li>
-<li><a href="https://github.com/zapier/zapier-platform-example-app-write">Write Example</a> - <code>zapier init --template=write</code></li>
+<li><a href="https://github.com/zapier/zapier-platform-example-app-create">Create Example</a> - <code>zapier init --template=create</code></li>
 <li><a href="https://github.com/zapier/zapier-platform-example-app-middleware">Middleware Example</a> - <code>zapier init --template=middleware</code></li>
 <li><a href="https://github.com/zapier/zapier-platform-example-app-basic-auth">Basic Auth Example</a> - <code>zapier init --template=basic-auth</code></li>
 <li><a href="https://github.com/zapier/zapier-platform-example-app-custom-auth">Custom Auth Example</a> - <code>zapier init --template=custom-auth</code></li>

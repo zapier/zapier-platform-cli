@@ -512,9 +512,9 @@ $ zapier collaborate user@example.com --remove
 <span class="hljs-comment"># </span>
 <span class="hljs-comment">#  Nothing found for searches, maybe try the `zapier scaffold` command?</span>
 <span class="hljs-comment"># </span>
-<span class="hljs-comment"># Writes</span>
+<span class="hljs-comment"># Creates</span>
 <span class="hljs-comment"># </span>
-<span class="hljs-comment">#  Nothing found for writes, maybe try the `zapier scaffold` command?</span>
+<span class="hljs-comment">#  Nothing found for creates, maybe try the `zapier scaffold` command?</span>
 <span class="hljs-comment"># </span>
 <span class="hljs-comment"># If you&apos;d like to add more, try the `zapier scaffold` command to kickstart!</span>
 </code></pre>
@@ -677,7 +677,7 @@ $ zapier <span class="hljs-built_in">help</span>
 <p>Note: this doesn&apos;t register or deploy the app with Zapier - try <code>zapier register &quot;Example&quot;</code> and <code>zapier push</code> for that!</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>location [value]</code> -- <strong>required</strong>,</li>
-<li><code>--template={minimal,resource,trigger,write,search,middleware,basic-auth,custom-auth,oauth2}</code> -- <em>optional</em>, select a starting app template. Default is <code>minimal</code></li>
+<li><code>--template={minimal,resource,trigger,create,search,middleware,basic-auth,custom-auth,oauth2}</code> -- <em>optional</em>, select a starting app template. Default is <code>minimal</code></li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -689,7 +689,6 @@ $ zapier <span class="hljs-built_in">help</span>
 <span class="hljs-comment">#   Copy /users/username/code/example-app/index.js - done!</span>
 <span class="hljs-comment">#   Copy /users/username/code/example-app/package.json - done!</span>
 <span class="hljs-comment">#   Copy /users/username/code/example-app/test/index.js - done!</span>
-<span class="hljs-comment">#   Copying starter app - done!</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment"># Finished! You might need to `npm install` then try `zapier test`!</span>
 </code></pre>
@@ -1029,13 +1028,13 @@ $ zapier logs --type=http --detailed --format=plain
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Adds a starting resource, trigger, action or search to your app.</p>
-</blockquote><p>  <strong>Usage:</strong> <code>zapier scaffold {resource|trigger|search|write} &quot;Name&quot;</code></p><p>  The scaffold command does two general things:</p><ul>
+</blockquote><p>  <strong>Usage:</strong> <code>zapier scaffold {resource|trigger|search|create} &quot;Name&quot;</code></p><p>  The scaffold command does two general things:</p><ul>
 <li>Creates a new destination file like <code>resources/contact.js</code></li>
 <li>(Attempts to) import and register it inside your entry <code>index.js</code></li>
 </ul><p>You can mix and match several options to customize the created scaffold for your project.</p><blockquote>
 <p>Note, we may fail to rewrite your <code>index.js</code> so you may need to handle the require and registration yourself.</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
-<li><code>type [{resource,trigger,search,write}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
+<li><code>type [{resource,trigger,search,create}]</code> -- <strong>required</strong>, what type of thing are you creating</li>
 <li><code>name [&quot;Some Name&quot;]</code> -- <strong>required</strong>, the name of the new thing to create</li>
 <li><code>--dest={type}s/{name}</code> -- <em>optional</em>, sets the new file&apos;s path. Default is <code>{type}s/{name}</code></li>
 <li><code>--entry=index.js</code> -- <em>optional</em>, where to import the new file. Default is <code>index.js</code></li>
