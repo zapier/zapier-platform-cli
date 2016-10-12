@@ -12,6 +12,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Tutorial](#tutorial)
   * [Installing the CLI](#installing-the-cli)
   * [Starting an App](#starting-an-app)
+  * [Your `index.js`](#your-indexjs)
   * [Adding a Trigger](#adding-a-trigger)
   * [Modifying a Trigger](#modifying-a-trigger)
   * [Deploying an App](#deploying-an-app)
@@ -116,7 +117,7 @@ Before we go any further, we need to install the dependencies for our app:
 npm install
 ```
 
-### Adding a Trigger
+### Your `index.js`
 
 Right next to `package.json` should be `index.js`, which is the entry point to your app. This is where the Platform will look for your app definition. Open it up in your editor of choice and let's take a look!
 
@@ -128,6 +129,8 @@ You'll see a few things in `index.js`:
  * in `App` definition, `searches` will describe ways to find data in your app
  * in `App` definition, `creates` will describe ways to create data in your app
  * in `App` definition, `resources` are purely optional but convenient ways to describe CRUD-like objects in your app
+
+### Adding a Trigger
 
 Let's start by adding a **trigger.** We will configure it to read data from a mocked API:
 
