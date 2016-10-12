@@ -74,7 +74,7 @@ nvm use v4.3.2
 
 ## Tutorial
 
-Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and pushing an app to Zapier.
+Welcome to the Zapier Platform! In this tutorial, we'll walk you through the process of building, testing, and pushing an examples app that talks to a fake/mock API to Zapier. We'll start with a minimal template with just the basics.
 
 
 ### Installing the CLI
@@ -132,12 +132,14 @@ You'll see a few things in `index.js`:
 
 ### Adding a Trigger
 
-Let's start by adding a **trigger.** We will configure it to read data from a mocked API:
+Let's start by adding a **trigger.** We will configure it to read data from a mocked API (in the future - your real app will use a real API, of course :-):
 
 ```bash
 mkdir triggers
 touch triggers/recipe.js
 ```
+
+> Note: The `triggers` folder is simply a convention - we recommend it as our tools support it. Also, `recipe.js` is just an example name of a model - maybe you'll eventually make a `contact.js`, `lead.js` or `order.js`.
 
 Open `triggers/recipe.js` and paste in:
 
@@ -185,7 +187,7 @@ const recipe = require('./triggers/recipe');
 
 With the trigger imported, we need to register it on our app by editing the existing `triggers` property.
 
-In `index.js`, edit `App` to include:
+In `index.js`, edit the `App`'s `triggers` section to include:
 
 ```javascript
 // Edit the App definition to register our trigger
@@ -273,16 +275,16 @@ module.exports = {
   operation: {
     // NEW CODE
     inputFields: [
-      {key: 'style', type: 'string'}
+      {key: 'style', type: 'string', required: false}
     ],
     perform: listRecipes
   }
 };
 ```
 
-Notice that we now include and use an input field called "style". We have to add it in two places:
+Notice that we now include and use an input field keyed `"style"`. We have to add it in two places:
 
-* In the `inputFields` on `operation` - this defines the field as exposed in the Zapier UI. The user will see a form asking them to provide a "Style".
+* In the `inputFields` on `operation` - this defines the field as exposed in the Zapier UI.
 * In the `listRecipes` function - we use the provided style via the bundle `bundle.inputData.style`. Since the field is not required - it could be null!
 
 Since we are developing locally, let's tweak the test to verify everything still works.

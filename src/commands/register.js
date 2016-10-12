@@ -2,7 +2,7 @@ const constants = require('../constants');
 const utils = require('../utils');
 const path = require('path');
 
-const register = (context, title) => {
+const register = (context, title, {printWhenDone = true} = {}) => {
   const appDir = path.resolve('.');
   context.line(`Registering a new app on Zapier named "${title}"`);
   context.line();
@@ -25,7 +25,9 @@ const register = (context, title) => {
     })
     .then(() => {
       utils.printDone();
-      context.line('\nFinished! Now that your app is registered with Zapier, you can `zapier push` a version!');
+      if (printWhenDone) {
+        context.line('\nFinished! Now that your app is registered with Zapier, you can `zapier push` a version!');
+      }
     });
 };
 register.argsSpec = [

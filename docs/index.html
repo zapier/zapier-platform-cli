@@ -415,7 +415,7 @@ nvm use v4.3.2
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Welcome to the Zapier Platform! In this tutorial, we&apos;ll walk you through the process of building, testing, and pushing an app to Zapier.</p>
+      <p>Welcome to the Zapier Platform! In this tutorial, we&apos;ll walk you through the process of building, testing, and pushing an examples app that talks to a fake/mock API to Zapier. We&apos;ll start with a minimal template with just the basics.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -530,7 +530,7 @@ zapier init example-app
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Let&apos;s start by adding a <strong>trigger.</strong> We will configure it to read data from a mocked API:</p>
+      <p>Let&apos;s start by adding a <strong>trigger.</strong> We will configure it to read data from a mocked API (in the future - your real app will use a real API, of course :-):</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">mkdir triggers
@@ -541,7 +541,9 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Open <code>triggers/recipe.js</code> and paste in:</p>
+      <blockquote>
+<p>Note: The <code>triggers</code> folder is simply a convention - we recommend it as our tools support it. Also, <code>recipe.js</code> is just an example name of a model - maybe you&apos;ll eventually make a <code>contact.js</code>, <code>lead.js</code> or <code>order.js</code>.</p>
+</blockquote><p>Open <code>triggers/recipe.js</code> and paste in:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
@@ -583,7 +585,7 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>With the trigger imported, we need to register it on our app by editing the existing <code>triggers</code> property.</p><p>In <code>index.js</code>, edit <code>App</code> to include:</p>
+      <p>With the trigger imported, we need to register it on our app by editing the existing <code>triggers</code> property.</p><p>In <code>index.js</code>, edit the <code>App</code>&apos;s <code>triggers</code> section to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-comment">// Edit the App definition to register our trigger</span>
@@ -686,7 +688,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
   <span class="hljs-attr">operation</span>: {
     <span class="hljs-comment">// NEW CODE</span>
     inputFields: [
-      {<span class="hljs-attr">key</span>: <span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>}
+      {<span class="hljs-attr">key</span>: <span class="hljs-string">&apos;style&apos;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">false</span>}
     ],
     <span class="hljs-attr">perform</span>: listRecipes
   }
@@ -697,8 +699,8 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Notice that we now include and use an input field called &quot;style&quot;. We have to add it in two places:</p><ul>
-<li>In the <code>inputFields</code> on <code>operation</code> - this defines the field as exposed in the Zapier UI. The user will see a form asking them to provide a &quot;Style&quot;.</li>
+      <p>Notice that we now include and use an input field keyed <code>&quot;style&quot;</code>. We have to add it in two places:</p><ul>
+<li>In the <code>inputFields</code> on <code>operation</code> - this defines the field as exposed in the Zapier UI.</li>
 <li>In the <code>listRecipes</code> function - we use the provided style via the bundle <code>bundle.inputData.style</code>. Since the field is not required - it could be null!</li>
 </ul><p>Since we are developing locally, let&apos;s tweak the test to verify everything still works.</p><p>In <code>test/index.js</code>, replace the file with:</p>
     </div>
