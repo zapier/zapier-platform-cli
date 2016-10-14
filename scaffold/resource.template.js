@@ -7,7 +7,7 @@ const get<%= CAMEL %> = (z, bundle) => {
     .then(response => JSON.parse(response.content));
 };
 
-// find a particular <%= LOWER_NOUN %> by name
+// get a list of <%= LOWER_NOUN %>
 const list<%= CAMEL %>s = (z) => {
   const responsePromise = z.request({
     url: 'http://example.com/api/<%= KEY %>s.json',
