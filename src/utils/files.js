@@ -43,6 +43,18 @@ const writeFile = (fileName, data) => {
   return fse.writeFileAsync(fixHome(fileName), data);
 };
 
+// Returns a promise that deletes the file.
+const deleteFile = (fileName) => {
+  return new Promise((resolve) => {
+    try {
+      fse.unlinkSync(fileName);
+    } catch (err) {
+      resolve();
+    }
+    resolve();
+  });
+};
+
 // Returns a promise that ensures a directory exists.
 const ensureDir = (dir) => fse.ensureDirAsync(dir);
 
@@ -128,6 +140,7 @@ const isEmptyDir = (dir) => fse.readdirAsync(dir).then(items => _.isEmpty(items)
 
 module.exports = {
   writeFile,
+  deleteFile,
   readFile,
   copyDir,
   ensureDir,

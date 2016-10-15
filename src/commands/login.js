@@ -1,9 +1,9 @@
 const constants = require('../constants');
 const utils = require('../utils');
 
-const QUESTION = 'What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctrl-C to cancel)';
-const SUCCESS = `Your deploy key has been saved to ${constants.AUTH_LOCATION}.`;
-const auth = (context) => {
+const QUESTION_USERNAME = 'What is your Zapier login email address? (Ctrl-C to cancel)';
+const QUESTION_PASSWORD = 'What is your Zapier login password?';
+const login = (context) => {
   const checks = [
     utils.readCredentials()
       .then(() => true)
@@ -21,34 +21,44 @@ const auth = (context) => {
       } else {
         context.line(`Your ${constants.AUTH_LOCATION} looks valid. You may update it now though.\n`);
       }
-      return utils.getInput(QUESTION + '\n\n  ');
+      return utils.getInput(QUESTION_USERNAME);
     })
-    .then((answer) => {
+    .then((username) => {
+      return Promise.all([
+        username,
+        utils.getInput(QUESTION_PASSWORD, {secret: true})
+      ]);
+    })
+    .then(([username, password]) => {
+      return utils.createCredentials(username, password)
+        .then((data) => data.key);
+    })
+    .then((deployKey) => {
       return utils.writeFile(constants.AUTH_LOCATION, utils.prettyJSONstringify({
-        deployKey: answer
+        deployKey: deployKey
       }));
     })
     .then(utils.checkCredentials)
     .then(() => {
-      context.line();
-      context.line(SUCCESS + ' Now try `zapier init .` to start a new local app.');
+      context.line(`Your deploy key has been saved to ${constants.AUTH_LOCATION}. Now try \`zapier init .\` to start a new local app.`);
     });
 };
-auth.argsSpec = [];
-auth.argOptsSpec = {};
-auth.help = `Configure your \`${constants.AUTH_LOCATION_RAW}\` with a deploy key.`;
-auth.example = 'zapier auth';
-auth.docs = `\
-This is an interactive prompt which will set up your deploy key.
+login.argsSpec = [];
+login.argOptsSpec = {};
+login.help = `Configure your \`${constants.AUTH_LOCATION_RAW}\` with a deploy key.`;
+login.example = 'zapier login';
+login.docs = `\
+This is an interactive prompt which will create, retrieve and store a deploy key.
 
 > This will change the  \`${constants.AUTH_LOCATION_RAW}\` (home directory identifies the deploy key & user).
 
 ${'```'}bash
-$ zapier auth
-# ${QUESTION}
+$ zapier login
+# ${QUESTION_USERNAME}
+# ${QUESTION_PASSWORD}
 #  <type here>
 # Your deploy key has been saved to ${constants.AUTH_LOCATION_RAW}. Now try \`zapier init .\` to start a new local app.
 ${'```'}
 `;
 
-module.exports = auth;
+module.exports = login;

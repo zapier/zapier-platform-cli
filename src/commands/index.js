@@ -1,6 +1,7 @@
 module.exports = {
   help: require('./help'),
-  auth: require('./auth'),
+  login: require('./login'),
+  logout: require('./logout'),
   init: require('./init'),
   register: require('./register'),
   scaffold: require('./scaffold'),

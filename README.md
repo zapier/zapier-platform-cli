@@ -91,8 +91,8 @@ The CLI is the primary tool for managing your apps. With it, you can validate an
 Now that your CLI is installed - you'll need to identify yourself via the CLI.
 
 ```bash
-# auth to Zapier's platform with your deploy key. To obtain a key contact partners@zapier.com
-zapier auth
+# setup auth to Zapier's platform with a deploy key
+zapier login
 ```
 
 Now your CLI is installed and ready to go!
@@ -516,8 +516,8 @@ First up is installing the CLI and setting up your auth to create a working "Zap
 # install the CLI globally
 npm install -g zapier-platform-cli
 
-# auth to Zapier's platform with your deploy key. To obtain a key, email partner@zapier.com
-zapier auth
+# setup auth to Zapier's platform with a deploy key
+zapier login
 ```
 
 Your Zapier CLI should be installed and ready to go at this point. Next up, we'll create our first app!

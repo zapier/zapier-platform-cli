@@ -48,7 +48,7 @@ Generally - the \`zapier\` command works off of two files:
  * ${constants.AUTH_LOCATION_RAW}      (home directory identifies the deploy key & user)
  * ./${constants.CURRENT_APP_FILE}   (current directory identifies the app)
 
-The \`zapier auth\` and \`zapier register "Example"\` or \`zapier link\` commands will help manage those files. All commands listed below.
+The \`zapier login\` and \`zapier register "Example"\` or \`zapier link\` commands will help manage those files. All commands listed below.
 
 **Arguments**
 
@@ -66,7 +66,6 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ auth        │ zapier auth                           │ Configure your \`~/.zapierrc\` with a deploy key.                            │
 # │ build       │ zapier build                          │ Builds a uploadable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
 # │ push        │ zapier push                           │ Build and upload the current app - does not promote.                       │
@@ -78,6 +77,8 @@ $ zapier help
 # │ init        │ zapier init location                  │ Initializes a new zapier app in a directory.                               │
 # │ invite      │ zapier invite [user@example.com]      │ Manage the invitees/testers on your project. Can optionally --remove.      │
 # │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
+# │ login       │ zapier login                          │ Configure your \`~/.zapierrc\` with a deploy key.                            │
+$ │ logout      │ zapier logout                         │ Deactivates all your personal deploy keys and resets \`~/.zapierrc\`.        │
 # │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
 # │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to global access.                              │

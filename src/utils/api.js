@@ -24,7 +24,7 @@ const {
 const readCredentials = (credentials) => {
   return Promise.resolve(
     credentials ||
-    readFile(constants.AUTH_LOCATION, 'Please run `zapier auth`.')
+    readFile(constants.AUTH_LOCATION, 'Please run `zapier login`.')
       .then((buf) => {
         return JSON.parse(buf.toString());
       })
@@ -36,21 +36,31 @@ const callAPI = (route, options) => {
   options = options || {};
   const url = options.url || constants.ENDPOINT + route;
 
-  let requestOptions;
-  return readCredentials()
-    .then((credentials) => {
-      requestOptions = {
-        method: options.method || 'GET',
-        url,
-        body: options.body ? JSON.stringify(options.body) : null,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-Requested-With': 'XMLHttpRequest',
-          'X-Deploy-Key': credentials.deployKey
-        }
-      };
-      return fetch(requestOptions.url, requestOptions);
+  let requestOptions = {
+    method: options.method || 'GET',
+    url,
+    body: options.body ? JSON.stringify(options.body) : null,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=utf-8',
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  };
+  return Promise.resolve()
+    .then((_requestOptions) => {
+      // requestOptions === _requestOptions side step for linting
+      if (options.skipDeployKey) {
+        return _requestOptions;
+      } else {
+        return readCredentials()
+          .then((credentials) => {
+            _requestOptions.headers['X-Deploy-Key'] = credentials.deployKey;
+            return _requestOptions;
+          });
+      }
+    })
+    .then((_requestOptions) => {
+      return fetch(_requestOptions.url, _requestOptions);
     })
     .then((res) => {
       return Promise.all([
@@ -86,6 +96,19 @@ const callAPI = (route, options) => {
 
       return JSON.parse(text);
     });
+};
+
+// Given a valid username and password - create a new deploy key.
+const createCredentials = (username, password) => {
+  // TODO: 2fa in the future?
+  return callAPI('/keys', {
+    skipDeployKey: true,
+    method: 'POST',
+    body: {
+      username,
+      password
+    }
+  });
 };
 
 // Reads the JSON file at ~/.zapier-platform (AUTH_LOCATION).
@@ -222,6 +245,7 @@ const upload = (zipPath, appDir) => {
 module.exports = {
   readCredentials,
   callAPI,
+  createCredentials,
   writeLinkedAppConfig,
   getLinkedApp,
   checkCredentials,

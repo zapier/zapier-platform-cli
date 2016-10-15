@@ -6,6 +6,7 @@ const Table = require('cli-table2');
 const colors = require('colors/safe');
 const stringLength = require('string-length');
 const _ = require('lodash');
+const read = require('read');
 
 const notUndef = (s) => String(s === undefined ? '' : s).trim();
 
@@ -253,15 +254,15 @@ const printDone = (success = true, message) => {
 };
 
 // Get input from a user.
-const getInput = (question) => {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      rl.close();
-      resolve(answer);
+const getInput = (question, {secret = false} = {}) => {
+  return new Promise((resolve, reject) => {
+    read({
+      prompt: question,
+      silent: secret,
+      replace: secret ? '*' : undefined
+    }, (err, result) => {
+      if (err) { reject(err); }
+      resolve(result);
     });
   });
 };

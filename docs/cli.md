@@ -40,24 +40,6 @@ $ zapier apps
 ```
 
 
-## auth
-
-  > Configure your `~/.zapierrc` with a deploy key.
-
-  **Usage:** `zapier auth`
-
-  This is an interactive prompt which will set up your deploy key.
-
-> This will change the  `~/.zapierrc` (home directory identifies the deploy key & user).
-
-```bash
-$ zapier auth
-# What is your Deploy Key from https://zapier.com/platform/ (or https://beta.zapier.com/admin/developer_v3/deploykey/ during testing)? (Ctrl-C to cancel)
-#  <type here>
-# Your deploy key has been saved to ~/.zapierrc. Now try `zapier init .` to start a new local app.
-```
-
-
 ## build
 
   > Builds a pushable zip from the current directory.
@@ -280,7 +262,7 @@ Generally - the `zapier` command works off of two files:
  * ~/.zapierrc      (home directory identifies the deploy key & user)
  * ./.zapierapprc   (current directory identifies the app)
 
-The `zapier auth` and `zapier register "Example"` or `zapier link` commands will help manage those files. All commands listed below.
+The `zapier login` and `zapier register "Example"` or `zapier link` commands will help manage those files. All commands listed below.
 
 **Arguments**
 
@@ -300,7 +282,6 @@ $ zapier help
 # │ Command     │ Example                               │ Help                                                                       │
 # ├─────────────┼───────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
 # │ apps        │ zapier apps                           │ Lists all the apps you can access.                                         │
-# │ auth        │ zapier auth                           │ Configure your `~/.zapierrc` with a deploy key.                            │
 # │ build       │ zapier build                          │ Builds a uploadable zip from the current directory.                        │
 # │ collaborate │ zapier collaborate [user@example.com] │ Manage the collaborators on your project. Can optionally --remove.         │
 # │ push        │ zapier push                           │ Build and upload the current app - does not promote.                       │
@@ -312,6 +293,8 @@ $ zapier help
 # │ init        │ zapier init location                  │ Initializes a new zapier app in a directory.                               │
 # │ invite      │ zapier invite [user@example.com]      │ Manage the invitees/testers on your project. Can optionally --remove.      │
 # │ link        │ zapier link                           │ Link the current directory to an app you have access to.                   │
+# │ login       │ zapier login                          │ Configure your `~/.zapierrc` with a deploy key.                            │
+$ │ logout      │ zapier logout                         │ Deactivates all your personal deploy keys and resets `~/.zapierrc`.        │
 # │ logs        │ zapier logs                           │ Prints recent logs. See help for filter arguments.                         │
 # │ migrate     │ zapier migrate 1.0.0 1.0.1 [10%]      │ Migrate users from one version to another.                                 │
 # │ promote     │ zapier promote 1.0.0                  │ Promotes a specific version to global access.                              │
@@ -469,6 +452,46 @@ $ zapier link
 #   Setting up `.zapierapprc` file - done!
 #
 # Finished! You can `zapier push` now to build & upload a version!
+```
+
+
+## login
+
+  > Configure your `~/.zapierrc` with a deploy key.
+
+  **Usage:** `zapier login`
+
+  This is an interactive prompt which will create, retrieve and store a deploy key.
+
+> This will change the  `~/.zapierrc` (home directory identifies the deploy key & user).
+
+```bash
+$ zapier login
+# What is your Zapier login email address? (Ctrl-C to cancel)
+# What is your Zapier login password?
+#  <type here>
+# Your deploy key has been saved to ~/.zapierrc. Now try `zapier init .` to start a new local app.
+```
+
+
+## logout
+
+  > Deactivates all your personal deploy keys and resets `~/.zapierrc`.
+
+  **Usage:** `zapier logout`
+
+  Deactivates all your personal deploy keys and resets your local config. Does not delete any apps or versions.
+
+> This will delete the  `~/.zapierrc` (home directory identifies the deploy key & user).
+
+```bash
+$ zapier logout
+Preparing to deactivate personal deploy keys and reset local configs.
+
+  Deactivating personal deploy keys - done!
+  Destroying `~/.zapierrc` - done!
+
+All personal keys deactivated - now try `zapier login` to login again.
 ```
 
 
