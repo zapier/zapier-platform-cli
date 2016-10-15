@@ -1,5 +1,3 @@
 language: node_js
 node_js:
   - "4.3.2"
-before_install:
-  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
