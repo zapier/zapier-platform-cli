@@ -44,6 +44,14 @@ module.exports = (argv) => {
   // create the context, logs thread through this
   const context = utils.createContext({command, args, argOpts});
 
+  if (argOpts.version) {
+    context.line([
+      `zapier-platform-cli/${require('../package.json').version}`,
+      `node/${process.version}`,
+    ].join(' '));
+    return;
+  }
+
   let commandFunc = commands[command];
   if (!commandFunc) {
     context.line(`${command} not a command! Try running \`zapier help\`?`);
