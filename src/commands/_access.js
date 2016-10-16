@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const colors = require('colors');
 
 const utils = require('../utils');
 
@@ -30,12 +31,17 @@ const makeAccess = (command, recordType) => {
       return utils.listEndoint(recordTypePlural)
         .then((data) => {
           context.line(`The ${recordTypePlural} on your app "${data.app.title}" listed below.\n`);
-          const ifEmpty = `${_.capitalize(recordTypePlural)} not found. Try adding one with \`zapier ${command} user@example.com\`.`;
+          const ifEmpty = colors.grey(`${_.capitalize(recordTypePlural)} not found. Try adding one with \`zapier ${command} user@example.com\`.`);
           utils.printData(data[recordTypePlural], [
             ['Email', 'email'],
             ['Role', 'role'],
             ['Status', 'status'],
           ], ifEmpty);
+
+          if (data && data.invite_url) {
+            context.line();
+            context.line('You can share this app more broadly by sending this URL:\n\n  ' + colors.bold(data.invite_url));
+          }
         });
     }
   };

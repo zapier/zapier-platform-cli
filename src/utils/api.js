@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const colors = require('colors/safe');
 
 const constants = require('../constants');
@@ -186,6 +187,7 @@ const listEndoint = (endpoint, keyOverride) => {
     .then(([app, results]) => {
       const out = {app};
       out[keyOverride || endpoint] = results.objects;
+      _.assign(out, _.omit(results, 'objects'));
       return out;
     });
 };
