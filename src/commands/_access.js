@@ -40,7 +40,7 @@ const makeAccess = (command, recordType) => {
 
           if (data && data.invite_url) {
             context.line();
-            context.line('You can share this app more broadly by sending this URL:\n\n  ' + colors.bold(data.invite_url));
+            context.line('You can invite users to this app more broadly by sharing this URL:\n\n  ' + colors.bold(data.invite_url));
           }
         });
     }
