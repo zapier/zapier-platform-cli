@@ -46,7 +46,7 @@ const callAPI = (route, options) => {
       'X-Requested-With': 'XMLHttpRequest'
     }
   };
-  return Promise.resolve()
+  return Promise.resolve(requestOptions)
     .then((_requestOptions) => {
       // requestOptions === _requestOptions side step for linting
       if (options.skipDeployKey) {
