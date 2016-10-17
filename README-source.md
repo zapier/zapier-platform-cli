@@ -768,107 +768,17 @@ You can find more details on the definition for each by looking at the [Trigger 
 [Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Create Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#createschema).
 
 
-## Making HTTP Requests
-
-There are two primary ways to make HTTP requests in the Zapier platform:
-
-1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple requests.
-1. **Manual HTTP Requests** - this is much less "magic", you use `z.request()` to make the requests and control the response.
-
-There are also a few helper constructs you can use to reduce boilerplate:
-
-1. `requestTemplate` which is an shorthand HTTP request that will be merged with every request.
-2. `beforeRequest` middleware which is an array of functions to mutate a request before it is sent.
-2. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
-
-
-### Shorthand HTTP Requests
-
-For simple HTTP requests that do not require special pre or post processing, you can specify the HTTP options as an object literal in your app definition.
-
-This features:
-
-1. Lazy `{{curly}}` replacement.
-2. JSON de-serialization.
-3. Automatic non-2xx error raising.
-
-```javascript
-[insert-file:./snippets/shorthand-request.js]
-```
-
-In the url above, `{{bundle.authData.subdomain}}` is automatically replaced with the live value from the bundle. If the call returns a non 2xx return code, an error is automatically raised. The response body is automatically parsed as JSON and returned.
-
-An error will be raised if the response is not valid JSON, so _do not use shorthand HTTP requests with non-JSON responses_.
-
-### Manual HTTP Requests
-
-When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no status code checking, no automatic JSON parsing. Use this method when you need more control. Manual requests do perform lazy `{{curly}}` replacement.
-
-To make a manual HTTP request, use the `request` method of the `z` object:
-
-```javascript
-[insert-file:./snippets/manual-request.js]
-```
-
-#### POST and PUT Requests
-
-To POST or PUT data to your API you can do this:
-
-```javascript
-[insert-file:./snippets/put.js]
-```
-
-Note that you need to call `JSON.stringify()` before setting the `body`.
-
-### Using HTTP middleware
-
-If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
-
-```javascript
-[insert-file:./snippets/middleware.js]
-```
-
-A `beforeRequest` middleware function takes a request options object, and returns a (possibly mutated) request object. An `afterResponse` middleware function takes a response object, and returns a (possibly mutated) response object. Middleware functions are executed in the order specified in the app definition, and each subsequent middleware receives the request or response object returned by the previous middleware.
-
-Middleware functions can be asynchronous - just return a promise from the middleware function.
-
-### HTTP Request Options
-
-Shorthand requests and manual `z.request()` calls support the following HTTP options:
-
-* `method`: HTTP method, default is `GET`.
-* `headers`: request headers object, format `{'header-key': 'header-value'}`.
-* `params`: URL query params object, format `{'query-key': 'query-value'}`.
-* `body`: request body, can be a string, buffer, or readable stream.
-* `redirect`: set to `manual` to extract redirect headers, `error` to reject redirect, default is `follow`.
-* `follow`: maximum redirect count, set to `0` to not follow redirects. default is `20`.
-* `compress`: support gzip/deflate content encoding. Set to `false` to disable. Default is `true`.
-* `agent`: Node.js `http.Agent` instance, allows custom proxy, certificate etc. Default is `null`.
-* `timeout`: request / response timeout in ms. Set to `0` to disable (OS limit still applies), timeout reset on `redirect`. Default is `0` (disabled).
-* `size`: maximum response body size in bytes. Set to `0`` to disable. Default is `0` (disabled).
-
-### HTTP Response Object
-
-The response object returned by `z.request()` supports the following fields and methods:
-
-* `status`: The response status code, i.e. `200`, `404`, etc.
-* `content`: The raw response body. For JSON you need to call `JSON.parse(response.content)`.
-* `headers`: Response headers object. The header keys are all lower case.
-* `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
-* `options`: The original request options object (see above).
-
 ## Z Object
 
 We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your app.
 
-* `request`: An HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
-* `console`: Logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-log-statements)
-* `JSON`: Similar to the JSON built-in, but catches errors and produces nicer tracebacks.
-* `hash`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
-* `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
-* `dehydrate`: Dehydrate a function
-* `dehydrateRequest`: Dehydrate a request
-* `dehydrateFile`: Dehydrate a file
+* `z.request([url], options)`: A promise based HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
+* `z.console(message)`: Logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-log-statements)
+* `z.stashFile(bufferStringStream, [knownLength], [filename])`: A promise based file stasher that returns a URL file pointer. See [Stashing Files](#stashing-files).
+* `z.dehydrate(methodOrFunc, inputData)`: Lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
+* `z.JSON`: Similar to the JSON built-in like `z.JSON.parse('...')`, but catches errors and produces nicer tracebacks.
+* `z.hash()`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
+* `z.errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
 
 ## Bundle Object
 
@@ -933,9 +843,137 @@ For example, you can access the `process.env` in your perform functions:
 [insert-file:./snippets/process-env.js]
 ```
 
+## Making HTTP Requests
+
+There are two primary ways to make HTTP requests in the Zapier platform:
+
+1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple requests.
+1. **Manual HTTP Requests** - this is much less "magic", you use `z.request([url], options)` to make the requests and control the response.
+
+There are also a few helper constructs you can use to reduce boilerplate:
+
+1. `requestTemplate` which is an shorthand HTTP request that will be merged with every request.
+2. `beforeRequest` middleware which is an array of functions to mutate a request before it is sent.
+2. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
+
+> Note: you can install any HTTP client you like - but this is greatly discouraged as you lose automatic logging and middleware.
+
+
+### Shorthand HTTP Requests
+
+For simple HTTP requests that do not require special pre or post processing, you can specify the HTTP options as an object literal in your app definition.
+
+This features:
+
+1. Lazy `{{curly}}` replacement.
+2. JSON de-serialization.
+3. Automatic non-2xx error raising.
+
+```javascript
+[insert-file:./snippets/shorthand-request.js]
+```
+
+In the url above, `{{bundle.authData.subdomain}}` is automatically replaced with the live value from the bundle. If the call returns a non 2xx return code, an error is automatically raised. The response body is automatically parsed as JSON and returned.
+
+An error will be raised if the response is not valid JSON, so _do not use shorthand HTTP requests with non-JSON responses_.
+
+### Manual HTTP Requests
+
+When you need to do custom processing of the response, or need to process non-JSON responses, you can make manual HTTP requests. This approach does not perform any magic - no status code checking, no automatic JSON parsing. Use this method when you need more control. Manual requests do perform lazy `{{curly}}` replacement.
+
+To make a manual HTTP request, use the `request` method of the `z` object:
+
+```javascript
+[insert-file:./snippets/manual-request.js]
+```
+
+#### POST and PUT Requests
+
+To POST or PUT data to your API you can do this:
+
+```javascript
+[insert-file:./snippets/put.js]
+```
+
+> Note: you need to call `z.JSON.stringify()` before setting the `body`.
+
+### Using HTTP middleware
+
+If you need to process all HTTP requests in a certain way, you may be able to use one of utility HTTP middleware functions, by putting them in your app definition:
+
+```javascript
+[insert-file:./snippets/middleware.js]
+```
+
+A `beforeRequest` middleware function takes a request options object, and returns a (possibly mutated) request object. An `afterResponse` middleware function takes a response object, and returns a (possibly mutated) response object. Middleware functions are executed in the order specified in the app definition, and each subsequent middleware receives the request or response object returned by the previous middleware.
+
+Middleware functions can be asynchronous - just return a promise from the middleware function.
+
+### HTTP Request Options
+
+Shorthand requests and manual `z.request([url], options)` calls support the following HTTP options:
+
+* `url`: HTTP url, you can provide it both `z.request(url, options)` or `z.request({url: url, ...})`.
+* `method`: HTTP method, default is `GET`.
+* `headers`: request headers object, format `{'header-key': 'header-value'}`.
+* `params`: URL query params object, format `{'query-key': 'query-value'}`.
+* `body`: request body, can be a string, buffer, or readable stream.
+* `raw`: set this to stream the response instead of consuming it immediately. Default is `false`.
+* `redirect`: set to `manual` to extract redirect headers, `error` to reject redirect, default is `follow`.
+* `follow`: maximum redirect count, set to `0` to not follow redirects. default is `20`.
+* `compress`: support gzip/deflate content encoding. Set to `false` to disable. Default is `true`.
+* `agent`: Node.js `http.Agent` instance, allows custom proxy, certificate etc. Default is `null`.
+* `timeout`: request / response timeout in ms. Set to `0` to disable (OS limit still applies), timeout reset on `redirect`. Default is `0` (disabled).
+* `size`: maximum response body size in bytes. Set to `0`` to disable. Default is `0` (disabled).
+
+### HTTP Response Object
+
+The response object returned by `z.request([url], options)` supports the following fields and methods:
+
+* `status`: The response status code, i.e. `200`, `404`, etc.
+* `content`: The raw response body. For JSON you need to call `JSON.parse(response.content)`.
+* `body`: A stream available only if you provide `options.raw = true`.
+* `headers`: Response headers object. The header keys are all lower case.
+* `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
+* `options`: The original request options object (see above).
+
+## Stashing Files
+
+It can be expensive to download and stream files or they can require complex handshakes to authorize downloads - so we provide a helpful stash routine that will take any `String`, `Buffer` or `Stream` and return a URL file pointer suitable for returning from triggers, searches, creates, etc.
+
+The interface `z.stashFile(bufferStringStream, [knownLength], [filename])` takes a single required argument - the extra two arguments will be automatically populated in most cases. For example - a full example is this:
+
+```javascript
+const content = 'Hello world!';
+z.stashFile(content, content.length, 'hello.txt')
+  .then(url => z.console.log(url));
+// https://zapier-dev-files.s3.amazonaws.com/cli-platform/f75e2819-05e2-41d0-b70e-9f8272f9eebf
+```
+
+Most likely you'd want to stream from another URL - note the usage of `z.request({raw: true})`:
+
+```javascript
+const fileRequest = z.request({url: 'http://example.com/file.pdf', raw: true});
+z.stashFile(fileRequest)
+  .then(url => z.console.log(url));
+// https://zapier-dev-files.s3.amazonaws.com/cli-platform/74bc623c-d94d-4cac-81f1-f71d7d517bc7
+```
+
+> Note: you should only be using `z.stashFile()` in a hydration method - otherwise it can be very expensive to stash dozens of files in a polling call - for example! 
+
+See a full example with hydration wired in correctly:
+
+```javascript
+[insert-file:./snippets/stash-file.js]
+```
+
+## Dehydration
+
+TODO.
+
 ## Logging
 
-There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-log-statements)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request()` or shorthand request objects).
+There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-log-statements)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
 
 ### Console Log Statements
 

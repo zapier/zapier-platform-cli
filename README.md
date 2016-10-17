@@ -36,6 +36,11 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Resources](#resources)
   * [Resource Definition](#resource-definition)
 - [Triggers/Searches/Creates](#triggerssearchescreates)
+- [Z Object](#z-object)
+- [Bundle Object](#bundle-object)
+- [Environment](#environment)
+  * [Defining Environment Variables](#defining-environment-variables)
+  * [Accessing Environment Variables](#accessing-environment-variables)
 - [Making HTTP Requests](#making-http-requests)
   * [Shorthand HTTP Requests](#shorthand-http-requests)
   * [Manual HTTP Requests](#manual-http-requests)
@@ -43,11 +48,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Using HTTP middleware](#using-http-middleware)
   * [HTTP Request Options](#http-request-options)
   * [HTTP Response Object](#http-response-object)
-- [Z Object](#z-object)
-- [Bundle Object](#bundle-object)
-- [Environment](#environment)
-  * [Defining Environment Variables](#defining-environment-variables)
-  * [Accessing Environment Variables](#accessing-environment-variables)
+- [Stashing Files](#stashing-files)
+- [Dehydration](#dehydration)
 - [Logging](#logging)
   * [Console Log Statements](#console-log-statements)
   * [Viewing Logs](#viewing-logs)
@@ -1031,18 +1033,116 @@ You can find more details on the definition for each by looking at the [Trigger 
 [Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Create Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#createschema).
 
 
+## Z Object
+
+We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your app.
+
+* `z.request([url], options)`: A promise based HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
+* `z.console(message)`: Logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-log-statements)
+* `z.stashFile(bufferStringStream, [knownLength], [filename])`: A promise based file stasher that returns a URL file pointer. See [Stashing Files](#stashing-files).
+* `z.dehydrate(methodOrFunc, inputData)`: Lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
+* `z.JSON`: Similar to the JSON built-in like `z.JSON.parse('...')`, but catches errors and produces nicer tracebacks.
+* `z.hash()`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
+* `z.errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
+
+## Bundle Object
+
+This object holds the user's auth details and the data to for the API requests.
+
+* `authData` - user-provided authentication data, like `api_key` or `access_token`. [(Read more on authentication)[#authentication]]
+* `inputData` - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:
+```javascript
+{
+  createdBy: 'Bobby Flay'
+  style: 'mediterranean'
+}
+```
+* `inputDataRaw` - like `inputData`, but before rendering `{{curlies}}`.
+```javascript
+{
+  createdBy: '{{chef_name}}'
+  style: '{{style}}'
+}
+```
+
+## Environment
+
+Apps can define environment variables that are available when the app's code executes. They work just like environment
+variables defined on the command line. They are useful when you have data like an OAuth client ID and secret that you
+don't want to commit to source control. Environment variables can also be used as a quick way to toggle between a
+a staging and production environment during app development.
+
+It is important to note that **variables are defined on a per-version basis!** When you push a new version, the
+existing variables from the previous version are copied, so you don't have to manually add them. However, edits
+made to one version's environment will not affect the other versions.
+
+### Defining Environment Variables
+
+To define an environment variable, use the `env` command:
+
+```bash
+# Will set the environment variable on Zapier.com
+zapier env 1.0.0 MY_SECRET_VALUE 1234
+```
+
+You will likely also want to set the value locally for testing.
+
+```bash
+export MY_SECRET_VALUE=1234
+```
+
+### Accessing Environment Variables
+
+To view existing environment variables, use the `env` command.
+
+```bash
+# Will print a table listing the variables for this version
+zapier env 1.0.0
+```
+
+Within your app, you can access the environment via the standard `process.env` - any values set via local `export` or `zapier env` will be there.
+
+For example, you can access the `process.env` in your perform functions:
+
+```javascript
+const listExample = (z, bundle) => {
+  const httpOptions = {
+    headers: {
+      'my-header': process.env.MY_SECRET_VALUE
+    }
+  };
+  return z.request('http://example.com/api/v2/recipes.json', httpOptions);
+};
+
+const App = {
+  // ...
+  triggers: {
+    example: {
+      // ...
+      operation: {
+        // ...
+        perform: listExample
+      }
+    }
+  }
+};
+
+```
+
 ## Making HTTP Requests
 
 There are two primary ways to make HTTP requests in the Zapier platform:
 
 1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple requests.
-1. **Manual HTTP Requests** - this is much less "magic", you use `z.request()` to make the requests and control the response.
+1. **Manual HTTP Requests** - this is much less "magic", you use `z.request([url], options)` to make the requests and control the response.
 
 There are also a few helper constructs you can use to reduce boilerplate:
 
 1. `requestTemplate` which is an shorthand HTTP request that will be merged with every request.
 2. `beforeRequest` middleware which is an array of functions to mutate a request before it is sent.
 2. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
+
+> Note: you can install any HTTP client you like - but this is greatly discouraged as you lose automatic logging and middleware.
 
 
 ### Shorthand HTTP Requests
@@ -1164,7 +1264,7 @@ const App = {
 
 ```
 
-Note that you need to call `JSON.stringify()` before setting the `body`.
+> Note: you need to call `z.JSON.stringify()` before setting the `body`.
 
 ### Using HTTP middleware
 
@@ -1208,12 +1308,14 @@ Middleware functions can be asynchronous - just return a promise from the middle
 
 ### HTTP Request Options
 
-Shorthand requests and manual `z.request()` calls support the following HTTP options:
+Shorthand requests and manual `z.request([url], options)` calls support the following HTTP options:
 
+* `url`: HTTP url, you can provide it both `z.request(url, options)` or `z.request({url: url, ...})`.
 * `method`: HTTP method, default is `GET`.
 * `headers`: request headers object, format `{'header-key': 'header-value'}`.
 * `params`: URL query params object, format `{'query-key': 'query-value'}`.
 * `body`: request body, can be a string, buffer, or readable stream.
+* `raw`: set this to stream the response instead of consuming it immediately. Default is `false`.
 * `redirect`: set to `manual` to extract redirect headers, `error` to reject redirect, default is `follow`.
 * `follow`: maximum redirect count, set to `0` to not follow redirects. default is `20`.
 * `compress`: support gzip/deflate content encoding. Set to `false` to disable. Default is `true`.
@@ -1223,114 +1325,101 @@ Shorthand requests and manual `z.request()` calls support the following HTTP opt
 
 ### HTTP Response Object
 
-The response object returned by `z.request()` supports the following fields and methods:
+The response object returned by `z.request([url], options)` supports the following fields and methods:
 
 * `status`: The response status code, i.e. `200`, `404`, etc.
 * `content`: The raw response body. For JSON you need to call `JSON.parse(response.content)`.
+* `body`: A stream available only if you provide `options.raw = true`.
 * `headers`: Response headers object. The header keys are all lower case.
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 * `options`: The original request options object (see above).
 
-## Z Object
+## Stashing Files
 
-We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your app.
+It can be expensive to download and stream files or they can require complex handshakes to authorize downloads - so we provide a helpful stash routine that will take any `String`, `Buffer` or `Stream` and return a URL file pointer suitable for returning from triggers, searches, creates, etc.
 
-* `request`: An HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
-* `console`: Logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-log-statements)
-* `JSON`: Similar to the JSON built-in, but catches errors and produces nicer tracebacks.
-* `hash`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
-* `errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
-* `dehydrate`: Dehydrate a function
-* `dehydrateRequest`: Dehydrate a request
-* `dehydrateFile`: Dehydrate a file
-
-## Bundle Object
-
-This object holds the user's auth details and the data to for the API requests.
-
-* `authData` - user-provided authentication data, like `api_key` or `access_token`. [(Read more on authentication)[#authentication]]
-* `inputData` - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:
-```javascript
-{
-  createdBy: 'Bobby Flay'
-  style: 'mediterranean'
-}
-```
-* `inputDataRaw` - like `inputData`, but before rendering `{{curlies}}`.
-```javascript
-{
-  createdBy: '{{chef_name}}'
-  style: '{{style}}'
-}
-```
-
-## Environment
-
-Apps can define environment variables that are available when the app's code executes. They work just like environment
-variables defined on the command line. They are useful when you have data like an OAuth client ID and secret that you
-don't want to commit to source control. Environment variables can also be used as a quick way to toggle between a
-a staging and production environment during app development.
-
-It is important to note that **variables are defined on a per-version basis!** When you push a new version, the
-existing variables from the previous version are copied, so you don't have to manually add them. However, edits
-made to one version's environment will not affect the other versions.
-
-### Defining Environment Variables
-
-To define an environment variable, use the `env` command:
-
-```bash
-# Will set the environment variable on Zapier.com
-zapier env 1.0.0 MY_SECRET_VALUE 1234
-```
-
-You will likely also want to set the value locally for testing.
-
-```bash
-export MY_SECRET_VALUE=1234
-```
-
-### Accessing Environment Variables
-
-To view existing environment variables, use the `env` command.
-
-```bash
-# Will print a table listing the variables for this version
-zapier env 1.0.0
-```
-
-Within your app, you can access the environment via the standard `process.env` - any values set via local `export` or `zapier env` will be there.
-
-For example, you can access the `process.env` in your perform functions:
+The interface `z.stashFile(bufferStringStream, [knownLength], [filename])` takes a single required argument - the extra two arguments will be automatically populated in most cases. For example - a full example is this:
 
 ```javascript
-const listExample = (z, bundle) => {
-  const httpOptions = {
-    headers: {
-      'my-header': process.env.MY_SECRET_VALUE
-    }
-  };
-  return z.request('http://example.com/api/v2/recipes.json', httpOptions);
+const content = 'Hello world!';
+z.stashFile(content, content.length, 'hello.txt')
+  .then(url => z.console.log(url));
+// https://zapier-dev-files.s3.amazonaws.com/cli-platform/f75e2819-05e2-41d0-b70e-9f8272f9eebf
+```
+
+Most likely you'd want to stream from another URL - note the usage of `z.request({raw: true})`:
+
+```javascript
+const fileRequest = z.request({url: 'http://example.com/file.pdf', raw: true});
+z.stashFile(fileRequest)
+  .then(url => z.console.log(url));
+// https://zapier-dev-files.s3.amazonaws.com/cli-platform/74bc623c-d94d-4cac-81f1-f71d7d517bc7
+```
+
+> Note: you should only be using `z.stashFile()` in a hydration method - otherwise it can be very expensive to stash dozens of files in a polling call - for example! 
+
+See a full example with hydration wired in correctly:
+
+```javascript
+const stashPDFfunction = (z, bundle) => {
+  // use standard auth to request the file
+  const filePromise = z.request({
+    url: bundle.inputData.downloadUrl,
+    raw: true
+  });
+  // and swap it for a stashed URL
+  return z.stashFile(filePromise);
+};
+
+const pdfList = (z, bundle) => {
+  return z.request('http://example.com/pdfs.json')
+    .then(res => z.JSON.parse(res.content))
+    .then(results => {
+      return results.map(result => {
+        // lazily convert a secret_download_url to a stashed url
+        // zapier won't do this until we need it
+        result.file = z.dehydrate('stashPDF', {
+          downloadUrl: result.secret_download_url
+        });
+        delete result.secret_download_url;
+        return result;
+      })
+    });
 };
 
 const App = {
-  // ...
+  version: require('./package.json').version,
+  platformVersion: require('zapier-platform-core').version,
+
+  hydrators: {
+    stashPDF: stashPDFfunction
+  },
+
   triggers: {
-    example: {
-      // ...
+    new_pdf: {
+      noun: 'PDF',
+      display: {
+        label: 'New PDF',
+        helpText: 'Triggers when a new PDF is added.'
+      },
       operation: {
-        // ...
-        perform: listExample
+        perform: pdfList
       }
     }
   }
 };
 
+module.exports = App;
+
 ```
+
+## Dehydration
+
+TODO.
 
 ## Logging
 
-There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-log-statements)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request()` or shorthand request objects).
+There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-log-statements)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
 
 ### Console Log Statements
 

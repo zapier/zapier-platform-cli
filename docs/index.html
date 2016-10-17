@@ -238,6 +238,13 @@ blockquote {
 </ul>
 </li>
 <li><a href="#triggerssearchescreates">Triggers/Searches/Creates</a></li>
+<li><a href="#z-object">Z Object</a></li>
+<li><a href="#bundle-object">Bundle Object</a></li>
+<li><a href="#environment">Environment</a><ul>
+<li><a href="#defining-environment-variables">Defining Environment Variables</a></li>
+<li><a href="#accessing-environment-variables">Accessing Environment Variables</a></li>
+</ul>
+</li>
 <li><a href="#making-http-requests">Making HTTP Requests</a><ul>
 <li><a href="#shorthand-http-requests">Shorthand HTTP Requests</a></li>
 <li><a href="#manual-http-requests">Manual HTTP Requests</a><ul>
@@ -249,13 +256,8 @@ blockquote {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
-<li><a href="#z-object">Z Object</a></li>
-<li><a href="#bundle-object">Bundle Object</a></li>
-<li><a href="#environment">Environment</a><ul>
-<li><a href="#defining-environment-variables">Defining Environment Variables</a></li>
-<li><a href="#accessing-environment-variables">Accessing Environment Variables</a></li>
-</ul>
-</li>
+<li><a href="#stashing-files">Stashing Files</a></li>
+<li><a href="#dehydration">Dehydration</a></li>
 <li><a href="#logging">Logging</a><ul>
 <li><a href="#console-log-statements">Console Log Statements</a></li>
 <li><a href="#viewing-logs">Viewing Logs</a></li>
@@ -346,6 +348,13 @@ blockquote {
 </ul>
 </li>
 <li><a href="#triggerssearchescreates">Triggers/Searches/Creates</a></li>
+<li><a href="#z-object">Z Object</a></li>
+<li><a href="#bundle-object">Bundle Object</a></li>
+<li><a href="#environment">Environment</a><ul>
+<li><a href="#defining-environment-variables">Defining Environment Variables</a></li>
+<li><a href="#accessing-environment-variables">Accessing Environment Variables</a></li>
+</ul>
+</li>
 <li><a href="#making-http-requests">Making HTTP Requests</a><ul>
 <li><a href="#shorthand-http-requests">Shorthand HTTP Requests</a></li>
 <li><a href="#manual-http-requests">Manual HTTP Requests</a><ul>
@@ -357,13 +366,8 @@ blockquote {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
-<li><a href="#z-object">Z Object</a></li>
-<li><a href="#bundle-object">Bundle Object</a></li>
-<li><a href="#environment">Environment</a><ul>
-<li><a href="#defining-environment-variables">Defining Environment Variables</a></li>
-<li><a href="#accessing-environment-variables">Accessing Environment Variables</a></li>
-</ul>
-</li>
+<li><a href="#stashing-files">Stashing Files</a></li>
+<li><a href="#dehydration">Dehydration</a></li>
 <li><a href="#logging">Logging</a><ul>
 <li><a href="#console-log-statements">Console Log Statements</a></li>
 <li><a href="#viewing-logs">Viewing Logs</a></li>
@@ -1764,6 +1768,167 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="z-object">Z Object</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument to all function calls in your app.</p><ul>
+<li><code>z.request([url], options)</code>: A promise based HTTP client with some Zapier-specific goodies. See <a href="#making-http-requests">Making HTTP Requests</a>.</li>
+<li><code>z.console(message)</code>: Logging console, similar to Node.js <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#console-log-statements">Log Statements</a></li>
+<li><code>z.stashFile(bufferStringStream, [knownLength], [filename])</code>: A promise based file stasher that returns a URL file pointer. See <a href="#stashing-files">Stashing Files</a>.</li>
+<li><code>z.dehydrate(methodOrFunc, inputData)</code>: Lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See <a href="#dehydration">Dehydration</a>.</li>
+<li><code>z.JSON</code>: Similar to the JSON built-in like <code>z.JSON.parse(&apos;...&apos;)</code>, but catches errors and produces nicer tracebacks.</li>
+<li><code>z.hash()</code>: Crypto tool for doing things like <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code></li>
+<li><code>z.errors</code>: Error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code></li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="bundle-object">Bundle Object</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>This object holds the user&apos;s auth details and the data to for the API requests.</p><ul>
+<li><code>authData</code> - user-provided authentication data, like <code>api_key</code> or <code>access_token</code>. [(Read more on authentication)[#authentication]]</li>
+<li><code>inputData</code> - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:<pre><code class="lang-javascript">{
+<span class="hljs-attr">createdBy</span>: <span class="hljs-string">&apos;Bobby Flay&apos;</span>
+style: <span class="hljs-string">&apos;mediterranean&apos;</span>
+}
+</code></pre>
+</li>
+<li><code>inputDataRaw</code> - like <code>inputData</code>, but before rendering <code>{{curlies}}</code>.<pre><code class="lang-javascript">{
+<span class="hljs-attr">createdBy</span>: <span class="hljs-string">&apos;{{chef_name}}&apos;</span>
+style: <span class="hljs-string">&apos;{{style}}&apos;</span>
+}
+</code></pre>
+</li>
+</ul>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="environment">Environment</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Apps can define environment variables that are available when the app&apos;s code executes. They work just like environment
+variables defined on the command line. They are useful when you have data like an OAuth client ID and secret that you
+don&apos;t want to commit to source control. Environment variables can also be used as a quick way to toggle between a
+a staging and production environment during app development.</p><p>It is important to note that <strong>variables are defined on a per-version basis!</strong> When you push a new version, the
+existing variables from the previous version are copied, so you don&apos;t have to manually add them. However, edits
+made to one version&apos;s environment will not affect the other versions.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="defining-environment-variables">Defining Environment Variables</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To define an environment variable, use the <code>env</code> command:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># Will set the environment variable on Zapier.com</span>
+zapier env 1.0.0 MY_SECRET_VALUE 1234
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>You will likely also want to set the value locally for testing.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-built_in">export</span> MY_SECRET_VALUE=1234
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="accessing-environment-variables">Accessing Environment Variables</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>To view existing environment variables, use the <code>env</code> command.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-bash"><span class="hljs-comment"># Will print a table listing the variables for this version</span>
+zapier env 1.0.0
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Within your app, you can access the environment via the standard <code>process.env</code> - any values set via local <code>export</code> or <code>zapier env</code> will be there.</p><p>For example, you can access the <code>process.env</code> in your perform functions:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listExample = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> httpOptions = {
+    <span class="hljs-attr">headers</span>: {
+      <span class="hljs-string">&apos;my-header&apos;</span>: process.env.MY_SECRET_VALUE
+    }
+  };
+  <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, httpOptions);
+};
+
+<span class="hljs-keyword">const</span> App = {
+  <span class="hljs-comment">// ...</span>
+  triggers: {
+    <span class="hljs-attr">example</span>: {
+      <span class="hljs-comment">// ...</span>
+      operation: {
+        <span class="hljs-comment">// ...</span>
+        perform: listExample
+      }
+    }
+  }
+};
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="making-http-requests">Making HTTP Requests</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -1775,12 +1940,14 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>There are two primary ways to make HTTP requests in the Zapier platform:</p><ol>
 <li><strong>Shorthand HTTP Requests</strong> - these are simple object literals that make it easy to define simple requests.</li>
-<li><strong>Manual HTTP Requests</strong> - this is much less &quot;magic&quot;, you use <code>z.request()</code> to make the requests and control the response.</li>
+<li><strong>Manual HTTP Requests</strong> - this is much less &quot;magic&quot;, you use <code>z.request([url], options)</code> to make the requests and control the response.</li>
 </ol><p>There are also a few helper constructs you can use to reduce boilerplate:</p><ol>
 <li><code>requestTemplate</code> which is an shorthand HTTP request that will be merged with every request.</li>
 <li><code>beforeRequest</code> middleware which is an array of functions to mutate a request before it is sent.</li>
 <li><code>afterResponse</code> middleware which is an array of functions to mutate a response before it is completed.</li>
-</ol>
+</ol><blockquote>
+<p>Note: you can install any HTTP client you like - but this is greatly discouraged as you lose automatic logging and middleware.</p>
+</blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -1939,7 +2106,9 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Note that you need to call <code>JSON.stringify()</code> before setting the <code>body</code>.</p>
+      <blockquote>
+<p>Note: you need to call <code>z.JSON.stringify()</code> before setting the <code>body</code>.</p>
+</blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2012,11 +2181,13 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Shorthand requests and manual <code>z.request()</code> calls support the following HTTP options:</p><ul>
+      <p>Shorthand requests and manual <code>z.request([url], options)</code> calls support the following HTTP options:</p><ul>
+<li><code>url</code>: HTTP url, you can provide it both <code>z.request(url, options)</code> or <code>z.request({url: url, ...})</code>.</li>
 <li><code>method</code>: HTTP method, default is <code>GET</code>.</li>
 <li><code>headers</code>: request headers object, format <code>{&apos;header-key&apos;: &apos;header-value&apos;}</code>.</li>
 <li><code>params</code>: URL query params object, format <code>{&apos;query-key&apos;: &apos;query-value&apos;}</code>.</li>
 <li><code>body</code>: request body, can be a string, buffer, or readable stream.</li>
+<li><code>raw</code>: set this to stream the response instead of consuming it immediately. Default is <code>false</code>.</li>
 <li><code>redirect</code>: set to <code>manual</code> to extract redirect headers, <code>error</code> to reject redirect, default is <code>follow</code>.</li>
 <li><code>follow</code>: maximum redirect count, set to <code>0</code> to not follow redirects. default is <code>20</code>.</li>
 <li><code>compress</code>: support gzip/deflate content encoding. Set to <code>false</code> to disable. Default is <code>true</code>.</li>
@@ -2041,9 +2212,10 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The response object returned by <code>z.request()</code> supports the following fields and methods:</p><ul>
+      <p>The response object returned by <code>z.request([url], options)</code> supports the following fields and methods:</p><ul>
 <li><code>status</code>: The response status code, i.e. <code>200</code>, <code>404</code>, etc.</li>
 <li><code>content</code>: The raw response body. For JSON you need to call <code>JSON.parse(response.content)</code>.</li>
+<li><code>body</code>: A stream available only if you provide <code>options.raw = true</code>.</li>
 <li><code>headers</code>: Response headers object. The header keys are all lower case.</li>
 <li><code>getHeader</code>: Retrieve response header, case insensitive: <code>response.getHeader(&apos;My-Header&apos;)</code></li>
 <li><code>options</code>: The original request options object (see above).</li>
@@ -2056,7 +2228,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="z-object">Z Object</h2>
+      <h2 id="stashing-files">Stashing Files</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2065,154 +2237,105 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument to all function calls in your app.</p><ul>
-<li><code>request</code>: An HTTP client with some Zapier-specific goodies. See <a href="#making-http-requests">Making HTTP Requests</a>.</li>
-<li><code>console</code>: Logging console, similar to Node.js <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#console-log-statements">Log Statements</a></li>
-<li><code>JSON</code>: Similar to the JSON built-in, but catches errors and produces nicer tracebacks.</li>
-<li><code>hash</code>: Crypto tool for doing things like <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code></li>
-<li><code>errors</code>: Error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code></li>
-<li><code>dehydrate</code>: Dehydrate a function</li>
-<li><code>dehydrateRequest</code>: Dehydrate a request</li>
-<li><code>dehydrateFile</code>: Dehydrate a file</li>
-</ul>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="bundle-object">Bundle Object</h2>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>This object holds the user&apos;s auth details and the data to for the API requests.</p><ul>
-<li><code>authData</code> - user-provided authentication data, like <code>api_key</code> or <code>access_token</code>. [(Read more on authentication)[#authentication]]</li>
-<li><code>inputData</code> - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:<pre><code class="lang-javascript">{
-<span class="hljs-attr">createdBy</span>: <span class="hljs-string">&apos;Bobby Flay&apos;</span>
-style: <span class="hljs-string">&apos;mediterranean&apos;</span>
-}
-</code></pre>
-</li>
-<li><code>inputDataRaw</code> - like <code>inputData</code>, but before rendering <code>{{curlies}}</code>.<pre><code class="lang-javascript">{
-<span class="hljs-attr">createdBy</span>: <span class="hljs-string">&apos;{{chef_name}}&apos;</span>
-style: <span class="hljs-string">&apos;{{style}}&apos;</span>
-}
-</code></pre>
-</li>
-</ul>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="environment">Environment</h2>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Apps can define environment variables that are available when the app&apos;s code executes. They work just like environment
-variables defined on the command line. They are useful when you have data like an OAuth client ID and secret that you
-don&apos;t want to commit to source control. Environment variables can also be used as a quick way to toggle between a
-a staging and production environment during app development.</p><p>It is important to note that <strong>variables are defined on a per-version basis!</strong> When you push a new version, the
-existing variables from the previous version are copied, so you don&apos;t have to manually add them. However, edits
-made to one version&apos;s environment will not affect the other versions.</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="defining-environment-variables">Defining Environment Variables</h3>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>To define an environment variable, use the <code>env</code> command:</p>
+      <p>It can be expensive to download and stream files or they can require complex handshakes to authorize downloads - so we provide a helpful stash routine that will take any <code>String</code>, <code>Buffer</code> or <code>Stream</code> and return a URL file pointer suitable for returning from triggers, searches, creates, etc.</p><p>The interface <code>z.stashFile(bufferStringStream, [knownLength], [filename])</code> takes a single required argument - the extra two arguments will be automatically populated in most cases. For example - a full example is this:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># Will set the environment variable on Zapier.com</span>
-zapier env 1.0.0 MY_SECRET_VALUE 1234
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> content = <span class="hljs-string">&apos;Hello world!&apos;</span>;
+z.stashFile(content, content.length, <span class="hljs-string">&apos;hello.txt&apos;</span>)
+  .then(<span class="hljs-function"><span class="hljs-params">url</span> =&gt;</span> z.console.log(url));
+<span class="hljs-comment">// https://zapier-dev-files.s3.amazonaws.com/cli-platform/f75e2819-05e2-41d0-b70e-9f8272f9eebf</span>
 </code></pre>
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>You will likely also want to set the value locally for testing.</p>
+      <p>Most likely you&apos;d want to stream from another URL - note the usage of <code>z.request({raw: true})</code>:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-built_in">export</span> MY_SECRET_VALUE=1234
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> fileRequest = z.request({<span class="hljs-attr">url</span>: <span class="hljs-string">&apos;http://example.com/file.pdf&apos;</span>, <span class="hljs-attr">raw</span>: <span class="hljs-literal">true</span>});
+z.stashFile(fileRequest)
+  .then(<span class="hljs-function"><span class="hljs-params">url</span> =&gt;</span> z.console.log(url));
+<span class="hljs-comment">// https://zapier-dev-files.s3.amazonaws.com/cli-platform/74bc623c-d94d-4cac-81f1-f71d7d517bc7</span>
 </code></pre>
     </div>
   </div>
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="accessing-environment-variables">Accessing Environment Variables</h3>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>To view existing environment variables, use the <code>env</code> command.</p>
+      <blockquote>
+<p>Note: you should only be using <code>z.stashFile()</code> in a hydration method - otherwise it can be very expensive to stash dozens of files in a polling call - for example! </p>
+</blockquote><p>See a full example with hydration wired in correctly:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash"><span class="hljs-comment"># Will print a table listing the variables for this version</span>
-zapier env 1.0.0
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Within your app, you can access the environment via the standard <code>process.env</code> - any values set via local <code>export</code> or <code>zapier env</code> will be there.</p><p>For example, you can access the <code>process.env</code> in your perform functions:</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listExample = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> httpOptions = {
-    <span class="hljs-attr">headers</span>: {
-      <span class="hljs-string">&apos;my-header&apos;</span>: process.env.MY_SECRET_VALUE
-    }
-  };
-  <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/api/v2/recipes.json&apos;</span>, httpOptions);
+      <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> stashPDFfunction = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
+  <span class="hljs-comment">// use standard auth to request the file</span>
+  <span class="hljs-keyword">const</span> filePromise = z.request({
+    <span class="hljs-attr">url</span>: bundle.inputData.downloadUrl,
+    <span class="hljs-attr">raw</span>: <span class="hljs-literal">true</span>
+  });
+  <span class="hljs-comment">// and swap it for a stashed URL</span>
+  <span class="hljs-keyword">return</span> z.stashFile(filePromise);
+};
+
+<span class="hljs-keyword">const</span> pdfList = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> z.request(<span class="hljs-string">&apos;http://example.com/pdfs.json&apos;</span>)
+    .then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> z.JSON.parse(res.content))
+    .then(<span class="hljs-function"><span class="hljs-params">results</span> =&gt;</span> {
+      <span class="hljs-keyword">return</span> results.map(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> {
+        <span class="hljs-comment">// lazily convert a secret_download_url to a stashed url</span>
+        <span class="hljs-comment">// zapier won&apos;t do this until we need it</span>
+        result.file = z.dehydrate(<span class="hljs-string">&apos;stashPDF&apos;</span>, {
+          <span class="hljs-attr">downloadUrl</span>: result.secret_download_url
+        });
+        <span class="hljs-keyword">delete</span> result.secret_download_url;
+        <span class="hljs-keyword">return</span> result;
+      })
+    });
 };
 
 <span class="hljs-keyword">const</span> App = {
-  <span class="hljs-comment">// ...</span>
-  triggers: {
-    <span class="hljs-attr">example</span>: {
-      <span class="hljs-comment">// ...</span>
-      operation: {
-        <span class="hljs-comment">// ...</span>
-        perform: listExample
+  <span class="hljs-attr">version</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./package.json&apos;</span>).version,
+  <span class="hljs-attr">platformVersion</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>).version,
+
+  <span class="hljs-attr">hydrators</span>: {
+    <span class="hljs-attr">stashPDF</span>: stashPDFfunction
+  },
+
+  <span class="hljs-attr">triggers</span>: {
+    <span class="hljs-attr">new_pdf</span>: {
+      <span class="hljs-attr">noun</span>: <span class="hljs-string">&apos;PDF&apos;</span>,
+      <span class="hljs-attr">display</span>: {
+        <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;New PDF&apos;</span>,
+        <span class="hljs-attr">helpText</span>: <span class="hljs-string">&apos;Triggers when a new PDF is added.&apos;</span>
+      },
+      <span class="hljs-attr">operation</span>: {
+        <span class="hljs-attr">perform</span>: pdfList
       }
     }
   }
 };
+
+<span class="hljs-built_in">module</span>.exports = App;
 </code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="dehydration">Dehydration</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
     </div>
   </div>
 </div><div class="row">
@@ -2227,7 +2350,7 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the <code>z.console</code> method (<a href="#console-log-statements">see below for details</a>). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use <code>z.request()</code> or shorthand request objects).</p>
+      <p>There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the <code>z.console</code> method (<a href="#console-log-statements">see below for details</a>). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use <code>z.request([url], options)</code> or shorthand request objects).</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
