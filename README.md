@@ -143,7 +143,7 @@ touch triggers/recipe.js
 
 > Note: The `triggers` folder is simply a convention - we recommend it as our tools support it. Also, `recipe.js` is just an example name of a model - maybe you'll eventually make a `contact.js`, `lead.js` or `order.js`.
 
-Open `triggers/recipe.js` and paste in:
+Open `triggers/recipe.js` and **replace** it with:
 
 ```javascript
 const listRecipes = (z, bundle) => {
@@ -180,7 +180,7 @@ Second, look at the second part of our snippet; the export. Essentially, we expo
 
 With our trigger defined, we need to incorporate it into our app.
 
-In `index.js`, edit the file to include:
+In `index.js`, **edit** the file to include:
 
 ```javascript
 // Place this at the top of index.js
@@ -189,7 +189,7 @@ const recipe = require('./triggers/recipe');
 
 With the trigger imported, we need to register it on our app by editing the existing `triggers` property.
 
-In `index.js`, edit the `App`'s `triggers` section to include:
+In `index.js`, **edit** the `App`'s `triggers` section to include:
 
 ```javascript
 // Edit the App definition to register our trigger
@@ -204,7 +204,7 @@ const App = {
 
 Now, let's add a test to make sure our code is working properly.
 
-In `test/index.js`, replace the file with:
+In `test/index.js`, **replace** the file with:
 
 ```javascript
 const should = require('should');
@@ -253,7 +253,7 @@ zapier test
 
 Let's say we want to let our users tweak the cuisine style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.
 
-In `triggers/recipe.js`, replace the file with:
+In `triggers/recipe.js`, **replace** the file with:
 
 ```javascript
 const listRecipes = (z, bundle) => {
@@ -291,7 +291,7 @@ Notice that we now include and use an input field keyed `"style"`. We have to ad
 
 Since we are developing locally, let's tweak the test to verify everything still works.
 
-In `test/index.js`, replace the file with:
+In `test/index.js`, **replace** the file with:
 
 ```javascript
 
@@ -395,7 +395,7 @@ Up to this point we've ignored something that is usually crucial to APIs: authen
 
 The first thing we need to do is define the `authentication` section on the app.
 
-In `index.js`, edit `App` to include:
+In `index.js`, **edit** `App` to include:
 
 ```javascript
 const App = {
@@ -425,7 +425,7 @@ In the above snippet, we define the two required properties of `authentication`:
 
 With that setup, we now need to make sure that our API key is included in all the requests our app makes.
 
-In `index.js`, edit the file to include:
+In `index.js`, **edit** the file to include:
 
 ```javascript
 // Add this helper function above the App definition
@@ -441,7 +441,7 @@ Above we define a helper function, `addApiKeyToHeader`, that puts the user-provi
 
 To make our helper function take effect, we need to register it on our app.
 
-In `index.js`, edit `App` to include:
+In `index.js`, **edit** `App` to include:
 
 ```javascript
 const App = {

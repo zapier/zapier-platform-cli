@@ -547,7 +547,7 @@ touch triggers/recipe.js
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>Note: The <code>triggers</code> folder is simply a convention - we recommend it as our tools support it. Also, <code>recipe.js</code> is just an example name of a model - maybe you&apos;ll eventually make a <code>contact.js</code>, <code>lead.js</code> or <code>order.js</code>.</p>
-</blockquote><p>Open <code>triggers/recipe.js</code> and paste in:</p>
+</blockquote><p>Open <code>triggers/recipe.js</code> and <strong>replace</strong> it with:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
@@ -578,7 +578,7 @@ touch triggers/recipe.js
 <li>The <a href="#bundle-object">Bundle Object</a> contains any data needed to make API calls, like authentication credentials or data for a POST body. In our snippet the Bundle is not used, since we don&apos;t require any of those to make our simple GET request.</li>
 </ul><blockquote>
 <p>Note about Z Object: While it is possible to accomplish the same tasks using alternate Node.js libraries, it&apos;s preferable to use the <code>z</code> object as there are features built into these utilities that augment the Zapier experience. For example, logging of HTTP calls and better handling of JSON parsing failures. <a href="#z-object">Read the docs</a> for more info.</p>
-</blockquote><p>Second, look at the second part of our snippet; the export. Essentially, we export some metadata plus our <code>listRecipes</code> function. We&apos;ll explain later how Zapier uses this metadata. For now, know that it satisfies the minimum info required to define a trigger.</p><p>With our trigger defined, we need to incorporate it into our app.</p><p>In <code>index.js</code>, edit the file to include:</p>
+</blockquote><p>Second, look at the second part of our snippet; the export. Essentially, we export some metadata plus our <code>listRecipes</code> function. We&apos;ll explain later how Zapier uses this metadata. For now, know that it satisfies the minimum info required to define a trigger.</p><p>With our trigger defined, we need to incorporate it into our app.</p><p>In <code>index.js</code>, <strong>edit</strong> the file to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-comment">// Place this at the top of index.js</span>
@@ -589,7 +589,7 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>With the trigger imported, we need to register it on our app by editing the existing <code>triggers</code> property.</p><p>In <code>index.js</code>, edit the <code>App</code>&apos;s <code>triggers</code> section to include:</p>
+      <p>With the trigger imported, we need to register it on our app by editing the existing <code>triggers</code> property.</p><p>In <code>index.js</code>, <strong>edit</strong> the <code>App</code>&apos;s <code>triggers</code> section to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-comment">// Edit the App definition to register our trigger</span>
@@ -606,7 +606,7 @@ touch triggers/recipe.js
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Now, let&apos;s add a test to make sure our code is working properly.</p><p>In <code>test/index.js</code>, replace the file with:</p>
+      <p>Now, let&apos;s add a test to make sure our code is working properly.</p><p>In <code>test/index.js</code>, <strong>replace</strong> the file with:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> should = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;should&apos;</span>);
@@ -668,7 +668,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Let&apos;s say we want to let our users tweak the cuisine style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.</p><p>In <code>triggers/recipe.js</code>, replace the file with:</p>
+      <p>Let&apos;s say we want to let our users tweak the cuisine style of recipes they are triggering on. A classic way to do that with Zapier is to provide an input field a user can fill out.</p><p>In <code>triggers/recipe.js</code>, <strong>replace</strong> the file with:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> listRecipes = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
@@ -706,7 +706,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
       <p>Notice that we now include and use an input field keyed <code>&quot;style&quot;</code>. We have to add it in two places:</p><ul>
 <li>In the <code>inputFields</code> on <code>operation</code> - this defines the field as exposed in the Zapier UI.</li>
 <li>In the <code>listRecipes</code> function - we use the provided style via the bundle <code>bundle.inputData.style</code>. Since the field is not required - it could be null!</li>
-</ul><p>Since we are developing locally, let&apos;s tweak the test to verify everything still works.</p><p>In <code>test/index.js</code>, replace the file with:</p>
+</ul><p>Since we are developing locally, let&apos;s tweak the test to verify everything still works.</p><p>In <code>test/index.js</code>, <strong>replace</strong> the file with:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript">
@@ -844,7 +844,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Up to this point we&apos;ve ignored something that is usually crucial to APIs: authentication. Zapier supports a number of different <a href="#authentication">authentication schemes</a>. For our app, we are going to set it up to include an API Key in a header.</p><p>The first thing we need to do is define the <code>authentication</code> section on the app.</p><p>In <code>index.js</code>, edit <code>App</code> to include:</p>
+      <p>Up to this point we&apos;ve ignored something that is usually crucial to APIs: authentication. Zapier supports a number of different <a href="#authentication">authentication schemes</a>. For our app, we are going to set it up to include an API Key in a header.</p><p>The first thing we need to do is define the <code>authentication</code> section on the app.</p><p>In <code>index.js</code>, <strong>edit</strong> <code>App</code> to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
@@ -874,7 +874,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
       <p>In the above snippet, we define the two required properties of <code>authentication</code>:</p><ul>
 <li><code>fields</code> is where we define our auth fields. This works similar to the <code>inputFields</code> of triggers. When users connect their account to Zapier, they&apos;ll be prompted to fill in this field, and the value they enter becomes available in the <code>bundle</code>.</li>
 <li><code>test</code> is a function used during the account connection process to verify that the user entered valid credentials. The goal of the function is to make an authenticated API request whose response indicates if the credentials are correct. If valid, the test function can return anything. On invalid credentials, the test needs to raise an error.</li>
-</ul><p>With that setup, we now need to make sure that our API key is included in all the requests our app makes.</p><p>In <code>index.js</code>, edit the file to include:</p>
+</ul><p>With that setup, we now need to make sure that our API key is included in all the requests our app makes.</p><p>In <code>index.js</code>, <strong>edit</strong> the file to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-comment">// Add this helper function above the App definition</span>
@@ -890,7 +890,7 @@ describe(<span class="hljs-string">&apos;My App&apos;</span>, () =&gt; {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Above we define a helper function, <code>addApiKeyToHeader</code>, that puts the user-provided API key in a request header called <code>MY-AUTH-HEADER</code>. The name chosen is illustrative, it can be whatever the API you are integrating with requires. Alternatively, you could put it in a query parameter instead of a header, and/or encoded it first.</p><p>To make our helper function take effect, we need to register it on our app.</p><p>In <code>index.js</code>, edit <code>App</code> to include:</p>
+      <p>Above we define a helper function, <code>addApiKeyToHeader</code>, that puts the user-provided API key in a request header called <code>MY-AUTH-HEADER</code>. The name chosen is illustrative, it can be whatever the API you are integrating with requires. Alternatively, you could put it in a query parameter instead of a header, and/or encoded it first.</p><p>To make our helper function take effect, we need to register it on our app.</p><p>In <code>index.js</code>, <strong>edit</strong> <code>App</code> to include:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
