@@ -256,8 +256,8 @@ blockquote {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
-<li><a href="#stashing-files">Stashing Files</a></li>
 <li><a href="#dehydration">Dehydration</a></li>
+<li><a href="#stashing-files">Stashing Files</a></li>
 <li><a href="#logging">Logging</a><ul>
 <li><a href="#console-log-statements">Console Log Statements</a></li>
 <li><a href="#viewing-logs">Viewing Logs</a></li>
@@ -366,8 +366,8 @@ blockquote {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
-<li><a href="#stashing-files">Stashing Files</a></li>
 <li><a href="#dehydration">Dehydration</a></li>
+<li><a href="#stashing-files">Stashing Files</a></li>
 <li><a href="#logging">Logging</a><ul>
 <li><a href="#console-log-statements">Console Log Statements</a></li>
 <li><a href="#viewing-logs">Viewing Logs</a></li>
@@ -1780,8 +1780,8 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       <p>We provide several methods off of the <code>z</code> object, which is provided as the first argument to all function calls in your app.</p><ul>
 <li><code>z.request([url], options)</code>: A promise based HTTP client with some Zapier-specific goodies. See <a href="#making-http-requests">Making HTTP Requests</a>.</li>
 <li><code>z.console(message)</code>: Logging console, similar to Node.js <code>console</code> but logs remotely, as well as to stdout in tests. See <a href="#console-log-statements">Log Statements</a></li>
-<li><code>z.stashFile(bufferStringStream, [knownLength], [filename])</code>: A promise based file stasher that returns a URL file pointer. See <a href="#stashing-files">Stashing Files</a>.</li>
 <li><code>z.dehydrate(methodOrFunc, inputData)</code>: Lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See <a href="#dehydration">Dehydration</a>.</li>
+<li><code>z.stashFile(bufferStringStream, [knownLength], [filename])</code>: A promise based file stasher that returns a URL file pointer. See <a href="#stashing-files">Stashing Files</a>.</li>
 <li><code>z.JSON</code>: Similar to the JSON built-in like <code>z.JSON.parse(&apos;...&apos;)</code>, but catches errors and produces nicer tracebacks.</li>
 <li><code>z.hash()</code>: Crypto tool for doing things like <code>z.hash(&apos;sha256&apos;, &apos;my password&apos;)</code></li>
 <li><code>z.errors</code>: Error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code></li>
@@ -2228,6 +2228,24 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="dehydration">Dehydration</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>TODO.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="stashing-files">Stashing Files</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -2318,24 +2336,6 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
 
 <span class="hljs-built_in">module</span>.exports = App;
 </code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h2 id="dehydration">Dehydration</h2>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>TODO.</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
     </div>
   </div>
 </div><div class="row">

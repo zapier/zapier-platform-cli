@@ -48,8 +48,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Using HTTP middleware](#using-http-middleware)
   * [HTTP Request Options](#http-request-options)
   * [HTTP Response Object](#http-response-object)
-- [Stashing Files](#stashing-files)
 - [Dehydration](#dehydration)
+- [Stashing Files](#stashing-files)
 - [Logging](#logging)
   * [Console Log Statements](#console-log-statements)
   * [Viewing Logs](#viewing-logs)
@@ -1039,11 +1039,12 @@ We provide several methods off of the `z` object, which is provided as the first
 
 * `z.request([url], options)`: A promise based HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
 * `z.console(message)`: Logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-log-statements)
-* `z.stashFile(bufferStringStream, [knownLength], [filename])`: A promise based file stasher that returns a URL file pointer. See [Stashing Files](#stashing-files).
 * `z.dehydrate(methodOrFunc, inputData)`: Lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
+* `z.stashFile(bufferStringStream, [knownLength], [filename])`: A promise based file stasher that returns a URL file pointer. See [Stashing Files](#stashing-files).
 * `z.JSON`: Similar to the JSON built-in like `z.JSON.parse('...')`, but catches errors and produces nicer tracebacks.
 * `z.hash()`: Crypto tool for doing things like `z.hash('sha256', 'my password')`
 * `z.errors`: Error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`
+
 
 ## Bundle Object
 
@@ -1129,6 +1130,7 @@ const App = {
 
 ```
 
+
 ## Making HTTP Requests
 
 There are two primary ways to make HTTP requests in the Zapier platform:
@@ -1143,7 +1145,6 @@ There are also a few helper constructs you can use to reduce boilerplate:
 2. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
 
 > Note: you can install any HTTP client you like - but this is greatly discouraged as you lose automatic logging and middleware.
-
 
 ### Shorthand HTTP Requests
 
@@ -1334,6 +1335,12 @@ The response object returned by `z.request([url], options)` supports the followi
 * `getHeader`: Retrieve response header, case insensitive: `response.getHeader('My-Header')`
 * `options`: The original request options object (see above).
 
+
+## Dehydration
+
+TODO.
+
+
 ## Stashing Files
 
 It can be expensive to download and stream files or they can require complex handshakes to authorize downloads - so we provide a helpful stash routine that will take any `String`, `Buffer` or `Stream` and return a URL file pointer suitable for returning from triggers, searches, creates, etc.
@@ -1413,9 +1420,6 @@ module.exports = App;
 
 ```
 
-## Dehydration
-
-TODO.
 
 ## Logging
 
