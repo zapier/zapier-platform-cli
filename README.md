@@ -1049,7 +1049,7 @@ We provide several methods off of the `z` object, which is provided as the first
 
 This object holds the user's auth details and the data to for the API requests.
 
-* `authData` - user-provided authentication data, like `api_key` or `access_token`. [(Read more on authentication)[#authentication]]
+* `authData` - user-provided authentication data, like `api_key` or `access_token`. [Read more on authentication.](#authentication)
 * `inputData` - user-provided data for this particular run of the trigger/search/create, as defined by the inputFields. For example:
 ```javascript
 {
