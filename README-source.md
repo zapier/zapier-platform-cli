@@ -954,14 +954,14 @@ Most likely you'd want to stream from another URL - note the usage of `z.request
 
 ```javascript
 const fileRequest = z.request({url: 'http://example.com/file.pdf', raw: true});
-z.stashFile(fileRequest)
+z.stashFile(fileRequest) // knownLength and filename will be sniffed from the request
   .then(url => z.console.log(url));
 // https://zapier-dev-files.s3.amazonaws.com/cli-platform/74bc623c-d94d-4cac-81f1-f71d7d517bc7
 ```
 
 > Note: you should only be using `z.stashFile()` in a hydration method - otherwise it can be very expensive to stash dozens of files in a polling call - for example! 
 
-See a full example with hydration wired in correctly:
+See a full example with dehydration/hydration wired in correctly:
 
 ```javascript
 [insert-file:./snippets/stash-file.js]
