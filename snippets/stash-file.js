@@ -20,7 +20,7 @@ const pdfList = (z, bundle) => {
         });
         delete result.secret_download_url;
         return result;
-      })
+      });
     });
 };
 
