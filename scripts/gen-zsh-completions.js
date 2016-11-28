@@ -3,11 +3,22 @@
 const _ = require('lodash');
 const path = require('path');
 
-const allCommands = require('../lib/commands/index');
+const commandsIndex = require('../lib/commands/index');
 const convertUtils = require('../lib/utils/convert');
 const renderTemplate = convertUtils.renderTemplate;
 
-const commands = _.filter(allCommands, cmd => !cmd.hide && cmd.name !== 'access');
+const allCommands = _.reduce(Object.keys(commandsIndex), (all, name) => {
+  const cmd = commandsIndex[name];
+  all.push({
+    name,
+    help: cmd.help,
+    argOptsSpec: cmd.argOptsSpec,
+    hide: cmd.hide
+  });
+  return all;
+}, []);
+
+const commands = _.filter(allCommands, cmd => !cmd.hide);
 
 const clean = s => s ? s.replace(/[`']/g, '') : '';
 
