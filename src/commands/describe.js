@@ -60,7 +60,7 @@ const describe = (context) => {
       // TODO: auth and app title/description
 
       const resourceRows = _.values(definition.resources || {}).map((resource) => {
-        resource = _.assign(resource);
+        resource = _.assign({}, resource);
         resource.paths = allResourceTemplates
           .map(method => method({key: resource.key}))
           .filter(path => _.has(definition, path))
@@ -80,7 +80,7 @@ const describe = (context) => {
       Object.keys(typeMap).forEach((type) => {
         context.line(colors.bold(_.capitalize(type)) + '\n');
         const rows = _.values(definition[type]).map(row => {
-          row = _.assign(row);
+          row = _.assign({}, row);
 
           row.paths = [];
 
