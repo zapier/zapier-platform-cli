@@ -22,7 +22,9 @@ const commands = _.filter(allCommands, cmd => !cmd.hide);
 
 const clean = s => s ? s.replace(/[`']/g, '') : '';
 
-const optsList = _.map(commands, cmd => {
+const commandsWithOpts = _.filter(commands, cmd => !_.isEmpty(cmd.argOptsSpec));
+
+const optsList = _.map(commandsWithOpts, cmd => {
   const opts = _.map(cmd.argOptsSpec, (spec, opt) => `"--${opt}:'${clean(spec.help)}'"`);
   return `local ${cmd.name}Opts=(${opts.join(' ')})`;
 });
@@ -31,7 +33,7 @@ const commandsList = _.map(commands, cmd => `"${cmd.name}:'${clean(cmd.help)}'"`
 
 const templateFile = path.resolve(__dirname, '_zapier.template');
 
-const optsCases = _.map(commands, cmd => {
+const optsCases = _.map(commandsWithOpts, cmd => {
   return `        ${cmd.name})
                _describe 'options' ${cmd.name}Opts
                ;;`;

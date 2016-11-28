@@ -1,86 +1,32 @@
 #compdef zapier
 
 getOptions() {
-    local helpOpts=()
-    local loginOpts=()
-    local logoutOpts=()
     local initOpts=("--template:'select a starting app template'")
-    local registerOpts=()
     local scaffoldOpts=("--dest:'sets the new files path'" "--entry:'where to import the new file'")
-    local describeOpts=()
     local testOpts=("--quiet:'do not print zapier detailed logs to standard out'" "--very-quiet:'do not print zapier summary or detail logs to standard out'")
-    local linkOpts=()
-    local appsOpts=()
-    local versionsOpts=()
-    local validateOpts=()
     local buildOpts=("--disable-dependency-detection:'disables walking required files to slim the build'" "--include-js-map:'include .js.map files (usually source maps'")
-    local uploadOpts=()
     local pushOpts=("--disable-dependency-detection:'disables walking required files to slim the build'" "--include-js-map:'include .js.map files (usually source maps'")
-    local promoteOpts=()
-    local migrateOpts=()
-    local deprecateOpts=()
     local collaborateOpts=("--remove:'elect to remove this user'")
     local inviteOpts=("--remove:'elect to remove this user'")
-    local historyOpts=()
     local logsOpts=("--version:'display only this versions logs (default is all versions)'" "--status:'display only success logs (status code < 400 / info) or error (status code > 400 / tracebacks)'" "--type:'display only console or http logs'" "--detailed:'show detailed logs (like request/response body and headers)'" "--user:'display only this users logs'" "--limit:'control the maximum result size'")
     local envOpts=("--remove:'optionally remove environment variable with this key'")
-    local convertOpts=()
 
     local cmd=$words[2]
     case $cmd in
-        help)
-               _describe 'options' helpOpts
-               ;;
-        login)
-               _describe 'options' loginOpts
-               ;;
-        logout)
-               _describe 'options' logoutOpts
-               ;;
         init)
                _describe 'options' initOpts
-               ;;
-        register)
-               _describe 'options' registerOpts
                ;;
         scaffold)
                _describe 'options' scaffoldOpts
                ;;
-        describe)
-               _describe 'options' describeOpts
-               ;;
         test)
                _describe 'options' testOpts
-               ;;
-        link)
-               _describe 'options' linkOpts
-               ;;
-        apps)
-               _describe 'options' appsOpts
-               ;;
-        versions)
-               _describe 'options' versionsOpts
-               ;;
-        validate)
-               _describe 'options' validateOpts
                ;;
         build)
                _describe 'options' buildOpts
                ;;
-        upload)
-               _describe 'options' uploadOpts
-               ;;
         push)
                _describe 'options' pushOpts
-               ;;
-        promote)
-               _describe 'options' promoteOpts
-               ;;
-        migrate)
-               _describe 'options' migrateOpts
-               ;;
-        deprecate)
-               _describe 'options' deprecateOpts
                ;;
         collaborate)
                _describe 'options' collaborateOpts
@@ -88,17 +34,11 @@ getOptions() {
         invite)
                _describe 'options' inviteOpts
                ;;
-        history)
-               _describe 'options' historyOpts
-               ;;
         logs)
                _describe 'options' logsOpts
                ;;
         env)
                _describe 'options' envOpts
-               ;;
-        convert)
-               _describe 'options' convertOpts
                ;;
     esac
 }
