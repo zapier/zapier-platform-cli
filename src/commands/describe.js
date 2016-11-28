@@ -3,13 +3,50 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-const possibleMethods = [
+const authenticationPaths = [
+  'authentication.test',
+  'authentication.oauth2Config.getAccessToken',
+  'authentication.oauth2Config.refreshAccessToken',
+  'authentication.sessionConfig.perform',
+];
+
+// {type:triggers}.{key:lead}.operation.perform
+const actionTemplates = [
   '<%= type %>.<%= key %>.operation.perform',
   '<%= type %>.<%= key %>.operation.performSubscribe',
   '<%= type %>.<%= key %>.operation.performUnsubscribe',
   '<%= type %>.<%= key %>.operation.inputFields',
   '<%= type %>.<%= key %>.operation.outputFields',
-].map(method => _.template(method));
+].map(template => _.template(template));
+
+// const inlineResourceMethods = [
+//   'get',
+//   'hook',
+//   'list',
+//   'search',
+//   'create',
+//   'searchOrCreate',
+// ];
+
+// resources.{key:lead}.get.operation.perform
+const makeResourceTemplates = (methods) =>
+  methods
+  .reduce((acc, method) => {
+    return acc.concat([
+      `resources.<%= key %>.${method}.operation.perform`,
+      `resources.<%= key %>.${method}.operation.performSubscribe`,
+      `resources.<%= key %>.${method}.operation.performUnsubscribe`,
+      `resources.<%= key %>.${method}.operation.inputFields`,
+      `resources.<%= key %>.${method}.operation.outputFields`,
+    ]);
+  }, [])
+  .map(template => _.template(template));
+
+const typeMap = {
+  triggers: ['list', 'hook'],
+  searches: ['search'],
+  creates: ['create'],
+};
 
 const describe = (context) => {
   return Promise.resolve()
@@ -22,22 +59,29 @@ const describe = (context) => {
 
       // resources.form.list.operation.perform
 
-      const types = ['triggers', 'searches', 'creates'];
-
-      types.forEach((type) => {
+      Object.keys(typeMap).forEach((type) => {
         context.line(colors.bold(_.capitalize(type)) + '\n');
         const rows = _.values(definition[type]).map(row => {
-          row.methods = possibleMethods
-            .map(method => method({type, key: row.key}))
-            .filter(path => _.has(definition, path))
-            .join('\n');
+          row.paths = [];
+
+          // add possible action paths
+          row.paths = row.paths.concat(actionTemplates.map(method => method({type, key: row.key})));
+
+          // add possible resource paths
+          if (row.operation.resource) {
+            const key = row.operation.resource.split('.')[0];
+            const resourceTemplates = makeResourceTemplates(typeMap[type]);
+            row.paths = row.paths.concat(resourceTemplates.map(method => method({key})));
+          }
+
+          row.paths = row.paths.filter(path => _.has(definition, path)).join('\n');
           return row;
         });
         const headers = [
           ['Noun', 'noun'],
           ['Label', 'display.label'],
           ['Resource', 'operation.resource', colors.grey('n/a')],
-          ['Available Methods', 'methods', colors.grey('n/a')],
+          ['Available Methods', 'paths', colors.grey('n/a')],
         ];
         const ifEmpty = colors.grey(`Nothing found for ${type}, maybe try the \`zapier scaffold\` command?`);
         utils.printData(rows, headers, ifEmpty);
