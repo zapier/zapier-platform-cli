@@ -3,12 +3,12 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-// const authenticationPaths = [
-//   'authentication.test',
-//   'authentication.oauth2Config.getAccessToken',
-//   'authentication.oauth2Config.refreshAccessToken',
-//   'authentication.sessionConfig.perform',
-// ];
+const authenticationPaths = [
+  'authentication.test',
+  'authentication.oauth2Config.getAccessToken',
+  'authentication.oauth2Config.refreshAccessToken',
+  'authentication.sessionConfig.perform',
+];
 
 // {type:triggers}.{key:lead}.operation.perform
 const actionTemplates = [
@@ -52,12 +52,39 @@ const typeMap = {
 
 const describe = (context) => {
   return Promise.resolve()
-    .then(() => utils.localAppCommand({command: 'definition'}))
-    .then((definition) => {
+    .then(() => Promise.all([
+      utils.getLinkedAppConfig().catch(() => null),
+      utils.localAppCommand({command: 'definition'})
+    ]))
+    .then(([appConfig, definition]) => {
       context.line(`A description of your app listed below.\n`);
 
       // context.line(utils.prettyJSONstringify(definition));
       // TODO: auth and app title/description
+      context.line(colors.bold('Authentication') + '\n');
+      let authRows = [];
+      if (definition.authentication) {
+        const authentication = _.assign({}, definition.authentication);
+        authentication.paths = authenticationPaths
+          .filter(path => _.has(definition, path))
+          .join('\n');
+        if (authentication.type === 'oauth2') {
+          if (appConfig) {
+            authentication.redirect_uri = `https://zapier.com/dashboard/auth/oauth/return/${appConfig.key}CLIAPI/`;
+          } else {
+            authentication.redirect_uri = colors.grey('do zapier push to see redirect_uri!');
+          }
+        }
+        authRows = [authentication];
+      }
+      const authHeaders = [
+        ['Type', 'type'],
+        ['Redirect URI', 'redirect_uri', colors.grey('n/a')],
+        ['Available Methods', 'paths', colors.grey('n/a')],
+      ];
+      const authIfEmpty = colors.grey('Nothing found for authentication.');
+      utils.printData(authRows, authHeaders, authIfEmpty);
+      context.line();
 
       const resourceRows = _.values(definition.resources || {}).map((resource) => {
         resource = _.assign({}, resource);
