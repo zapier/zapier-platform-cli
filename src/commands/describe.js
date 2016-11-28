@@ -3,12 +3,12 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 
-const authenticationPaths = [
-  'authentication.test',
-  'authentication.oauth2Config.getAccessToken',
-  'authentication.oauth2Config.refreshAccessToken',
-  'authentication.sessionConfig.perform',
-];
+// const authenticationPaths = [
+//   'authentication.test',
+//   'authentication.oauth2Config.getAccessToken',
+//   'authentication.oauth2Config.refreshAccessToken',
+//   'authentication.sessionConfig.perform',
+// ];
 
 // {type:triggers}.{key:lead}.operation.perform
 const actionTemplates = [
@@ -19,14 +19,14 @@ const actionTemplates = [
   '<%= type %>.<%= key %>.operation.outputFields',
 ].map(template => _.template(template));
 
-// const inlineResourceMethods = [
-//   'get',
-//   'hook',
-//   'list',
-//   'search',
-//   'create',
-//   'searchOrCreate',
-// ];
+const inlineResourceMethods = [
+  'get',
+  'hook',
+  'list',
+  'search',
+  'create',
+  'searchOrCreate',
+];
 
 // resources.{key:lead}.get.operation.perform
 const makeResourceTemplates = (methods) =>
@@ -41,6 +41,8 @@ const makeResourceTemplates = (methods) =>
     ]);
   }, [])
   .map(template => _.template(template));
+
+const allResourceTemplates = makeResourceTemplates(inlineResourceMethods);
 
 const typeMap = {
   triggers: ['list', 'hook'],
@@ -57,11 +59,29 @@ const describe = (context) => {
       // context.line(utils.prettyJSONstringify(definition));
       // TODO: auth and app title/description
 
-      // resources.form.list.operation.perform
+      const resourceRows = _.values(definition.resources || {}).map((resource) => {
+        resource = _.assign(resource);
+        resource.paths = allResourceTemplates
+          .map(method => method({key: resource.key}))
+          .filter(path => _.has(definition, path))
+          .join('\n');
+        return resource;
+      });
+      context.line(colors.bold('Resources') + '\n');
+      const resourceHeaders = [
+        ['Noun', 'noun'],
+        ['Ref', 'key'],
+        ['Available Methods', 'paths', colors.grey('n/a')],
+      ];
+      const resourceIfEmpty = colors.grey('Nothing found for resources, maybe try the `zapier scaffold` command?');
+      utils.printData(resourceRows, resourceHeaders, resourceIfEmpty);
+      context.line();
 
       Object.keys(typeMap).forEach((type) => {
         context.line(colors.bold(_.capitalize(type)) + '\n');
         const rows = _.values(definition[type]).map(row => {
+          row = _.assign(row);
+
           row.paths = [];
 
           // add possible action paths
@@ -80,7 +100,7 @@ const describe = (context) => {
         const headers = [
           ['Noun', 'noun'],
           ['Label', 'display.label'],
-          ['Resource', 'operation.resource', colors.grey('n/a')],
+          ['Resource Ref', 'operation.resource', colors.grey('n/a')],
           ['Available Methods', 'paths', colors.grey('n/a')],
         ];
         const ifEmpty = colors.grey(`Nothing found for ${type}, maybe try the \`zapier scaffold\` command?`);
@@ -116,14 +136,14 @@ $ zapier describe
 # 
 # Triggers
 # 
-# ┌────────────┬────────────────────┬──────────┬───────────────────────────────────────────────┐
-# │ Noun       │ Label              │ Resource │ Available Methods                             │
-# ├────────────┼────────────────────┼──────────┼───────────────────────────────────────────────┤
-# │ Member     │ Updated Subscriber │ member   │ triggers.updated_member.operation.perform     │
-# │            │                    │          │ triggers.updated_member.operation.inputFields │
-# │            │                    │          │ resources.member.list.operation.perform       │
-# │            │                    │          │ resources.member.list.operation.inputFields   │
-# └────────────┴────────────────────┴──────────┴───────────────────────────────────────────────┘
+# ┌────────────┬────────────────────┬──────────────┬───────────────────────────────────────────────┐
+# │ Noun       │ Label              │ Resource Ref │ Available Methods                             │
+# ├────────────┼────────────────────┼──────────────┼───────────────────────────────────────────────┤
+# │ Member     │ Updated Subscriber │ member       │ triggers.updated_member.operation.perform     │
+# │            │                    │              │ triggers.updated_member.operation.inputFields │
+# │            │                    │              │ resources.member.list.operation.perform       │
+# │            │                    │              │ resources.member.list.operation.inputFields   │
+# └────────────┴────────────────────┴──────────────┴───────────────────────────────────────────────┘
 # 
 # Searches
 # 
