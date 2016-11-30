@@ -19,6 +19,8 @@ const actionTemplates = [
   '<%= type %>.<%= key %>.operation.outputFields',
 ].map(template => _.template(template));
 
+const hydrateTemplate = _.template('hydrators.<%= key %>');
+
 const inlineResourceMethods = [
   'get',
   'hook',
@@ -70,6 +72,7 @@ const describe = (context) => {
           .join('\n');
         if (authentication.type === 'oauth2') {
           if (appConfig) {
+            // TODO: might be nice to move this to pulling from the GET /apps/123 endpoint
             authentication.redirect_uri = `https://zapier.com/dashboard/auth/oauth/return/${appConfig.key}CLIAPI/`;
           } else {
             authentication.redirect_uri = colors.grey('do zapier push to see redirect_uri!');
@@ -84,6 +87,21 @@ const describe = (context) => {
       ];
       const authIfEmpty = colors.grey('Nothing found for authentication.');
       utils.printData(authRows, authHeaders, authIfEmpty);
+      context.line();
+
+      context.line(colors.bold('Hydrators') + '\n');
+      let hydratorRows = _.map(definition.hydrators, (val, key) => {
+        return {
+          key,
+          paths: hydrateTemplate({key})
+        };
+      });
+      const hydratorHeaders = [
+        ['Key', 'key'],
+        ['Method', 'paths', colors.grey('n/a')],
+      ];
+      const hydratorIfEmpty = colors.grey('Nothing found for hydrators.');
+      utils.printData(hydratorRows, hydratorHeaders, hydratorIfEmpty);
       context.line();
 
       const resourceRows = _.values(definition.resources || {}).map((resource) => {
