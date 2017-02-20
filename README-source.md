@@ -1466,6 +1466,15 @@ source ~/.bash_completion.d/_zapier
 
 Finally, restart your shell and start hitting TAB with the `zapier` command!
 
+## Development of the CLI
+
+- `npm install` for getting started
+- `npm test` for running tests
+- `npm run docs` for updating docs
+- `npm run gen-completions` for updating the auto complete scripts
+- `npm run validate-templates` for validating the example apps
+- `npm run set-template-versions VERSION` for updating the platform-cli version in the example app repos to `VERSION`
+
 ## Get Help!
 
 You can get help by either emailing partners@zapier.com or by joining our beta Slack channel https://zapier-platform-slack.herokuapp.com.
