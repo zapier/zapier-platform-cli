@@ -1472,8 +1472,12 @@ Finally, restart your shell and start hitting TAB with the `zapier` command!
 - `npm test` for running tests
 - `npm run docs` for updating docs
 - `npm run gen-completions` for updating the auto complete scripts
+
+## Publishing of the CLI (after merging)
+
+- `npm version [patch|minor|major]` will pull, test, update docs, increment version in package.json, push tags, and publish to npm
 - `npm run validate-templates` for validating the example apps
-- `npm run set-template-versions VERSION` for updating the platform-cli version in the example app repos to `VERSION`
+- `npm run set-template-versions VERSION` for updating the platform-core version in the example app repos to `VERSION`
 
 ## Get Help!
 
