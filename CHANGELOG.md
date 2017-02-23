@@ -15,6 +15,10 @@
 * Added support for `performList` in webhook triggers
 * Fixed: Now correctly copy outputFields and samples to a trigger/search/create operation that links to a resource
 
+## 0.9.12
+
+* Added `performList` to hook operations.
+
 ## 0.9.10
 
 * Documentation expanded:
