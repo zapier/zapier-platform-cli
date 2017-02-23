@@ -3,8 +3,8 @@
 const _ = require('lodash');
 const path = require('path');
 const tmp = require('tmp');
-const utils = require('../lib/utils');
-const appTemplates = require('../lib/app-templates');
+const utils = require('../src/utils');
+const appTemplates = require('../src/app-templates');
 
 const fse = utils.promisifyAll(require('fs-extra'));
 const childProcess = utils.promisifyAll(require('child_process'));
