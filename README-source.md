@@ -1425,7 +1425,7 @@ https://github.com/zapier/zapier-platform-example-app-babel - `zapier init . --t
 
 ### REST Hooks Example App
 
-https://github.com/zapier/zapier-platform-example-rest-hooks - `zapier init . --template=rest-hooks`
+https://github.com/zapier/zapier-platform-example-app-rest-hooks - `zapier init . --template=rest-hooks`
 
 ## Command line Tab Completion
 
