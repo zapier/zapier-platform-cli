@@ -1,3 +1,9 @@
+## 0.10.2
+
+* Added `dict` property for `inputFields`, to allow asking for a dictionary (key/value pair) input.
+* Added new REST Hooks example app with `zapier init . --template=rest-hooks`.
+* Fixed: Now correctly ask for line items when `children` is set.
+
 ## 0.10.1
 
 * Added `search` property for `inputFields`, to allow linking a search connector.
