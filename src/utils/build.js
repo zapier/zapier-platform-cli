@@ -163,10 +163,10 @@ const makeZip = (dir, zipPath) => {
 
         paths.forEach(function (filePath) {
           var basePath = path.dirname(filePath);
-        if (basePath === '.') {
-          basePath = undefined;
-        }
-        var name = path.join(dir, filePath);
+          if (basePath === '.') {
+            basePath = undefined;
+          }
+          var name = path.join(dir, filePath);
           zip.file(name, {name: filePath});
         });
 
