@@ -1,5 +1,8 @@
+'use strict';
+
 const _ = require('lodash');
 const utils = require('../utils');
+const LAMBDA_VERSION = 'v4.3.2';
 
 const test = (context) => {
   const extraEnv = {};
@@ -9,6 +12,10 @@ const test = (context) => {
   }
   if (!global.argOpts.quiet && !global.argOpts['very-quiet']) {
     extraEnv.DETAILED_LOG_TO_STDOUT = 'true';
+  }
+
+  if (process.version !== LAMBDA_VERSION) {
+    throw new Error(`You're running tests on Node ${process.version}, but Zapier runs your code on ${LAMBDA_VERSION}. To ensure errors don't sneak up on you, the version numbers must match.`);
   }
 
   return utils.readCredentials(undefined, false)
