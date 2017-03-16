@@ -288,6 +288,12 @@ a code {
 <li><a href="#viewing-http-logs">Viewing HTTP Logs</a></li>
 </ul>
 </li>
+<li><a href="#error-handling">Error Handling</a><ul>
+<li><a href="#general-errors">General Errors</a></li>
+<li><a href="#halting-execution">Halting Execution</a></li>
+<li><a href="#stale-authentication-credentials">Stale Authentication Credentials</a></li>
+</ul>
+</li>
 <li><a href="#testing">Testing</a><ul>
 <li><a href="#writing-unit-tests">Writing Unit Tests</a></li>
 <li><a href="#running-unit-tests">Running Unit Tests</a></li>
@@ -444,6 +450,12 @@ a code {
 <li><a href="#viewing-console-logs">Viewing Console Logs</a></li>
 <li><a href="#http-logging">HTTP Logging</a></li>
 <li><a href="#viewing-http-logs">Viewing HTTP Logs</a></li>
+</ul>
+</li>
+<li><a href="#error-handling">Error Handling</a><ul>
+<li><a href="#general-errors">General Errors</a></li>
+<li><a href="#halting-execution">Halting Execution</a></li>
+<li><a href="#stale-authentication-credentials">Stale Authentication Credentials</a></li>
 </ul>
 </li>
 <li><a href="#testing">Testing</a><ul>
@@ -2240,7 +2252,11 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p><code>z.errors</code> is a collection error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code></p>
+      <p><code>z.errors</code> is a collection error classes that you can throw in your code, like <code>throw new z.errors.HaltedError(&apos;...&apos;)</code>.</p><p>The available errors are:</p><ul>
+<li>HaltedError - Stops current operation, but will never turn off Zap. Read more on <a href="#halting-execution">Halting Execution</a></li>
+<li>ExpiredAuthError - Turns of Zap and emails user to manually reconnect. Read more on <a href="#stale-authentication-credentials">Stale Authentication Credentials</a></li>
+<li>RefreshAuthError - (OAuth2 or Session Auth) Tells Zapier to refresh credentials and retry operation. Read more on <a href="#stale-authentication-credentials">Stale Authentication Credentials</a></li>
+</ul><p>For more details on error handling in general, see <a href="#error-handling">here</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -3163,6 +3179,106 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash">zapier logs --type=http --detailed
 </code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h2 id="error-handling">Error Handling</h2>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>APIs are not always available. Users do not always input data correctly to
+formulate valid requests. Thus, it is a good idea to write apps defensively and
+plan for 4xx and 5xx responses from APIs. Without proper handling, errors often
+have incomprehensible messages for end users, or possibly go uncaught.</p><p>Zapier provides a couple tools to help with error handling. First is the <code>afterResponse</code>
+middleware (<a href="#using-http-middleware">docs</a>), which provides a hook for processing
+all responses from HTTP calls. The other tool is the collection of errors in
+<code>z.errors</code> (<a href="#zerrors">docs</a>), which control the behavior of Zaps when
+various kinds of errors occurr.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="general-errors">General Errors</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Errors due to a misconfiguration in a user&apos;s Zap should be handled in your app
+by throwing a standard JavaScript <code>Error</code> with a user-friendly message.
+Typically, this will be prettifying 4xx responses or API&apos;s that return errors as
+200s with a payload that describes the error.</p><p>Example: <code>throw new Error(&apos;Your error message.&apos;);</code></p><p>A couple best practices to keep in mind:</p><ul>
+<li>Elaborate on terse messages. &quot;not_authenticated&quot; -&gt; &quot;Your API Key is invalid. Please reconnect your account.&quot;</li>
+<li>If the error calls out a specific field, surface that information to the user. &quot;Invald Request&quot; -&gt; &quot;contact name is invalid&quot;</li>
+<li>If the error provides details about why a field is invalid, add that in too! &quot;contact name is invalid&quot; -&gt; &quot;contact name is too long&quot;</li>
+</ul><p>Note that if a Zap raises too many error messages it will be automatically
+turned off, so only use these if the scenario is truly an error that needs to
+be fixed.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="halting-execution">Halting Execution</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>Any operation can be interrupted or &quot;halted&quot; (not success, not error, but
+stopped for some specific reason) with a <code>HaltedError</code>. You might find yourself
+using this error in cases where a required pre-condition is not met. For instance,
+in a create to add an email address to a list where duplicates are not allowed,
+you would want to throw a <code>HaltedError</code> if the Zap attempted to add a duplicate.
+This would indicate failure, but it would be treated as a soft failure.</p><p>Unlike throwing <code>Error</code>, a Zap will never by turned off when this error is thrown
+(even if it is raised more often than not).</p><p>Example: <code>throw new HaltedError(&apos;Your reason.&apos;);</code></p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="stale-authentication-credentials">Stale Authentication Credentials</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>For apps that require manual refresh of authorization on a regular basis, Zapier
+provides a mechanism to notify users of expired credentials. With the
+<code>ExpiredAuthError</code>, the current operation is interrupted, the Zap is turned off
+(to prevent more calls with expired credentials), and a predefined email is sent
+out informing the user to refresh the credentials.</p><p>Example: <code>throw new ExpiredAuthError(&apos;Your message.&apos;);</code></p><p>For apps that use OAuth2 + refresh or Session Auth, you can use the
+<code>RefreshAuthError</code>. This will signal Zapier to refresh the credentials and then
+repeat the failed operation.</p><p>Example: <code>throw new RefreshAuthError();</code></p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
     </div>
   </div>
 </div><div class="row">
