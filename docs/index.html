@@ -1792,7 +1792,13 @@ zapier convert 1234 .
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Zapier will handle most of the logic around the 3 step OAuth flow, but you&apos;ll be required to define how the steps work on your own. You&apos;ll also likely want to set your <code>CLIENT_ID</code> and <code>CLIENT_SECRET</code> as environment variables:</p>
+      <p>Zapier&apos;s OAuth2 implementation is based on the the <code>authorization_code</code> flow, similar to <a href="http://developer.github.com/v3/oauth/">GitHub</a> and <a href="https://developers.facebook.com/docs/authentication/server-side/">Facebook</a>. It looks like this:</p><ol>
+<li>Zapier sends the user to the authorization URL defined by your App</li>
+<li>Once authorized, your website sends the user to the <code>redirect_uri</code> Zapier provided (<code>zapier describe</code> to find out what it is)</li>
+<li>Zapier makes a call on the backend to your API to exchange the <code>code</code> for an <code>access_token</code></li>
+<li>Zapier remembers the <code>access_token</code> and makes calls on behalf of the user</li>
+<li>(Optionally) Zapier can refresh the token if it expires</li>
+</ol><p>You are required to define the authorization URL and the API call to fetch the access token. You&apos;ll also likely want to set your <code>CLIENT_ID</code> and <code>CLIENT_SECRET</code> as environment variables:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-bash"><span class="hljs-comment"># setting the environment variables on Zapier.com</span>
@@ -1860,6 +1866,8 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
   ]
   <span class="hljs-comment">// ...</span>
 };
+
+<span class="hljs-built_in">module</span>.exports = App;
 </code></pre>
     </div>
   </div>

@@ -986,7 +986,15 @@ const App = {
 
 ### OAuth2
 
-Zapier will handle most of the logic around the 3 step OAuth flow, but you'll be required to define how the steps work on your own. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET` as environment variables:
+Zapier's OAuth2 implementation is based on the the `authorization_code` flow, similar to [GitHub](http://developer.github.com/v3/oauth/) and [Facebook](https://developers.facebook.com/docs/authentication/server-side/). It looks like this:
+
+ 1. Zapier sends the user to the authorization URL defined by your App
+ 1. Once authorized, your website sends the user to the `redirect_uri` Zapier provided (`zapier describe` to find out what it is)
+ 1. Zapier makes a call on the backend to your API to exchange the `code` for an `access_token`
+ 1. Zapier remembers the `access_token` and makes calls on behalf of the user
+ 1. (Optionally) Zapier can refresh the token if it expires
+
+You are required to define the authorization URL and the API call to fetch the access token. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET` as environment variables:
 
 ```bash
 # setting the environment variables on Zapier.com
@@ -1051,7 +1059,10 @@ const App = {
   // ...
 };
 
+module.exports = App;
+
 ```
+
 
 ## Resources
 
