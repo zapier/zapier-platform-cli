@@ -1,7 +1,5 @@
 # Zapier Platform CLI
 
-> Warning - this is currently beta software! Join our beta Slack channel https://zapier-platform-slack.herokuapp.com.
-
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
 [These docs are available here](http://zapier.github.io/zapier-platform-cli/) and the [CLI docs are available here](http://zapier.github.io/zapier-platform-cli/cli.html).
@@ -1560,4 +1558,4 @@ Finally, restart your shell and start hitting TAB with the `zapier` command!
 
 ## Get Help!
 
-You can get help by either emailing partners@zapier.com or by joining our beta Slack channel https://zapier-platform-slack.herokuapp.com.
+You can get help by either emailing partners@zapier.com or by joining our Slack channel https://zapier-platform-slack.herokuapp.com.
