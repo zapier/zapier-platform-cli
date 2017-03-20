@@ -1,7 +1,5 @@
 # Zapier Platform CLI
 
-> Warning - this is currently beta software! Join our beta Slack channel https://zapier-platform-slack.herokuapp.com.
-
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
 [These docs are available here](http://zapier.github.io/zapier-platform-cli/) and the [CLI docs are available here](http://zapier.github.io/zapier-platform-cli/cli.html).
@@ -10,7 +8,10 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 <!-- toc -->
 
-- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+  * [Requirements](#requirements)
+  * [What is an App?](#what-is-an-app)
+  * [How does the CLI Platform Work](#how-does-the-cli-platform-work)
 - [Tutorial](#tutorial)
   * [Installing the CLI](#installing-the-cli)
   * [Starting an App](#starting-an-app)
@@ -105,7 +106,10 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 <!-- tocstop -->
 
-## Requirements
+## Getting Started
+
+
+### Requirements
 
 The Zapier CLI and Platform require Node.js `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node.js installation.
 
@@ -116,6 +120,32 @@ brew install nvm
 nvm install v4.3.2
 nvm use v4.3.2
 ```
+
+
+### What is an App?
+
+A CLI App is an implementation of your app's API. You build a Node.js application
+that exports a sinlge object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
+Zapier introspects that definition to find out what your app is capable of and
+what options to present end users in the Zap Editor.
+
+For those not familiar with Zapier terminology, here is how concepts in the CLI
+map to the end user experience:
+
+ * [Authentication](#authentication), (usually) which lets us know what credentials to ask users
+   for. This is used during the "Connect Accounts" section of the Zap Editor.
+ * [Triggers](#triggerssearchescreates), which read data *from* your API. These have theior own section in the Zap Editor.
+ * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
+ * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
+ * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
+
+
+### How does the CLI Platform Work
+
+Zapier takes the App you upload and sends it over to Amazon Web Service's Lambda.
+We then make calls to execute the operations your App defines as we execute Zaps.
+Your App takes the input data we provide (if any), makes the necessary HTTP calls,
+and returns the relevant data, which gets fed back into Zapier.
 
 
 ## Tutorial
@@ -2269,4 +2299,4 @@ Finally, restart your shell and start hitting TAB with the `zapier` command!
 
 ## Get Help!
 
-You can get help by either emailing partners@zapier.com or by joining our beta Slack channel https://zapier-platform-slack.herokuapp.com.
+You can get help by either emailing partners@zapier.com or by joining our Slack channel https://zapier-platform-slack.herokuapp.com.
