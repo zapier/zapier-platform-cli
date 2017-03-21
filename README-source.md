@@ -12,37 +12,12 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Getting Started
 
-
-### Requirements
-
-The Zapier CLI and Platform require Node.js `v4.3.2`. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node.js installation.
-
-On Mac (via [homebrew](http://brew.sh/)):
-
-```bash
-brew install nvm
-nvm install v4.3.2
-nvm use v4.3.2
-```
-
-
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
 that exports a sinlge object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.
-
-For those not familiar with Zapier terminology, here is how concepts in the CLI
-map to the end user experience:
-
- * [Authentication](#authentication), (usually) which lets us know what credentials to ask users
-   for. This is used during the "Connect Accounts" section of the Zap Editor.
- * [Triggers](#triggerssearchescreates), which read data *from* your API. These have theior own section in the Zap Editor.
- * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
- * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
- * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
-
 
 ### How does the CLI Platform Work
 
@@ -51,8 +26,15 @@ We then make calls to execute the operations your App defines as we execute Zaps
 Your App takes the input data we provide (if any), makes the necessary HTTP calls,
 and returns the relevant data, which gets fed back into Zapier.
 
+### Requirements
 
-## Tutorial
+All Zapier CLI apps are run using Node.js `LAMBDA_VERSION`.
+
+You can develop using any version of Node you'd like, but your code has to run on Node `LAMBDA_VERSION`. Most developers will accomplish this by developing on their preferred version and then transpiling their with [Babel](https://babeljs.io/) (or similar).
+
+To ensure stability for our users, we also require that you run your tests on `LAMBDA_VERSION` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `LAMBDA_VERSION` and run the tests locally. In the case of NVM, you can use `nvm exec LAMBDA_VERSION zapier test` so you can run passing tests without having to switch versions while developing.
+
+### Tutorial
 
 For a full tutorial, head over to our [wiki](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
 
