@@ -31,6 +31,16 @@ that exports a sinlge object ([JSON Schema](https://github.com/zapier/zapier-pla
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.
 
+For those not familiar with Zapier terminology, here is how concepts in the CLI
+map to the end user experience:
+
+ * [Authentication](#authentication), (usually) which lets us know what credentials to ask users
+   for. This is used during the "Connect Accounts" section of the Zap Editor.
+ * [Triggers](#triggerssearchescreates), which read data *from* your API. These have theior own section in the Zap Editor.
+ * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
+ * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
+ * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
+
 ### How does the CLI Platform Work
 
 Zapier takes the App you upload and sends it over to Amazon Web Service's Lambda.
@@ -38,23 +48,29 @@ We then make calls to execute the operations your App defines as we execute Zaps
 Your App takes the input data we provide (if any), makes the necessary HTTP calls,
 and returns the relevant data, which gets fed back into Zapier.
 
-### CLI vs the Developer Platform
+### CLI vs the Web Builder Platform
 
-From a user perspective, both the CLI and the existing dev platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you develop your Zapier app just like you would any other programming project. The developer platform on the other hand is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
+From a user perspective, both the CLI and the existing web builder platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you develop your Zapier app just like you would any other programming project. The web builder, on the other hand, is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
 
 ### Requirements
 
 All Zapier CLI apps are run using Node.js `LAMBDA_VERSION`.
 
-You can develop using any version of Node you'd like, but your code has to run on Node `LAMBDA_VERSION`. Most developers will accomplish this by developing on their preferred version and then transpiling their with [Babel](https://babeljs.io/) (or similar).
+You can develop using any version of Node you'd like, but your code has to run on Node `LAMBDA_VERSION`. You can accomplish this by developing on your preferred version and then transpiling with [Babel](https://babeljs.io/) (or similar).
 
-To ensure stability for our users, we also require that you run your tests on `LAMBDA_VERSION` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `LAMBDA_VERSION` and run the tests locally. In the case of NVM, you can use `nvm exec LAMBDA_VERSION zapier test` so you can run passing tests without having to switch versions while developing.
+To ensure stability for our users, we also require that you run your tests on `LAMBDA_VERSION` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `LAMBDA_VERSION` and run the tests locally.
 
-### Tutorial
+For NVM on Mac (via [homebrew](http://brew.sh/)):
 
-For a full tutorial, head over to our [wiki](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
+```bash
+brew install nvm
+nvm install v4.3.2
+```
 
-## Quickstart
+You can then either swap to that version with `nvm use v4.3.2`, or do `nvm exec LAMBDA_VERSION zapier test` so you can run tests without having to switch versions while developing.
+
+
+### Quick Setup Guide
 
 > Be sure to check the [Requirements](#requirements) before you start! Also, we recommend the [Tutorial](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a more thorough introduction.
 
@@ -81,13 +97,13 @@ cd example-app
 npm install
 ```
 
-> Note: there are plenty of templates & example apps to choose from! [View all Example Apps here.](https://github.com/zapier?utf8=%E2%9C%93&q=zapier-platform-example-app&type=&language=)
+> Note: there are plenty of templates & example apps to choose from! [View all Example Apps here.](#example-apps)
 
 You should now have a working local app. You can run several local commands to try it out.
 
 ```bash
 # run the local tests
-# the same as npm test
+# the same as npm test, but adds some extra things to the environment
 zapier test
 ```
 
@@ -101,9 +117,13 @@ zapier push
 > Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
 
 
+### Tutorial
+
+For a full tutorial, head over to our [wiki](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
+
 ## Creating a Local App
 
-> Tip: check the [Quickstart](#quickstart) if this is your first time using the platform!
+> Tip: check the [Quick Setup](#quick-setup-guide) if this is your first time using the platform!
 
 Creating an App can be done entirely locally and they are fairly simple Node.js apps using the standard Node environment and should be completely testable. However, a local app stays local until you `zapier register`.
 
@@ -397,7 +417,7 @@ You can find more details on the definition for each by looking at the [Trigger 
 
 ## Fields
 
-On each trigger, search or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "create contact" action with fields like "First name", "Last name", "Email", etc.
+On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "create contact" action with fields like "First name", "Last name", "Email", etc.
 
 You can find more details on each and every field option at [Field Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#fieldschema).
 
@@ -417,15 +437,39 @@ In some cases, it might be necessary to provide fields that are dynamically gene
 [insert-file:./snippets/custom-fields.js]
 ```
 
+Additionally, if there is a field that affects the generation of dynamic fields, you can set the `altersDynamicFields: true` property. This informs the Zapier UI that whenver the value of that field changes, fields need to be recomputed. An example could be a static dropdown of "dessert type" that will change whether the function that generates dynamic fields includes a field "with sprinkles."
+
+```javascript
+[insert-file:./snippets/alters-dynamic-fields.js]
+```
+
 ### Dynamic Dropdowns
 
-You can provide a `resource` directive on your field which will point to a resource's key and will use the list directive to put down the options dynamically.
+Sometimes, API endpoints require clients to specify a parent object in order to create or access the child resources. Imagine having to specify a company id in order to get a list of employees for that company. Since people don't speak in auto-incremented ID's, it is necessary that Zapier offer a simple way to select that parent using human readable handles.
 
-> Dynamic dropdowns are one of the few fields that "automatically" invalidates our field cache when relying on custom fields.
+Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns "dynamic dropdowns."
+
+To define one, you can provide the `dynamic` property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-seperated concatination of a trigger's key, the field to use for the value, and the field to use for the label.
 
 ```javascript
 [insert-file:./snippets/dynamic-dropdowns.js]
 ```
+
+In the UI, users will see something like this:
+
+![screenshot of dynamic dropdown in Zap Editor](https://cdn.zapier.com/storage/photos/dd31fa761e0cf9d0abc9b50438f95210.png)
+
+> Dynamic dropdowns are one of the few fields that automatically invalidate Zapier's field cache, so it is not necessary to set `altersDynamicFields` to true for these fields.
+
+### Search-Powered Fields
+
+For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the `search` property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-seperated concatination of a search's key and the field to use for the value.
+
+```javascript
+[insert-file:./snippets/search-field.js]
+```
+
+This can be combined with the `dynamic` property to give the user a guided experience when setting up a Zap.
 
 
 ## Z Object
