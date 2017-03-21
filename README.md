@@ -11,6 +11,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Getting Started](#getting-started)
   * [What is an App?](#what-is-an-app)
   * [How does the CLI Platform Work](#how-does-the-cli-platform-work)
+  * [CLI vs the Developer Platform](#cli-vs-the-developer-platform)
   * [Requirements](#requirements)
   * [Tutorial](#tutorial)
 - [Quickstart](#quickstart)
@@ -102,6 +103,10 @@ Zapier takes the App you upload and sends it over to Amazon Web Service's Lambda
 We then make calls to execute the operations your App defines as we execute Zaps.
 Your App takes the input data we provide (if any), makes the necessary HTTP calls,
 and returns the relevant data, which gets fed back into Zapier.
+
+### CLI vs the Developer Platform
+
+From a user perspective, both the CLI and the existing dev platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you develop your Zapier app just like you would any other programming project. The developer platform on the other hand is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
 
 ### Requirements
 

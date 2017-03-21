@@ -26,6 +26,10 @@ We then make calls to execute the operations your App defines as we execute Zaps
 Your App takes the input data we provide (if any), makes the necessary HTTP calls,
 and returns the relevant data, which gets fed back into Zapier.
 
+### CLI vs the Developer Platform
+
+From a user perspective, both the CLI and the existing dev platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you develop your Zapier app just like you would any other programming project. The developer platform on the other hand is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
+
 ### Requirements
 
 All Zapier CLI apps are run using Node.js `LAMBDA_VERSION`.
