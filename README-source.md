@@ -1,4 +1,16 @@
-# Zapier Platform CLI
+<h1 align="center">
+  <a href="https://zapier.com"><img src="https://cdn.rawgit.com/zapier/zapier-platform-cli/master/goodies/zapier-logomark.png" alt="Zapier" width="200"></a>
+  <br>
+  Zapier Platform CLI
+  <br>
+  <br>
+</h1>
+
+<p align="center">
+  <a href="https://travis-ci.org/zapier/zapier-platform-cli"><img src="https://img.shields.io/travis/zapier/zapier-platform-cli/master.svg" alt="Travis"></a>
+  <a href="https://www.npmjs.com/package/zapier-platform-cli"><img src="ttps://img.shields.io/npm/v/zapier-platform-cli.svg" alt="npm version"></a>
+  <!--possible downloads badge too, once that's good-->
+</p>
 
 Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform.
 
