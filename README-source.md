@@ -36,7 +36,7 @@ map to the end user experience:
 
  * [Authentication](#authentication), (usually) which lets us know what credentials to ask users
    for. This is used during the "Connect Accounts" section of the Zap Editor.
- * [Triggers](#triggerssearchescreates), which read data *from* your API. These have theior own section in the Zap Editor.
+ * [Triggers](#triggerssearchescreates), which read data *from* your API. These have their own section in the Zap Editor.
  * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
  * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
  * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
