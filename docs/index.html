@@ -494,7 +494,7 @@ a code {
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>A CLI App is an implementation of your app&apos;s API. You build a Node.js application
-that exports a sinlge object (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema">JSON Schema</a>) and upload it to Zapier.
+that exports a single object (<a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema">JSON Schema</a>) and upload it to Zapier.
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.</p><p>For those not familiar with Zapier terminology, here is how concepts in the CLI
 map to the end user experience:</p><ul>
@@ -503,7 +503,7 @@ for. This is used during the &quot;Connect Accounts&quot; section of the Zap Edi
 <li><a href="#triggerssearchescreates">Triggers</a>, which read data <em>from</em> your API. These have their own section in the Zap Editor.</li>
 <li><a href="#triggerssearchescreates">Creates</a>, which send data <em>to</em> your API to create new records. These are listed under &quot;Actions&quot; in the Zap Editor.</li>
 <li><a href="#triggerssearchescreates">Searches</a>, which find specific records <em>in</em> your system. These are also listed under &quot;Actions&quot; in the Zap Editor.</li>
-<li><a href="#resources">Resources</a>, which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.</li>
+<li><a href="#resources">Resources</a>, which define an object type in your API (say a contact) and the operations available to perform on it. These are automatically extracted into Triggers, Searches, and Creates.</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -1633,7 +1633,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Sometimes, API endpoints require clients to specify a parent object in order to create or access the child resources. Imagine having to specify a company id in order to get a list of employees for that company. Since people don&apos;t speak in auto-incremented ID&apos;s, it is necessary that Zapier offer a simple way to select that parent using human readable handles.</p><p>Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns &quot;dynamic dropdowns.&quot;</p><p>To define one, you can provide the <code>dynamic</code> property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-seperated concatination of a trigger&apos;s key, the field to use for the value, and the field to use for the label.</p>
+      <p>Sometimes, API endpoints require clients to specify a parent object in order to create or access the child resources. Imagine having to specify a company id in order to get a list of employees for that company. Since people don&apos;t speak in auto-incremented ID&apos;s, it is necessary that Zapier offer a simple way to select that parent using human readable handles.</p><p>Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns &quot;dynamic dropdowns.&quot;</p><p>To define one, you can provide the <code>dynamic</code> property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-separated concatenation of a trigger&apos;s key, the field to use for the value, and the field to use for the label.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {
@@ -1690,7 +1690,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the <code>search</code> property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-seperated concatination of a search&apos;s key and the field to use for the value.</p>
+      <p>For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the <code>search</code> property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-separated concatenation of a search&apos;s key and the field to use for the value.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> App = {

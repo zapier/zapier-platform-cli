@@ -108,7 +108,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
-that exports a sinlge object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
+that exports a single object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.
 
@@ -120,7 +120,7 @@ map to the end user experience:
  * [Triggers](#triggerssearchescreates), which read data *from* your API. These have their own section in the Zap Editor.
  * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
  * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
- * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
+ * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. These are automatically extracted into Triggers, Searches, and Creates.
 
 ### How does the CLI Platform Work
 
@@ -891,7 +891,7 @@ Sometimes, API endpoints require clients to specify a parent object in order to 
 
 Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns "dynamic dropdowns."
 
-To define one, you can provide the `dynamic` property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-seperated concatination of a trigger's key, the field to use for the value, and the field to use for the label.
+To define one, you can provide the `dynamic` property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-separated concatenation of a trigger's key, the field to use for the value, and the field to use for the label.
 
 ```javascript
 const App = {
@@ -933,7 +933,7 @@ In the UI, users will see something like this:
 
 ### Search-Powered Fields
 
-For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the `search` property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-seperated concatination of a search's key and the field to use for the value.
+For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the `search` property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-separated concatenation of a search's key and the field to use for the value.
 
 ```javascript
 const App = {
