@@ -106,7 +106,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
-that exports a single object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
+that exports a sinlge object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.
 
@@ -118,7 +118,7 @@ map to the end user experience:
  * [Triggers](#triggerssearchescreates), which read data *from* your API. These have their own section in the Zap Editor.
  * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
  * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
- * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. These are automatically extracted into Triggers, Searches, and Creates.
+ * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
 
 ### How does the CLI Platform Work
 
@@ -137,7 +137,7 @@ All Zapier CLI apps are run using Node.js `v4.3.2`.
 
 You can develop using any version of Node you'd like, but your code has to run on Node `v4.3.2`. You can accomplish this by developing on your preferred version and then transpiling with [Babel](https://babeljs.io/) (or similar).
 
-To ensure stability for our users, we also require that you run your tests on `v4.3.2` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `v4.3.2` and run the tests locally.
+To ensure stability for our users, we also require that you run your tests on `v4.3.2` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `v4.3.2` and run the tests locally. On Windows you can use [nvm-windows](https://github.com/coreybutler/nvm-windows#installation--upgrades) or [nodist](https://github.com/marcelklehr/nodist#installation).
 
 For NVM on Mac (via [homebrew](http://brew.sh/)):
 
@@ -562,7 +562,7 @@ const App = {
 
 ### OAuth2
 
-Zapier's OAuth2 implementation is based on the `authorization_code` flow, similar to [GitHub](http://developer.github.com/v3/oauth/) and [Facebook](https://developers.facebook.com/docs/authentication/server-side/).
+Zapier's OAuth2 implementation is based on the the `authorization_code` flow, similar to [GitHub](http://developer.github.com/v3/oauth/) and [Facebook](https://developers.facebook.com/docs/authentication/server-side/).
 
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-oauth2 for a working example app for oauth2.
 
@@ -889,7 +889,7 @@ Sometimes, API endpoints require clients to specify a parent object in order to 
 
 Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns "dynamic dropdowns."
 
-To define one, you can provide the `dynamic` property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-separated concatenation of a trigger's key, the field to use for the value, and the field to use for the label.
+To define one, you can provide the `dynamic` property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-seperated concatination of a trigger's key, the field to use for the value, and the field to use for the label.
 
 ```javascript
 const App = {
@@ -931,7 +931,7 @@ In the UI, users will see something like this:
 
 ### Search-Powered Fields
 
-For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the `search` property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-separated concatenation of a search's key and the field to use for the value.
+For fields that take id of another object to create a relationship between the two (EG: a project id for a ticket), you can specify the `search` property on the field to indicate that Zapier needs to prompt the user to setup a Search step to populate the value for this field. Similar to dynamic dropdowns, the value for this property is a dot-seperated concatination of a search's key and the field to use for the value.
 
 ```javascript
 const App = {
@@ -1426,7 +1426,7 @@ z.request({
 Dehydration, and it's counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.
 
 * **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)`
-* **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the scenes
+* **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the the scenes
 
 > This is very common when [Stashing Files](#stashing-files) - but that isn't their only use!
 

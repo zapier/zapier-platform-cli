@@ -36,7 +36,7 @@ map to the end user experience:
 
  * [Authentication](#authentication), (usually) which lets us know what credentials to ask users
    for. This is used during the "Connect Accounts" section of the Zap Editor.
- * [Triggers](#triggerssearchescreates), which read data *from* your API. These have theior own section in the Zap Editor.
+ * [Triggers](#triggerssearchescreates), which read data *from* your API. These have their own section in the Zap Editor.
  * [Creates](#triggerssearchescreates), which send data *to* your API to create new records. These are listed under "Actions" in the Zap Editor.
  * [Searches](#triggerssearchescreates), which find specific records *in* your system. These are also listed under "Actions" in the Zap Editor.
  * [Resources](#resources), which define an object type in your API (say a contact) and the operations available to perform on it. Tehse are automatically extracted into Triggers, Searches, and Creates.
@@ -50,7 +50,7 @@ and returns the relevant data, which gets fed back into Zapier.
 
 ### CLI vs the Web Builder Platform
 
-From a user perspective, both the CLI and the existing web builder platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you develop your Zapier app just like you would any other programming project. The web builder, on the other hand, is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
+From a user perspective, both the CLI and the existing web builder platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you to develop your Zapier app just like you would any other programming project. The web builder, on the other hand, is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
 
 ### Requirements
 
@@ -302,7 +302,7 @@ Useful if your app requires two pieces of information to authentication: `userna
 
 ### Custom
 
-This is what most "API Key" driven apps should default to using. You'll likely provide some some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
+This is what most "API Key" driven apps should default to using. You'll likely provide some custom `beforeRequest` middleware or a `requestTemplate` to complete the authentication by adding/computing needed headers.
 
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-custom-auth for a working example app for custom auth.
 
