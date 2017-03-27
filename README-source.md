@@ -330,7 +330,7 @@ Probably the most "powerful" mechanism for authentication - it gives you the abi
 
 ### OAuth2
 
-Zapier's OAuth2 implementation is based on the the `authorization_code` flow, similar to [GitHub](http://developer.github.com/v3/oauth/) and [Facebook](https://developers.facebook.com/docs/authentication/server-side/).
+Zapier's OAuth2 implementation is based on the `authorization_code` flow, similar to [GitHub](http://developer.github.com/v3/oauth/) and [Facebook](https://developers.facebook.com/docs/authentication/server-side/).
 
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-oauth2 for a working example app for oauth2.
 
@@ -816,7 +816,7 @@ z.request({
 Dehydration, and it's counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.
 
 * **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)`
-* **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the the scenes
+* **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the scenes
 
 > This is very common when [Stashing Files](#stashing-files) - but that isn't their only use!
 
