@@ -102,7 +102,7 @@ const renderSampleField = (def) => {
 const renderSample = (definition) => {
   const fields = _.map(definition.sample_result_fields, renderSampleField);
 
-  if (!fields || fields.length === 0) {
+  if (!fields.length) {
     return '';
   }
 
