@@ -13,7 +13,7 @@ const appTemplates = require('../lib/app-templates');
 const validateAppTemplate = (template, rootTmpDir) => {
   //const appDir = path.resolve(rootTmpDir, template);
   const zapierCmd = path.resolve(__dirname, '../zapier.js');
-  const extraCmd = (template === 'babel') ? ' && rm -rf lib && node_modules/babel-cli/bin/babel.js src --out-dir lib' : '';
+  const extraCmd = (template === 'babel') ? ' && npm run zapier-build' : '';
 
   const logFile = path.resolve(__dirname, '..', `${template}.log`);
   const logStream = fse.createWriteStream(logFile);
