@@ -936,7 +936,7 @@ Zapier provides a couple tools to help with error handling. First is the `afterR
 middleware ([docs](#using-http-middleware)), which provides a hook for processing
 all responses from HTTP calls. The other tool is the collection of errors in
 `z.errors` ([docs](#zerrors)), which control the behavior of Zaps when
-various kinds of errors occurr.
+various kinds of errors occur.
 
 ### General Errors
 
@@ -950,7 +950,7 @@ Example: `throw new Error('Your error message.');`
 A couple best practices to keep in mind:
 
   * Elaborate on terse messages. "not_authenticated" -> "Your API Key is invalid. Please reconnect your account."
-  * If the error calls out a specific field, surface that information to the user. "Invald Request" -> "contact name is invalid"
+  * If the error calls out a specific field, surface that information to the user. "Invalid Request" -> "contact name is invalid"
   * If the error provides details about why a field is invalid, add that in too! "contact name is invalid" -> "contact name is too long"
 
 Note that if a Zap raises too many error messages it will be automatically
