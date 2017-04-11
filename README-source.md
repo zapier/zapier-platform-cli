@@ -114,7 +114,7 @@ Next, you'll probably want to upload app to Zapier itself so you can start testi
 zapier push
 ```
 
-> Go check out our [full CLI reference documentation](docs/cli.md) to see all the other commands!
+> Go check out our [full CLI reference documentation](http://zapier.github.io/zapier-platform-cli/cli.html) to see all the other commands!
 
 
 ### Tutorial
@@ -223,7 +223,7 @@ zapier versions
 If you'd like to manage your **Version**, use these commands:
 
 * `zapier versions` - list the versions for the current directory's app
-* `zapier push` - push the current version the of current directory's app & version (read from `package.json`)
+* `zapier push` - push the current version of current directory's app & version (read from `package.json`)
 * `zapier promote [1.0.0]` - mark a version as the "production" version
 * `zapier migrate [1.0.0] [1.0.1] [100%]` - move users between versions, regardless of deployment status
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
