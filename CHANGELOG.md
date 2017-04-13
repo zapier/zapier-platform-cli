@@ -2,7 +2,7 @@
 
 * Functions in `app.afterResponse` will now get called.
 * Add check in middleware, to make sure creates return only 1 object.
-* Add more tests.
+* Fixes issue for deep object checking.
 * Minor docs fixes.
 
 ## 1.0.8
