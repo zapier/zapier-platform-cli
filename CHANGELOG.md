@@ -3,7 +3,7 @@
 * Added new Files example app with `zapier init . --template=files`.
 * Properly exit on node version mismatch.
 * Upgraded `node-fetch` in `core` (fixes some edge-case issues for `multipart/form-data` requests).
-* `zapier test` is now more quiet by default.
+* `zapier test` is now quiet by default. `zapier test --debug` will output details.
 * `zapier logs --type=http --detailed` is more clearly exposed.
 
 ## 1.0.9
