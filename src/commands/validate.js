@@ -3,6 +3,28 @@ const colors = require('colors/safe');
 
 const utils = require('../utils');
 
+// shadow of engine/style_checker/_condense_issues
+const condenseIssues = (styleResult) => {
+  let res = [];
+  const docURL = 'https://zapier.com/developer/documentation/v2/style-checks-reference';
+  for (const severity in styleResult) {
+    for (const type in styleResult[severity]) {
+      for (const method in styleResult[severity][type]) {
+        // for ... of becaues this is an array finally
+        for (const message of styleResult[severity][type][method]) {
+          res.push({
+            category: severity,
+            method: `${type}.${method}`,
+            description: message,
+            link: `${docURL}#${message.substr(-7, 6)}`
+          });
+        }
+      }
+    }
+  }
+
+  return res;
+};
 
 const validate = (context) => {
   context.line('\nValidating project locally.');
@@ -42,26 +64,16 @@ const validate = (context) => {
           })
           .then((styleResult) => {
             // process errors
-            let res = [];
             context.line('\nChecking app style.');
-            const ifEmpty = colors.grey('No style errors found during validation routine.');
-            for (const severity in styleResult) {
-              for (const type in styleResult[severity]) {
-                for (const method in styleResult[severity][type]) {
-                  res.push({
-                    category: severity,
-                    method: `${type}.${method}`,
-                    description: styleResult[severity][type][method].join('\n')
-                  });
-                }
-              }
-            }
+            let styleErrors = condenseIssues(styleResult);
 
-            if (res.length) {
-              utils.printData(res, [
+            const ifEmpty = colors.grey('No style errors found during validation routine.');
+            if (styleErrors.length) {
+              utils.printData(styleErrors, [
                 ['Category', 'category'],
                 ['Method', 'method'],
                 ['Description', 'description'],
+                ['Link', 'link']
               ], ifEmpty, true);
               context.line('Errors will prevent deploys, warnings are things to improve on.\n');
             } else {
