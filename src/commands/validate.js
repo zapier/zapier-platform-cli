@@ -50,7 +50,7 @@ const validate = (context) => {
         context.line('Your app is structurally invalid. Address concerns and run this command again.');
         process.exitCode = 1;
       } else {
-        context.line('This project looks good!');
+        context.line('This project is structurally sound!');
       }
     })
     .then(() => {
@@ -76,8 +76,8 @@ const validate = (context) => {
                 ['Description', 'description'],
                 ['Link', 'link']
               ], ifEmpty, true);
-              context.line('Errors will prevent deploys, warnings are things to improve on.\n');
               process.exitCode = 1;
+              context.line('Errors will prevent promotions, warnings are things to improve on.\n');
             } else {
               context.line('Your app looks great!\n');
             }
@@ -106,7 +106,7 @@ $ zapier validate
 #
 # No errors found during validation routine.
 #
-# This project looks good!
+# This project is structurally sound!
 
 $ zapier validate
 # Validating project locally.
