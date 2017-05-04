@@ -48,6 +48,7 @@ const validate = (context) => {
     .then((errors) => {
       if (errors.length) {
         context.line('Your app is structurally invalid. Address concerns and run this command again.');
+        process.exitCode = 1;
       } else {
         context.line('This project looks good!');
       }
@@ -76,6 +77,7 @@ const validate = (context) => {
                 ['Link', 'link']
               ], ifEmpty, true);
               context.line('Errors will prevent deploys, warnings are things to improve on.\n');
+              process.exitCode = 1;
             } else {
               context.line('Your app looks great!\n');
             }
