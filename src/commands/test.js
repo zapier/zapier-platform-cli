@@ -7,7 +7,7 @@ const LAMBDA_VERSION = 'v4.3.2';
 
 const test = (context) => {
   const extraEnv = {
-    ZAPIER_BASE_ENDPOINT: BASE_ENDPOINT
+    ZAPIER_BASE_ENDPOINT: constants.BASE_ENDPOINT
   };
 
   if (global.argOpts.debug) {
