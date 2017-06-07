@@ -13,7 +13,7 @@ const test = (context) => {
     extraEnv.DETAILED_LOG_TO_STDOUT = 'true';
   }
 
-  if (!utils.correctVersion()) {
+  if (!utils.isCorrectVersion(context)) {
     process.exitCode = 1;
     return Promise.resolve();
   }

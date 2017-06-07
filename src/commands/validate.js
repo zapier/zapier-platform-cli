@@ -54,7 +54,7 @@ const validate = (context) => {
       }
     })
     .then(() => {
-      if (!utils.correctVersion(context)) {
+      if (!utils.isCorrectVersion(context)) {
         process.exitCode = 1;
       }
     })
