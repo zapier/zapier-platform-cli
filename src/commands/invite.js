@@ -1,5 +1,6 @@
 const utils = require('../utils');
 
+const constants = require('../constants');
 const makeAccess = require('./_access');
 
 const invite = makeAccess('invite', 'invitee');
@@ -29,7 +30,7 @@ $ zapier invite
 # 
 # Don't want to send individual invite emails? Use this public link and share with anyone on the web:
 # 
-#   https://zapier.com/platform/public-invite/1/222dcd03aed943a8676dc80e2427a40d/
+#   ${constants.BASE_ENDPOINT}/platform/public-invite/1/222dcd03aed943a8676dc80e2427a40d/
 
 $ zapier invite user@example.com
 # Preparing to add invitee user@example.com to your app "Example".
