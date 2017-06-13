@@ -13,7 +13,7 @@ const commands = require('../commands');
 
 const block = (str) => '> ' + str.split('\n').join('\n> ');
 
-const LAMBDA_VERSION = 'v4.3.2';
+const LAMBDA_VERSION = 'v6.10.2';
 
 // Takes all the cmd.docs and puts them into a big md file.
 const generateCliMarkdown = () => {

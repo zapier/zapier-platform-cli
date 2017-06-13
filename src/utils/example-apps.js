@@ -6,7 +6,7 @@ const fse = promisifyAll(require('fs-extra'));
 const AdmZip = require('adm-zip');
 
 const {writeFile, copyDir} = require('./files');
-const LAMBDA_VERSION = 'v4.3.2';
+const LAMBDA_VERSION = 'v6.10.2';
 
 const downloadAndUnzipTo = (key, destDir) => {
   const fragment = `zapier-platform-example-app-${key}`;
