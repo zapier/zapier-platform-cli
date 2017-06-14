@@ -83,10 +83,10 @@ const requiredFiles = (cwd, entryPoints) => {
         paths.push(stripPath(cwd, filePath));
         next();
       })
-      .on('end', () => {
-        paths.sort();
-        resolve(paths);
-      }));
+        .on('end', () => {
+          paths.sort();
+          resolve(paths);
+        }));
     b.bundle();
   });
 };
