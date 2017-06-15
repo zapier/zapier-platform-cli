@@ -135,8 +135,8 @@ const getLinkedAppConfig = (appDir) => {
 
 const writeLinkedAppConfig = (app, appDir) => {
   const file = appDir ?
-        path.resolve(appDir, constants.CURRENT_APP_FILE) :
-        constants.CURRENT_APP_FILE;
+    path.resolve(appDir, constants.CURRENT_APP_FILE) :
+    constants.CURRENT_APP_FILE;
 
   return writeFile(file, prettyJSONstringify({
     id: app.id,
@@ -164,9 +164,9 @@ const getVersionInfo = () => {
     getLinkedApp(),
     localAppCommand({command: 'definition'})
   ])
-  .then(([app, definition]) => {
-    return callAPI(`/apps/${app.id}/versions/${definition.version}`);
-  });
+    .then(([app, definition]) => {
+      return callAPI(`/apps/${app.id}/versions/${definition.version}`);
+    });
 };
 
 const checkCredentials = () => {
@@ -269,20 +269,20 @@ const upload = (zipPath, appDir) => {
 };
 
 module.exports = {
-  readCredentials,
   callAPI,
-  createCredentials,
-  writeLinkedAppConfig,
-  getLinkedAppConfig,
-  getLinkedApp,
-  getVersionInfo,
   checkCredentials,
+  createCredentials,
+  getLinkedApp,
+  getLinkedAppConfig,
+  getVersionInfo,
   listApps,
   listEndpoint,
-  listVersions,
+  listEnv,
   listHistory,
   listInvitees,
   listLogs,
-  listEnv,
+  listVersions,
+  readCredentials,
   upload,
+  writeLinkedAppConfig,
 };

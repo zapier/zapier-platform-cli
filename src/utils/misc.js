@@ -67,10 +67,11 @@ const parseVersions = (versionString) => (
 
 const readNvmVersion = () => {
   const nvmrc = path.resolve(__dirname, '../../.nvmrc');
-  const nvmVersion = fse.readFileSync(nvmrc, 'utf8').substr(1); // strip of leading 'v'
+  const nvmVersion = fse.readFileSync(nvmrc, 'utf8').substr(1); // strip off leading 'v'
   return nvmVersion;
 };
 
+// verifies that the current node version is >= the version found in .nvmrc
 const isValidNodeVersion = () => {
   const nvmVersion = readNvmVersion();
 
@@ -154,14 +155,14 @@ const entryPoint = (dir) => {
 
 module.exports = {
   camelCase,
-  snakeCase,
-  runCommand,
-  readNvmVersion,
-  isValidNodeVersion,
+  entryPoint,
   isValidAppInstall,
+  isValidNodeVersion,
+  isWindows,
   npmInstall,
   promiseDoWhile,
   promiseForever,
-  entryPoint,
-  isWindows
+  readNvmVersion,
+  runCommand,
+  snakeCase,
 };
