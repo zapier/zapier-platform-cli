@@ -35,6 +35,7 @@
     "colors": "1.1.2",
     "fs-extra": "0.30.0",
     "lodash": "4.15.0",
+    "msee": "^0.3.3",
     "node-fetch": "1.6.1",
     "read": "1.0.7",
     "string-length": "1.0.1",

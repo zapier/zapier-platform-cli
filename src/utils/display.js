@@ -6,18 +6,15 @@ const {isWindows} = require('./misc');
 // to simplify the columns/tables? the | - decoration is big
 const Table = require('cli-table2');
 const colors = require('colors/safe');
+const msee = require('msee');
 const stringLength = require('string-length');
 const _ = require('lodash');
 const read = require('read');
 
 const notUndef = (s) => String(s === undefined ? '' : s).trim();
 
-const unBacktick = (s) => s.replace(/\n?`+(bash)?/g, '');
-
 const markdownLog = (str) => {
-  // turn markdown into something with styles and stuff
-  // https://blog.mariusschulz.com/content/images/sublime_markdown_with_syntax_highlighting.png
-  console.log(unBacktick(str));
+  console.log(msee.parse(str));
 };
 
 // Convert rows from keys to column labels.
