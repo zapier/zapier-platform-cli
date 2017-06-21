@@ -1006,7 +1006,7 @@ We provide several methods off of the `z` object, which is provided as the first
 
 ### `z.console(message)`
 
-`z.console(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-logging)
+`z.console(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stand out in tests. See [Log Statements](#console-logging)
 
 ### `z.dehydrate(func, inputData)`
 
@@ -1039,7 +1039,7 @@ For more details on error handling in general, see [here](#error-handling).
 
 ## Bundle Object
 
-This object holds the user's auth details and the data to for the API requests.
+This object holds the user's auth details and the data for the API requests.
 
 > The `bundle` object is passed into your functions as the second argument - IE: `perform: (z, bundle) => {}`.
 
