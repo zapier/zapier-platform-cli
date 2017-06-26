@@ -136,11 +136,11 @@ From a user perspective, both the CLI and the existing web builder platform offe
 
 ### Requirements
 
-All Zapier CLI apps are run using Node.js `v6.10.2`.
+All Zapier CLI apps are run using Node.js `v4.3.2`.
 
-You can develop using any version of Node you'd like, but your code has to run on Node `v6.10.2`. You can accomplish this by developing on your preferred version and then transpiling with [Babel](https://babeljs.io/) (or similar).
+You can develop using any version of Node you'd like, but your code has to run on Node `v4.3.2`. You can accomplish this by developing on your preferred version and then transpiling with [Babel](https://babeljs.io/) (or similar).
 
-To ensure stability for our users, we also require that you run your tests on `v6.10.2` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `v6.10.2` and run the tests locally. On Windows you can use [nvm-windows](https://github.com/coreybutler/nvm-windows#installation--upgrades) or [nodist](https://github.com/marcelklehr/nodist#installation).
+To ensure stability for our users, we also require that you run your tests on `v4.3.2` as well. If you don't have it available, we recommend using either [nvm](https://github.com/creationix/nvm#installation) or [n](https://github.com/tj/n#installation) to install `v4.3.2` and run the tests locally. On Windows you can use [nvm-windows](https://github.com/coreybutler/nvm-windows#installation--upgrades) or [nodist](https://github.com/marcelklehr/nodist#installation).
 
 For NVM on Mac (via [homebrew](http://brew.sh/)):
 
@@ -149,7 +149,7 @@ brew install nvm
 nvm install v6.10.2
 ```
 
-You can then either swap to that version with `nvm use v6.10.2`, or do `nvm exec v6.10.2 zapier test` so you can run tests without having to switch versions while developing.
+You can then either swap to that version with `nvm use v4.3.2`, or do `nvm exec v4.3.2 zapier test` so you can run tests without having to switch versions while developing.
 
 
 ### Quick Setup Guide
@@ -1370,6 +1370,8 @@ const App = {
 A `beforeRequest` middleware function takes a request options object, and returns a (possibly mutated) request object. An `afterResponse` middleware function takes a response object, and returns a (possibly mutated) response object. Middleware functions are executed in the order specified in the app definition, and each subsequent middleware receives the request or response object returned by the previous middleware.
 
 Middleware functions can be asynchronous - just return a promise from the middleware function.
+
+The second argument for middleware is the `z` object, but it does *not* include `z.request()` as using that would easily create infinite loops.
 
 ### HTTP Request Options
 
