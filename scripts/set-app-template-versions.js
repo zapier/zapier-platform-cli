@@ -5,7 +5,7 @@ const path = require('path');
 const tmp = require('tmp');
 const utils = require('../lib/utils');
 const appTemplates = require('../lib/app-templates');
-const versionMap = require('../lib/version-map');
+const versionStore = require('../lib/version-store');
 
 const fse = require('fs-extra');
 const semver = require('semver');
@@ -21,7 +21,7 @@ if (!newCoreVersion) {
   process.exit(1);
 }
 
-const newVersions = versionMap[semver.parse(newCoreVersion).major];
+const newVersions = versionStore[semver.parse(newCoreVersion).major];
 newVersions.coreVersion = newCoreVersion;
 
 const exec = (cmd, cwd) => {
