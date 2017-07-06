@@ -36,6 +36,16 @@ const exec = (cmd, cwd) => {
   });
 };
 
+const hasCurrentVersions = (newVersions, nvmrcNodeVersion, travisNodeVersion, packageJson) => {
+  return (
+    packageJson.dependencies['zapier-platform-core'] === newVersions.coreVersion &&
+    packageJson.engines['node'] === newVersions.nodeVersion &&
+    packageJson.engines['npm'] === newVersions.npmVersion &&
+    nvmrcNodeVersion === newVersions.nodeVersion &&
+    travisNodeVersion === newVersions.nodeVersion
+  );
+};
+
 const setVersion = (template, rootTmpDir) => {
   const repoName = `zapier-platform-example-app-${template}`;
   const repoDir = path.resolve(rootTmpDir, repoName);
@@ -56,8 +66,7 @@ const setVersion = (template, rootTmpDir) => {
       const travisYamlFile = path.resolve(rootTmpDir, `${repoName}/.travis.yml`);
       const travisYaml = yaml.load(travisYamlFile);
 
-      const nodeVersion = semver.Comparator(newVersions.nodeVersion).semver.version
-      if (packageJson.dependencies['zapier-platform-core'] === newVersions.coreVersion && packageJson.engines['node'] === newVersions.nodeVersion && packageJson.engines['npm'] === newVersions.npmVersion && nvmrcNodeVersion === nodeVersion && travisYaml.node_js[0] === nodeVersion) {
+      if (hasCurrentVersions(newVersions, nvmrcNodeVersion, travisYaml.node_js[0], packageJson)) {
         return 'skip';
       }
 
@@ -67,9 +76,9 @@ const setVersion = (template, rootTmpDir) => {
       const json = JSON.stringify(packageJson, null, 2);
       fse.writeFileSync(packageJsonFile, json);
 
-      fse.writeFileSync(nvmrcFile, `v${nodeVersion}`);
+      fse.writeFileSync(nvmrcFile, `v${newVersions.nodeVersion}`);
 
-      travisYaml.node_js[0] = nodeVersion;
+      travisYaml.node_js[0] = newVersions.nodeVersion;
       fse.writeFileSync(travisYamlFile, yaml.stringify(travisYaml, null, 2));
     })
     .then(result => {
@@ -118,7 +127,7 @@ Promise.all(tasks)
       console.error('failed to set node, npm, and zapier-platform-core versions on these templates:', failures.join(', '));
     }
     if (skipped.length) {
-      console.log(`skipped ${skipped.length} templates because versions for node, npm, and zapier-platform-core were already set to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} respectively}`);
+      console.log(`skipped ${skipped.length} templates because versions for node, npm, and zapier-platform-core were already set to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} respectively`);
     }
     if (successCount) {
       console.log(`Successfully updated versions in ${successCount} app templates`);
