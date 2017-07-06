@@ -13,6 +13,8 @@ const yaml = require('yamljs');
 const childProcess = utils.promisifyAll(require('child_process'));
 
 const CLONE_URL_PREFIX = 'git@github.com:zapier/zapier-platform-example-app';
+const PACKAGES_NAMES = `node, npm, and zapier-platform-core`;
+let packagesVersions;
 
 const newCoreVersion = process.argv[2];
 if (!newCoreVersion) {
@@ -51,8 +53,9 @@ const setVersion = (template, rootTmpDir) => {
   const repoDir = path.resolve(rootTmpDir, repoName);
   const cloneUrl = `${CLONE_URL_PREFIX}-${template}`;
   var cmd = `git clone ${cloneUrl}`;
+  packagesVersions = `${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion}`;
 
-  console.log(`Setting versions of node, npm, and zapier-platform-core to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} respectively in ${template} app template.`);
+  console.log(`Setting versions of ${PACKAGES_NAMES} to ${packagesVersions} respectively in ${template} app template.`);
   console.log(`cloning ${cloneUrl}\n`);
 
   return exec(cmd, rootTmpDir)
@@ -86,7 +89,7 @@ const setVersion = (template, rootTmpDir) => {
         return result;
       }
 
-      cmd = `git commit package.json .nvmrc .travis.yml -m "update node, npm, and zapier-platform-core versions to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} respectively."`;
+      cmd = `git commit package.json .nvmrc .travis.yml -m "update ${PACKAGES_NAMES} versions to ${packagesVersions} respectively."`;
       return exec(cmd, repoDir);
     })
     .then(result => {
@@ -99,14 +102,14 @@ const setVersion = (template, rootTmpDir) => {
     })
     .then(result => {
       if (result === 'skip') {
-        console.log(`${template} is already set to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} for node, npm, and zapier-platform-core respectively, skipping`);
+        console.log(`${template} is already set to ${packagesVersions} for ${PACKAGES_NAMES} respectively, skipping`);
         return 'skip';
       }
-      console.log(`Set node, npm, and zapier-platform-core versions to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} respectively on app template ${template} successfully.`);
+      console.log(`Set ${PACKAGES_NAMES} versions to ${packagesVersions} respectively on app template ${template} successfully.`);
       return null;
     })
     .catch(err => {
-      console.error(`Error setting node, npm, and zapier-platform-core versions for app template ${template}:`, err);
+      console.error(`Error setting ${PACKAGES_NAMES} versions for app template ${template}:`, err);
       return template;
     });
 };
@@ -124,10 +127,10 @@ Promise.all(tasks)
     const successCount = tasks.length - failures.length - skipped.length;
 
     if (failures.length) {
-      console.error('failed to set node, npm, and zapier-platform-core versions on these templates:', failures.join(', '));
+      console.error('failed to set ${PACKAGES_NAMES} versions on these templates:', failures.join(', '));
     }
     if (skipped.length) {
-      console.log(`skipped ${skipped.length} templates because versions for node, npm, and zapier-platform-core were already set to ${newVersions.nodeVersion}, ${newVersions.npmVersion}, and ${newVersions.coreVersion} respectively`);
+      console.log(`skipped ${skipped.length} templates because versions for ${PACKAGES_NAMES} were already set to ${packagesVersions} respectively`);
     }
     if (successCount) {
       console.log(`Successfully updated versions in ${successCount} app templates`);
