@@ -420,7 +420,7 @@ const authentication = {
   test: {
     url: 'https://example.com/api/accounts/me.json'
   },
-  connectionLabel: '{{bundle.authData.username}}' // Can also be a function, check digest auth for an example
+  connectionLabel: '{{bundle.authData.username}}' // Can also be a function, check digest auth below for an example
   // you can provide additional fields, but we'll provide `username`/`password` automatically
 };
 
@@ -480,7 +480,7 @@ const authentication = {
   test: {
     url: 'https://example.com/api/accounts/me.json'
   },
-  connectionLabel: (z, bundle) => { // Can also be a string, check basic auth for an example
+  connectionLabel: (z, bundle) => { // Can also be a string, check basic auth above for an example
     // bundle.inputData has whatever comes back from the .test function/request, assuming it returns a JSON object
     return bundle.inputData.email;
   }
