@@ -32,7 +32,13 @@ deprecate.argOptsSpec = {};
 deprecate.help = 'Mark a non-production version of your app as deprecated, with removal by a certain date.';
 deprecate.example = 'zapier deprecate 1.0.0 2017-01-20';
 deprecate.docs = `\
-A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the deprecation.
+A utility to alert users of breaking changes that require the deprecation of an app version.
+
+Use this when an app version will not be supported or start breaking at a known date.
+
+Zapier will send an email warning users of the deprecation once a date is set, they'll start seeing it as "Deprecated" in the UI, and once the deprecation date arrives, if the Zaps weren't updated, they'll be paused and the users will be emailed again explaining what happened.
+
+At that point it should be safe to delete that app version.
 
 > Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
 
@@ -44,10 +50,10 @@ ${utils.argOptsFragment(deprecate.argOptsSpec)}
 ${'```'}bash
 $ zapier deprecate 1.0.0 2017-01-20
 # Preparing to deprecate version 1.0.0 your app "Example".
-# 
+#
 #   Deprecating 1.0.0 - done!
 #   Deprecation successful!
-# 
+#
 # We'll let users know that this version is no longer recommended and will cease to work on 2017-01-20.
 ${'```'}
 `;

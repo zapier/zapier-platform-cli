@@ -159,13 +159,43 @@ $ zapier convert 1234 .
 ```
 
 
+## delete
+
+  > Delete a version of your app as long as it has no users/Zaps.
+
+  **Usage:** `zapier delete 1.0.0`
+
+  A utility to allow deleting app versions that aren't used.
+
+> The app version needs to have no users/Zaps in order to be deleted.
+
+**Arguments**
+
+* `version [1.0.0]` -- **required**, the version to delete
+
+
+```bash
+$ zapier delete 1.0.0
+# Preparing to delete version 1.0.0 of your app "Example".
+#
+#   Deleting 1.0.0 - done!
+#   Deletion successful!
+```
+
+
 ## deprecate
 
   > Mark a non-production version of your app as deprecated, with removal by a certain date.
 
   **Usage:** `zapier deprecate 1.0.0 2017-01-20`
 
-  A utility to alert users of breaking changes that require the deprecation of an app version. Zapier will send emails warning users of the deprecation.
+  A utility to alert users of breaking changes that require the deprecation of an app version.
+
+Use this when an app version will not be supported or start breaking at a known date.
+
+Zapier will send an email warning users of the deprecation once a date is set, they'll start seeing it as "Deprecated" in the UI, and once the deprecation date arrives, if the Zaps weren't updated, they'll be paused and the users will be emailed again explaining what happened.
+
+At that point it should be safe to delete that app version.
 
 > Do not use this if you have non-breaking changes, for example, just fixing help text or labels is a very safe operation.
 
@@ -178,10 +208,10 @@ $ zapier convert 1234 .
 ```bash
 $ zapier deprecate 1.0.0 2017-01-20
 # Preparing to deprecate version 1.0.0 your app "Example".
-# 
+#
 #   Deprecating 1.0.0 - done!
 #   Deprecation successful!
-# 
+#
 # We'll let users know that this version is no longer recommended and will cease to work on 2017-01-20.
 ```
 
@@ -625,7 +655,9 @@ $ zapier logs --type=http --detailed --format=plain
 
 Only migrate users between non-breaking versions, use `zapier deprecate` if you have breaking changes!
 
-Migrations can take between 5-10 minutes, so be patient and check `zapier history` to track the status.
+Migrations can take between 5-10 minutes, so be patient and check `zapier history` to track the status
+
+This process should be transparent to users, as they aren't emailed about this update/migration, and if there are no breaking changes, the Zaps should continue to work as they were.
 
 > Tip! We recommend migrating a small subset of users first, then watching error logs of the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
 
@@ -639,9 +671,9 @@ Migrations can take between 5-10 minutes, so be patient and check `zapier histor
 ```bash
 $ zapier migrate 1.0.0 1.0.1 15%
 # Getting ready to migrate your app "Example" from 1.0.0 to 1.0.1.
-# 
+#
 #   Starting migration from 1.0.0 to 1.0.1 for 15% - done!
-# 
+#
 # Migration successfully queued, please check `zapier history` to track the status. Normal migrations take between 5-10 minutes.
 ```
 
@@ -790,6 +822,7 @@ $ zapier scaffold resource "Tag" --entry=index.js --dest=resources/tag
 
 * `--debug` -- _optional_, print zapier detailed logs to standard out
 * `--timeout=value` -- _optional_, add a default timeout to mocha, in milliseconds
+* `--skip-validate` -- _optional_, forgo running `zapier validate` before `npm test`
 
 ```bash
 $ zapier test

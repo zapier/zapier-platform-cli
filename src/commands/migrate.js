@@ -35,7 +35,9 @@ Starts a migration to move users between different versions of your app. You may
 
 Only migrate users between non-breaking versions, use \`zapier deprecate\` if you have breaking changes!
 
-Migrations can take between 5-10 minutes, so be patient and check \`zapier history\` to track the status.
+Migrations can take between 5-10 minutes, so be patient and check \`zapier history\` to track the status
+
+This process should be transparent to users, as they aren't emailed about this update/migration, and if there are no breaking changes, the Zaps should continue to work as they were.
 
 > Tip! We recommend migrating a small subset of users first, then watching error logs of the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.
 
@@ -47,9 +49,9 @@ ${utils.argOptsFragment(migrate.argOptsSpec)}
 ${'```'}bash
 $ zapier migrate 1.0.0 1.0.1 15%
 # Getting ready to migrate your app "Example" from 1.0.0 to 1.0.1.
-# 
+#
 #   Starting migration from 1.0.0 to 1.0.1 for 15% - done!
-# 
+#
 # Migration successfully queued, please check \`zapier history\` to track the status. Normal migrations take between 5-10 minutes.
 ${'```'}
 `;
