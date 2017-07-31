@@ -21,13 +21,7 @@ const test = (context) => {
     return Promise.resolve();
   }
 
-  let validated;
-
-  if (global.argOpts['skip-validate']) {
-    validated = Promise.resolve();
-  } else {
-    validated = validate(context);
-  }
+  const validated = global.argOpts['skip-validate'] ? Promise.resolve() : validate(context);
 
   return validated
     .then(() => utils.readCredentials(undefined, false))
@@ -62,7 +56,7 @@ test.argOptsSpec = {
 };
 test.help = 'Tests your app via `npm test`.';
 test.example = 'zapier test';
-test.docs = `\
+test.docs = `
 This command is effectively the same as \`npm test\`, except we also validate your app and set up the environment. We recommend using mocha as your testing framework.
 
 **Arguments**
