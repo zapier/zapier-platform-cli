@@ -1,5 +1,21 @@
 const utils = require('../utils');
 
+const deleteApp = (context, app) => {
+  context.line(`Preparing to delete all versions of your app "${app.title}".\n`);
+  utils.printStarting('Deleting app');
+  return utils.callAPI(`/apps/${app.id}`, {
+    method: 'DELETE',
+  });
+};
+
+const deleteVersion = (context, app, version) => {
+  context.line(`Preparing to delete version ${version} of your app "${app.title}".\n`);
+  utils.printStarting(`Deleting version ${version}`);
+  return utils.callAPI(`/apps/${app.id}/versions/${version}`, {
+    method: 'DELETE',
+  });
+};
+
 const _delete = (context, appOrVersion, version) => {
   const isDeletingVersion = appOrVersion === 'version';
   if (isDeletingVersion && !version) {
@@ -8,18 +24,7 @@ const _delete = (context, appOrVersion, version) => {
   }
   return utils.checkCredentials()
     .then(() => utils.getLinkedApp())
-    .then((app) => {
-      const deletePrepMessage = isDeletingVersion
-        ? `Preparing to delete version ${version} of your app "${app.title}".\n`
-        : 'Preparing to delete all versions of your app "${app.title}".\n';
-      context.line(deletePrepMessage);
-      const url = isDeletingVersion ? `/apps/${app.id}/versions/${version}` : `/apps/${app.id}`;
-      const deleteMessage = isDeletingVersion ? `Deleting version ${version}` : 'Deleting app';
-      utils.printStarting(deleteMessage);
-      return utils.callAPI(url, {
-        method: 'DELETE',
-      });
-    })
+    .then((app) => isDeletingVersion ? deleteVersion(context, app, version) : deleteApp(context, app))
     .then(() => {
       utils.printDone();
       context.line('  Deletion successful!\n');
