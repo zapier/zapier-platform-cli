@@ -1,7 +1,7 @@
 const utils = require('../utils');
 
-const deprecate = (context, version, deprecation_date) => {
-  if (!deprecation_date) {
+const deprecate = (context, version, deprecationDate) => {
+  if (!deprecationDate) {
     const message = 'Error: No version or deprecation date - provide a version like "1.0.0" and "2017-01-20"...';
     return Promise.reject(new Error(message));
   }
@@ -14,19 +14,19 @@ const deprecate = (context, version, deprecation_date) => {
       return utils.callAPI(url, {
         method: 'PUT',
         body: {
-          deprecation_date: deprecation_date
+          deprecation_date: deprecationDate
         }
       });
     })
     .then(() => {
       utils.printDone();
       context.line('  Deprecation successful!\n');
-      context.line(`We'll let users know that this version is no longer recommended and will cease to work on ${deprecation_date}.`);
+      context.line(`We'll let users know that this version is no longer recommended and will cease to work on ${deprecationDate}.`);
     });
 };
 deprecate.argsSpec = [
   {name: 'version', example: '1.0.0', required: true, help: 'the version to deprecate'},
-  {name: 'deprecation_date', example: '2017-01-20', required: true, help: 'date Zapier will remove the version'},
+  {name: 'deprecationDate', example: '2017-01-20', required: true, help: 'date Zapier will make the version unavailable'},
 ];
 deprecate.argOptsSpec = {};
 deprecate.help = 'Mark a non-production version of your app as deprecated, with removal by a certain date.';

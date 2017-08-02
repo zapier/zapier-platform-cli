@@ -1,19 +1,20 @@
 const utils = require('../utils');
 
 const _delete = (context, appOrVersion, version) => {
-  if (appOrVersion === 'version' && !version) {
+  const isDeletingVersion = appOrVersion === 'version';
+  if (isDeletingVersion && !version) {
     const message = 'Error: No version - provide a version like "1.0.0"...';
     return Promise.reject(new Error(message));
   }
   return utils.checkCredentials()
     .then(() => utils.getLinkedApp())
     .then((app) => {
-      const deletePrepMessage = (appOrVersion === 'version')
+      const deletePrepMessage = isDeletingVersion
         ? `Preparing to delete version ${version} of your app "${app.title}".\n`
         : 'Preparing to delete all versions of your app "${app.title}".\n';
       context.line(deletePrepMessage);
-      const url = appOrVersion === 'version' ? `/apps/${app.id}/versions/${version}` : `/apps/${app.id}`;
-      const deleteMessage = appOrVersion === 'version' ? `Deleting version ${version}` : 'Deleting app';
+      const url = isDeletingVersion ? `/apps/${app.id}/versions/${version}` : `/apps/${app.id}`;
+      const deleteMessage = isDeletingVersion ? `Deleting version ${version}` : 'Deleting app';
       utils.printStarting(deleteMessage);
       return utils.callAPI(url, {
         method: 'DELETE',
