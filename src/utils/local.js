@@ -9,7 +9,8 @@ const {prettyJSONstringify} = require('./display');
 const {promisify} = require('./promisify');
 
 const nodeWatch = (...args) => require('node-watch')(...args);
-const makeTunnelUrl = (...args) => promisify(require('ngrok').connect)(...args);
+const NGROK = 'ngrok';
+const makeTunnelUrl = (...args) => promisify(require(NGROK).connect)(...args);
 
 const getLocalAppHandler = ({reload = false, baseEvent = {}} = {}) => {
   const entryPath = `${process.cwd()}/index`;
