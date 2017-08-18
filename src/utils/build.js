@@ -226,7 +226,7 @@ const build = (zipPath, wdir) => {
       printDone();
       printStarting('Applying entry point file');
       // TODO: should this routine for include exist elsewhere?
-      return readFile(`${tmpDir}/node_modules/${constants.PLATFORM_PACKAGE}/include/zapierwrapper.js`)
+      return readFile(path.join(tmpDir, 'node_modules', constants.PLATFORM_PACKAGE, 'include', 'zapierwrapper.js'))
         .then(zapierWrapperBuf => writeFile(`${tmpDir}/zapierwrapper.js`, zapierWrapperBuf.toString()));
     })
     .then(() => {
