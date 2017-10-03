@@ -616,6 +616,9 @@ const getList = (z, bundle) => {
 };
 ```
 
+**`bundle.meta.zap.id` is only available in the `performSubscribe` and `performUnsubscribe` methods**
+
+The user's Zap ID is available during the [subscribe and unsubscribe](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basichookoperationschema) methods.
 
 ## Environment
 

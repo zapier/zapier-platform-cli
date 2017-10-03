@@ -2142,6 +2142,15 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p><strong><code>bundle.meta.zap.id</code> is only available in the <code>performSubscribe</code> and <code>performUnsubscribe</code> methods</strong></p><p>The user&apos;s Zap ID is available during the <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basichookoperationschema">subscribe and unsubscribe</a> methods.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="environment">Environment</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -2886,7 +2895,7 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
       <p>To see your <code>z.console</code> logs, do:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">zapier logs --<span class="hljs-built_in">type</span>=console
+      <pre><code class="lang-bash">zapier logs --type=console
 </code></pre>
     </div>
   </div>
@@ -2928,7 +2937,7 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
       <p>To see the HTTP logs, do:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">zapier logs --<span class="hljs-built_in">type</span>=http
+      <pre><code class="lang-bash">zapier logs --type=http
 </code></pre>
     </div>
   </div>
@@ -2938,7 +2947,7 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
       <p>To see detailed http logs including headers, request and response bodies, etc, do:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-bash">zapier logs --<span class="hljs-built_in">type</span>=http --detailed
+      <pre><code class="lang-bash">zapier logs --type=http --detailed
 </code></pre>
     </div>
   </div>
