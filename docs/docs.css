@@ -1,0 +1,62 @@
+.docs-header {
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", Helvetica, arial, sans-serif;
+}
+
+.docs-header__main {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 1em 1.25em;
+}
+
+.docs-header__logo {
+  background: url(https://cdn.zapier.com/static/1DZPa0/images/frontend/onboarding/zapier-small-orange-logo.png)
+    no-repeat center;
+  background-size: 70px;
+  height: 42px;
+  width: 70px;
+  margin-right: auto;
+}
+
+.docs-header__main-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.docs-header__main-links a {
+  padding: 0 1.3em;
+  color: #969ea2;
+  font-size: 0.9em;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.1s ease;
+}
+
+.docs-header__main-links a:hover {
+  color: #7b858a;
+  text-decoration: none;
+}
+
+.docs-header__main-links a.docs-header__sign-up {
+  color: #fff;
+  background-color: #ff4a00;
+  padding: 1em 1.6em;
+  border-radius: 4px;
+}
+
+.docs-header__main-links a.docs-header__sign-up:hover {
+  background-color: #f54700;
+}
+
+.docs-header__platform {
+  background-color: #ff4a00;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 1em 1.25em;
+}

@@ -15,6 +15,8 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/agate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="docs.css">
     <style>body {
   font-family: 'Open Sans', Helvetica, arial, sans-serif;
   background-color: #fff;
@@ -207,10 +209,29 @@ a code {
 </style>
   </head>
   <body>
+    <!-- Header -->
+    <div class="docs-header">
+      <div class="docs-header__main">
+        <div class="docs-header__logo"></div>
+        <div class="docs-header__main-links">
+          <a href="https://zapier.com/app/explore">Explore</a>
+          <a href="https://zapier.com/zapbook/">App Directory</a>
+          <a href="https://zapier.com/pricing">Pricing</a>
+          <a href="https://zapier.com/app/login">Login</a>
+          <a href="https://zapier.com/sign-up/" class="docs-header__sign-up">Sign Up</a>
+        </div>
+      </div>
+      <div class="docs-header__platform">
+        Platform Header
+      </div>
+    </div>
+    <!-- End Header -->
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WNQKTM5"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+
     <div class="docs-toc">
       <ul>
 <li><a href="#zapier-cli-reference">Zapier CLI Reference</a></li>
@@ -937,7 +958,7 @@ All personal keys deactivated - now try `zapier login` to login again.
 <span class="hljs-comment"># &#x2502;     Timestamp &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 
-$ zapier logs --type=http
+$ zapier logs --<span class="hljs-built_in">type</span>=http
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment"># &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;</span>
@@ -950,7 +971,7 @@ $ zapier logs --type=http
 <span class="hljs-comment"># &#x2502;     Timestamp   &#x2502; 2016-01-01T23:04:36-05:00            &#x2502;</span>
 <span class="hljs-comment"># &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2534;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</span>
 
-$ zapier logs --type=http --detailed --format=plain
+$ zapier logs --<span class="hljs-built_in">type</span>=http --detailed --format=plain
 <span class="hljs-comment"># The logs of your app &quot;Example&quot; listed below.</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment"># == Status</span>
