@@ -3012,7 +3012,7 @@ using this error in cases where a required pre-condition is not met. For instanc
 in a create to add an email address to a list where duplicates are not allowed,
 you would want to throw a <code>HaltedError</code> if the Zap attempted to add a duplicate.
 This would indicate failure, but it would be treated as a soft failure.</p><p>Unlike throwing <code>Error</code>, a Zap will never by turned off when this error is thrown
-(even if it is raised more often than not).</p><p>Example: <code>throw z.errors.HaltedError(&apos;Your reason.&apos;);</code></p>
+(even if it is raised more often than not).</p><p>Example: <code>throw new z.errors.HaltedError(&apos;Your reason.&apos;);</code></p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       

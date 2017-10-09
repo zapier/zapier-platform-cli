@@ -991,7 +991,7 @@ This would indicate failure, but it would be treated as a soft failure.
 Unlike throwing `Error`, a Zap will never by turned off when this error is thrown
 (even if it is raised more often than not).
 
-Example: `throw z.errors.HaltedError('Your reason.');`
+Example: `throw new z.errors.HaltedError('Your reason.');`
 
 ### Stale Authentication Credentials
 
