@@ -110,12 +110,12 @@ const listFiles = (dir) => {
   });
 };
 
-const forceIncludeDumbPath = (filePath/*, smartPaths*/) => {
-  // we include smartPaths just incase you want to check the inclusion of some library
+const forceIncludeDumbPath = (filePath) => {
   return (
     (filePath.endsWith('package.json') || filePath.endsWith('definition.json'))
     || filePath.match(path.sep === '\\' ? /aws-sdk\\apis\\.*\.json/ : /aws-sdk\/apis\/.*\.json/)
     || (global.argOpts['include-js-map'] && filePath.endsWith('.js.map'))
+    || (global.argOpts['include-paths'] ? filePath.match(RegExp(global.argOpts['include-paths'], 'i')) : false)
   );
 };
 
@@ -134,7 +134,7 @@ const makeZip = (dir, zipPath) => {
       if (global.argOpts['disable-dependency-detection']) {
         return dumbPaths;
       }
-      let finalPaths = smartPaths.concat(dumbPaths.filter(forceIncludeDumbPath, smartPaths));
+      let finalPaths = smartPaths.concat(dumbPaths.filter(forceIncludeDumbPath));
       finalPaths = _.uniq(finalPaths);
       finalPaths.sort();
       if (global.argOpts.debug) {

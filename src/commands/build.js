@@ -11,7 +11,8 @@ const build = (context) => {
 build.argsSpec = [];
 build.argOptsSpec = {
   'disable-dependency-detection': {flag: true, help: 'disables walking required files to slim the build'},
-  'include-js-map': {flag: true, help: 'include .js.map files (usually source maps'}
+  'include-js-map': {flag: true, help: 'include .js.map files (usually source maps'},
+  'include-paths': {help: 'a regexp of paths to include in the build.zip (by default, only .js and .json files are included)', example: 'linux-x64-node-6/deasync.node'},
 };
 build.help = 'Builds a pushable zip from the current directory.';
 build.example = 'zapier build';
