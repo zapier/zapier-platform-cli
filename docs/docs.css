@@ -12,7 +12,7 @@
 .docs-header__platform {
   display: flex;
   justify-content: center;
-  min-height: 130px;
+  height: 132px;
   background-color: #ff4a00;
 }
 
