@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/agate.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="docs.css">
     <style><%= css %></style>
   </head>
@@ -23,17 +23,26 @@
     <!-- Header -->
     <div class="docs-header">
       <div class="docs-header__main">
-        <div class="docs-header__logo"></div>
-        <div class="docs-header__main-links">
-          <a href="https://zapier.com/app/explore">Explore</a>
-          <a href="https://zapier.com/zapbook/">App Directory</a>
-          <a href="https://zapier.com/pricing">Pricing</a>
-          <a href="https://zapier.com/app/login">Login</a>
-          <a href="https://zapier.com/sign-up/" class="docs-header__sign-up">Sign Up</a>
+        <div class="docs-header__container">
+          <a class="docs-header__logo" href="https://zapier.com"></a>
+          <div class="docs-header__links">
+            <a href="https://zapier.com/app/explore">Explore</a>
+            <a href="https://zapier.com/zapbook/">App Directory</a>
+            <a href="https://zapier.com/pricing">Pricing</a>
+            <a href="https://zapier.com/app/login">Login</a>
+            <a href="https://zapier.com/sign-up/" class="docs-header__sign-up">Sign Up</a>
+          </div>
         </div>
       </div>
       <div class="docs-header__platform">
-        Platform Header
+        <div class="docs-header__container">
+          <h2 class="docs-header__platform-title">Developer Platform</h2>
+          <div class="docs-header__links">
+            <a href="https://zapier.com/developer/builder">Your Apps</a>
+            <a href="https://zapier.com/developer/shared-zaps">Zap Templates</a>
+            <a href="https://zapier.com/developer/documentation">Documentation</a>
+          </div>
+        </div>
       </div>
     </div>
     <!-- End Header -->
