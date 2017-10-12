@@ -170,7 +170,7 @@ const renderStep = (type, definition, key) => {
   const templateContext = {
     KEY: snakeCase(key),
     CAMEL: camelCase(key),
-    NOUN: _.capitalize(key),
+    NOUN: definition.noun,
     LOWER_NOUN: key.toLowerCase(),
     FIELDS: fields.join(',\n'),
     SAMPLE: sample,
