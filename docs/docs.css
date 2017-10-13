@@ -1,6 +1,5 @@
 body .docs-toc {
   position: absolute;
-  top: 202px; /* .docs-header__main + .docs-header__platform height */
 }
 
 .docs-toc.docs-toc--scrolled {
