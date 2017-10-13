@@ -1,3 +1,13 @@
+body .docs-toc {
+  position: absolute;
+  top: 202px; /* .docs-header__main + .docs-header__platform height */
+}
+
+.docs-toc.docs-toc--scrolled {
+  position: fixed;
+  top: 0; 
+}
+
 .docs-header {
   display: flex;
   flex-direction: column;
@@ -7,6 +17,7 @@
 .docs-header__main {
   display: flex;
   justify-content: center;
+  height: 70px;
 }
 
 .docs-header__platform {
