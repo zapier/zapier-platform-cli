@@ -3,9 +3,9 @@ const convert = require('../../utils/convert');
 const definitions = {
   basic: require('./definitions/basic.json'),
   apiHeader: require('./definitions/api-header.json'),
-  // apiQuery: require('./definitions/api-query.json'),
-  // session: require('./definitions/session.json'),
-  // oauth2: require('./definitions/oauth2.json'),
+  // TODO: apiQuery: require('./definitions/api-query.json'),
+  // TODO: session: require('./definitions/session.json'),
+  // TODO: oauth2: require('./definitions/oauth2.json'),
 };
 
 /* eslint no-eval: 0 */
