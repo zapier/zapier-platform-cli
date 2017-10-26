@@ -72,6 +72,10 @@ const validate = (context) => {
       }
     })
     .then((styleResult) => {
+      if (global.argOpts['without-style']) {
+        return;
+      }
+
       // process errors
       let styleErrors = condenseIssues(styleResult);
       const ifEmpty = colors.grey('No style errors found during validation routine.');
@@ -89,6 +93,7 @@ const validate = (context) => {
       } else {
         context.line('Your app looks great!\n');
       }
+      return;
     });
 };
 validate.argsSpec = [];
