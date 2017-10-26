@@ -7,7 +7,20 @@ const {printStarting, printDone} = require('./display');
 const MIN_HELP_TEXT_LENGTH = 10;
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 
-// map v2 field types to v2 types
+// map WB auth types to CLI
+const authTypeMap = {
+  'Basic Auth': 'basic',
+  // TODO: 'OAuth V1 (beta)': 'oauth1',
+  'OAuth V2': 'oauth2',
+  'OAuth V2 (w/refresh)': 'oauth2-refresh',
+  'API Key (Headers)': 'api-header',
+  'API Key (Query String)': 'api-query',
+  // TODO: 'Session Auth': 'session',
+  // TODO: 'Digest Auth': 'digest',
+  'Unknown Auth': 'custom',
+};
+
+// map WB field types to CLI
 const typesMap = {
   unicode: 'string',
   textarea: 'text',
@@ -19,21 +32,21 @@ const typesMap = {
   password: 'password'
 };
 
-// map v2 step names to cli names
+// map WB step names to CLI
 const stepNamesMap = {
   triggers: 'trigger',
   searches: 'search',
   actions: 'create'
 };
 
-// map cli step names to verbs for display labels
+// map CLI step names to verbs for display labels
 const stepVerbsMap = {
   trigger: 'Get',
   create: 'Create',
   search: 'Find'
 };
 
-// map cli step names to templates for descriptions
+// map CLI step names to templates for descriptions
 const stepDescriptionTemplateMap = {
   trigger: _.template('Triggers on a new <%= lowerNoun %>.'),
   create: _.template('Creates a <%= lowerNoun %>.'),
@@ -124,29 +137,31 @@ ${fields.join(',\n')}
     ]`;
 };
 
-const renderBasicAuth = (definition) => {
+const renderAuthTemplate = (authType, definition) => {
   const fields = _.map(definition.auth_fields, renderField);
 
   const auth = `{
-    type: 'basic',
-    test: {
-      url: 'http://www.example.com/auth' // TODO just an example, you'll need to supply the real URL
-    },
+    type: '${authType}',
+    test: AuthTest.operation.perform,
     fields: [
-      ${fields.join(',\n')}
+${fields.join(',\n')}
     ]
   }`;
 
   return Promise.resolve(auth);
 };
 
-const renderOAuth2 = (definition) => {
+const renderBasicAuth = _.bind(renderAuthTemplate, null, 'basic');
+const renderCustomAuth = _.bind(renderAuthTemplate, null, 'custom');
+
+const renderOAuth2 = (definition, autoRefresh) => {
   const authorizeUrl = _.get(definition, ['general', 'auth_urls', 'authorization_url'], 'TODO');
   const accessTokenUrl = _.get(definition, ['general', 'auth_urls', 'access_token_url'], 'TODO');
 
   const templateContext = {
     AUTHORIZE_URL: authorizeUrl,
-    ACCESS_TOKEN_URL: accessTokenUrl
+    ACCESS_TOKEN_URL: accessTokenUrl,
+    AUTO_REFRESH: Boolean(autoRefresh),
   };
 
   const templateFile = path.join(TEMPLATE_DIR, '/oauth2.template.js');
@@ -154,21 +169,81 @@ const renderOAuth2 = (definition) => {
 };
 
 const renderAuth = (definition) => {
-  const authTypeMap = {
-    'Basic Auth': 'basic',
-    'OAuth V2': 'oauth2'
-  };
   const type = authTypeMap[definition.general.auth_type];
 
   if (type === 'basic') {
     return renderBasicAuth(definition);
   } else if (type === 'oauth2') {
     return renderOAuth2(definition);
+  } else if (type === 'oauth2-refresh') {
+    return renderOAuth2(definition, true);
+  } else if (type === 'custom' || type === 'api-header' || type === 'api-query') {
+    return renderCustomAuth(definition);
   } else {
     return Promise.resolve(`{
-      // TODO: complete auth settings
-    }`);
+    // TODO: complete auth settings
+  }`);
   }
+};
+
+// Get some quick converted metadata for several templates to use
+const getMetaData = (definition) => {
+  const type = authTypeMap[definition.general.auth_type];
+
+  const hasBefore = (type === 'api-header' || type === 'api-query' || type === 'session' || type === 'oauth2' || type === 'oauth2-refresh');
+  const hasAfter = (type === 'session');
+  const fieldsOnQuery = (type === 'api-query');
+
+  return {
+    hasBefore,
+    hasAfter,
+    fieldsOnQuery,
+  };
+};
+
+// Generate methods for beforeRequest and afterResponse
+const getHeader = (definition) => {
+  const {
+    hasBefore,
+    hasAfter,
+    fieldsOnQuery,
+  } = getMetaData(definition);
+
+  if (hasBefore || hasAfter) {
+    const templateContext = {
+      before: hasBefore,
+      after: hasAfter,
+      fields: Object.keys(definition.auth_fields),
+      mapping: _.get(definition, ['general', 'auth_mapping'], {}),
+      query: fieldsOnQuery,
+    };
+    const templateFile = path.join(TEMPLATE_DIR, '/header.template.js');
+    return renderTemplate(templateFile, templateContext);
+  } else {
+    return Promise.resolve('');
+  }
+};
+
+// Return methods to use for beforeRequest
+const getBeforeRequests = (definition) => {
+  const { hasBefore } = getMetaData(definition);
+
+  if (hasBefore) {
+    return 'maybeIncludeAuth';
+  }
+
+  return null;
+};
+
+// Return methods to use for afterResponse
+const getAfterResponses = (definition) => {
+  const { hasAfter } = getMetaData(definition);
+
+  if (hasAfter) {
+    return 'maybeRefresh';
+  }
+
+  return null;
 };
 
 // convert a trigger, create or search
@@ -219,42 +294,56 @@ const writeStep = (type, definition, key, newAppDir) => {
 };
 
 const renderIndex = (legacyApp) => {
-  return renderAuth(legacyApp).then(auth => {
-    const importLines = [];
+  const templateContext = {
+    AUTHENTICATION: '',
+    HEADER: '',
+    TRIGGERS: '',
+    SEARCHES: '',
+    CREATES: '',
+    BEFORE_REQUESTS: getBeforeRequests(legacyApp),
+    AFTER_RESPONSES: getAfterResponses(legacyApp),
+  };
 
-    const dirMap = {
-      trigger: 'triggers',
-      search: 'searches',
-      create: 'creates'
-    };
+  return renderAuth(legacyApp)
+    .then((auth) => {
+      templateContext.AUTHENTICATION = auth;
+      return getHeader(legacyApp);
+    })
+    .then((header) => {
+      templateContext.HEADER = header;
 
-    const templateContext = {
-      AUTHENTICATION: auth,
-      TRIGGERS: '',
-      SEARCHES: '',
-      CREATES: ''
-    };
+      const importLines = [];
 
-    _.each(stepNamesMap, (cliType, v2Type) => {
-      const lines = [];
+      const dirMap = {
+        trigger: 'triggers',
+        search: 'searches',
+        create: 'creates'
+      };
 
-      _.each(legacyApp[v2Type], (definition, name) => {
-        const varName = `${camelCase(name)}${_.capitalize(camelCase(cliType))}`;
-        const requireFile = `${dirMap[cliType]}/${snakeCase(name)}`;
-        importLines.push(`const ${varName} = require('./${requireFile}');`);
+      _.each(stepNamesMap, (cliType, wbType) => {
+        const lines = [];
 
-        lines.push(`[${varName}.key]: ${varName},`);
+        _.each(legacyApp[wbType], (definition, name) => {
+          const varName = `${camelCase(name)}${_.capitalize(camelCase(cliType))}`;
+          const requireFile = `${dirMap[cliType]}/${snakeCase(name)}`;
+          importLines.push(`const ${varName} = require('./${requireFile}');`);
+
+          if (cliType === 'trigger' && _.get(legacyApp, ['general', 'test_trigger_key']) === name) {
+            importLines.push(`const AuthTest = ${varName};`);
+          }
+
+          lines.push(`[${varName}.key]: ${varName},`);
+        });
+
+        const section = dirMap[cliType].toUpperCase();
+        templateContext[section] = lines.join(',\n');
       });
 
-      const section = dirMap[cliType].toUpperCase();
-      templateContext[section] = lines.join(',\n');
+      templateContext.REQUIRES = importLines.join('\n');
+
+      const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
+      return renderTemplate(templateFile, templateContext);
     });
-
-    templateContext.REQUIRES = importLines.join('\n');
-
-    const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
-    return renderTemplate(templateFile, templateContext);
-  });
 };
 
 const writeIndex = (legacyApp, newAppDir) => {
@@ -280,8 +369,8 @@ const writePackageJson = (legacyApp, newAppDir) => {
 
 const convertApp = (legacyApp, newAppDir) => {
   const promises = [];
-  _.each(stepNamesMap, (cliType, v2Type) => {
-    _.each(legacyApp[v2Type], (definition, key) => {
+  _.each(stepNamesMap, (cliType, wbType) => {
+    _.each(legacyApp[wbType], (definition, key) => {
       promises.push(writeStep(cliType, definition, key, newAppDir));
     });
   });

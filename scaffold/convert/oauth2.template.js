@@ -1,9 +1,7 @@
 {
   // TODO: just an example stub - you'll need to complete
   type: 'oauth2',
-  test: {
-    url: 'http://www.EXAMPLE.com/auth'
-  },
+  test: AuthTest.operation.perform,
   oauth2Config: {
     authorizeUrl: {
       method: 'GET',
@@ -28,6 +26,7 @@
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }
+    },
+    autoRefresh: <%= AUTO_REFRESH %>
   }
 }
