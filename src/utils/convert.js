@@ -6,7 +6,7 @@ const {printStarting, printDone} = require('./display');
 
 const MIN_HELP_TEXT_LENGTH = 10;
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
-const ZAPIER_INTERPRETER_VERSION = 'git@github.com:zapier/zapier-platform-interpreter.git';// TODO: Make this more... dynamic?
+const ZAPIER_INTERPRETER_VERSION = '1.0.0';// TODO: Make this more... dynamic?
 
 // map WB auth types to CLI
 const authTypeMap = {
