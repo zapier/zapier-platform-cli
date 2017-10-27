@@ -15,7 +15,7 @@ const authTypeMap = {
   'OAuth V2 (w/refresh)': 'oauth2-refresh',
   'API Key (Headers)': 'api-header',
   'API Key (Query String)': 'api-query',
-  // TODO: 'Session Auth': 'session',
+  'Session Auth': 'session',
   // TODO: 'Digest Auth': 'digest',
   'Unknown Auth': 'custom',
 };
@@ -139,13 +139,15 @@ ${fields.join(',\n')}
 
 const renderAuthTemplate = (authType, definition) => {
   const fields = _.map(definition.auth_fields, renderField);
+  const connectionLabel = _.get(definition, ['general', 'auth_label'], '');
 
   const auth = `{
     type: '${authType}',
     test: AuthTest.operation.perform,
     fields: [
 ${fields.join(',\n')}
-    ]
+    ],
+    connectionLabel: '${connectionLabel}'
   }`;
 
   return Promise.resolve(auth);
@@ -154,17 +156,38 @@ ${fields.join(',\n')}
 const renderBasicAuth = _.bind(renderAuthTemplate, null, 'basic');
 const renderCustomAuth = _.bind(renderAuthTemplate, null, 'custom');
 
-const renderOAuth2 = (definition, autoRefresh) => {
+const renderOAuth2 = (definition, withRefresh) => {
   const authorizeUrl = _.get(definition, ['general', 'auth_urls', 'authorization_url'], 'TODO');
   const accessTokenUrl = _.get(definition, ['general', 'auth_urls', 'access_token_url'], 'TODO');
+  const refreshTokenUrl = _.get(definition, ['general', 'auth_urls', 'refresh_token_url'], 'TODO');
+  const connectionLabel = _.get(definition, ['general', 'auth_label'], '');
+  const scope = _.get(definition, ['general', 'auth_data', 'scope'], '');
 
   const templateContext = {
     AUTHORIZE_URL: authorizeUrl,
     ACCESS_TOKEN_URL: accessTokenUrl,
-    AUTO_REFRESH: Boolean(autoRefresh),
+    REFRESH_TOKEN_URL: refreshTokenUrl,
+    CONNECTION_LABEL: connectionLabel,
+    SCOPE: scope,
+    // TODO: Extra fields?
   };
 
-  const templateFile = path.join(TEMPLATE_DIR, '/oauth2.template.js');
+  const templateFileName = withRefresh ? 'oauth2-refresh' : 'oauth2';
+
+  const templateFile = path.join(TEMPLATE_DIR, `/${templateFileName}.template.js`);
+  return renderTemplate(templateFile, templateContext);
+};
+
+const renderSessionAuth = (definition) => {
+  const fields = _.map(definition.auth_fields, renderField);
+  const connectionLabel = _.get(definition, ['general', 'auth_label'], '');
+
+  const templateContext = {
+    FIELDS: fields.join(',\n'),
+    CONNECTION_LABEL: connectionLabel,
+  };
+
+  const templateFile = path.join(TEMPLATE_DIR, '/session.template.js');
   return renderTemplate(templateFile, templateContext);
 };
 
@@ -179,6 +202,8 @@ const renderAuth = (definition) => {
     return renderOAuth2(definition, true);
   } else if (type === 'custom' || type === 'api-header' || type === 'api-query') {
     return renderCustomAuth(definition);
+  } else if (type === 'session') {
+    return renderSessionAuth(definition);
   } else {
     return Promise.resolve(`{
     // TODO: complete auth settings
@@ -190,14 +215,21 @@ const renderAuth = (definition) => {
 const getMetaData = (definition) => {
   const type = authTypeMap[definition.general.auth_type];
 
+  const authPlacement = _.get(definition.general, ['auth_data', 'access_token_placement']);
+
   const hasBefore = (type === 'api-header' || type === 'api-query' || type === 'session' || type === 'oauth2' || type === 'oauth2-refresh');
   const hasAfter = (type === 'session');
-  const fieldsOnQuery = (type === 'api-query');
+  const fieldsOnQuery = (authPlacement === 'params' || type === 'api-query');
+  const isSession = (type === 'session');
+  const isOAuth = (type === 'oauth2' || type === 'oauth2-refresh');
 
   return {
+    type,
     hasBefore,
     hasAfter,
     fieldsOnQuery,
+    isSession,
+    isOAuth,
   };
 };
 
@@ -206,6 +238,8 @@ const getHeader = (definition) => {
   const {
     hasBefore,
     hasAfter,
+    isSession,
+    isOAuth,
     fieldsOnQuery,
   } = getMetaData(definition);
 
@@ -213,6 +247,8 @@ const getHeader = (definition) => {
     const templateContext = {
       before: hasBefore,
       after: hasAfter,
+      session: isSession,
+      oauth: isOAuth,
       fields: Object.keys(definition.auth_fields),
       mapping: _.get(definition, ['general', 'auth_mapping'], {}),
       query: fieldsOnQuery,
@@ -388,4 +424,9 @@ module.exports = {
   renderSample,
   renderStep,
   renderTemplate,
+
+  // Mostly exported for testing
+  getHeader,
+  getBeforeRequests,
+  getAfterResponses,
 };
