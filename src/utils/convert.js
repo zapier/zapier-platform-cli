@@ -6,6 +6,7 @@ const {printStarting, printDone} = require('./display');
 
 const MIN_HELP_TEXT_LENGTH = 10;
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
+const ZAPIER_INTERPRETER_VERSION = 'git@github.com:zapier/zapier-platform-interpreter.git';// TODO: Make this more... dynamic?
 
 // map WB auth types to CLI
 const authTypeMap = {
@@ -222,6 +223,7 @@ const getMetaData = (definition) => {
   const fieldsOnQuery = (authPlacement === 'params' || type === 'api-query');
   const isSession = (type === 'session');
   const isOAuth = (type === 'oauth2' || type === 'oauth2-refresh');
+  const needsInterpreter = isSession;
 
   return {
     type,
@@ -230,6 +232,7 @@ const getMetaData = (definition) => {
     fieldsOnQuery,
     isSession,
     isOAuth,
+    needsInterpreter,
   };
 };
 
@@ -388,11 +391,27 @@ const writeIndex = (legacyApp, newAppDir) => {
 };
 
 const renderPackageJson = (legacyApp) => {
+  const { needsInterpreter } = getMetaData(legacyApp);
+
   const templateContext = {
     NAME: _.kebabCase(legacyApp.general.title),
     DESCRIPTION: legacyApp.general.description,
-    ZAPIER_CORE_VERSION: require('../../package.json').version
   };
+
+  const zapierCoreVersion = require('../../package.json').version;
+
+  const dependencies = [];
+
+  dependencies.push(`"zapier-platform-core": "${zapierCoreVersion}"`);
+
+  if (needsInterpreter) {
+    // TODO: Make conditional
+    dependencies.push('"async": "2.5.0"');
+    dependencies.push('"moment-timezone": "0.5.13"');
+    dependencies.push(`"zapier-platform-interpreter": "${ZAPIER_INTERPRETER_VERSION}"`);
+  }
+
+  templateContext.DEPENDENCIES = dependencies.join(',\n    ');
 
   const templateFile = path.join(TEMPLATE_DIR, '/package.template.json');
   return renderTemplate(templateFile, templateContext);
@@ -401,6 +420,35 @@ const renderPackageJson = (legacyApp) => {
 const writePackageJson = (legacyApp, newAppDir) => {
   return renderPackageJson(legacyApp)
     .then(content => createFile(content, 'package.json', newAppDir));
+};
+
+const renderScripting = (legacyApp) => {
+  const templateContext = {
+    CODE: _.get(legacyApp, 'js'),
+    VERSION: ZAPIER_INTERPRETER_VERSION,
+  };
+
+  // Don't render the file if there's nothing to render
+  if (!templateContext.CODE) {
+    return Promise.resolve();
+  }
+
+  // Remove any 'use strict'; or "use strict"; since we add that automatically
+  templateContext.CODE = templateContext.CODE.replace("'use strict';\n", '').replace('"use strict";\n', '');
+
+  const templateFile = path.join(TEMPLATE_DIR, '/scripting.template.js');
+  return renderTemplate(templateFile, templateContext);
+};
+
+const writeScripting = (legacyApp, newAppDir) => {
+  return renderScripting(legacyApp)
+    .then(content => {
+      if (content) {
+        return createFile(content, 'scripting.js', newAppDir);
+      }
+
+      return null;
+    });
 };
 
 const convertApp = (legacyApp, newAppDir) => {
@@ -413,6 +461,7 @@ const convertApp = (legacyApp, newAppDir) => {
 
   promises.push(writeIndex(legacyApp, newAppDir));
   promises.push(writePackageJson(legacyApp, newAppDir));
+  promises.push(writeScripting(legacyApp, newAppDir));
 
   return Promise.all(promises);
 };

@@ -181,7 +181,7 @@ describe('convert render functions', () => {
             test: 'FAKE_PERFORM_FUNCTION',
             fields: [
               {
-                key: 'user',
+                key: 'email',
                 type: 'string',
                 required: true,
                 label: 'Email',

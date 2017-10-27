@@ -45,7 +45,7 @@
     }
   },
   "auth_fields": {
-    "user": {
+    "email": {
       "choices": null,
       "default": null,
       "help_text": null,
@@ -87,7 +87,7 @@
     "title": "Test Session Auth",
     "unsubscribe_url": null
   },
-  "js": "'use strict';\n\nvar Zap = {\n    get_session_info: function(bundle) {\n        var response = z.request({\n          method: 'POST',\n          headers: {\n              'Content-Type': 'application/json',\n              'Accept': 'application/json'\n          },\n          url: 'https://wt-c396b46e7e285c63f4bd6d4f8d32dc2e-0.run.webtask.io/session',\n          data: z.JSON.stringify(bundle.auth_fields)\n        });\n\n        var result = z.JSON.parse(response.content);\n\n        if (!result.token) {\n              throw new ErrorException('The Email/Password you supplied is invalid');\n        }\n\n        return {\n              token: result.token\n        };\n  }\n};",
+  "js": "'use strict';\n\nvar Zap = {\n    test_auth_pre_poll: function(bundle) {\n        if (bundle.auth_fields.token) {\n            bundle.request.headers['X-Token'] = bundle.auth_fields.token;\n        }\n        \n        return bundle.request;\n    },\n\n    get_session_info: function(bundle) {\n        var response = z.request({\n          method: 'POST',\n          headers: {\n              'Content-Type': 'application/json',\n              'Accept': 'application/json'\n          },\n          url: 'https://wt-c396b46e7e285c63f4bd6d4f8d32dc2e-0.run.webtask.io/session',\n          data: z.JSON.stringify(bundle.auth_fields)\n        });\n\n        var result = z.JSON.parse(response.content);\n\n        if (!result.token) {\n              throw new ErrorException('The Email/Password you supplied is invalid');\n        }\n\n        return {\n              token: result.token\n        };\n    }\n};",
   "searches": {},
   "triggers": {
     "test_auth": {
