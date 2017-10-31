@@ -253,9 +253,9 @@ const hasScriptingMethod = (js, type, key, position) => {
 
 // Get some quick meta data for templates, regarding a scripting and a step
 const getStepMetaData = (definition, type, key) => {
-  const hasPreScripting = hasScriptingMethod(definition.js, type, key, 'pre');
-  const hasPostScripting = hasScriptingMethod(definition.js, type, key, 'post');
-  const hasFullScripting = hasScriptingMethod(definition.js, type, key, 'full');
+  const hasPreScripting = hasScriptingMethod(_.get(definition, 'js'), type, key, 'pre');
+  const hasPostScripting = hasScriptingMethod(_.get(definition, 'js'), type, key, 'post');
+  const hasFullScripting = hasScriptingMethod(_.get(definition, 'js'), type, key, 'full');
 
   const hasScripting = hasPreScripting || hasPostScripting || hasFullScripting;
 
