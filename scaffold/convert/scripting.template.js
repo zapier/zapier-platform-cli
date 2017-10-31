@@ -6,12 +6,12 @@ _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 const crypto = require('crypto');
 const async = require('async');
 const moment = require('moment-timezone');
-const DOMParser = require('zapier-platform-interpreter/dom-parser');
-const XMLSerializer = require('zapier-platform-interpreter/xml-serializer');
-const atob = require('zapier-platform-interpreter/atob');
-const btoa = require('zapier-platform-interpreter/btoa');
-const z = require('zapier-platform-interpreter/z');
-const $ = require('zapier-platform-interpreter/$');
+const DOMParser = require('zapier-platform-legacy-scripting-runner/dom-parser');
+const XMLSerializer = require('zapier-platform-legacy-scripting-runner/xml-serializer');
+const atob = require('zapier-platform-legacy-scripting-runner/atob');
+const btoa = require('zapier-platform-legacy-scripting-runner/btoa');
+const z = require('zapier-platform-legacy-scripting-runner/z');
+const $ = require('zapier-platform-legacy-scripting-runner/$');
 const {
   ErrorException,
   HaltedException,
@@ -19,7 +19,7 @@ const {
   ExpiredAuthException,
   RefreshTokenException,
   InvalidSessionException,
-} = require('zapier-platform-interpreter/exceptions');
+} = require('zapier-platform-legacy-scripting-runner/exceptions');
 // END: HEADER -- AUTOMATICALLY ADDED FOR COMPATIBILITY - v<%= VERSION %>
 
 <%= CODE %>

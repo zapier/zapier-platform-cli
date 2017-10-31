@@ -6,7 +6,7 @@ const {printStarting, printDone} = require('./display');
 
 const MIN_HELP_TEXT_LENGTH = 10;
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
-const ZAPIER_INTERPRETER_VERSION = '1.0.0';// TODO: Make this more... dynamic?
+const ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION = '1.0.0';
 
 // map WB auth types to CLI
 const authTypeMap = {
@@ -223,7 +223,7 @@ const getMetaData = (definition) => {
   const fieldsOnQuery = (authPlacement === 'params' || type === 'api-query');
   const isSession = (type === 'session');
   const isOAuth = (type === 'oauth2' || type === 'oauth2-refresh');
-  const needsInterpreter = isSession;
+  const needsLegacyScriptingRunner = isSession;
 
   return {
     type,
@@ -232,7 +232,7 @@ const getMetaData = (definition) => {
     fieldsOnQuery,
     isSession,
     isOAuth,
-    needsInterpreter,
+    needsLegacyScriptingRunner,
   };
 };
 
@@ -396,7 +396,7 @@ const writeIndex = (legacyApp, newAppDir) => {
 };
 
 const renderPackageJson = (legacyApp) => {
-  const { needsInterpreter } = getMetaData(legacyApp);
+  const { needsLegacyScriptingRunner } = getMetaData(legacyApp);
 
   const templateContext = {
     NAME: _.kebabCase(legacyApp.general.title),
@@ -409,11 +409,11 @@ const renderPackageJson = (legacyApp) => {
 
   dependencies.push(`"zapier-platform-core": "${zapierCoreVersion}"`);
 
-  if (needsInterpreter) {
+  if (needsLegacyScriptingRunner) {
     // TODO: Make conditional
     dependencies.push('"async": "2.5.0"');
     dependencies.push('"moment-timezone": "0.5.13"');
-    dependencies.push(`"zapier-platform-interpreter": "${ZAPIER_INTERPRETER_VERSION}"`);
+    dependencies.push(`"zapier-platform-legacy-scripting-runner": "${ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION}"`);
   }
 
   templateContext.DEPENDENCIES = dependencies.join(',\n    ');
@@ -430,7 +430,7 @@ const writePackageJson = (legacyApp, newAppDir) => {
 const renderScripting = (legacyApp) => {
   const templateContext = {
     CODE: _.get(legacyApp, 'js'),
-    VERSION: ZAPIER_INTERPRETER_VERSION,
+    VERSION: ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION,
   };
 
   // Don't render the file if there's nothing to render

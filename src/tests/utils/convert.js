@@ -228,13 +228,13 @@ const maybeRefresh = (response, z, bundle) => {
 
 const getSessionKey = (z, bundle) => {
   const scripting = require('../scripting');
-  const interpreter = require('zapier-platform-interpreter')(scripting);
+  const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   // Do a get_session_info() from scripting.
   const getSessionEvent = {
     name: 'auth.session'
   };
-  return interpreter.runEvent(getSessionEvent, z, bundle)
+  return legacyScriptingRunner.runEvent(getSessionEvent, z, bundle)
     .then((getSessionResult) => {
       // IMPORTANT NOTE:
       //   WB apps in scripting's get_session_info() allowed to return any object and that would be
