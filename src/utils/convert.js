@@ -376,7 +376,7 @@ const renderIndex = (legacyApp) => {
             importLines.push(`const AuthTest = ${varName};`);
           }
 
-          lines.push(`[${varName}.key]: ${varName},`);
+          lines.push(`[${varName}.key]: ${varName}`);
         });
 
         const section = dirMap[cliType].toUpperCase();
