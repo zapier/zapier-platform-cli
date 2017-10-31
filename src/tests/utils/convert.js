@@ -40,7 +40,7 @@ describe('convert render functions', () => {
   });
 
   describe('authentication', () => {
-    it('should render basic auth', (done) => {
+    it('should render basic auth', () => {
       const v2Def = {
         general: {
           auth_type: 'Basic Auth'
@@ -60,7 +60,7 @@ describe('convert render functions', () => {
         }
       };
 
-      convert.renderAuth(v2Def).then(string => {
+      return convert.renderAuth(v2Def).then(string => {
         const auth = s2js(string);
         auth.should.eql({
           type: 'basic',
@@ -86,11 +86,10 @@ describe('convert render functions', () => {
           ]
         });
       });
-      done();
     });
   });
 
-  it.skip('should render oauth2', (done) => {
+  it.skip('should render oauth2', () => {
     const v2Def = {
       general: {
         auth_type: 'OAuth V2',
@@ -101,7 +100,7 @@ describe('convert render functions', () => {
       }
     };
 
-    convert.renderAuth(v2Def).then(string => {
+    return convert.renderAuth(v2Def).then(string => {
       const auth = s2js(string);
 
       auth.should.eql({
@@ -136,7 +135,6 @@ describe('convert render functions', () => {
           }
         }
       });
-      done();
     });
   });
 
