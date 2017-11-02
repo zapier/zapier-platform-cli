@@ -18,7 +18,7 @@ module.exports = {
 
   display: {
     label: '<%= LABEL %>',
-    description: '<%= DESCRIPTION %>'
+    description: '<%= DESCRIPTION %>',
     hidden: <%= HIDDEN %>,
     important: <%= IMPORTANT %>
   },
