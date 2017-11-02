@@ -218,6 +218,8 @@ const hasScriptingMethod = (js, type, key, position) => {
     return false;
   }
 
+  // TODO: Strip out comments from code
+
   let methodSuffix = '';
 
   if (type === 'trigger') {
@@ -379,9 +381,7 @@ const renderStep = (type, definition, key, legacyApp) => {
 
   const templateContext = {
     KEY: snakeCase(key),
-    CAMEL: camelCase(key),
     NOUN: noun,
-    LOWER_NOUN: lowerNoun,
     DESCRIPTION: description,
     LABEL: label,
     HIDDEN: hidden,
