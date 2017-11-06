@@ -33,14 +33,16 @@ const test = (context) => {
       const env = _.extend({}, process.env, extraEnv);
       const commands = ['run', '--silent', 'test'];
 
-      if (global.argOpts.timeout) {
+      if (global.argOpts.timeout || global.argOpts.grep) {
         commands.push('--');
-        commands.push(`--timeout=${global.argOpts.timeout}`);
-      }
 
-      if (global.argOpts.grep) {
-        commands.push('--');
-        commands.push(`--grep=${global.argOpts.grep}`);
+        if (global.argOpts.timeout) {
+          commands.push(`--timeout=${global.argOpts.timeout}`);
+        }
+
+        if (global.argOpts.grep) {
+          commands.push(`--grep=${global.argOpts.grep}`);
+        }
       }
 
       context.line('Running test suite.');
