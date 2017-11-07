@@ -40,6 +40,12 @@ const stepNamesMap = {
   actions: 'create'
 };
 
+const stepTypeMap = {
+  trigger: 'triggers',
+  search: 'searches',
+  create: 'creates'
+};
+
 // map CLI step names to verbs for display labels
 const stepVerbsMap = {
   trigger: 'Get',
@@ -409,15 +415,24 @@ const renderStep = (type, definition, key, legacyApp) => {
 
 // write a new trigger, create, or search
 const writeStep = (type, definition, key, legacyApp, newAppDir) => {
-  const stepTypeMap = {
-    trigger: 'triggers',
-    search: 'searches',
-    create: 'creates'
-  };
-
   const fileName = `${stepTypeMap[type]}/${snakeCase(key)}.js`;
 
   return renderStep(type, definition, key, legacyApp)
+    .then(content => createFile(content, fileName, newAppDir));
+};
+
+const renderStepTest = (type, key) => {
+  const templateContext = {
+    KEY: key
+  };
+  const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
+  return renderTemplate(templateFile, templateContext);
+};
+
+// write basic test code for a new trigger, create, or search
+const writeStepTest = (type, key, newAppDir) => {
+  const fileName = `test/${stepTypeMap[type]}/${snakeCase(key)}.js`;
+  return renderStepTest(type, key)
     .then(content => createFile(content, fileName, newAppDir));
 };
 
@@ -545,6 +560,7 @@ const convertApp = (legacyApp, newAppDir) => {
   _.each(stepNamesMap, (cliType, wbType) => {
     _.each(legacyApp[wbType], (definition, key) => {
       promises.push(writeStep(cliType, definition, key, legacyApp, newAppDir));
+      promises.push(writeStepTest(cliType, key, newAppDir));
     });
   });
 
