@@ -15,7 +15,7 @@ describe('Searches - <%= KEY %>', () => {
       authData: utils.getAuthData(),
     };
 
-    appTester(App.searches.<%= KEY %>.operation.perform, bundle)
+    appTester(App.searches['<%= KEY %>'].operation.perform, bundle)
       .then((results) => {
         results.should.be.an.Array();
         results.length.should.be.aboveOrEqual(1);

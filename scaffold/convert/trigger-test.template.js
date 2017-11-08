@@ -15,7 +15,7 @@ describe('Triggers - <%= KEY %>', () => {
       authData: utils.getAuthData(),
     };
 
-    appTester(App.triggers.<%= KEY %>.operation.perform, bundle)
+    appTester(App.triggers['<%= KEY %>'].operation.perform, bundle)
       .then((results) => {
         results.should.be.an.Array();
         done();
