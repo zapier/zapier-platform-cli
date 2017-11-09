@@ -435,11 +435,13 @@ const renderAuthData = (authType) => {
   });
 };
 
-const renderStepTest = (type, key, legacyApp) => {
+const renderStepTest = (type, definition, key, legacyApp) => {
   const authType = getAuthType(legacyApp);
+  const noun = definition.noun || _.capitalize(key);
   return renderAuthData(authType).then(authData => {
     const templateContext = {
       KEY: key,
+      NOUN: noun,
       AUTH_DATA: authData
     };
     const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
@@ -448,9 +450,9 @@ const renderStepTest = (type, key, legacyApp) => {
 };
 
 // write basic test code for a new trigger, create, or search
-const writeStepTest = (type, key, legacyApp, newAppDir) => {
+const writeStepTest = (type, definition, key, legacyApp, newAppDir) => {
   const fileName = `test/${stepTypeMap[type]}/${snakeCase(key)}.js`;
-  return renderStepTest(type, key, legacyApp)
+  return renderStepTest(type, definition, key, legacyApp)
     .then(content => createFile(content, fileName, newAppDir));
 };
 
@@ -578,7 +580,7 @@ const convertApp = (legacyApp, newAppDir) => {
   _.each(stepNamesMap, (cliType, wbType) => {
     _.each(legacyApp[wbType], (definition, key) => {
       promises.push(writeStep(cliType, definition, key, legacyApp, newAppDir));
-      promises.push(writeStepTest(cliType, key, legacyApp, newAppDir));
+      promises.push(writeStepTest(cliType, definition, key, legacyApp, newAppDir));
     });
   });
 
