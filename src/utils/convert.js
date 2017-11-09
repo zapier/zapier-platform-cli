@@ -425,28 +425,58 @@ const writeStep = (type, definition, key, legacyApp, newAppDir) => {
     .then(content => createFile(content, fileName, newAppDir));
 };
 
+// render the authData used in the trigger/search/create test code
 const renderAuthData = (authType) => {
-  const templateContext = {
-    TYPE: authType
-  };
-  const templateFile = path.join(TEMPLATE_DIR, '/auth-data.template.js');
-  return renderTemplate(templateFile, templateContext).then(content => {
-    return content.trim();
-  });
+  let result;
+  switch (authType) {
+  case 'basic':
+    result = `{
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD
+      }`;
+    break;
+  case 'oauth2':
+    result = `{
+        access_token: process.env.ACCESS_TOKEN
+      }`;
+    break;
+  case 'oauth2-refresh':
+    result = `{
+        access_token: process.env.ACCESS_TOKEN,
+        refresh_token: process.env.REFRESH_TOKEN
+      }`;
+    break;
+  case 'api-header': // Fall through
+  case 'api-query':
+    result = `{
+        apiKey: process.env.API_KEY
+      }`;
+    break;
+  case 'session':
+    result = `{
+        sessionKey: process.env.SESSION_KEY
+      }`;
+    break;
+  default:
+    result = `{
+        // TODO: Put your custom auth data here
+      }`;
+    break;
+  }
+  return result;
 };
 
 const renderStepTest = (type, definition, key, legacyApp) => {
   const authType = getAuthType(legacyApp);
   const noun = definition.noun || _.capitalize(key);
-  return renderAuthData(authType).then(authData => {
-    const templateContext = {
-      KEY: key,
-      NOUN: noun,
-      AUTH_DATA: authData
-    };
-    const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
-    return renderTemplate(templateFile, templateContext);
-  });
+  const authData = renderAuthData(authType);
+  const templateContext = {
+    KEY: key,
+    NOUN: noun,
+    AUTH_DATA: authData
+  };
+  const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
+  return renderTemplate(templateFile, templateContext);
 };
 
 // write basic test code for a new trigger, create, or search
