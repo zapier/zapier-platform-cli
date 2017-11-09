@@ -92,6 +92,10 @@ const renderProp = (key, value) => `${key}: ${value}`;
 
 const quote = s => `'${s}'`;
 
+const getAuthType = (definition) => {
+  return authTypeMap[definition.general.auth_type];
+};
+
 const renderField = (definition, key) => {
   const type = definition.type && typesMap[definition.type.toLowerCase()] || 'string';
 
@@ -207,7 +211,7 @@ const renderSessionAuth = (definition) => {
 };
 
 const renderAuth = (definition) => {
-  const type = authTypeMap[definition.general.auth_type];
+  const type = getAuthType(definition);
 
   if (type === 'basic') {
     return renderBasicAuth(definition);
@@ -285,7 +289,7 @@ const getStepMetaData = (definition, type, key) => {
 
 // Get some quick converted metadata for several templates to use
 const getMetaData = (definition) => {
-  const type = authTypeMap[definition.general.auth_type];
+  const type = getAuthType(definition);
 
   const authPlacement = _.get(definition.general, ['auth_data', 'access_token_placement']);
 
@@ -421,18 +425,32 @@ const writeStep = (type, definition, key, legacyApp, newAppDir) => {
     .then(content => createFile(content, fileName, newAppDir));
 };
 
-const renderStepTest = (type, key) => {
+const renderAuthData = (authType) => {
   const templateContext = {
-    KEY: key
+    TYPE: authType
   };
-  const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
-  return renderTemplate(templateFile, templateContext);
+  const templateFile = path.join(TEMPLATE_DIR, '/auth-data.template.js');
+  return renderTemplate(templateFile, templateContext).then(content => {
+    return content.trim();
+  });
+};
+
+const renderStepTest = (type, key, legacyApp) => {
+  const authType = getAuthType(legacyApp);
+  return renderAuthData(authType).then(authData => {
+    const templateContext = {
+      KEY: key,
+      AUTH_DATA: authData
+    };
+    const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
+    return renderTemplate(templateFile, templateContext);
+  });
 };
 
 // write basic test code for a new trigger, create, or search
-const writeStepTest = (type, key, newAppDir) => {
+const writeStepTest = (type, key, legacyApp, newAppDir) => {
   const fileName = `test/${stepTypeMap[type]}/${snakeCase(key)}.js`;
-  return renderStepTest(type, key)
+  return renderStepTest(type, key, legacyApp)
     .then(content => createFile(content, fileName, newAppDir));
 };
 
@@ -560,7 +578,7 @@ const convertApp = (legacyApp, newAppDir) => {
   _.each(stepNamesMap, (cliType, wbType) => {
     _.each(legacyApp[wbType], (definition, key) => {
       promises.push(writeStep(cliType, definition, key, legacyApp, newAppDir));
-      promises.push(writeStepTest(cliType, key, newAppDir));
+      promises.push(writeStepTest(cliType, key, legacyApp, newAppDir));
     });
   });
 
