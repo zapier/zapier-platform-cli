@@ -481,6 +481,10 @@ const renderStepTest = (type, definition, key, legacyApp) => {
 
 // write basic test code for a new trigger, create, or search
 const writeStepTest = (type, definition, key, legacyApp, newAppDir) => {
+  // Skip auth test, as it should return an object instead of an array
+  if (type === 'trigger' && _.get(legacyApp, ['general', 'test_trigger_key']) === key) {
+    return Promise.resolve();
+  }
   const fileName = `test/${stepTypeMap[type]}/${snakeCase(key)}.js`;
   return renderStepTest(type, definition, key, legacyApp)
     .then(content => createFile(content, fileName, newAppDir));
