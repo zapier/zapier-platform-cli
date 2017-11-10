@@ -4,7 +4,6 @@ const {camelCase, snakeCase} = require('./misc');
 const {readFile, writeFile, ensureDir} = require('./files');
 const {printStarting, printDone} = require('./display');
 
-const MIN_HELP_TEXT_LENGTH = 10;
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 const ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION = '1.0.0';
 
@@ -77,17 +76,6 @@ const createFile = (content, fileName, dir) => {
     });
 };
 
-const padHelpText = (text) => {
-  const msg = `(help text must be at least ${MIN_HELP_TEXT_LENGTH} characters)`;
-  if (!_.isString(text)) {
-    return msg;
-  }
-  if (text.length < MIN_HELP_TEXT_LENGTH) {
-    return `${text} ${msg}`;
-  }
-  return text;
-};
-
 const renderProp = (key, value) => `${key}: ${value}`;
 
 const quote = s => `'${s}'`;
@@ -105,7 +93,7 @@ const renderField = (definition, key) => {
   if (definition.label) {
     props.push(renderProp('label', quote(definition.label)));
   }
-  props.push(renderProp('helpText', quote(padHelpText(definition.help_text))));
+  props.push(renderProp('helpText', quote(definition.help_text || '')));
   props.push(renderProp('type', quote(type)));
   props.push(renderProp('required', Boolean(definition.required)));
 

@@ -39,15 +39,15 @@ describe('convert render functions', () => {
       });
     });
 
-    it('should pad help text that is too short', () => {
+    it('should keep empty help text empty', () => {
       const wbKey = 'test_field';
       const wbDef = {
-        help_text: 'too short'
+        help_text: ''
       };
 
       const string = convert.renderField(wbDef, wbKey);
       const field = s2js(string);
-      field.helpText.should.eql('too short (help text must be at least 10 characters)');
+      field.helpText.should.eql('');
     });
 
     it('should convert a dynamic dropdown', () => {
@@ -97,14 +97,14 @@ describe('convert render functions', () => {
                 type: 'string',
                 required: true,
                 label: 'Username',
-                helpText: '(help text must be at least 10 characters)'
+                helpText: ''
               },
               {
                 key: 'password',
                 type: 'password',
                 required: true,
                 label: 'Password',
-                helpText: '(help text must be at least 10 characters)'
+                helpText: ''
               }
             ],
             connectionLabel: '{{username}}'
@@ -129,7 +129,7 @@ describe('convert render functions', () => {
                 type: 'string',
                 required: true,
                 label: 'API Key',
-                helpText: '(help text must be at least 10 characters)'
+                helpText: ''
               }
             ],
             connectionLabel: '{{user}}'
@@ -172,7 +172,7 @@ describe('convert render functions', () => {
                 type: 'string',
                 required: true,
                 label: 'API Key',
-                helpText: '(help text must be at least 10 characters)'
+                helpText: ''
               }
             ],
             connectionLabel: '{{user}}'
@@ -215,14 +215,14 @@ describe('convert render functions', () => {
                 type: 'string',
                 required: true,
                 label: 'Email',
-                helpText: '(help text must be at least 10 characters)'
+                helpText: ''
               },
               {
                 key: 'pass',
                 type: 'password',
                 required: true,
                 label: 'Password',
-                helpText: '(help text must be at least 10 characters)'
+                helpText: ''
               }
             ],
             sessionConfig: {
