@@ -80,6 +80,8 @@ const renderProp = (key, value) => `${key}: ${value}`;
 
 const quote = s => `'${s}'`;
 
+const escapeLineBreaks = s => s.replace(/\n/g, '\\\\n');
+
 const getAuthType = (definition) => {
   return authTypeMap[definition.general.auth_type];
 };
@@ -93,7 +95,7 @@ const renderField = (definition, key) => {
   if (definition.label) {
     props.push(renderProp('label', quote(definition.label)));
   }
-  props.push(renderProp('helpText', quote(definition.help_text || '')));
+  props.push(renderProp('helpText', quote(escapeLineBreaks(definition.help_text || ''))));
   props.push(renderProp('type', quote(type)));
   props.push(renderProp('required', Boolean(definition.required)));
 

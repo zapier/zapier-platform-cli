@@ -50,6 +50,18 @@ describe('convert render functions', () => {
       field.helpText.should.eql('');
     });
 
+    it('should escape multi-line help text', () => {
+      const wbKey = 'test_field';
+      const wbDef = {
+        help_text: 'line 1\nline 2\nline 3\n'
+      };
+
+      const string = convert.renderField(wbDef, wbKey);
+      console.log(string);
+      const field = s2js(string);
+      field.helpText.should.eql('line 1\\nline 2\\nline 3\\n');
+    });
+
     it('should convert a dynamic dropdown', () => {
       const wbKey = 'test';
       const wbDef = {
