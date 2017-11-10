@@ -95,7 +95,11 @@ const renderField = (definition, key) => {
   if (definition.label) {
     props.push(renderProp('label', quote(definition.label)));
   }
-  props.push(renderProp('helpText', quote(escapeLineBreaks(definition.help_text || ''))));
+
+  if (definition.help_text) {
+    props.push(renderProp('helpText', quote(escapeLineBreaks(definition.help_text))));
+  }
+
   props.push(renderProp('type', quote(type)));
   props.push(renderProp('required', Boolean(definition.required)));
 

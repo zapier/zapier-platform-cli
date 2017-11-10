@@ -47,7 +47,7 @@ describe('convert render functions', () => {
 
       const string = convert.renderField(wbDef, wbKey);
       const field = s2js(string);
-      field.helpText.should.eql('');
+      field.should.not.have.property('helpText');
     });
 
     it('should escape multi-line help text', () => {
@@ -108,15 +108,13 @@ describe('convert render functions', () => {
                 key: 'username',
                 type: 'string',
                 required: true,
-                label: 'Username',
-                helpText: ''
+                label: 'Username'
               },
               {
                 key: 'password',
                 type: 'password',
                 required: true,
-                label: 'Password',
-                helpText: ''
+                label: 'Password'
               }
             ],
             connectionLabel: '{{username}}'
@@ -140,8 +138,7 @@ describe('convert render functions', () => {
                 key: 'api_key',
                 type: 'string',
                 required: true,
-                label: 'API Key',
-                helpText: ''
+                label: 'API Key'
               }
             ],
             connectionLabel: '{{user}}'
@@ -183,8 +180,7 @@ describe('convert render functions', () => {
                 key: 'api_key',
                 type: 'string',
                 required: true,
-                label: 'API Key',
-                helpText: ''
+                label: 'API Key'
               }
             ],
             connectionLabel: '{{user}}'
@@ -226,15 +222,13 @@ describe('convert render functions', () => {
                 key: 'email',
                 type: 'string',
                 required: true,
-                label: 'Email',
-                helpText: ''
+                label: 'Email'
               },
               {
                 key: 'pass',
                 type: 'password',
                 required: true,
-                label: 'Password',
-                helpText: ''
+                label: 'Password'
               }
             ],
             sessionConfig: {
