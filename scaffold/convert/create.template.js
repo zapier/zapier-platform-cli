@@ -1,7 +1,7 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
 <%
 // Template for just _pre_write()
-if (scripting && preScripting && !postScripting) { %>
+if (scripting && preScripting && !postScripting && !fullScripting) { %>
 const makeRequest = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
@@ -21,7 +21,7 @@ const makeRequest = (z, bundle) => {
 }
 
 // Template for _pre_write() + _post_write()
-if (scripting && preScripting && postScripting) { %>
+if (scripting && preScripting && postScripting && !fullScripting) { %>
 const makeRequest = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
@@ -49,7 +49,7 @@ const makeRequest = (z, bundle) => {
 }
 
 // Template for just _post_write()
-if (scripting && !preScripting && postScripting) { %>
+if (scripting && !preScripting && postScripting && !fullScripting) { %>
 const makeRequest = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
