@@ -628,6 +628,7 @@ module.exports = {
   renderAuth,
   renderField,
   renderSample,
+  renderScripting,
   renderStep,
   renderTemplate,
 
