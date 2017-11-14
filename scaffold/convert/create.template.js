@@ -95,7 +95,9 @@ const makeRequest = (z, bundle) => {
 if (!scripting) { %>
 const makeRequest = (z, bundle) => {
   const responsePromise = z.request({
-    url: '<%= URL %>'
+    url: '<%= URL %>',
+    method: 'POST',
+    body: bundle.inputData
   });
   return responsePromise
     .then(response => z.JSON.parse(response.content));
