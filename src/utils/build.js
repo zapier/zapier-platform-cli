@@ -113,6 +113,7 @@ const listFiles = (dir) => {
 const forceIncludeDumbPath = (filePath) => {
   return (
     (filePath.endsWith('package.json') || filePath.endsWith('definition.json'))
+    || filePath.endsWith('/bin/linux-x64-node-6/deasync.node') // Special, for zapier-platform-legacy-scripting-runner
     || filePath.match(path.sep === '\\' ? /aws-sdk\\apis\\.*\.json/ : /aws-sdk\/apis\/.*\.json/)
     || (global.argOpts['include-js-map'] && filePath.endsWith('.js.map'))
     || (global.argOpts['include-paths'] ? filePath.match(RegExp(global.argOpts['include-paths'], 'i')) : false)
