@@ -185,12 +185,14 @@ const renderAuthTemplate = (authType, definition) => {
   const fields = renderFields(definition.auth_fields, 4);
   const connectionLabel = _.get(definition, ['general', 'auth_label'], '');
   const testTriggerKey = getTestTriggerKey(definition);
+  const { hasGetConnectionLabelScripting } = getAuthMetaData(definition);
 
   const templateContext = {
     TEST_TRIGGER_MODULE: `./triggers/${snakeCase(testTriggerKey)}`,
     TYPE: authType,
     FIELDS: fields,
     CONNECTION_LABEL: connectionLabel,
+    hasGetConnectionLabelScripting,
   };
 
   const templateFile = path.join(TEMPLATE_DIR, '/basic-auth.template.js');
