@@ -68,6 +68,7 @@
     "mocha": "3.4.2",
     "ngrok": "2.2.10",
     "node-watch": "0.5.4",
+    "require-from-string": "2.0.1",
     "should": "11.2.1",
     "yamljs": "0.3.0"
   },

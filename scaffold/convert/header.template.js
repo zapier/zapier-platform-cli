@@ -42,8 +42,7 @@ const maybeRefresh = (response, z, bundle) => {
   }
 
   return response;
-}
-
+};
 <% }
 
 if (session) { %>
@@ -71,5 +70,5 @@ const getSessionKey = (z, bundle) => {
         sessionKey: firstKeyValue
       };
     });
-}
+};
 <% } %>
