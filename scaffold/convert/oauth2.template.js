@@ -168,7 +168,7 @@ const authentication = {
 <% } %>
   },
 <% if (hasGetConnectionLabelScripting) { %>
-  connectionLabel: getConnectionLabel,
+  connectionLabel: getConnectionLabel
 <% } else { %>
   connectionLabel: '<%= CONNECTION_LABEL %>'
 <% } %>
