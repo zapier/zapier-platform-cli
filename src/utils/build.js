@@ -117,7 +117,9 @@ const forceIncludeDumbPath = (appConfig, filePath) => {
   _.each(configIncludePaths, (includePath) => {
     if (filePath.match(RegExp(includePath, 'i'))) {
       matchesConfigInclude = true;
+      return false;
     }
+    return true;// Because of consistent-return
   });
 
   return (
