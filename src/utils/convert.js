@@ -280,7 +280,7 @@ const renderAuth = (definition) => {
   }
 };
 
-// write authentiction.js
+// write authentication.js
 const writeAuth = (definition, newAppDir) => {
   const fileName = 'authentication.js';
   return renderAuth(definition)
