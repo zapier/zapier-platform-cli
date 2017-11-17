@@ -1,7 +1,7 @@
 const testTrigger = require('<%= TEST_TRIGGER_MODULE %>');
 <% if (hasGetConnectionLabelScripting) { %>
 const getConnectionLabel = (z, bundle) => {
-  const scripting = require('../scripting');
+  const scripting = require('./scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   // Do a get_connection_label() from scripting.
