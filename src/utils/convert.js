@@ -195,7 +195,7 @@ const renderAuthTemplate = (authType, definition) => {
     hasGetConnectionLabelScripting,
   };
 
-  const templateFile = path.join(TEMPLATE_DIR, '/basic-auth.template.js');
+  const templateFile = path.join(TEMPLATE_DIR, '/simple-auth.template.js');
   return renderTemplate(templateFile, templateContext);
 };
 
