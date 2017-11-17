@@ -125,11 +125,11 @@ ${padding}}`;
 };
 
 const renderFields = (fields, indent = 0) => {
-  const result = [];
+  const results = [];
   _.each(fields, (field, key) => {
-    result.push(renderField(field, key, indent));
+    results.push(renderField(field, key, indent));
   });
-  return result.join(',\n');
+  return results.join(',\n');
 };
 
 const renderSampleField = (def) => {
