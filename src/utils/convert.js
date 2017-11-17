@@ -87,6 +87,10 @@ const getAuthType = (definition) => {
   return authTypeMap[definition.general.auth_type];
 };
 
+const hasAuth = (definition) => {
+  return getAuthType(definition) !== 'custom' || !_.isEmpty(definition.auth_fields);
+};
+
 const renderField = (definition, key, indent = 0) => {
   const type = definition.type && typesMap[definition.type.toLowerCase()] || 'string';
 
@@ -549,23 +553,26 @@ const writeStepTest = (type, definition, key, legacyApp, newAppDir) => {
 };
 
 const renderIndex = (legacyApp) => {
+  const _hasAuth = hasAuth(legacyApp);
   const templateContext = {
-    AUTHENTICATION: '',
     HEADER: '',
     TRIGGERS: '',
     SEARCHES: '',
     CREATES: '',
     BEFORE_REQUESTS: getBeforeRequests(legacyApp),
     AFTER_RESPONSES: getAfterResponses(legacyApp),
+    hasAuth: _hasAuth
   };
 
   return getHeader(legacyApp)
     .then((header) => {
       templateContext.HEADER = header;
 
-      const importLines = [
-        "const authentication = require('./authentication');"
-      ];
+      const importLines = [];
+
+      if (_hasAuth) {
+        importLines.push("const authentication = require('./authentication');");
+      }
 
       const dirMap = {
         trigger: 'triggers',
@@ -673,7 +680,10 @@ const convertApp = (legacyApp, newAppDir) => {
   promises.push(writeIndex(legacyApp, newAppDir));
   promises.push(writePackageJson(legacyApp, newAppDir));
   promises.push(writeScripting(legacyApp, newAppDir));
-  promises.push(writeAuth(legacyApp, newAppDir));
+
+  if (hasAuth(legacyApp)) {
+    promises.push(writeAuth(legacyApp, newAppDir));
+  }
 
   return Promise.all(promises);
 };
@@ -682,6 +692,7 @@ module.exports = {
   convertApp,
   renderAuth,
   renderField,
+  renderIndex,
   renderSample,
   renderStep,
   renderTemplate,
@@ -690,4 +701,5 @@ module.exports = {
   getHeader,
   getBeforeRequests,
   getAfterResponses,
+  hasAuth,
 };

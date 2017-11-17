@@ -2,6 +2,7 @@ require('should');
 const requireFromString = require('require-from-string');
 const convert = require('../../utils/convert');
 const definitions = {
+  noAuth: require('./definitions/no-auth.json'),
   basic: require('./definitions/basic.json'),
   basicScripting: require('./definitions/basic-scripting.json'),
   apiHeader: require('./definitions/api-header.json'),
@@ -105,6 +106,15 @@ describe('convert render functions', () => {
   });
 
   describe('authentication', () => {
+    it('should not render no auth', () => {
+      const wbDef = definitions.noAuth;
+      return convert.renderIndex(wbDef)
+        .then(string => {
+          string.should.containEql('authentication: {}');
+          convert.hasAuth(wbDef).should.be.false();
+        });
+    });
+
     it('should render basic auth', () => {
       const wbDef = definitions.basic;
 
