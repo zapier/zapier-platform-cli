@@ -25,11 +25,12 @@ module.exports = (argv) => {
 
   const notifier = updateNotifier({
     pkg: require('../package.json'),
+    updateCheckInterval: 0,
   });
 
   if (notifier.update) {
     notifier.notify({
-      message: `Update available ${colors.grey(notifier.update.current)} → ${colors.green(notifier.update.latest)}\nRun ${colors.cyan('npm i -g zapier-platform-cli')} to update, and then ${colors.cyan('zapier test')}.`,
+      message: `Update available ${colors.grey(notifier.update.current)} → ${colors.green(notifier.update.latest)}\nRun ${colors.cyan('npm i -g zapier-platform-cli')} to update, and then ${colors.blue('re-test your integration')}.`,
     });
   }
 
