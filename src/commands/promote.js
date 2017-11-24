@@ -12,7 +12,7 @@ const promote = (context, version) => {
   return utils.checkCredentials()
     .then(() => utils.getLinkedApp())
     .then((app) => {
-      context.line(`Preparing to promote version ${version} your app "${app.title}".\n`);
+      context.line(`Preparing to promote version ${version} of your app "${app.title}".\n`);
       const url = `/apps/${app.id}/versions/${version}/promote/production`;
       appId = app.id;
       utils.printStarting(`Promoting ${version}`);
