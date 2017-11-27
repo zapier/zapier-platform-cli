@@ -1,4 +1,4 @@
-const = require('should');
+const should = require('should');
 
 const path = require('path');
 

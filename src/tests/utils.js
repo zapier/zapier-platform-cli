@@ -1,4 +1,4 @@
-const = require('should');
+const should = require('should');
 
 require('../entry'); // must import me to babel polyfill!
 
