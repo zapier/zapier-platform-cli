@@ -1,5 +1,3 @@
-require('should');
-
 const path = require('path');
 
 const build = require('../../utils/build');

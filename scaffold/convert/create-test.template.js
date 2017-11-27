@@ -1,4 +1,4 @@
-require('should');
+const should = require('should');
 
 const zapier = require('zapier-platform-core');
 

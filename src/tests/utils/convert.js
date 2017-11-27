@@ -1,4 +1,3 @@
-require('should');
 const convert = require('../../utils/convert');
 const definitions = {
   basic: require('./definitions/basic.json'),
