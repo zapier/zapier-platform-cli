@@ -1,4 +1,4 @@
-require('should');
+const = require('should');
 const files = require('../../utils/files');
 
 const path = require('path');

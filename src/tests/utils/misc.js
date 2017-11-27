@@ -1,4 +1,4 @@
-require('should');
+const = require('should');
 const misc = require('../../utils/misc');
 
 describe('misc utils', () => {

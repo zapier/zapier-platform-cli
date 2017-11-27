@@ -1,4 +1,4 @@
-require('should');
+const = require('should');
 const {promisify, promisifyAll} = require('../../utils/promisify');
 
 describe('promisify', () => {
