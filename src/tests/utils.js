@@ -1,4 +1,4 @@
-const should = require('should');
+require('should'); // says should isn't been used when asserted, yet errors out when it's deleted.
 
 require('../entry'); // must import me to babel polyfill!
 

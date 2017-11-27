@@ -1,4 +1,3 @@
-const should = require('should');
 const {promisify, promisifyAll} = require('../../utils/promisify');
 
 describe('promisify', () => {
