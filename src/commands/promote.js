@@ -10,15 +10,29 @@ const promote = (context, version) => {
   let appId = 0;
 
   return utils.checkCredentials()
-    .then(() => utils.getLinkedApp())
-    .then((app) => {
+    .then(() => Promise.all([
+      utils.getLinkedApp(),
+      utils.getVersionChangelog(version),
+    ]))
+    .then(([app, changelog]) => {
       context.line(`Preparing to promote version ${version} of your app "${app.title}".\n`);
+
+      const body = {};
+
+      if (changelog) {
+        context.line(colors.green(`Changelog found for ${version}!`));
+        context.line(`\n---\n${changelog}\n---\n`);
+        body.changelog = changelog;
+      } else {
+        context.line(`${colors.yellow('Warning!')} Changelog not found. Please create a \`CHANGELOG.md\` file in a format similar to ${colors.cyan('https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md')}, with user-facing descriptions.\n`);
+      }
+
       const url = `/apps/${app.id}/versions/${version}/promote/production`;
       appId = app.id;
       utils.printStarting(`Promoting ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',
-        body: {}
+        body,
       }, false);
     })
     .then(() => {
@@ -62,7 +76,11 @@ ${utils.argOptsFragment(promote.argOptsSpec)}
 
 ${'```'}bash
 $ zapier promote 1.0.0
-# Preparing to promote version 1.0.0 your app "Example".
+# Preparing to promote version 1.0.0 of your app "Example".
+* Changelog found for 1.0.0!
+* ---
+* Initial release!
+* ---
 #
 #   Promoting 1.0.0 - done!
 #   Promotion successful!
