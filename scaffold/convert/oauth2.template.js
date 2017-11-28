@@ -27,7 +27,7 @@ const getAccessToken = (z, bundle) => {
 };
 <% } else if (hasPreOAuthTokenScripting && !hasPostOAuthTokenScripting) { %>
 const getAccessToken = (z, bundle) => {
-  const scripting = require('../scripting');
+  const scripting = require('./scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   bundle._legacyUrl = '<%= ACCESS_TOKEN_URL %>';
