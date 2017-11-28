@@ -18,7 +18,6 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
           throw new Error('Cannot define percent and user. Use only one or the other.');
         }
 
-        body.percent = optionalPercent;
         body.user = user;
 
         context.line(`Getting ready to migrate "${user}" in your app "${app.title}" from ${fromVersion} to ${toVersion}.\n`);
