@@ -1,6 +1,9 @@
 const colors = require('colors/safe');
 const utils = require('../utils');
 
+const hasCancelled = answer => (answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no' || answer.toLowerCase() === 'cancel');
+const hasAccepted = answer => (answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
+
 const promote = (context, version) => {
   if (!version) {
     context.line('Error: No deploment/version selected...\n');
@@ -8,26 +11,50 @@ const promote = (context, version) => {
   }
 
   let appId = 0;
+  let app, changelog;
 
   return utils.checkCredentials()
     .then(() => Promise.all([
       utils.getLinkedApp(),
       utils.getVersionChangelog(version),
     ]))
-    .then(([app, changelog]) => {
-      context.line(`Preparing to promote version ${version} of your app "${app.title}".\n`);
+    .then(([foundApp, foundChangelog]) => {
+      app = foundApp;
+      changelog = foundChangelog;
 
-      const body = {};
+      context.line(`Preparing to promote version ${version} of your app "${app.title}".\n`);
 
       if (changelog) {
         context.line(colors.green(`Changelog found for ${version}!`));
         context.line(`\n---\n${changelog}\n---\n`);
-        body.changelog = changelog;
-      } else {
-        context.line(`${colors.yellow('Warning!')} Changelog not found. Please create a \`CHANGELOG.md\` file in a format similar to ${colors.cyan('https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md')}, with user-facing descriptions.\n`);
+        return Promise.resolve('y');
+      }
+
+      context.line(`${colors.yellow('Warning!')} Changelog not found. Please create a \`CHANGELOG.md\` file in a format similar to ${colors.cyan('https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md')}, with user-facing descriptions.\n`);
+
+      const action = () => utils.getInput('Would you like to continue promoting without a changelog? (y/n) (Ctrl-C to cancel)\n\n');
+      const stop = (answer) => {
+        if (!hasCancelled(answer) && !hasAccepted(answer)) {
+          throw new Error('That answer is not valid. Please try "y" or "n".');
+        }
+
+        return hasCancelled(answer) || hasAccepted(answer);
+      };
+
+      return utils.promiseDoWhile(action, stop);
+    })
+    .then((answer) => {
+      if (hasCancelled(answer)) {
+        throw new Error('Cancelled promote.');
       }
 
       const url = `/apps/${app.id}/versions/${version}/promote/production`;
+      const body = {};
+
+      if (changelog) {
+        body.changelog = changelog;
+      }
+
       appId = app.id;
       utils.printStarting(`Promoting ${version}`);
       return utils.callAPI(url, {
