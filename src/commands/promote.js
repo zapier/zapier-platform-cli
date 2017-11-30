@@ -10,7 +10,6 @@ const promote = (context, version) => {
     return Promise.resolve();
   }
 
-  let appId = 0;
   let app, changelog;
 
   return utils.checkCredentials()
@@ -24,15 +23,17 @@ const promote = (context, version) => {
 
       context.line(`Preparing to promote version ${version} of your app "${app.title}".\n`);
 
+      let action;
+
       if (changelog) {
         context.line(colors.green(`Changelog found for ${version}!`));
         context.line(`\n---\n${changelog}\n---\n`);
-        return Promise.resolve('y');
+        action = () => utils.getInput('Would you like to continue promoting with this changelog? (y/n) (Ctrl-C to cancel)\n\n');
+      } else {
+        context.line(`${colors.yellow('Warning!')} Changelog not found. Please create a \`CHANGELOG.md\` file in a format similar to ${colors.cyan('https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md')}, with user-facing descriptions.\n`);
+        action = () => utils.getInput('Would you like to continue promoting without a changelog? (y/n) (Ctrl-C to cancel)\n\n');
       }
 
-      context.line(`${colors.yellow('Warning!')} Changelog not found. Please create a \`CHANGELOG.md\` file in a format similar to ${colors.cyan('https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md')}, with user-facing descriptions.\n`);
-
-      const action = () => utils.getInput('Would you like to continue promoting without a changelog? (y/n) (Ctrl-C to cancel)\n\n');
       const stop = (answer) => {
         if (!hasCancelled(answer) && !hasAccepted(answer)) {
           throw new Error('That answer is not valid. Please try "y" or "n".');
@@ -55,7 +56,6 @@ const promote = (context, version) => {
         body.changelog = changelog;
       }
 
-      appId = app.id;
       utils.printStarting(`Promoting ${version}`);
       return utils.callAPI(url, {
         method: 'PUT',
@@ -72,7 +72,7 @@ const promote = (context, version) => {
       if (error.message.indexOf('You cannot promote until we have approved your app.') !== -1) {
         utils.printDone();
         context.line('\nGood news! Your app passes validation and has the required number of testers and active Zaps.\n');
-        context.line(`The next step is to visit: ${colors.cyan(`https://zapier.com/developer/builder/cli-app/${appId}/activate/${version}`)} to request public activation of your app.\n`);
+        context.line(`The next step is to visit: ${colors.cyan(`https://zapier.com/developer/builder/cli-app/${app.id}/activate/${version}`)} to request public activation of your app.\n`);
       } else {
         throw error;
       }
