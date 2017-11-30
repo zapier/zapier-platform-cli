@@ -1,8 +1,16 @@
 // Search stub created by 'zapier convert'. This is just a stub - you will need to edit!
 const _ = require('lodash');
+<% if (!resourceFullScripting) { %>
+// Does string replacement ala WB, using bundle and a potential result object
+const replaceVars = (templateString, bundle, result) => {
+  _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+  const values = _.extend({}, bundle.authData, bundle.inputData, result);
+  return _.template(templateString)(values);
+};
+<% } %>
 <%
 // Template for just _pre_search()
-if (scripting && preScripting && !postScripting && !fullScripting) { %>
+if (preScripting && !postScripting && !fullScripting) { %>
 const getList = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
@@ -51,7 +59,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -84,7 +92,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -109,7 +117,7 @@ const getList = (z, bundle) => {
 
       resourceBundle.results = results;
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -139,7 +147,7 @@ const getList = (z, bundle) => {
         return response;
       }
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -158,7 +166,7 @@ const getList = (z, bundle) => {
 }
 
 // Template for _pre_search() + _post_search()
-if (scripting && preScripting && postScripting && !fullScripting) { %>
+if (preScripting && postScripting && !fullScripting) { %>
 const getList = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
@@ -216,7 +224,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -249,7 +257,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -270,7 +278,7 @@ const getList = (z, bundle) => {
 
       resourceBundle.results = results;
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -300,7 +308,7 @@ const getList = (z, bundle) => {
         };
       }
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, postSearchResult[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, postSearchResult[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -319,7 +327,7 @@ const getList = (z, bundle) => {
 }
 
 // Template for just _post_search()
-if (scripting && !preScripting && postScripting) { %>
+if (!preScripting && postScripting && !fullScripting) { %>
 const getList = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
@@ -374,7 +382,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -407,7 +415,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -428,7 +436,7 @@ const getList = (z, bundle) => {
 
       resourceBundle.results = results;
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -458,7 +466,7 @@ const getList = (z, bundle) => {
         };
       }
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, postSearchResult[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, postSearchResult[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -477,7 +485,7 @@ const getList = (z, bundle) => {
 }
 
 // Template for just _search()
-if (scripting && fullScripting) { %>
+if (fullScripting) { %>
 const getList = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
@@ -525,7 +533,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -558,7 +566,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -579,7 +587,7 @@ const getList = (z, bundle) => {
 
       resourceBundle.results = results;
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -609,7 +617,7 @@ const getList = (z, bundle) => {
         };
       }
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, fullSearchResult[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, fullSearchResult[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -628,11 +636,12 @@ const getList = (z, bundle) => {
 }
 
 // If there's no scripting, it's even sweeter and simpler!
-if (!scripting) { %>
+if (!fullScripting && !preScripting && !postScripting) { %>
 const getList = (z, bundle) => {
+<% if (scripting) { %>
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
-
+<% } %>
   // We're cloning bundle to re-use it when mimicking a "fetch resource" that happened in WB
   const resourceBundle = _.cloneDeep(bundle);
 
@@ -674,7 +683,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -707,7 +716,7 @@ const getList = (z, bundle) => {
         key: '<%= KEY %>',
         results,
       };
-      resourceBundle._legacyUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, '[0]', {}));
       return legacyScriptingRunner.runEvent(preResourceEvent, z, resourceBundle);
     })
     .then((preResourceResult) => z.request(preResourceResult))
@@ -732,7 +741,7 @@ const getList = (z, bundle) => {
 
       resourceBundle.results = results;
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
@@ -762,7 +771,7 @@ const getList = (z, bundle) => {
         return response;
       }
 
-      const finalUrl = legacyScriptingRunner.replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
+      const finalUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, results[0]);
       return z.request({ url: finalUrl });
     })
     .then((response) => {
