@@ -695,6 +695,8 @@ should('some tests', () => {
 
 > This is a popular way to provide `process.env.ACCESS_TOKEN || bundle.authData.access_token` for convenient testing.
 
+> **NOTE** Variables defined via `zapier env` will _always_ be stored and accessed in uppercase format.
+
 
 ### Accessing Environment Variables
 
