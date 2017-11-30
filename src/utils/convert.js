@@ -550,11 +550,11 @@ const renderAuthData = (authType) => {
 
 const renderStepTest = (type, definition, key, legacyApp) => {
   const authType = getAuthType(legacyApp);
-  const noun = definition.noun || _.capitalize(key);
+  const label = definition.label || _.capitalize(key);
   const authData = renderAuthData(authType);
   const templateContext = {
     KEY: key,
-    NOUN: noun,
+    LABEL: label,
     AUTH_DATA: authData
   };
   const templateFile = path.join(TEMPLATE_DIR, `/${type}-test.template.js`);
