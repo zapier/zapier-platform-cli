@@ -724,7 +724,11 @@ Promotes are an inherently safe operation for all existing users of your app.
 
 ```bash
 $ zapier promote 1.0.0
-# Preparing to promote version 1.0.0 your app "Example".
+# Preparing to promote version 1.0.0 of your app "Example".
+* Changelog found for 1.0.0!
+* ---
+* Initial release!
+* ---
 #
 #   Promoting 1.0.0 - done!
 #   Promotion successful!
