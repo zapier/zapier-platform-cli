@@ -216,7 +216,7 @@ module.exports = {
 
   operation: {
     inputFields: [
-<%= FIELDS %><% if (hasCustomInputFields) { %>,
+<%= FIELDS %><% if (hasCustomInputFields) { %><% if (FIELDS) { %>,<% } %>
       getInputFields<% } %>
     ],
 <%= SAMPLE %>
