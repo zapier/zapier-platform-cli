@@ -796,9 +796,9 @@ const getInputFields = (z, bundle) => {
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
-  // Do a _custom_action_fields() from scripting.
+  // Do a _custom_search_fields() from scripting.
   const fullFieldsEvent = {
-    name: 'create.input',
+    name: 'search.input',
     key: '<%= KEY %>'
   };
   return legacyScriptingRunner.runEvent(fullFieldsEvent, z, bundle);
@@ -811,9 +811,9 @@ const getInputFields = (z, bundle) => {
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
-  // Do a _pre_custom_action_fields() from scripting.
+  // Do a _pre_custom_search_fields() from scripting.
   const preFieldsEvent = {
-    name: 'create.input.pre',
+    name: 'search.input.pre',
     key: '<%= KEY %>'
   };
   return legacyScriptingRunner.runEvent(preFieldsEvent, z, bundle)
@@ -828,17 +828,17 @@ const getInputFields = (z, bundle) => {
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
-  // Do a _pre_custom_action_fields() from scripting.
+  // Do a _pre_custom_search_fields() from scripting.
   const preFieldsEvent = {
-    name: 'create.input.pre',
+    name: 'search.input.pre',
     key: '<%= KEY %>'
   };
   return legacyScriptingRunner.runEvent(preFieldsEvent, z, bundle)
     .then((preFieldsResult) => z.request(preFieldsResult))
     .then((response) => {
-      // Do a _post_custom_action_fields() from scripting.
+      // Do a _post_custom_search_fields() from scripting.
       const postFieldsEvent = {
-        name: 'create.input.post',
+        name: 'search.input.post',
         key: '<%= KEY %>',
         response,
       };
@@ -858,9 +858,9 @@ const getInputFields = (z, bundle) => {
   });
   return responsePromise
     .then((response) => {
-      // Do a _post_custom_action_fields() from scripting.
+      // Do a _post_custom_search_fields() from scripting.
       const postFieldsEvent = {
-        name: 'create.input.post',
+        name: 'search.input.post',
         key: '<%= KEY %>',
         response,
       };
