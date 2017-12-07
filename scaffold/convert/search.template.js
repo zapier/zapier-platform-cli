@@ -888,7 +888,7 @@ const getOutputFields = (z, bundle) => {
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
 
-  // Do a _custom_search_fields() from scripting.
+  // Do a _custom_search_result_fields() from scripting.
   const fullResultFieldsEvent = {
     name: 'search.output',
     key: '<%= KEY %>',
@@ -903,7 +903,7 @@ const getOutputFields = (z, bundle) => {
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
 
-  // Do a _pre_custom_search_fields() from scripting.
+  // Do a _pre_custom_search_result_fields() from scripting.
   const preResultFieldsEvent = {
     name: 'search.output.pre',
     key: '<%= KEY %>',
@@ -920,7 +920,7 @@ const getOutputFields = (z, bundle) => {
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
 
-  // Do a _pre_custom_search_fields() from scripting.
+  // Do a _pre_custom_search_result_fields() from scripting.
   const preResultFieldsEvent = {
     name: 'search.output.pre',
     key: '<%= KEY %>',
@@ -928,7 +928,7 @@ const getOutputFields = (z, bundle) => {
   return legacyScriptingRunner.runEvent(preResultFieldsEvent, z, bundle)
     .then((preResultFieldsResult) => z.request(preResultFieldsResult))
     .then((response) => {
-      // Do a _post_custom_search_fields() from scripting.
+      // Do a _post_custom_search_result_fields() from scripting.
       const postResultFieldsEvent = {
         name: 'search.output.post',
         key: '<%= KEY %>',
@@ -950,7 +950,7 @@ const getOutputFields = (z, bundle) => {
   });
   return responsePromise
     .then((response) => {
-      // Do a _post_custom_search_fields() from scripting.
+      // Do a _post_custom_search_result_fields() from scripting.
       const postResultFieldsEvent = {
         name: 'search.output.post',
         key: '<%= KEY %>',
