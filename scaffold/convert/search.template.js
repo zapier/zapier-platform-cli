@@ -893,10 +893,12 @@ module.exports = {
 
   operation: {
     inputFields: [
-      <%= FIELDS %><% if (hasCustomInputFields) { %><% if (FIELDS) { %>,<% } %>
+<%= FIELDS %><% if (hasCustomInputFields) { %><% if (FIELDS) { %>,<% } %>
       getInputFields<% } %>
     ],
+    outputFields: [
 <%= SAMPLE %>
+    ],
     perform: getList
   }
 };

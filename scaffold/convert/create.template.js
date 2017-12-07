@@ -219,7 +219,9 @@ module.exports = {
 <%= FIELDS %><% if (hasCustomInputFields) { %><% if (FIELDS) { %>,<% } %>
       getInputFields<% } %>
     ],
+    outputFields: [
 <%= SAMPLE %>
+    ],
     perform: makeRequest
   }
 };

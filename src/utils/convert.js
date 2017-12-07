@@ -143,32 +143,33 @@ const renderFields = (fields, indent = 0) => {
   return results.join(',\n');
 };
 
-const renderSampleField = (def) => {
+// TODO: Reuse code with renderField()
+const renderSampleField = (def, indent = 0) => {
   const type = typesMap[def.type] || 'string';
+
+  let props = [];
+
+  props.push(renderProp('key', quote(def.key)));
+  props.push(renderProp('type', quote(type)));
+
   if (def.label) {
-    return `      {
-        key: ${quote(def.key)},
-        type: ${quote(type)},
-        label: ${quote(def.label)}
-      }`;
+    props.push(renderProp('label', quote(def.label)));
   }
 
-  return `      {
-        key: ${quote(def.key)},
-        type: ${quote(type)}
-      }`;
+  props = props.map(s => ' '.repeat(indent + 2) + s);
+  const padding = ' '.repeat(indent);
+
+  return `${padding}{
+${props.join(',\n')}
+${padding}}`;
 };
 
-const renderSample = (definition) => {
-  const fields = _.map(definition.sample_result_fields, renderSampleField);
-
-  if (!fields.length) {
-    return '';
-  }
-
-  return `    outputFields: [
-${fields.join(',\n')}
-    ]`;
+const renderSample = (fields, indent = 0) => {
+  const results = [];
+  _.each(fields, field => {
+    results.push(renderSampleField(field, indent));
+  });
+  return results.join(',\n');
 };
 
 // Get some quick metadata on auth scripting methods
@@ -317,7 +318,6 @@ const hasScriptingMethod = (js, type, key, position, method_type = 'step') => {
       },
       full: {
         step: '_poll',
-        output_fields: '_custom_trigger_fields',
       },
     },
     create: {
@@ -400,11 +400,13 @@ const getStepMetaData = (definition, type, key) => {
 
   const hasCustomInputFields = (
     hasInputFieldPreScripting || hasInputFieldPostScripting || hasInputFieldFullScripting ||
-    Boolean(stepDef.custom_fields_url)
+    (type !== 'trigger' && Boolean(stepDef.custom_fields_url))
+    // Triggers don't have custom input fields
   );
   const hasCustomOutputFields = (
     hasOutputFieldPreScripting || hasOutputFieldPostScripting || hasOutputFieldFullScripting ||
-    Boolean(stepDef.custom_fields_result_url)
+    (Boolean(stepDef.custom_fields_result_url) || (type === 'trigger' && Boolean(stepDef.custom_fields_url)))
+    // Triggers' custom output fields URL route is specified by 'custom_fields_url', unlike creates and searches
   );
 
   return {
@@ -517,7 +519,7 @@ const renderStep = (type, definition, key, legacyApp) => {
   const stepMeta = getStepMetaData(legacyApp, type, key);
 
   const fields = renderFields(definition.fields, 6);
-  const sample = !_.isEmpty(definition.sample_result_fields) ? renderSample(definition) + ',\n' : '';
+  const sample = renderSample(definition.sample_result_fields, 6);
 
   const url = definition.url ? definition.url : 'http://example.com/api/${key}.json';
 
@@ -565,6 +567,9 @@ const renderStep = (type, definition, key, legacyApp) => {
 
   if (definition.custom_fields_url) {
     templateContext.CUSTOM_FIELDS_URL = definition.custom_fields_url;
+  }
+  if (definition.custom_fields_result_url) {
+    templateContext.CUSTOM_FIELDS_RESULT_URL = definition.custom_fields_result_url;
   }
 
   const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
