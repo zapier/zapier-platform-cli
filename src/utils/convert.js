@@ -199,6 +199,10 @@ const renderAuthTemplate = (authType, definition) => {
   const testTriggerKey = getTestTriggerKey(definition);
   const { hasGetConnectionLabelScripting } = getAuthMetaData(definition);
 
+  if (authType === 'basic' && !_.isEmpty(definition.general.auth_mapping)) {
+    authType = 'custom';
+  }
+
   const templateContext = {
     TEST_TRIGGER_MODULE: `./triggers/${snakeCase(testTriggerKey)}`,
     TYPE: authType,
@@ -446,11 +450,16 @@ const getMetaData = (definition) => {
     });
   });
 
-  const hasBefore = (type === 'api-header' || type === 'api-query' || type === 'session' || type === 'oauth2' || type === 'oauth2-refresh');
+  const isCustomBasic = (type === 'basic' && !_.isEmpty(definition.general.auth_mapping));
+  const hasBefore = (
+    type === 'api-header' || type === 'api-query' || type === 'session' ||
+    type === 'oauth2' || type === 'oauth2-refresh' || isCustomBasic
+  );
   const hasAfter = (type === 'session');
   const fieldsOnQuery = (authPlacement === 'params' || type === 'api-query');
   const isSession = (type === 'session');
   const isOAuth = (type === 'oauth2' || type === 'oauth2-refresh');
+
   const needsLegacyScriptingRunner = isSession || hasAnyScriptingMethods;
 
   return {
@@ -460,6 +469,7 @@ const getMetaData = (definition) => {
     fieldsOnQuery,
     isSession,
     isOAuth,
+    isCustomBasic,
     needsLegacyScriptingRunner,
   };
 };
@@ -472,6 +482,7 @@ const getHeader = (definition) => {
     hasAfter,
     isSession,
     isOAuth,
+    isCustomBasic,
     fieldsOnQuery,
   } = getMetaData(definition);
 
@@ -481,6 +492,7 @@ const getHeader = (definition) => {
       after: hasAfter,
       session: isSession,
       oauth: isOAuth,
+      customBasic: isCustomBasic,
       fields: Object.keys(definition.auth_fields),
       mapping: _.get(definition, ['general', 'auth_mapping'], {}),
       query: fieldsOnQuery,

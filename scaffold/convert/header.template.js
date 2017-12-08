@@ -1,4 +1,6 @@
-<% if (before && !session && !oauth) { %>const maybeIncludeAuth = (request, z, bundle) => {
+const { replaceVars } = require('./utils');
+
+<% if (before && !session && !oauth && !customBasic) { %>const maybeIncludeAuth = (request, z, bundle) => {
 <%
   Object.keys(mapping).forEach((mapperKey) => {
     fields.forEach((field) => {
@@ -12,6 +14,18 @@
     });
   });
 %>
+  return request;
+};
+<% } else if (customBasic) { %>
+const maybeIncludeAuth = (request, z, bundle) => {
+  const mapping = {
+    username: '<%= mapping.username %>',
+    password: '<%= mapping.password %>'
+  };
+  const username = replaceVars(mapping.username, bundle);
+  const password = replaceVars(mapping.password, bundle);
+  const encoded = `${username}:${password}`.toString('base64');
+  request.headers.Authorization = `Baisc ${encoded}`;
   return request;
 };
 <% }
