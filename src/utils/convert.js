@@ -649,6 +649,17 @@ const writeStepTest = (type, definition, key, legacyApp, newAppDir) => {
     .then(content => createFile(content, fileName, newAppDir));
 };
 
+const renderUtils = () => {
+  const templateFile = path.join(TEMPLATE_DIR, '/utils.template.js');
+  return renderTemplate(templateFile);
+};
+
+const writeUtils = (newAppDir) => {
+  const fileName = 'utils.js';
+  return renderUtils()
+    .then(content => createFile(content, fileName, newAppDir));
+};
+
 const renderIndex = (legacyApp) => {
   const _hasAuth = hasAuth(legacyApp);
   const templateContext = {
@@ -777,6 +788,7 @@ const convertApp = (legacyApp, newAppDir) => {
     });
   });
 
+  promises.push(writeUtils(newAppDir));
   promises.push(writeIndex(legacyApp, newAppDir));
   promises.push(writePackageJson(legacyApp, newAppDir));
   promises.push(writeScripting(legacyApp, newAppDir));

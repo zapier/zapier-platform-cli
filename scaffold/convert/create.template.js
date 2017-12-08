@@ -1,12 +1,5 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
-const _ = require('lodash');
-
-// Does string replacement ala WB, using bundle and a potential result object
-const replaceVars = (templateString, bundle, result) => {
-  _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
-  const values = _.extend({}, bundle.authData, bundle.inputData, result);
-  return _.template(templateString)(values);
-};
+const { replaceVars } = require('../utils');
 <%
 // Template for just _pre_write()
 if (preScripting && !postScripting && !fullScripting) { %>
@@ -210,7 +203,7 @@ const getOutputFields = (z, bundle) => {
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
-  bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
+  bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
   // Do a _custom_action_result_fields() from scripting.
   const fullResultFieldsEvent = {
@@ -225,7 +218,7 @@ const getOutputFields = (z, bundle) => {
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
-  bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
+  bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
   // Do a _pre_custom_action_result_fields() from scripting.
   const preResultFieldsEvent = {
@@ -242,7 +235,7 @@ const getOutputFields = (z, bundle) => {
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
-  bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
+  bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
   // Do a _pre_custom_action_result_fields() from scripting.
   const preResultFieldsEvent = {
@@ -267,7 +260,7 @@ const getOutputFields = (z, bundle) => {
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
-  bundle._legacyUrl = legacyScriptingRunner.replaceVars(bundle._legacyUrl, bundle, {});
+  bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle, {});
 
   const responsePromise = z.request({
     url: bundle._legacyUrl
