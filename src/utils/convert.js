@@ -401,7 +401,7 @@ const getStepMetaData = (definition, type, key) => {
   const hasCustomInputFields = (
     hasInputFieldPreScripting || hasInputFieldPostScripting || hasInputFieldFullScripting ||
     (type !== 'trigger' && Boolean(stepDef.custom_fields_url))
-    // Triggers don't have custom input fields
+    // Triggers in WB don't have custom input fields
   );
   const hasCustomOutputFields = (
     hasOutputFieldPreScripting || hasOutputFieldPostScripting || hasOutputFieldFullScripting ||
