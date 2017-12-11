@@ -120,7 +120,7 @@ describe('convert render functions', () => {
       const wbDef = definitions.noAuth;
       return convert.renderIndex(wbDef)
         .then(string => {
-          string.should.containEql('authentication: {}');
+          string.should.not.containEql('authentication:');
           convert.hasAuth(wbDef).should.be.false();
         });
     });
