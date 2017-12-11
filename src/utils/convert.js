@@ -95,7 +95,7 @@ const getAuthType = (definition) => {
 };
 
 const hasAuth = (definition) => {
-  return getAuthType(definition) !== 'custom' || !_.isEmpty(definition.auth_fields);
+  return getAuthType(definition) !== 'custom' && !_.isEmpty(definition.auth_fields);
 };
 
 const renderField = (definition, key, indent = 0) => {
@@ -450,15 +450,16 @@ const getMetaData = (definition) => {
     });
   });
 
-  const isCustomBasic = (type === 'basic' && !_.isEmpty(definition.general.auth_mapping));
-  const hasBefore = (
+  const needsAuth = hasAuth(definition);
+  const isCustomBasic = (needsAuth && type === 'basic' && !_.isEmpty(definition.general.auth_mapping));
+  const hasBefore = needsAuth && (
     type === 'api-header' || type === 'api-query' || type === 'session' ||
     type === 'oauth2' || type === 'oauth2-refresh' || isCustomBasic
   );
-  const hasAfter = (type === 'session');
+  const hasAfter = (needsAuth && type === 'session');
   const fieldsOnQuery = (authPlacement === 'params' || type === 'api-query');
-  const isSession = (type === 'session');
-  const isOAuth = (type === 'oauth2' || type === 'oauth2-refresh');
+  const isSession = (needsAuth && type === 'session');
+  const isOAuth = needsAuth && (type === 'oauth2' || type === 'oauth2-refresh');
 
   const needsLegacyScriptingRunner = isSession || hasAnyScriptingMethods;
 
@@ -673,7 +674,7 @@ const writeUtils = (newAppDir) => {
 };
 
 const renderIndex = (legacyApp) => {
-  const _hasAuth = hasAuth(legacyApp);
+  const needsAuth = hasAuth(legacyApp);
   const templateContext = {
     HEADER: '',
     TRIGGERS: '',
@@ -681,7 +682,7 @@ const renderIndex = (legacyApp) => {
     CREATES: '',
     BEFORE_REQUESTS: getBeforeRequests(legacyApp),
     AFTER_RESPONSES: getAfterResponses(legacyApp),
-    hasAuth: _hasAuth
+    needsAuth,
   };
 
   return getHeader(legacyApp)
@@ -690,7 +691,7 @@ const renderIndex = (legacyApp) => {
 
       const importLines = [];
 
-      if (_hasAuth) {
+      if (needsAuth) {
         importLines.push("const authentication = require('./authentication');");
       }
 
