@@ -598,15 +598,20 @@ const writeStep = (type, definition, key, legacyApp, newAppDir) => {
 };
 
 // render the authData used in the trigger/search/create test code
-const renderAuthData = (authType) => {
+const renderAuthData = (definition) => {
+  const authType = getAuthType(definition);
   let result;
   switch (authType) {
-  case 'basic':
+  case 'basic': {
+    let lines = _.map(definition.auth_fields, (field, key) => {
+      const upperKey = key.toUpperCase();
+      return `        ${key}: process.env.${upperKey}`;
+    });
     result = `{
-        username: process.env.USERNAME,
-        password: process.env.PASSWORD
+${lines.join(',\n')}
       }`;
     break;
+  }
   case 'oauth2':
     result = `{
         access_token: process.env.ACCESS_TOKEN
@@ -639,9 +644,8 @@ const renderAuthData = (authType) => {
 };
 
 const renderStepTest = (type, definition, key, legacyApp) => {
-  const authType = getAuthType(legacyApp);
   const label = definition.label || _.capitalize(key);
-  const authData = renderAuthData(authType);
+  const authData = renderAuthData(legacyApp);
   const templateContext = {
     KEY: key,
     LABEL: label,
