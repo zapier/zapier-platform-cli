@@ -1,5 +1,6 @@
+<% if (customBasic) { %>
 const { replaceVars } = require('./utils');
-
+<% } %>
 <% if (before && !session && !oauth && !customBasic) { %>const maybeIncludeAuth = (request, z, bundle) => {
 <%
   Object.keys(mapping).forEach((mapperKey) => {

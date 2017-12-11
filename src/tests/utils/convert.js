@@ -131,7 +131,7 @@ describe('convert render functions', () => {
       return convert.renderAuth(wbDef)
         .then(string => {
           const auth = loadAuthModuleFromString(string);
-          auth.type.should.eql('basic');
+          auth.type.should.eql('custom');
           auth.fields.should.eql([
             {
               key: 'username',
@@ -157,7 +157,7 @@ describe('convert render functions', () => {
       return convert.renderAuth(wbDef)
         .then(string => {
           const auth = loadAuthModuleFromString(string);
-          auth.type.should.eql('basic');
+          auth.type.should.eql('custom');
           auth.fields.should.eql([
             {
               key: 'username',
@@ -202,14 +202,12 @@ describe('convert render functions', () => {
 
       return convert.getHeader(wbDef)
         .then(string => {
-          string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
+          string.trim().should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
 
   request.headers['Authorization'] = bundle.authData['api_key'];
 
   return request;
-};
-
-`);
+};`);
         });
     });
 
@@ -238,14 +236,12 @@ describe('convert render functions', () => {
 
       return convert.getHeader(wbDef)
         .then(string => {
-          string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
+          string.trim().should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
 
   request.params['api_key'] = bundle.authData['api_key'];
 
   return request;
-};
-
-`);
+};`);
         });
     });
 
@@ -281,7 +277,7 @@ describe('convert render functions', () => {
 
       return convert.getHeader(wbDef)
         .then(string => {
-          string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
+          string.trim().should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
 
   request.headers['X-Token'] = bundle.authData.sessionKey;
 
@@ -320,9 +316,7 @@ const getSessionKey = (z, bundle) => {
         sessionKey: firstKeyValue
       };
     });
-};
-
-`);
+};`);
         });
     });
 
@@ -371,14 +365,12 @@ const getSessionKey = (z, bundle) => {
 
       return convert.getHeader(wbDef)
         .then(string => {
-          string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
+          string.trim().should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
 
   request.headers.Authorization = \`Bearer \${bundle.authData.access_token}\`;
 
   return request;
-};
-
-`);
+};`);
         });
     });
 
@@ -493,14 +485,12 @@ const getSessionKey = (z, bundle) => {
 
       return convert.getHeader(wbDef)
         .then(string => {
-          string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
+          string.trim().should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
 
   request.headers.Authorization = \`Bearer \${bundle.authData.access_token}\`;
 
   return request;
-};
-
-`);
+};`);
         });
     });
 
