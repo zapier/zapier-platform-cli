@@ -105,7 +105,7 @@ const renderField = (definition, key, indent = 0) => {
 
   props.push(renderProp('key', quote(key)));
   if (definition.label) {
-    props.push(renderProp('label', quote(definition.label)));
+    props.push(renderProp('label', quote(escapeSpecialChars(definition.label))));
   }
 
   if (definition.help_text) {
