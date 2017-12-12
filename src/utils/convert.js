@@ -196,16 +196,21 @@ const getTestTriggerKey = (definition) => {
 const renderAuthTemplate = (authType, definition) => {
   const fields = renderFields(definition.auth_fields, 4);
   const connectionLabel = _.get(definition, ['general', 'auth_label'], '');
-  const testTriggerKey = getTestTriggerKey(definition);
   const { hasGetConnectionLabelScripting } = getAuthMetaData(definition);
 
   const templateContext = {
-    TEST_TRIGGER_MODULE: `./triggers/${snakeCase(testTriggerKey)}`,
     TYPE: authType,
     FIELDS: fields,
     CONNECTION_LABEL: connectionLabel,
     hasGetConnectionLabelScripting,
   };
+
+  const testTriggerKey = getTestTriggerKey(definition);
+  if (testTriggerKey) {
+    templateContext.TEST_TRIGGER_MODULE = `./triggers/${snakeCase(testTriggerKey)}`;
+  } else {
+    templateContext.TEST_TRIGGER_MODULE = '';
+  }
 
   const templateFile = path.join(TEMPLATE_DIR, '/simple-auth.template.js');
   return renderTemplate(templateFile, templateContext);
@@ -570,6 +575,14 @@ const renderStep = (type, definition, key, legacyApp) => {
   }
   if (definition.custom_fields_result_url) {
     templateContext.CUSTOM_FIELDS_RESULT_URL = definition.custom_fields_result_url;
+  }
+
+  if (type === 'create' && !stepMeta.hasPreScripting && !stepMeta.hasFullScripting) {
+    // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
+    // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
+    const fieldKeys = _.keys(definition.fields);
+    const excludeFieldKeys = _.filter(fieldKeys, k => !definition.fields[k].send_in_json);
+    templateContext.excludeFieldKeys = excludeFieldKeys || null;
   }
 
   const templateFile = path.join(TEMPLATE_DIR, `/${type}.template.js`);
