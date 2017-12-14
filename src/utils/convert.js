@@ -677,6 +677,25 @@ const writeUtils = (newAppDir) => {
     .then(content => createFile(content, fileName, newAppDir));
 };
 
+const findSearchOrCreates = (legacyApp) => {
+  let searchOrCreates = {};
+  _.each(legacyApp.searches, (searchDef, searchKey) => {
+    if (searchDef.action_pair_key) {
+      const comboKey = `${searchKey}_${searchDef.action_pair_key}`;
+      searchOrCreates[comboKey] = {
+        key: comboKey,
+        display: {
+          label: searchDef.action_pair_label || '',
+          description: searchDef.action_pair_label || ''
+        },
+        search: searchKey,
+        create: searchDef.action_pair_key
+      };
+    }
+  });
+  return searchOrCreates;
+};
+
 const renderIndex = (legacyApp) => {
   const _hasAuth = hasAuth(legacyApp);
   const templateContext = {
@@ -720,6 +739,13 @@ const renderIndex = (legacyApp) => {
       });
 
       templateContext.REQUIRES = importLines.join('\n');
+
+      const searchOrCreates = findSearchOrCreates(legacyApp);
+      if (_.isEmpty(searchOrCreates)) {
+        templateContext.SEARCH_OR_CREATES = null;
+      } else {
+        templateContext.SEARCH_OR_CREATES = JSON.stringify(searchOrCreates, null, 2);
+      }
 
       const templateFile = path.join(TEMPLATE_DIR, '/index.template.js');
       return renderTemplate(templateFile, templateContext);
