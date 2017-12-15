@@ -681,7 +681,11 @@ const findSearchOrCreates = (legacyApp) => {
   let searchOrCreates = {};
   _.each(legacyApp.searches, (searchDef, searchKey) => {
     if (searchDef.action_pair_key) {
-      const comboKey = `${searchKey}_${searchDef.action_pair_key}`;
+      // The key for a searchOrCreate (comboKey) has to match the key of a
+      // search due to frontend constraints. From Platform's perspective
+      // though, a searchOrCreate just needs a unique key that could be
+      // anything.
+      const comboKey = searchKey;
       searchOrCreates[comboKey] = {
         key: comboKey,
         display: {
