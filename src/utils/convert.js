@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const path = require('path');
+const prettier = require('prettier');
 const stripComments = require('strip-comments');
 const { camelCase, snakeCase } = require('./misc');
 const { readFile, writeFile, ensureDir } = require('./files');
@@ -67,12 +68,30 @@ const stepDescriptionTemplateMap = {
   search: _.template('Finds a <%= lowerNoun %>.')
 };
 
-const renderTemplate = (templateFile, templateContext) => {
+const renderTemplate = (templateFile, templateContext, prettify = true) => {
   return readFile(templateFile)
     .then(templateBuf => templateBuf.toString())
     .then(template =>
       _.template(template, { interpolate: /<%=([\s\S]+?)%>/g })(templateContext)
-    );
+    )
+    .then(content => {
+      if (prettify) {
+        const ext = path.extname(templateFile).toLowerCase();
+        const prettifier = {
+          '.json': origString =>
+            JSON.stringify(JSON.parse(origString), null, 2),
+          '.js': origString =>
+            prettier.format(origString, {
+              singleQuote: true,
+              printWidth: 120
+            })
+        }[ext];
+        if (prettifier) {
+          return prettifier(content);
+        }
+      }
+      return content;
+    });
 };
 
 const createFile = (content, fileName, dir) => {
@@ -877,7 +896,7 @@ const renderScripting = legacyApp => {
   ).replace('"use strict";\n', '');
 
   const templateFile = path.join(TEMPLATE_DIR, '/scripting.template.js');
-  return renderTemplate(templateFile, templateContext);
+  return renderTemplate(templateFile, templateContext, false);
 };
 
 const writeScripting = (legacyApp, newAppDir) => {

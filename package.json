@@ -1,6 +1,6 @@
 {
   "name": "zapier-platform-cli",
-  "version": "4.1.0",
+  "version": "4.2.3",
   "description": "The CLI for apps in the Zapier Developer Platform.",
   "repository": "zapier/zapier-platform-cli",
   "homepage": "https://zapier.com/",
@@ -15,7 +15,7 @@
     "preversion": "git pull && npm test",
     "version":
       "npm run docs && npm run gen-completions && git add docs/* goodies/* README.md",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "git push && git push --tags",
     "prepublish": "npm run build",
     "build":
       "rm -rf lib && node_modules/babel-cli/bin/babel.js src -d lib --copy-files",
@@ -52,6 +52,7 @@
     "minimatch": "3.0.3",
     "node-fetch": "1.7.1",
     "normalize-path": "2.0.1",
+    "prettier": "1.9.1",
     "read": "1.0.7",
     "readable-stream": "2.2.2",
     "semver": "5.3.0",
