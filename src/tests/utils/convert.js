@@ -120,7 +120,7 @@ describe('convert render functions', () => {
     it('should not render no auth', () => {
       const wbDef = definitions.noAuth;
       return convert.renderIndex(wbDef).then(string => {
-        string.should.containEql('authentication: {}');
+        string.should.not.containEql('authentication:');
         convert.hasAuth(wbDef).should.be.false();
       });
     });
@@ -130,7 +130,7 @@ describe('convert render functions', () => {
 
       return convert.renderAuth(wbDef).then(string => {
         const auth = loadAuthModuleFromString(string);
-        auth.type.should.eql('basic');
+        auth.type.should.eql('custom');
         auth.fields.should.eql([
           {
             key: 'username',
@@ -155,7 +155,7 @@ describe('convert render functions', () => {
 
       return convert.renderAuth(wbDef).then(string => {
         const auth = loadAuthModuleFromString(string);
-        auth.type.should.eql('basic');
+        auth.type.should.eql('custom');
         auth.fields.should.eql([
           {
             key: 'username',
