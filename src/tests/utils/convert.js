@@ -131,7 +131,7 @@ describe('convert render functions', () => {
       const wbDef = definitions.noAuth;
       return convert.renderIndex(wbDef)
         .then(string => {
-          string.should.containEql('authentication: {}');
+          string.should.not.containEql('authentication:');
           convert.hasAuth(wbDef).should.be.false();
         });
     });
@@ -142,7 +142,7 @@ describe('convert render functions', () => {
       return convert.renderAuth(wbDef)
         .then(string => {
           const auth = loadAuthModuleFromString(string);
-          auth.type.should.eql('basic');
+          auth.type.should.eql('custom');
           auth.fields.should.eql([
             {
               key: 'username',
@@ -168,7 +168,7 @@ describe('convert render functions', () => {
       return convert.renderAuth(wbDef)
         .then(string => {
           const auth = loadAuthModuleFromString(string);
-          auth.type.should.eql('basic');
+          auth.type.should.eql('custom');
           auth.fields.should.eql([
             {
               key: 'username',
@@ -214,12 +214,10 @@ describe('convert render functions', () => {
       return convert.getHeader(wbDef)
         .then(string => {
           string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-
   request.headers['Authorization'] = bundle.authData['api_key'];
 
   return request;
 };
-
 `);
         });
     });
@@ -250,12 +248,10 @@ describe('convert render functions', () => {
       return convert.getHeader(wbDef)
         .then(string => {
           string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-
   request.params['api_key'] = bundle.authData['api_key'];
 
   return request;
 };
-
 `);
         });
     });
@@ -293,7 +289,6 @@ describe('convert render functions', () => {
       return convert.getHeader(wbDef)
         .then(string => {
           string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-
   request.headers['X-Token'] = bundle.authData.sessionKey;
 
   return request;
@@ -315,24 +310,23 @@ const getSessionKey = (z, bundle) => {
   const getSessionEvent = {
     name: 'auth.session'
   };
-  return legacyScriptingRunner.runEvent(getSessionEvent, z, bundle)
-    .then((getSessionResult) => {
-      // IMPORTANT NOTE:
-      //   WB apps in scripting's get_session_info() allowed you to return any object and that would
-      //   be added to the authData, but CLI apps require you to specifically define those.
-      //   That means that if you return more than one key from your scripting's get_session_info(),
-      //   you might need to manually tweak this method to return that value at the end of this method,
-      //   and also add more fields to the authentication definition.
+  return legacyScriptingRunner.runEvent(getSessionEvent, z, bundle).then(getSessionResult => {
+    // IMPORTANT NOTE:
+    //   WB apps in scripting's get_session_info() allowed you to return any object and that would
+    //   be added to the authData, but CLI apps require you to specifically define those.
+    //   That means that if you return more than one key from your scripting's get_session_info(),
+    //   you might need to manually tweak this method to return that value at the end of this method,
+    //   and also add more fields to the authentication definition.
 
-      const resultKeys = Object.keys(getSessionResult);
-      const firstKeyValue = (getSessionResult && resultKeys.length > 0) ? getSessionResult[resultKeys[0]] : getSessionResult;
+    const resultKeys = Object.keys(getSessionResult);
+    const firstKeyValue =
+      getSessionResult && resultKeys.length > 0 ? getSessionResult[resultKeys[0]] : getSessionResult;
 
-      return {
-        sessionKey: firstKeyValue
-      };
-    });
+    return {
+      sessionKey: firstKeyValue
+    };
+  });
 };
-
 `);
         });
     });
@@ -383,12 +377,10 @@ const getSessionKey = (z, bundle) => {
       return convert.getHeader(wbDef)
         .then(string => {
           string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-
   request.headers.Authorization = \`Bearer \${bundle.authData.access_token}\`;
 
   return request;
 };
-
 `);
         });
     });
@@ -505,12 +497,10 @@ const getSessionKey = (z, bundle) => {
       return convert.getHeader(wbDef)
         .then(string => {
           string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-
   request.headers.Authorization = \`Bearer \${bundle.authData.access_token}\`;
 
   return request;
 };
-
 `);
         });
     });

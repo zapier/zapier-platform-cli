@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const path = require('path');
+const prettier = require('prettier');
 const stripComments = require('strip-comments');
 const {camelCase, snakeCase} = require('./misc');
 const {readFile, writeFile, ensureDir} = require('./files');
@@ -67,10 +68,26 @@ const stepDescriptionTemplateMap = {
   search: _.template('Finds a <%= lowerNoun %>.')
 };
 
-const renderTemplate = (templateFile, templateContext) => {
+const renderTemplate = (templateFile, templateContext, prettify = true) => {
   return readFile(templateFile)
     .then(templateBuf => templateBuf.toString())
-    .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(templateContext));
+    .then(template => _.template(template, {interpolate: /<%=([\s\S]+?)%>/g})(templateContext))
+    .then(content => {
+      if (prettify) {
+        const ext = path.extname(templateFile).toLowerCase();
+        const prettifier = {
+          '.json': origString => JSON.stringify(JSON.parse(origString), null, 2),
+          '.js': origString => prettier.format(origString, {
+            singleQuote: true,
+            printWidth: 120
+          })
+        }[ext];
+        if (prettifier) {
+          return prettifier(content);
+        }
+      }
+      return content;
+    });
 };
 
 const createFile = (content, fileName, dir) => {
@@ -95,7 +112,7 @@ const getAuthType = (definition) => {
 };
 
 const hasAuth = (definition) => {
-  return getAuthType(definition) !== 'custom' || !_.isEmpty(definition.auth_fields);
+  return getAuthType(definition) !== 'custom' && !_.isEmpty(definition.auth_fields);
 };
 
 const renderField = (definition, key, indent = 0) => {
@@ -197,6 +214,10 @@ const renderAuthTemplate = (authType, definition) => {
   const fields = renderFields(definition.auth_fields, 4);
   const connectionLabel = _.get(definition, ['general', 'auth_label'], '');
   const { hasGetConnectionLabelScripting } = getAuthMetaData(definition);
+
+  if (authType === 'basic' && !_.isEmpty(definition.general.auth_mapping)) {
+    authType = 'custom';
+  }
 
   const templateContext = {
     TYPE: authType,
@@ -451,11 +472,17 @@ const getMetaData = (definition) => {
     });
   });
 
-  const hasBefore = (type === 'api-header' || type === 'api-query' || type === 'session' || type === 'oauth2' || type === 'oauth2-refresh');
-  const hasAfter = (type === 'session');
+  const needsAuth = hasAuth(definition);
+  const isCustomBasic = (needsAuth && type === 'basic' && !_.isEmpty(definition.general.auth_mapping));
+  const hasBefore = needsAuth && (
+    type === 'api-header' || type === 'api-query' || type === 'session' ||
+    type === 'oauth2' || type === 'oauth2-refresh' || isCustomBasic
+  );
+  const hasAfter = (needsAuth && type === 'session');
   const fieldsOnQuery = (authPlacement === 'params' || type === 'api-query');
-  const isSession = (type === 'session');
-  const isOAuth = (type === 'oauth2' || type === 'oauth2-refresh');
+  const isSession = (needsAuth && type === 'session');
+  const isOAuth = needsAuth && (type === 'oauth2' || type === 'oauth2-refresh');
+
   const needsLegacyScriptingRunner = isSession || hasAnyScriptingMethods;
 
   return {
@@ -465,6 +492,7 @@ const getMetaData = (definition) => {
     fieldsOnQuery,
     isSession,
     isOAuth,
+    isCustomBasic,
     needsLegacyScriptingRunner,
   };
 };
@@ -477,6 +505,7 @@ const getHeader = (definition) => {
     hasAfter,
     isSession,
     isOAuth,
+    isCustomBasic,
     fieldsOnQuery,
   } = getMetaData(definition);
 
@@ -486,6 +515,7 @@ const getHeader = (definition) => {
       after: hasAfter,
       session: isSession,
       oauth: isOAuth,
+      customBasic: isCustomBasic,
       fields: Object.keys(definition.auth_fields),
       mapping: _.get(definition, ['general', 'auth_mapping'], {}),
       query: fieldsOnQuery,
@@ -598,15 +628,20 @@ const writeStep = (type, definition, key, legacyApp, newAppDir) => {
 };
 
 // render the authData used in the trigger/search/create test code
-const renderAuthData = (authType) => {
+const renderAuthData = (definition) => {
+  const authType = getAuthType(definition);
   let result;
   switch (authType) {
-  case 'basic':
+  case 'basic': {
+    let lines = _.map(definition.auth_fields, (field, key) => {
+      const upperKey = key.toUpperCase();
+      return `        ${key}: process.env.${upperKey}`;
+    });
     result = `{
-        username: process.env.USERNAME,
-        password: process.env.PASSWORD
+${lines.join(',\n')}
       }`;
     break;
+  }
   case 'oauth2':
     result = `{
         access_token: process.env.ACCESS_TOKEN
@@ -639,9 +674,8 @@ const renderAuthData = (authType) => {
 };
 
 const renderStepTest = (type, definition, key, legacyApp) => {
-  const authType = getAuthType(legacyApp);
   const label = definition.label || _.capitalize(key);
-  const authData = renderAuthData(authType);
+  const authData = renderAuthData(legacyApp);
   const templateContext = {
     KEY: key,
     LABEL: label,
@@ -674,7 +708,7 @@ const writeUtils = (newAppDir) => {
 };
 
 const renderIndex = (legacyApp) => {
-  const _hasAuth = hasAuth(legacyApp);
+  const needsAuth = hasAuth(legacyApp);
   const templateContext = {
     HEADER: '',
     TRIGGERS: '',
@@ -682,7 +716,7 @@ const renderIndex = (legacyApp) => {
     CREATES: '',
     BEFORE_REQUESTS: getBeforeRequests(legacyApp),
     AFTER_RESPONSES: getAfterResponses(legacyApp),
-    hasAuth: _hasAuth
+    needsAuth,
   };
 
   return getHeader(legacyApp)
@@ -691,7 +725,7 @@ const renderIndex = (legacyApp) => {
 
       const importLines = [];
 
-      if (_hasAuth) {
+      if (needsAuth) {
         importLines.push("const authentication = require('./authentication');");
       }
 
@@ -778,7 +812,7 @@ const renderScripting = (legacyApp) => {
   templateContext.CODE = templateContext.CODE.replace("'use strict';\n", '').replace('"use strict";\n', '');
 
   const templateFile = path.join(TEMPLATE_DIR, '/scripting.template.js');
-  return renderTemplate(templateFile, templateContext);
+  return renderTemplate(templateFile, templateContext, false);
 };
 
 const writeScripting = (legacyApp, newAppDir) => {
