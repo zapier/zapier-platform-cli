@@ -12,9 +12,9 @@ describe('My App', () => {
   it('should run <%= TYPE %>s.<%= KEY %>', done => {
     const bundle = { inputData: {} };
 
-    appTester(App.<%= TYPE %>s.<%= KEY %>.<%= MAYBE_RESOURCE %>operation.perform, bundle)
+    appTester(App.<%= TYPE_PLURAL %>.<%= KEY %>.<%= MAYBE_RESOURCE %>operation.perform, bundle)
       .then(results => {
-        should.exist(results)
+        should.exist(results);
         done();
       })
       .catch(done);

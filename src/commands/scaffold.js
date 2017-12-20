@@ -34,6 +34,7 @@ const scaffold = (context, type, name) => {
     LOWER_NOUN: name.toLowerCase(),
     INPUT_FIELDS: '',
     TYPE: type,
+    TYPE_PLURAL: type === 'search' ? `${type}es` : `${type}s`,
     // resources need an extra line for tests to "just run"
     MAYBE_RESOURCE: type === 'resource' ? 'list.' : ''
   };
