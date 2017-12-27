@@ -1,47 +1,47 @@
 // get a single <%= LOWER_NOUN %>
 const get<%= CAMEL %> = (z, bundle) => {
   const responsePromise = z.request({
-    url: `http://example.com/api/<%= KEY %>s/${bundle.inputData.id}.json`,
+    url: `https://jsonplaceholder.typicode.com/posts/${bundle.inputData.id}`,
   });
   return responsePromise
-    .then(response => JSON.parse(response.content));
+    .then(response => z.JSON.parse(response.content));
 };
 
 // get a list of <%= LOWER_NOUN %>s
 const list<%= CAMEL %>s = (z) => {
   const responsePromise = z.request({
-    url: 'http://example.com/api/<%= KEY %>s.json',
+    url: 'https://jsonplaceholder.typicode.com/posts',
     params: {
       order_by: 'id desc'
     }
   });
   return responsePromise
-    .then(response => JSON.parse(response.content));
+    .then(response => z.JSON.parse(response.content));
 };
 
 // find a particular <%= LOWER_NOUN %> by name
 const search<%= CAMEL %>s = (z, bundle) => {
   const responsePromise = z.request({
-    url: 'http://example.com/api/<%= KEY %>s.json',
+    url: 'https://jsonplaceholder.typicode.com/posts',
     params: {
       query: `name:${bundle.inputData.name}`
     }
   });
   return responsePromise
-    .then(response => JSON.parse(response.content));
+    .then(response => z.JSON.parse(response.content));
 };
 
 // create a <%= LOWER_NOUN %>
 const create<%= CAMEL %> = (z, bundle) => {
   const responsePromise = z.request({
     method: 'POST',
-    url: 'http://example.com/api/<%= KEY %>s.json',
+    url: 'https://jsonplaceholder.typicode.com/posts',
     body: {
       name: bundle.inputData.name // json by default
     }
   });
   return responsePromise
-    .then(response => JSON.parse(response.content));
+    .then(response => z.JSON.parse(response.content));
 };
 
 module.exports = {

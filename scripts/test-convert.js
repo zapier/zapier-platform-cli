@@ -16,7 +16,9 @@ const appsToConvert = [
   { id: 82251, name: 'basic-api-header' },
   { id: 82460, name: 'custom-fields' },
   { id: 83195, name: 'search-or-create' },
-  { id: 80444, name: 'custom-baisc' }
+  { id: 80444, name: 'custom-baisc' },
+  { id: 83073, name: 'send-in-json' },
+  { id: 83342, name: 'replace-vars' }
   // TODO: Add more apps that use different scripting methods, as we start to support them
 ];
 
