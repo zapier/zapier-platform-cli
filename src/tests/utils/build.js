@@ -1,10 +1,14 @@
 require('should');
 
+const crypto = require('crypto');
+const os = require('os');
 const path = require('path');
 
 const build = require('../../utils/build');
 
 const fs = require('fs');
+const fse = require('fs-extra');
+const AdmZip = require('adm-zip');
 
 const entryDir = fs.realpathSync(path.resolve(__dirname, '../../..'));
 const entryPoint = path.resolve(__dirname, '../../../zapier.js');
@@ -38,6 +42,33 @@ describe('build', () => {
         dumbPaths.should.containEql('lib/commands/init.js');
         dumbPaths.should.containEql('src/commands/init.js');
         dumbPaths.should.containEql('README.md');
+        done();
+      })
+      .catch(done);
+  });
+
+  it('should make a zip', (done) => {
+    const osTmpDir = fse.realpathSync(os.tmpdir());
+    const tmpProjectDir = path.join(osTmpDir, 'zapier-' + crypto.randomBytes(4).toString('hex'));
+    const tmpZipPath = path.join(osTmpDir, 'zapier-' + crypto.randomBytes(4).toString('hex'), 'build.zip');
+    const tmpUnzipPath = path.join(osTmpDir, 'zapier-' + crypto.randomBytes(4).toString('hex'));
+
+    fse.outputFileSync(path.join(tmpProjectDir, 'zapierwrapper.js'), 'console.log(\'hello!\')');
+    fse.outputFileSync(path.join(tmpProjectDir, 'index.js'), 'console.log(\'hello!\')');
+    fse.ensureDirSync(path.dirname(tmpZipPath));
+
+    global.argOpts = {};
+
+    build.makeZip(tmpProjectDir, tmpZipPath)
+      .then(() => {
+        fs.statSync(tmpZipPath).size.should.be.above(0);
+
+        const zip = new AdmZip(tmpZipPath);
+        zip.extractAllTo(tmpUnzipPath, true);
+
+        fs.statSync(path.join(tmpUnzipPath, 'zapierwrapper.js')).size.should.be.above(0);
+        fs.statSync(path.join(tmpUnzipPath, 'index.js')).size.should.be.above(0);
+
         done();
       })
       .catch(done);

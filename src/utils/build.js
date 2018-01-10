@@ -170,7 +170,7 @@ const makeZip = (dir, zipPath) => {
             basePath = undefined;
           }
           var name = path.join(dir, filePath);
-          zip.file(name, {name: filePath});
+          zip.file(name, {name: filePath, mode: 0o777 });
         });
 
         zip.finalize();
@@ -329,4 +329,5 @@ module.exports = {
   buildAndUploadDir,
   listFiles,
   requiredFiles,
+  makeZip,
 };
