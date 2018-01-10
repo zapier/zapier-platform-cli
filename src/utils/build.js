@@ -361,10 +361,6 @@ module.exports = {
   build,
   buildAndUploadDir,
   listFiles,
-<<<<<<< HEAD
   requiredFiles,
   makeZip,
-=======
-  requiredFiles
->>>>>>> master
 };
