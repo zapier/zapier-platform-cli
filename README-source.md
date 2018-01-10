@@ -27,7 +27,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
-that exports a single object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
+that exports a single object ([JSON Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#appschema)) and upload it to Zapier.
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.
 
@@ -229,6 +229,8 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 
+> Note: To see the changes that were just pushed reflected in the browser, you have to manually refresh the browser each time you push.
+
 
 ### Private App Version (default)
 
@@ -269,18 +271,19 @@ zapier deprecate 1.0.0 2017-01-01
 
 ## Converting an Existing App
 
-> Warning! This is in a **very** alpha state - the immediate goal is to provide some basic structure to match an existing application. It will not even get close to a working copy of your existing app (yet).
-
-If you have an existing application (nominally named "V2") on https://zapier.com/developer/builder/ you can use it as a template to kickstart your local application.
+If you have an existing Web Builder app on [Zapier Developer Platform](https://zapier.com/developer/builder/) you can use it as a template to kickstart your local application.
 
 ```bash
-# the 1234 is from the URL in https://zapier.com/developer/builder/
-zapier convert 1234 .
+# Convert an existing Web Builder app to a CLI app in the my-app directory
+# App ID 1234 is from URL https://zapier.com/developer/builder/app/1234/development
+zapier convert 1234 my-app
 ```
 
-You app will be created and you can continue working on it.
+Your CLI app will be created and you can continue working on it.
 
-> Note - there is no way to convert a CLI app to a V2 app and we do not plan on implementing this.
+> Since v3.3.0, `zapier convert` has been improved a lot. But this is still in an alpha state - you'll likely have to edit the code to make it work.
+
+> Note - there is no way to convert a CLI app to a Web Builder app and we do not plan on implementing this.
 
 ## Authentication
 
@@ -391,7 +394,7 @@ The second is the `noun`, the user-friendly name of the resource that is present
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-resource for a working example app using resources.
 
 After those, there is a set of optional properties that tell Zapier what methods can be performed on the resource.
-The complete list of available methods can be found in the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema).
+The complete list of available methods can be found in the [Resource Schema Docs](https://zapier.github.io/zapier-platform-schema/build/schema.html#resourceschema).
 For now, let's focus on two:
 
  * `list` - Tells Zapier how to fetch a set of this resource. This becomes a Trigger in the Zapier Editor.
@@ -403,7 +406,7 @@ Here is a complete example of what the list method might look like
 [insert-file:./snippets/recipe-list.js]
 ```
 
-The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema)) provides the implementation to make the API call.
+The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#resourceschema)) provides the implementation to make the API call.
 
 Adding a create method looks very similar.
 
@@ -429,8 +432,8 @@ The definition for each of these follows the same structure. Here is an example 
 [insert-file:./snippets/trigger.js]
 ```
 
-You can find more details on the definition for each by looking at the [Trigger Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#triggerschema),
-[Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Create Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#createschema).
+You can find more details on the definition for each by looking at the [Trigger Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#triggerschema),
+[Search Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#searchschema), and [Create Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#createschema).
 
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-trigger for a working example app using triggers.
 
@@ -454,7 +457,7 @@ Each of the 3 types of function expects a certain type of object. As of core `v1
 
 On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "create contact" action with fields like "First name", "Last name", "Email", etc.
 
-You can find more details on each and every field option at [Field Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#fieldschema).
+You can find more details on each and every field option at [Field Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema).
 
 Those fields have various options you can provide, here is a succinct example:
 
@@ -508,6 +511,11 @@ For fields that take id of another object to create a relationship between the t
 
 If you don't define a trigger for the `dynamic` property, the search connector won't show.
 
+### Computed Fields
+
+In OAuth and Session Auth, you might want to store fields in `bundle.authData` (other than `access_token`, `refresh_token` — for OAuth —, or `sessionKey` — for Session Auth), that you don't want the user to fill in.
+
+For those situations, you need a computed field. It's just like another field, but with a `computed: true` property (don't forget to also make it `required: false`). You can see examples in the [OAuth](#oauth2) or [Session Auth](#session) example sections.
 
 ## Z Object
 
@@ -519,9 +527,9 @@ We provide several methods off of the `z` object, which is provided as the first
 
 `z.request([url], options)` is a promise based HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
 
-### `z.console(message)`
+### `z.console`
 
-`z.console(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-logging)
+`z.console.log(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-logging)
 
 ### `z.dehydrate(func, inputData)`
 
@@ -689,6 +697,8 @@ should('some tests', () => {
 ```
 
 > This is a popular way to provide `process.env.ACCESS_TOKEN || bundle.authData.access_token` for convenient testing.
+
+> **NOTE** Variables defined via `zapier env` will _always_ be uppercased. For example, you would access the variable defined by `zapier env 1.0.0 foo_bar 1234` with `process.env.FOO_BAR`.
 
 
 ### Accessing Environment Variables
@@ -920,7 +930,7 @@ See a full example with dehydration/hydration wired in correctly:
 
 ## Logging
 
-There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-logging)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
+There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console.log` method ([see below for details](#console-logging)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
 
 To view the logs for your application, use the `zapier logs` command. There are two types of logs, `http` (logged automatically by Zapier on HTTP requests) and `console` (manual logs via `z.console.log()` statements).
 
@@ -932,7 +942,7 @@ zapier help logs
 
 ### Console Logging
 
-To manually print a log statement in your code, use `z.console`:
+To manually print a log statement in your code, use `z.console.log`:
 
 ```javascript
 z.console.log('Here are the input fields', bundle.inputData);
@@ -942,7 +952,7 @@ The `z.console` object has all the same methods and works just like the Node.js 
 
 ### Viewing Console Logs
 
-To see your `z.console` logs, do:
+To see your `z.console.log` logs, do:
 
 ```bash
 zapier logs --type=console
@@ -1051,6 +1061,16 @@ We recommend using the [Mocha](https://mochajs.org/) testing framework. After ru
 [insert-file:./snippets/mocha-test.js]
 ```
 
+### Mocking Requests
+
+While testing, it's useful to test your code without actually hitting any external services. [Nock](https://github.com/node-nock/nock) is a node.js utility that intercepts requests before they ever leave your computer. You can specify a response code, body, headers, and more. It works out of the box with `z.request` by setting up your `nock` before calling `appTester`.
+
+```js
+[insert-file:./snippets/mocha-mocked-test.js]
+```
+
+There's more info about nock and its usage in its [readme](https://github.com/node-nock/nock/blob/master/README.md).
+
 ### Running Unit Tests
 
 To run all your tests do:
@@ -1108,7 +1128,7 @@ This makes it pretty straightforward to integrate into your testing interface. I
 ```yaml
 language: node_js
 node_js:
-  - "4.3.2"
+  - "6.10.2"
 before_script: npm install -g zapier-platform-cli
 script: CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 ```
@@ -1133,6 +1153,20 @@ const jwt = require('jwt');
 During the `zapier build` or `zapier push` step - we'll copy all your code to `/tmp` folder and do a fresh re-install of modules.
 
 > Note: If your package isn't being pushed correctly (IE: you get "Error: Cannot find module 'whatever'" in production), try adding the `--disable-dependency-detection` flag to `zapier push`.
+
+> Note 2: You can also try adding a "includeInBuild" array property (with paths to include, which will be evaluated to RegExp, with a case insensitive flag) to your `.zapierapprc` file, to make it look like:
+
+```json
+{
+  "id": 1,
+  "key": "App1",
+  "includeInBuild": [
+    "test.txt",
+    "testing.json"
+  ]
+}
+
+```
 
 > Warning: do not use compiled libraries unless you run your build on the AWS AMI `ami-6869aa05`.
 
@@ -1256,6 +1290,7 @@ While not always required, it's also recommended you use the same `zapier-platfo
 - `npm install` for getting started
 - `npm run build` for updating `./lib` from `./src`
 - `npm test` for running tests (also runs `npm run build`)
+- `npm run test-convert` for running integration tests for the `zapier convert` command
 - `npm run docs` for updating docs
 - `npm run gen-completions` for updating the auto complete scripts
 

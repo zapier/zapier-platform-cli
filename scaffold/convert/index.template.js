@@ -7,9 +7,9 @@
 const App = {
   version: require('./package.json').version,
   platformVersion: require('zapier-platform-core').version,
-
-  authentication: <%= AUTHENTICATION %>,
-
+<% if (needsAuth) { %>
+  authentication,
+<% } %>
   beforeRequest: [
     <%= BEFORE_REQUESTS %>
   ],
@@ -31,8 +31,10 @@ const App = {
 
   creates: {
     <%= CREATES %>
-  }
-
+  },
+<% if (SEARCH_OR_CREATES) { %>
+  searchOrCreates: <%= SEARCH_OR_CREATES %>
+<% } %>
 };
 
 module.exports = App;

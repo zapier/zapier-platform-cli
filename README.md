@@ -52,9 +52,10 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Custom/Dynamic Fields](#customdynamic-fields)
   * [Dynamic Dropdowns](#dynamic-dropdowns)
   * [Search-Powered Fields](#search-powered-fields)
+  * [Computed Fields](#computed-fields)
 - [Z Object](#z-object)
   * [`z.request([url], options)`](#zrequesturl-options)
-  * [`z.console(message)`](#zconsolemessage)
+  * [`z.console`](#zconsole)
   * [`z.dehydrate(func, inputData)`](#zdehydratefunc-inputdata)
   * [`z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`](#zstashfilebufferstringstream-knownlength-filename-contenttype)
   * [`z.JSON`](#zjson)
@@ -88,6 +89,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Stale Authentication Credentials](#stale-authentication-credentials)
 - [Testing](#testing)
   * [Writing Unit Tests](#writing-unit-tests)
+  * [Mocking Requests](#mocking-requests)
   * [Running Unit Tests](#running-unit-tests)
   * [Testing & Environment Variables](#testing--environment-variables)
   * [Viewing HTTP Logs in Unit Tests](#viewing-http-logs-in-unit-tests)
@@ -114,7 +116,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
-that exports a single object ([JSON Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#appschema)) and upload it to Zapier.
+that exports a single object ([JSON Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#appschema)) and upload it to Zapier.
 Zapier introspects that definition to find out what your app is capable of and
 what options to present end users in the Zap Editor.
 
@@ -271,32 +273,23 @@ const App = {
   platformVersion: require('zapier-platform-core').version,
 
   // see "Authentication" section below
-  authentication: {
-  },
+  authentication: {},
 
   // see "Dehydration" section below
-  hydrators: {
-  },
+  hydrators: {},
 
   // see "Making HTTP Requests" section below
-  requestTemplate: {
-  },
-  beforeRequest: [
-  ],
-  afterResponse: [
-  ],
+  requestTemplate: {},
+  beforeRequest: [],
+  afterResponse: [],
 
   // See "Resources" section below
-  resources: {
-  },
+  resources: {},
 
   // See "Triggers/Searches/Creates" section below
-  triggers: {
-  },
-  searches: {
-  },
-  creates: {
-  }
+  triggers: {},
+  searches: {},
+  creates: {}
 };
 
 module.exports = App;
@@ -351,6 +344,8 @@ If you'd like to manage your **Version**, use these commands:
 * `zapier deprecate [1.0.0] [YYYY-MM-DD]` - mark a version as deprecated, but let users continue to use it (we'll email them)
 * `zapier env 1.0.0 [KEY] [value]` - set an environment variable to some value
 
+> Note: To see the changes that were just pushed reflected in the browser, you have to manually refresh the browser each time you push.
+
 
 ### Private App Version (default)
 
@@ -391,18 +386,19 @@ zapier deprecate 1.0.0 2017-01-01
 
 ## Converting an Existing App
 
-> Warning! This is in a **very** alpha state - the immediate goal is to provide some basic structure to match an existing application. It will not even get close to a working copy of your existing app (yet).
-
-If you have an existing application (nominally named "V2") on https://zapier.com/developer/builder/ you can use it as a template to kickstart your local application.
+If you have an existing Web Builder app on [Zapier Developer Platform](https://zapier.com/developer/builder/) you can use it as a template to kickstart your local application.
 
 ```bash
-# the 1234 is from the URL in https://zapier.com/developer/builder/
-zapier convert 1234 .
+# Convert an existing Web Builder app to a CLI app in the my-app directory
+# App ID 1234 is from URL https://zapier.com/developer/builder/app/1234/development
+zapier convert 1234 my-app
 ```
 
-You app will be created and you can continue working on it.
+Your CLI app will be created and you can continue working on it.
 
-> Note - there is no way to convert a CLI app to a V2 app and we do not plan on implementing this.
+> Since v3.3.0, `zapier convert` has been improved a lot. But this is still in an alpha state - you'll likely have to edit the code to make it work.
+
+> Note - there is no way to convert a CLI app to a Web Builder app and we do not plan on implementing this.
 
 ## Authentication
 
@@ -431,7 +427,7 @@ const authentication = {
 
 const App = {
   // ...
-  authentication: authentication,
+  authentication: authentication
   // ...
 };
 
@@ -448,11 +444,22 @@ const authentication = {
   type: 'custom',
   // "test" could also be a function
   test: {
-    url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
+    url:
+      'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
   },
   fields: [
-    {key: 'subdomain', type: 'string', required: true, helpText: 'Found in your browsers address bar after logging in.'},
-    {key: 'api_key', type: 'string', required: true, helpText: 'Found on your settings page.'}
+    {
+      key: 'subdomain',
+      type: 'string',
+      required: true,
+      helpText: 'Found in your browsers address bar after logging in.'
+    },
+    {
+      key: 'api_key',
+      type: 'string',
+      required: true,
+      helpText: 'Found on your settings page.'
+    }
   ]
 };
 
@@ -466,9 +473,7 @@ const addApiKeyToHeader = (request, z, bundle) => {
 const App = {
   // ...
   authentication: authentication,
-  beforeRequest: [
-    addApiKeyToHeader,
-  ],
+  beforeRequest: [addApiKeyToHeader]
   // ...
 };
 
@@ -485,7 +490,8 @@ const authentication = {
   test: {
     url: 'https://example.com/api/accounts/me.json'
   },
-  connectionLabel: (z, bundle) => { // Can also be a string, check basic auth above for an example
+  connectionLabel: (z, bundle) => {
+    // Can also be a string, check basic auth above for an example
     // bundle.inputData has whatever comes back from the .test function/request, assuming it returns a JSON object
     return bundle.inputData.email;
   }
@@ -494,7 +500,7 @@ const authentication = {
 
 const App = {
   // ...
-  authentication: authentication,
+  authentication: authentication
   // ...
 };
 
@@ -513,16 +519,16 @@ const getSessionKey = (z, bundle) => {
     url: 'https://example.com/api/accounts/login.json',
     body: {
       username: bundle.inputData.username,
-      password: bundle.inputData.password,
+      password: bundle.inputData.password
     }
   });
 
-  return promise.then((response) => {
+  return promise.then(response => {
     if (response.status === 401) {
       throw new Error('The username/password you supplied is invalid');
     }
     return {
-      sessionKey: JSON.parse(response.content).sessionKey
+      sessionKey: z.JSON.parse(response.content).sessionKey
     };
   });
 };
@@ -534,8 +540,23 @@ const authentication = {
     url: 'https://example.com/api/accounts/me.json'
   },
   fields: [
-    {key: 'username', type: 'string', required: true, helpText: 'Your login username.'},
-    {key: 'password', type: 'string', required: true, helpText: 'Your login password.'}
+    {
+      key: 'username',
+      type: 'string',
+      required: true,
+      helpText: 'Your login username.'
+    },
+    {
+      key: 'password',
+      type: 'string',
+      required: true,
+      helpText: 'Your login password.'
+    }
+    // For Session Auth we store `sessionKey` automatically in `bundle.authData`
+    // for future use. If you need to save/use something that the user shouldn't
+    // need to type/choose, add a "computed" field, like:
+    // {key: 'something': type: 'string', required: false, computed: true}
+    // And remember to return it in sessionConfig.perform
   ],
   sessionConfig: {
     perform: getSessionKey
@@ -562,12 +583,8 @@ const sessionRefreshIf401 = (response, z, bundle) => {
 const App = {
   // ...
   authentication: authentication,
-  beforeRequest: [
-    includeSessionKeyHeader
-  ],
-  afterResponse: [
-    sessionRefreshIf401
-  ],
+  beforeRequest: [includeSessionKeyHeader],
+  afterResponse: [sessionRefreshIf401]
   // ...
 };
 
@@ -606,14 +623,16 @@ Your auth definition would look something like this:
 const authentication = {
   type: 'oauth2',
   test: {
-    url: 'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
+    url:
+      'https://{{bundle.authData.subdomain}}.example.com/api/accounts/me.json'
   },
   // you can provide additional fields for inclusion in authData
   oauth2Config: {
     // "authorizeUrl" could also be a function returning a string url
     authorizeUrl: {
       method: 'GET',
-      url: 'https://{{bundle.inputData.subdomain}}.example.com/api/oauth2/authorize',
+      url:
+        'https://{{bundle.inputData.subdomain}}.example.com/api/oauth2/authorize',
       params: {
         client_id: '{{process.env.CLIENT_ID}}',
         state: '{{bundle.inputData.state}}',
@@ -625,7 +644,8 @@ const authentication = {
     // "getAccessToken" could also be a function returning an object
     getAccessToken: {
       method: 'POST',
-      url: 'https://{{bundle.inputData.subdomain}}.example.com/api/v2/oauth2/token',
+      url:
+        'https://{{bundle.inputData.subdomain}}.example.com/api/v2/oauth2/token',
       body: {
         code: '{{bundle.inputData.code}}',
         client_id: '{{process.env.CLIENT_ID}}',
@@ -641,7 +661,12 @@ const authentication = {
   },
   // If you need any fields upfront, put them here
   fields: [
-    {key: 'subdomain', type: 'string', required: true, default: 'app'}
+    { key: 'subdomain', type: 'string', required: true, default: 'app' }
+    // For OAuth we store `access_token` and `refresh_token` automatically
+    // in `bundle.authData` for future use. If you need to save/use something
+    // that the user shouldn't need to type/choose, add a "computed" field, like:
+    // {key: 'something': type: 'string', required: false, computed: true}
+    // And remember to return it in oauth2Config.getAccessToken/refreshAccessToken
   ]
 };
 
@@ -655,9 +680,7 @@ const addBearerHeader = (request, z, bundle) => {
 const App = {
   // ...
   authentication: authentication,
-  beforeRequest: [
-    addBearerHeader,
-  ]
+  beforeRequest: [addBearerHeader]
   // ...
 };
 
@@ -708,7 +731,7 @@ The second is the `noun`, the user-friendly name of the resource that is present
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-resource for a working example app using resources.
 
 After those, there is a set of optional properties that tell Zapier what methods can be performed on the resource.
-The complete list of available methods can be found in the [Resource Schema Docs](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema).
+The complete list of available methods can be found in the [Resource Schema Docs](https://zapier.github.io/zapier-platform-schema/build/schema.html#resourceschema).
 For now, let's focus on two:
 
  * `list` - Tells Zapier how to fetch a set of this resource. This becomes a Trigger in the Zapier Editor.
@@ -737,7 +760,7 @@ const Recipe = {
 
 ```
 
-The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#resourceschema)) provides the implementation to make the API call.
+The method is made up of two properties, a `display` and an `operation`. The `display` property ([schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#basicdisplayschema)) holds the info needed to present the method as an available Trigger in the Zapier Editor. The `operation` ([schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#resourceschema)) provides the implementation to make the API call.
 
 Adding a create method looks very similar.
 
@@ -786,7 +809,7 @@ The definition for each of these follows the same structure. Here is an example 
 
 ```javascript
 const recipeListRequest = {
-  url: 'http://example.com/recipes',
+  url: 'http://example.com/recipes'
 };
 
 const App = {
@@ -813,8 +836,8 @@ const App = {
 
 ```
 
-You can find more details on the definition for each by looking at the [Trigger Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#triggerschema),
-[Search Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#searchschema), and [Create Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#createschema).
+You can find more details on the definition for each by looking at the [Trigger Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#triggerschema),
+[Search Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#searchschema), and [Create Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#createschema).
 
 > Example App: check out https://github.com/zapier/zapier-platform-example-app-trigger for a working example app using triggers.
 
@@ -838,7 +861,7 @@ Each of the 3 types of function expects a certain type of object. As of core `v1
 
 On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "create contact" action with fields like "First name", "Last name", "Email", etc.
 
-You can find more details on each and every field option at [Field Schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#fieldschema).
+You can find more details on each and every field option at [Field Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema).
 
 Those fields have various options you can provide, here is a succinct example:
 
@@ -851,8 +874,17 @@ const App = {
       operation: {
         // an array of objects is the simplest way
         inputFields: [
-          {key: 'title', required: true, label: 'Title of Recipe', helpText: 'Name your recipe!'},
-          {key: 'style', required: true, choices: {mexican: 'Mexican', italian: 'Italian'}}
+          {
+            key: 'title',
+            required: true,
+            label: 'Title of Recipe',
+            helpText: 'Name your recipe!'
+          },
+          {
+            key: 'style',
+            required: true,
+            choices: { mexican: 'Mexican', italian: 'Italian' }
+          }
         ],
         perform: () => {}
       }
@@ -883,8 +915,17 @@ const App = {
       operation: {
         // an array of objects is the simplest way
         inputFields: [
-          {key: 'title', required: true, label: 'Title of Recipe', helpText: 'Name your recipe!'},
-          {key: 'style', required: true, choices: {mexican: 'Mexican', italian: 'Italian'}},
+          {
+            key: 'title',
+            required: true,
+            label: 'Title of Recipe',
+            helpText: 'Name your recipe!'
+          },
+          {
+            key: 'style',
+            required: true,
+            choices: { mexican: 'Mexican', italian: 'Italian' }
+          },
           recipeFields // provide a function inline - we'll merge the results!
         ],
         perform: () => {}
@@ -907,15 +948,22 @@ module.exports = {
   },
   operation: {
     inputFields: [
-      {key: 'type', required: true, choices: {1: 'cake', 2: 'ice cream', 3: 'cookie'}, altersDynamicFields: true},
+      {
+        key: 'type',
+        required: true,
+        choices: { 1: 'cake', 2: 'ice cream', 3: 'cookie' },
+        altersDynamicFields: true
+      },
       function(z, bundle) {
         if (bundle.inputData.type === '2') {
-          return [{key: 'with_sprinkles', type: 'boolean'}];
+          return [{ key: 'with_sprinkles', type: 'boolean' }];
         }
         return [];
       }
     ],
-    perform: function (z, bundle) {/* ... */}
+    perform: function(z, bundle) {
+      /* ... */
+    }
   }
 };
 
@@ -939,7 +987,9 @@ const App = {
       list: {
         //...
         operation: {
-          perform: () => { return [{id: 123, name: 'Project 1'}]; } // called for project_id dropdown
+          perform: () => {
+            return [{ id: 123, name: 'Project 1' }];
+          } // called for project_id dropdown
         }
       }
     },
@@ -950,9 +1000,19 @@ const App = {
         //...
         operation: {
           inputFields: [
-            {key: 'project_id', required: true, label: 'Project', dynamic: 'projectList.id.name'}, // calls project.list
-            {key: 'title', required: true, label: 'Title', helpText: 'What is the name of the issue?'},
-          ],
+            {
+              key: 'project_id',
+              required: true,
+              label: 'Project',
+              dynamic: 'projectList.id.name'
+            }, // calls project.list
+            {
+              key: 'title',
+              required: true,
+              label: 'Title',
+              helpText: 'What is the name of the issue?'
+            }
+          ]
         }
       }
     }
@@ -981,7 +1041,9 @@ const App = {
       search: {
         //...
         operation: {
-          perform: () => { return [{id: 123, name: 'Project 1'}]; } // called for project_id
+          perform: () => {
+            return [{ id: 123, name: 'Project 1' }];
+          } // called for project_id
         }
       }
     },
@@ -992,9 +1054,20 @@ const App = {
         //...
         operation: {
           inputFields: [
-            {key: 'project_id', required: true, label: 'Project', dynamic: 'projectList.id.name', search: 'projectSearch.id'}, // calls project.search (requires a trigger in the "dynamic" property)
-            {key: 'title', required: true, label: 'Title', helpText: 'What is the name of the issue?'},
-          ],
+            {
+              key: 'project_id',
+              required: true,
+              label: 'Project',
+              dynamic: 'projectList.id.name',
+              search: 'projectSearch.id'
+            }, // calls project.search (requires a trigger in the "dynamic" property)
+            {
+              key: 'title',
+              required: true,
+              label: 'Title',
+              helpText: 'What is the name of the issue?'
+            }
+          ]
         }
       }
     }
@@ -1007,6 +1080,11 @@ const App = {
 
 If you don't define a trigger for the `dynamic` property, the search connector won't show.
 
+### Computed Fields
+
+In OAuth and Session Auth, you might want to store fields in `bundle.authData` (other than `access_token`, `refresh_token` — for OAuth —, or `sessionKey` — for Session Auth), that you don't want the user to fill in.
+
+For those situations, you need a computed field. It's just like another field, but with a `computed: true` property (don't forget to also make it `required: false`). You can see examples in the [OAuth](#oauth2) or [Session Auth](#session) example sections.
 
 ## Z Object
 
@@ -1018,9 +1096,9 @@ We provide several methods off of the `z` object, which is provided as the first
 
 `z.request([url], options)` is a promise based HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests).
 
-### `z.console(message)`
+### `z.console`
 
-`z.console(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-logging)
+`z.console.log(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-logging)
 
 ### `z.dehydrate(func, inputData)`
 
@@ -1189,6 +1267,8 @@ should('some tests', () => {
 
 > This is a popular way to provide `process.env.ACCESS_TOKEN || bundle.authData.access_token` for convenient testing.
 
+> **NOTE** Variables defined via `zapier env` will _always_ be uppercased. For example, you would access the variable defined by `zapier env 1.0.0 foo_bar 1234` with `process.env.FOO_BAR`.
+
 
 ### Accessing Environment Variables
 
@@ -1210,7 +1290,10 @@ const listExample = (z, bundle) => {
       'my-header': process.env.MY_SECRET_VALUE
     }
   };
-  const response = z.request('http://example.com/api/v2/recipes.json', httpOptions);
+  const response = z.request(
+    'http://example.com/api/v2/recipes.json',
+    httpOptions
+  );
   return response.then(res => res.json);
 };
 
@@ -1300,13 +1383,14 @@ const listExample = (z, bundle) => {
     }
   };
 
-  return z.request('http://example.com/api/v2/recipes.json', customHttpOptions)
+  return z
+    .request('http://example.com/api/v2/recipes.json', customHttpOptions)
     .then(response => {
       if (response.status >= 300) {
         throw new Error(`Unexpected status code ${response.status}`);
       }
 
-      const recipes = JSON.parse(response.content);
+      const recipes = z.JSON.parse(response.content);
       // do any custom processing of recipes here...
 
       return recipes;
@@ -1352,7 +1436,8 @@ const App = {
             body: JSON.stringify(recipe)
           };
 
-          return z.request('http://example.com/api/v2/recipes.json', options)
+          return z
+            .request('http://example.com/api/v2/recipes.json', options)
             .then(response => {
               if (response.status !== 201) {
                 throw new Error(`Unexpected status code ${response.status}`);
@@ -1377,12 +1462,12 @@ If you need to process all HTTP requests in a certain way, you may be able to us
 Try putting them in your app definition:
 
 ```javascript
-const addHeader = (request, /*z*/) => {
+const addHeader = (request /*, z*/) => {
   request.headers['my-header'] = 'from zapier';
   return request;
 };
 
-const mustBe200 = (response, /*z*/) => {
+const mustBe200 = (response /*, z*/) => {
   if (response.status !== 200) {
     throw new Error(`Unexpected status code ${response.status}`);
   }
@@ -1396,13 +1481,8 @@ const autoParseJson = (response, z) => {
 
 const App = {
   // ...
-  beforeRequest: [
-    addHeader,
-  ],
-  afterResponse: [
-    mustBe200,
-    autoParseJson,
-  ]
+  beforeRequest: [addHeader],
+  afterResponse: [mustBe200, autoParseJson]
   // ...
 };
 
@@ -1511,12 +1591,12 @@ Here is an example that pulls in extra data for a movie:
 ```javascript
 const getExtraDataFunction = (z, bundle) => {
   const url = `http://example.com/movies/${bundle.inputData.id}.json`;
-  return z.request(url)
-    .then(res => z.JSON.parse(res.content));
+  return z.request(url).then(res => z.JSON.parse(res.content));
 };
 
 const movieList = (z, bundle) => {
-  return z.request('http://example.com/movies.json')
+  return z
+    .request('http://example.com/movies.json')
     .then(res => z.JSON.parse(res.content))
     .then(results => {
       return results.map(result => {
@@ -1601,7 +1681,8 @@ const stashPDFfunction = (z, bundle) => {
 };
 
 const pdfList = (z, bundle) => {
-  return z.request('http://example.com/pdfs.json')
+  return z
+    .request('http://example.com/pdfs.json')
     .then(res => z.JSON.parse(res.content))
     .then(results => {
       return results.map(result => {
@@ -1647,7 +1728,7 @@ module.exports = App;
 
 ## Logging
 
-There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console` method ([see below for details](#console-logging)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
+There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console.log` method ([see below for details](#console-logging)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
 
 To view the logs for your application, use the `zapier logs` command. There are two types of logs, `http` (logged automatically by Zapier on HTTP requests) and `console` (manual logs via `z.console.log()` statements).
 
@@ -1659,7 +1740,7 @@ zapier help logs
 
 ### Console Logging
 
-To manually print a log statement in your code, use `z.console`:
+To manually print a log statement in your code, use `z.console.log`:
 
 ```javascript
 z.console.log('Here are the input fields', bundle.inputData);
@@ -1669,7 +1750,7 @@ The `z.console` object has all the same methods and works just like the Node.js 
 
 ### Viewing Console Logs
 
-To see your `z.console` logs, do:
+To see your `z.console.log` logs, do:
 
 ```bash
 zapier logs --type=console
@@ -1785,9 +1866,8 @@ const App = require('../index');
 const appTester = zapier.createAppTester(App);
 
 describe('triggers', () => {
-
   describe('new recipe trigger', () => {
-    it('should load recipes', (done) => {
+    it('should load recipes', done => {
       // This is what Zapier will send to your app as input.
       // It contains trigger options the user choice in their zap.
       const bundle = {
@@ -1812,10 +1892,84 @@ describe('triggers', () => {
         .catch(done);
     });
   });
-
 });
 
 ```
+
+### Mocking Requests
+
+While testing, it's useful to test your code without actually hitting any external services. [Nock](https://github.com/node-nock/nock) is a node.js utility that intercepts requests before they ever leave your computer. You can specify a response code, body, headers, and more. It works out of the box with `z.request` by setting up your `nock` before calling `appTester`.
+
+```js
+require('should');
+
+const zapier = require('zapier-platform-core');
+
+const App = require('../index');
+const appTester = zapier.createAppTester(App);
+
+const nock = require('nock');
+
+describe('triggers', () => {
+  describe('new recipe trigger', () => {
+    it('should load recipes', done => {
+      const bundle = {
+        inputData: {
+          style: 'mediterranean'
+        }
+      };
+
+      // mocks the next request that matches this url and querystring
+      nock('http://57b20fb546b57d1100a3c405.mockapi.io/api')
+        .get('/recipes')
+        .query(bundle.inputData)
+        .reply(200, [
+          { name: 'name 1', directions: 'directions 1', id: 1 },
+          { name: 'name 2', directions: 'directions 2', id: 2 }
+        ]);
+
+      appTester(App.triggers.recipe.operation.perform, bundle)
+        .then(results => {
+          results.length.should.above(1);
+
+          const firstRecipe = results[0];
+          firstRecipe.name.should.eql('name 1');
+          firstRecipe.directions.should.eql('directions 1');
+
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should load recipes without filters', done => {
+      const bundle = {};
+
+      // each test needs its own mock
+      nock('http://57b20fb546b57d1100a3c405.mockapi.io/api')
+        .get('/recipes')
+        .reply(200, [
+          { name: 'name 1', directions: 'directions 1', id: 1 },
+          { name: 'name 2', directions: 'directions 2', id: 2 }
+        ]);
+
+      appTester(App.triggers.recipe.operation.perform, bundle)
+        .then(results => {
+          results.length.should.above(1);
+
+          const firstRecipe = results[0];
+          firstRecipe.name.should.eql('name 1');
+          firstRecipe.directions.should.eql('directions 1');
+
+          done();
+        })
+        .catch(done);
+    });
+  });
+});
+
+```
+
+There's more info about nock and its usage in its [readme](https://github.com/node-nock/nock/blob/master/README.md).
 
 ### Running Unit Tests
 
@@ -1874,7 +2028,7 @@ This makes it pretty straightforward to integrate into your testing interface. I
 ```yaml
 language: node_js
 node_js:
-  - "4.3.2"
+  - "6.10.2"
 before_script: npm install -g zapier-platform-cli
 script: CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 ```
@@ -1899,6 +2053,20 @@ const jwt = require('jwt');
 During the `zapier build` or `zapier push` step - we'll copy all your code to `/tmp` folder and do a fresh re-install of modules.
 
 > Note: If your package isn't being pushed correctly (IE: you get "Error: Cannot find module 'whatever'" in production), try adding the `--disable-dependency-detection` flag to `zapier push`.
+
+> Note 2: You can also try adding a "includeInBuild" array property (with paths to include, which will be evaluated to RegExp, with a case insensitive flag) to your `.zapierapprc` file, to make it look like:
+
+```json
+{
+  "id": 1,
+  "key": "App1",
+  "includeInBuild": [
+    "test.txt",
+    "testing.json"
+  ]
+}
+
+```
 
 > Warning: do not use compiled libraries unless you run your build on the AWS AMI `ami-6869aa05`.
 
@@ -2022,6 +2190,7 @@ While not always required, it's also recommended you use the same `zapier-platfo
 - `npm install` for getting started
 - `npm run build` for updating `./lib` from `./src`
 - `npm test` for running tests (also runs `npm run build`)
+- `npm run test-convert` for running integration tests for the `zapier convert` command
 - `npm run docs` for updating docs
 - `npm run gen-completions` for updating the auto complete scripts
 

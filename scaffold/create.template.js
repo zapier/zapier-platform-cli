@@ -2,13 +2,13 @@
 const create<%= CAMEL %> = (z, bundle) => {
   const responsePromise = z.request({
     method: 'POST',
-    url: 'http://example.com/api/<%= KEY %>s.json',
+    url: 'https://jsonplaceholder.typicode.com/posts',
     body: JSON.stringify({
       name: bundle.inputData.name
     })
   });
   return responsePromise
-    .then(response => JSON.parse(response.content));
+    .then(response => z.JSON.parse(response.content));
 };
 
 module.exports = {

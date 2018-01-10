@@ -1,9 +1,67 @@
+## 4.3.1
+
+* (Fix) [Broken patching on http.request.](https://github.com/zapier/zapier-platform-core/pull/61)
+
+## 4.3.0
+
+* (New) `zapier convert` now supports [custom auth mapping](https://github.com/zapier/zapier-platform-cli/pull/200), [searchOrCreates](https://github.com/zapier/zapier-platform-cli/pull/207) and ["Send to Action Endpoint URL in JSON body" checkbox](https://github.com/zapier/zapier-platform-cli/pull/204).
+* (New) [`zapier scaffold` now also creates a test.](https://github.com/zapier/zapier-platform-cli/pull/212)
+* (New) [Allow ordering static dropdowns.](https://github.com/zapier/zapier-platform-schema/pull/30)
+* (Fix) [Properly replace variables in URLs in `zapier convert` generated code.](https://github.com/zapier/zapier-platform-cli/pull/208)
+* (Fix) [Fix TypeError in `http.request` patch.](https://github.com/zapier/zapier-platform-core/pull/59)
+* (Doc) [Clarify pushing doesn't reload browser automatically.](https://github.com/zapier/zapier-platform-cli/pull/218)
+* [Use working endpoints for scaffolds.](https://github.com/zapier/zapier-platform-cli/pull/215)
+* [Notify for update less often.](https://github.com/zapier/zapier-platform-cli/pull/210)
+* [Introduce Prettier into development process.](https://github.com/zapier/zapier-platform-cli/pull/209)
+* [Ensure all template code use z.JSON.parse.](https://github.com/zapier/zapier-platform-cli/pull/216)
+
+## 4.2.3
+
+* The first build made by Travis CI!
+
+## 4.2.1
+
+* (Fix) Repack zapier-platform-core to really fix bloated size
+
+## 4.2.0
+
+* (New) `zapier convert` now supports [input](https://github.com/zapier/zapier-platform-cli/pull/196) and [output custom fields](https://github.com/zapier/zapier-platform-cli/pull/199).
+* (New) [Prettify `zapier convert` generated code.](https://github.com/zapier/zapier-platform-cli/pull/202)
+* (Fix) [Fix bloated size of zapier-platform-core 4.1.0 package.](https://github.com/zapier/zapier-platform-core/pull/56)
+* (Fix) [Fix typos in docs.](https://github.com/zapier/zapier-platform-cli/pull/197)
+* (Doc) [Add 'Mocking Requests' section to docs.](https://github.com/zapier/zapier-platform-cli/pull/201)
+* (Doc) [Mark step 'order' as deprecated.](https://github.com/zapier/zapier-platform-schema/pull/28)
+
+## 4.1.0
+
+* (New) `zapier convert` now supports [auth](https://github.com/zapier/zapier-platform-cli/pull/185) and [search](https://github.com/zapier/zapier-platform-cli/pull/186) scripting methods.
+* (New) [Allow to migrate users by email.](https://github.com/zapier/zapier-platform-cli/pull/192)
+* (New) [Accept changelog for app promotion.](https://github.com/zapier/zapier-platform-cli/pull/194)
+* (Doc) [Add explanation about uppercased env vars.](https://github.com/zapier/zapier-platform-cli/pull/195)
+* [Improve first promote message.](https://github.com/zapier/zapier-platform-cli/pull/191)
+
+## 4.0.0
+
+* (**BREAKING**) (Fix) [Encode form requests with + instead of %20 by default](https://github.com/zapier/zapier-platform-core/pull/52)
+* (**BREAKING**) (Fix) [Don't add content-type if there's one](https://github.com/zapier/zapier-platform-core/pull/55)
+* (Fix) [Replace _.truncate, save memory.](https://github.com/zapier/zapier-platform-core/pull/54)
+* (Fix) [fix: exit code 1 for only for errors](https://github.com/zapier/zapier-platform-cli/pull/154)
+* (Fix) [`zapier convert`: Escape special chars in field help text](https://github.com/zapier/zapier-platform-cli/pull/182)
+* (Fix) [`zapier convert`: Normalize newlines in scripting ](https://github.com/zapier/zapier-platform-cli/pull/183)
+* (New) [`zapier convert`: Generate create code based on different scripting method combinations](https://github.com/zapier/zapier-platform-cli/pull/181)
+* (New) [`zapier convert`: Ignore _pre_poll and _post_poll if _poll exists ](https://github.com/zapier/zapier-platform-cli/pull/187)
+* (New) [Customize update notification message](https://github.com/zapier/zapier-platform-cli/pull/188)
+* (New) [Allow to include a regexp of paths for the build file](https://github.com/zapier/zapier-platform-cli/pull/158)
+* (New) [Add example docs about computed fields.](https://github.com/zapier/zapier-platform-cli/pull/184)
+
+
 ## 3.3.0
 
 * [Log http(s) requests for non-client library](https://github.com/zapier/zapier-platform-core/pull/51)
-* Many improvements for `zapier convert`: [Copy noun](https://github.com/zapier/zapier-platform-cli/pull/159), [Copy display label](https://github.com/zapier/zapier-platform-cli/pull/160), [Copy description](https://github.com/zapier/zapier-platform-cli/pull/163), [Copy important and hidden props](https://github.com/zapier/zapier-platform-cli/pull/166), [Add more tests](https://github.com/zapier/zapier-platform-cli/pull/170), [Converting more auths](https://github.com/zapier/zapier-platform-cli/pull/167), [Allowing deasync in build](https://github.com/zapier/zapier-platform-cli/pull/169), [Converting scripting for triggers](https://github.com/zapier/zapier-platform-cli/pull/172), [Support for dynamic dropdowns and search-powered fields](https://github.com/zapier/zapier-platform-cli/pull/173)
+* Many improvements for `zapier convert`: [Copy noun](https://github.com/zapier/zapier-platform-cli/pull/159), [Copy display label](https://github.com/zapier/zapier-platform-cli/pull/160), [Copy description](https://github.com/zapier/zapier-platform-cli/pull/163), [Copy important and hidden props](https://github.com/zapier/zapier-platform-cli/pull/166), [Add more tests](https://github.com/zapier/zapier-platform-cli/pull/170), [Converting more auths](https://github.com/zapier/zapier-platform-cli/pull/167), [Allowing deasync in build](https://github.com/zapier/zapier-platform-cli/pull/169), [Converting scripting for triggers](https://github.com/zapier/zapier-platform-cli/pull/172), [Support for dynamic dropdowns and search-powered fields](https://github.com/zapier/zapier-platform-cli/pull/173), [Adding a command for integrations test](https://github.com/zapier/zapier-platform-cli/pull/175), [Add basic tests for triggers, creates, and searches](https://github.com/zapier/zapier-platform-cli/pull/178), [Remove empty help text](https://github.com/zapier/zapier-platform-cli/pull/179)
 * [Skip style check on invalid apps](https://github.com/zapier/zapier-platform-cli/pull/168)
 * [Add header to docs](https://github.com/zapier/zapier-platform-cli/pull/153)
+* [Add option to `--grep` on `zapier test`](https://github.com/zapier/zapier-platform-cli/pull/177)
 
 ## 3.2.1
 
