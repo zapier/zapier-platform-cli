@@ -1,4 +1,4 @@
-require('should');
+const should = require('should');
 
 const crypto = require('crypto');
 const os = require('os');
@@ -6,9 +6,9 @@ const path = require('path');
 
 const build = require('../../utils/build');
 
+const decompress = require('decompress');
 const fs = require('fs');
 const fse = require('fs-extra');
-const AdmZip = require('adm-zip');
 
 const entryDir = fs.realpathSync(path.resolve(__dirname, '../../..'));
 const entryPoint = path.resolve(__dirname, '../../../zapier.js');
@@ -63,15 +63,14 @@ describe('build', () => {
       osTmpDir,
       'zapier-' + crypto.randomBytes(4).toString('hex')
     );
+    const tmpIndexPath = path.join(tmpProjectDir, 'index.js');
 
     fse.outputFileSync(
       path.join(tmpProjectDir, 'zapierwrapper.js'),
       "console.log('hello!')"
     );
-    fse.outputFileSync(
-      path.join(tmpProjectDir, 'index.js'),
-      "console.log('hello!')"
-    );
+    fse.outputFileSync(tmpIndexPath, "console.log('hello!')");
+    fs.chmodSync(tmpIndexPath, 0o700);
     fse.outputFileSync(path.join(tmpProjectDir, '.zapierapprc'), '{}');
     fse.ensureDirSync(path.dirname(tmpZipPath));
 
@@ -79,18 +78,26 @@ describe('build', () => {
 
     build
       .makeZip(tmpProjectDir, tmpZipPath)
-      .then(() => {
-        fs.statSync(tmpZipPath).size.should.be.above(0);
+      .then(() => decompress(tmpZipPath, tmpUnzipPath))
+      .then(files => {
+        files.length.should.equal(2);
 
-        const zip = new AdmZip(tmpZipPath);
-        zip.extractAllTo(tmpUnzipPath, true);
-
-        fs
-          .statSync(path.join(tmpUnzipPath, 'zapierwrapper.js'))
-          .size.should.be.above(0);
-        fs
-          .statSync(path.join(tmpUnzipPath, 'index.js'))
-          .size.should.be.above(0);
+        const indexFile = files.find(
+          ({ path: filePath }) => filePath === 'index.js'
+        );
+        should.exist(indexFile);
+        (indexFile.mode & 0o400).should.be.above(
+          0,
+          'no read permission for owner'
+        );
+        (indexFile.mode & 0o040).should.be.above(
+          0,
+          'no read permission for group'
+        );
+        (indexFile.mode & 0o004).should.be.above(
+          0,
+          'no read permission for public'
+        );
 
         done();
       })
