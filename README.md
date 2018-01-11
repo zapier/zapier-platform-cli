@@ -2128,7 +2128,7 @@ const xml = require('pixl-xml');
 
 const App = {
   // ...
-  afterRequest: [
+  afterResponse: [
     (response, z, bundle) => {
       response.xml = xml.parse(response.content);
       return response;
@@ -2141,7 +2141,7 @@ const App = {
 
 *Q: Is it possible to iterate over pages in a polling trigger?*
 
-A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may timeout (which you should avoid at all costs). You should keep an the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that weren't created in the last few hours.
+A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may time out (which you should avoid at all costs).
 
 ```javascript
 // some async call
@@ -2189,6 +2189,51 @@ module.exports = {
   operation: {
     inputFields: [],
     perform: performPaging
+  }
+};
+
+```
+
+If you need to do more requests conditionally based on the results of an HTTP call (such as getting "next url" param, using `async/await` with a transpiler is the way to go. If you go this route, only page as far as you need to. Keep an eye on the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that have probably been seen in a previous poll.
+
+```javascript
+module.exports = {
+  key: 'paging',
+  noun: 'Paging',
+
+  display: {
+    label: 'Get Paging',
+    description: 'Triggers on a new paging.'
+  },
+
+  operation: {
+    inputFields: [],
+    perform: async (z, bundle) => {
+      let response = await z.request({
+        url: 'https://jsonplaceholder.typicode.com/posts',
+        params: {
+          _start: 0,
+          _limit: 3
+        }
+      });
+
+      let results = response.json;
+
+      // conditionally make a second request
+      if (results[0].id < 5) {
+        response = await z.request({
+          url: 'https://jsonplaceholder.typicode.com/posts',
+          params: {
+            _start: 3,
+            _limit: 3
+          }
+        });
+
+        results = results.concat(response.json);
+      }
+
+      return results;
+    }
   }
 };
 

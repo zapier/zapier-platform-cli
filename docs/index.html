@@ -3664,7 +3664,7 @@ npm run zapier-push
 
 <span class="hljs-keyword">const</span> App = {
   <span class="hljs-comment">// ...</span>
-  afterRequest: [
+  afterResponse: [
     <span class="hljs-function">(<span class="hljs-params">response, z, bundle</span>) =&gt;</span> {
       response.xml = xml.parse(response.content);
       <span class="hljs-keyword">return</span> response;
@@ -3678,7 +3678,7 @@ npm run zapier-push
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p><em>Q: Is it possible to iterate over pages in a polling trigger?</em></p><p>A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may timeout (which you should avoid at all costs). You should keep an the polling <a href="https://zapier.com/developer/documentation/v2/deduplication/">guidelines</a>, namely the part about only iterating until you hit items that weren&apos;t created in the last few hours.</p>
+      <p><em>Q: Is it possible to iterate over pages in a polling trigger?</em></p><p>A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may time out (which you should avoid at all costs).</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-comment">// some async call</span>
@@ -3726,6 +3726,54 @@ npm run zapier-push
   <span class="hljs-attr">operation</span>: {
     <span class="hljs-attr">inputFields</span>: [],
     <span class="hljs-attr">perform</span>: performPaging
+  }
+};
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>If you need to do more requests conditionally based on the results of an HTTP call (such as getting &quot;next url&quot; param, using <code>async/await</code> with a transpiler is the way to go. If you go this route, only page as far as you need to. Keep an eye on the polling <a href="https://zapier.com/developer/documentation/v2/deduplication/">guidelines</a>, namely the part about only iterating until you hit items that have probably been seen in a previous poll.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;paging&apos;</span>,
+  <span class="hljs-attr">noun</span>: <span class="hljs-string">&apos;Paging&apos;</span>,
+
+  <span class="hljs-attr">display</span>: {
+    <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Get Paging&apos;</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">&apos;Triggers on a new paging.&apos;</span>
+  },
+
+  <span class="hljs-attr">operation</span>: {
+    <span class="hljs-attr">inputFields</span>: [],
+    <span class="hljs-attr">perform</span>: <span class="hljs-keyword">async</span> (z, bundle) =&gt; {
+      <span class="hljs-keyword">let</span> response = <span class="hljs-keyword">await</span> z.request({
+        <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://jsonplaceholder.typicode.com/posts&apos;</span>,
+        <span class="hljs-attr">params</span>: {
+          <span class="hljs-attr">_start</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-attr">_limit</span>: <span class="hljs-number">3</span>
+        }
+      });
+
+      <span class="hljs-keyword">let</span> results = response.json;
+
+      <span class="hljs-comment">// conditionally make a second request</span>
+      <span class="hljs-keyword">if</span> (results[<span class="hljs-number">0</span>].id &lt; <span class="hljs-number">5</span>) {
+        response = <span class="hljs-keyword">await</span> z.request({
+          <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://jsonplaceholder.typicode.com/posts&apos;</span>,
+          <span class="hljs-attr">params</span>: {
+            <span class="hljs-attr">_start</span>: <span class="hljs-number">3</span>,
+            <span class="hljs-attr">_limit</span>: <span class="hljs-number">3</span>
+          }
+        });
+
+        results = results.concat(response.json);
+      }
+
+      <span class="hljs-keyword">return</span> results;
+    }
   }
 };
 </code></pre>

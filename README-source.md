@@ -1227,10 +1227,16 @@ A: Not natively, but it can! Users have reported that the following `npm` module
 
 *Q: Is it possible to iterate over pages in a polling trigger?*
 
-A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may timeout (which you should avoid at all costs). You should keep an the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that weren't created in the last few hours.
+A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may time out (which you should avoid at all costs).
 
 ```javascript
 [insert-file:./snippets/paging-poll.js]
+```
+
+If you need to do more requests conditionally based on the results of an HTTP call (such as getting "next url" param, using `async/await` with a transpiler is the way to go. If you go this route, only page as far as you need to. Keep an eye on the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that have probably been seen in a previous poll.
+
+```javascript
+[insert-file:./snippets/async-polling.js]
 ```
 
 ## Command Line Tab Completion
