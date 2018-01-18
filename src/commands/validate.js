@@ -120,9 +120,48 @@ const validate = context => {
           'Errors will prevent promotions, warnings are things to improve on.\n'
         );
       } else {
-        context.line('Your app looks great!\n');
+        context.line("Your app's style looks great!\n");
       }
       return;
+    })
+    .then(() => {
+      return utils
+        .localAppCommand({ command: 'definition' })
+        .then(rawDefinition => {
+          // check that all resoure keys don't expand into existing keys
+          let problemKeys = [];
+          const resourceConversions = [
+            { rKey: 'hook', topLevelKey: 'triggers' },
+            { rKey: 'list', topLevelKey: 'triggers' },
+            { rKey: 'search', topLevelKey: 'searches' },
+            { rKey: 'create', topLevelKey: 'creates' }
+          ];
+          for (const resourceKey in rawDefinition.resources) {
+            const resource = rawDefinition.resources[resourceKey];
+            for (const conversion of resourceConversions) {
+              if (
+                resource[conversion.rKey] &&
+                rawDefinition[conversion.topLevelKey][
+                  `${resourceKey}${_.capitalize(conversion.rKey)}`
+                ]
+              ) {
+                problemKeys.push(
+                  `* ${conversion.topLevelKey}.${resourceKey}${_.capitalize(
+                    conversion.rKey
+                  )}`
+                );
+              }
+            }
+          }
+          if (problemKeys.length) {
+            process.exitCode = 1;
+            context.line(
+              'WARNNIG: The following keys collide with those produced by resources:\n'
+            );
+            context.line(problemKeys.join('\n'));
+            context.line('\nSee LINK for more info\n');
+          }
+        });
     });
 };
 validate.argsSpec = [];

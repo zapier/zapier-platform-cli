@@ -27,6 +27,7 @@ const test = context => {
   return validated
     .then(() => utils.readCredentials(undefined, false))
     .then(credentials => {
+      context.line('Validation Complete\n');
       context.line(
         `Adding ${
           constants.AUTH_LOCATION
