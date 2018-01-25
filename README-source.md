@@ -341,11 +341,11 @@ Zapier's OAuth2 implementation is based on the `authorization_code` flow, simila
 
 It looks like this:
 
- 1. Zapier sends the user to the authorization URL defined by your App
- 1. Once authorized, your website sends the user to the `redirect_uri` Zapier provided (`zapier describe` to find out what it is)
- 1. Zapier makes a call on the backend to your API to exchange the `code` for an `access_token`
- 1. Zapier remembers the `access_token` and makes calls on behalf of the user
- 1. (Optionally) Zapier can refresh the token if it expires
+  1. Zapier sends the user to the authorization URL defined by your App
+  2. Once authorized, your website sends the user to the `redirect_uri` Zapier provided (`zapier describe` to find out what it is)
+  3. Zapier makes a call on the backend to your API to exchange the `code` for an `access_token`
+  4. Zapier remembers the `access_token` and makes calls on behalf of the user
+  5. (Optionally) Zapier can refresh the token if it expires
 
 You are required to define the authorization URL and the API call to fetch the access token. You'll also likely want to set your `CLIENT_ID` and `CLIENT_SECRET` as environment variables:
 
@@ -576,8 +576,8 @@ This object holds the user's auth details and the data for the API requests.
 
 ```javascript
 {
-  createdBy: 'Bobby Flay'
-  style: 'mediterranean'
+  createdBy: 'his name is Bobby Flay'
+  style: 'he cooks mediterranean'
 }
 ```
 
@@ -587,42 +587,27 @@ This object holds the user's auth details and the data for the API requests.
 
 ```javascript
 {
-  createdBy: '{{chef_name}}'
-  style: '{{style}}'
+  createdBy: 'his name is {{123__chef_name}}'
+  style: 'he cooks {{456__style}}'
 }
 ```
+
+> "curlies" are data mapped in from previous steps. They take the form `{{NODE_ID__key_name}}`. You'll usually want to use `bundle.inputData` instead.
 
 ### `bundle.meta`
 
-`bundle.meta` is extra information useful for doing advanced behaviors depending on what the user is doing. It looks something like this:
+`bundle.meta` is extra information useful for doing advanced behaviors depending on what the user is doing. It has the following options:
 
-```javascript
-{
-  frontend: false,
-  prefill: false,
-  hydrate: true,
-  test_poll: false,
-  standard_poll: true,
-  first_poll: false,
-  limit: -1,
-  page: 0,
-}
-```
-
-For example - if you want to do pagination - you could do:
-
-```javascript
-const getList = (z, bundle) => {
-  const promise = z.request({
-    url: 'http://example.com/api/list.json',
-    params: {
-      limit: 100,
-      offset: 100 * bundle.meta.page
-    }
-  });
-  return promise.then((response) => response.json);
-};
-```
+| key | default | description |
+| ------------- | ------- | ---------------------------------------- |
+| frontend | `false` | whether this poll was initiated via the zap editor |
+| prefill | `false` | whether this poll is being used as a dynamic dropdown |
+| hydrate | `true`  | whether the results of this poll will be hydrated |
+| test_poll | `false` | whether the poll was triggered by a user testing their account |
+| standard_poll| `true`  | the opposite of `test_poll` |
+| first_poll | `false` | whether the poll was an initial check for items when a zap is turned on (none of which will trigger) |
+| limit | `-1`    | the number of items to fetch for performance reasons. `-1` indicates there's no limit |
+| page | `0`     | used in [paging](#paging) to uniquely identify which page of results should be returned |
 
 **`bundle.meta.zap.id` is only available in the `performSubscribe` and `performUnsubscribe` methods**
 
@@ -726,13 +711,13 @@ For example, you can access the `process.env` in your perform functions:
 There are two primary ways to make HTTP requests in the Zapier platform:
 
 1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple requests.
-1. **Manual HTTP Requests** - this is much less "magic", you use `z.request([url], options)` to make the requests and control the response.
+2. **Manual HTTP Requests** - you use `z.request([url], options)` to make the requests and control the response. Use this when you need to change options for certain requests (for all requests, use middleware)
 
 There are also a few helper constructs you can use to reduce boilerplate:
 
 1. `requestTemplate` which is an shorthand HTTP request that will be merged with every request.
 2. `beforeRequest` middleware which is an array of functions to mutate a request before it is sent.
-2. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
+3. `afterResponse` middleware which is an array of functions to mutate a response before it is completed.
 
 > Note: you can install any HTTP client you like - but this is greatly discouraged as you lose [automatic HTTP logging](#http-logging) and middleware.
 
@@ -1213,6 +1198,10 @@ See [the wiki](https://github.com/zapier/zapier-platform-cli/wiki/Example-Apps) 
 
 ## FAQs
 
+*Q: Why doesn't Zapier support newer versions of Node.js?*
+
+A: We run your code on AWS Lambda, which only supports a few [versions](https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) of Node (the latest of which is `LAMBDA_VERSION`. As that updates, so too will we.
+
 *Q: Does Zapier support XML (SOAP) APIs?*
 
 A: Not natively, but it can! Users have reported that the following `npm` modules are compatible with the CLI Platform:
@@ -1238,6 +1227,55 @@ If you need to do more requests conditionally based on the results of an HTTP ca
 ```javascript
 [insert-file:./snippets/async-polling.js]
 ```
+
+*Q: How do I manually set the Node.js version to run my app with?*
+
+A: Update your `zapier-platform-core` dependency in `package.json`.  Each major version ties to a specific version of Node.js. You can find the mapping [here](https://github.com/zapier/zapier-platform-cli/blob/master/src/version-store.js). We only support the version(s) supported by [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html).
+
+*Q: How do search-powered fields relate to dynamic dropdowns and why are they both required together?*
+
+To understand search-powered fields, we have to have a good understanding of dynamic dropdowns.
+
+When users are selecting specific resources (for instance, a Google Sheet), it's important they're able to select the exact sheet they want. Instead of referencing the sheet by name (which may change), we match via `id` instead. Rather than directing the user copy and paste and id for every item they might encounter, there is the notion of a **dynamic dropdown**. A dropdown is a trigger that returns a list of resources. It can pull double duty and use its results to power another trigger, search, or action in the same app.  It provides a list of ids with labels that show the item's name:
+
+![](https://cdn.zapier.com/storage/photos/fb56bdc2aab91504be0e51800bec4d64.png)
+
+The field's value reaches your app as an id. You define this connection with the `dynamic` property, which is a string: `trigger_key.id_key.label_key`. This approach works great if the user setting up the zap always wants the zap to use the same spreadsheet. They specify the id during setup and the zap runs happily.
+
+**Search fields** take this connection a step further. Rather than set the spreadsheet id at setup, the user could precede the action with a search field to make the id dynamic. For instance, let's say you have a different spreadsheet for every day of the week. You could build the following zap:
+
+1. Some Trigger
+2. Calculate what day of the week it is today (Code)
+3. Find the spreadsheet that matches the day from Step 2
+4. Update the spreadsheet (with the id from step 3) with some data
+
+If the connection between steps 3 and 4 is a common one, you can indicate that in your field by specifying `search` as a `search_key.id_key`. When paired **with a dynamic dropdown**, this will add a button to the editor that will add the search step to the user's zap and map the id field correctly.
+
+![](https://cdn.zapier.com/storage/photos/d263fd3a56cf8108cb89195163e7c9aa.png)
+
+This is paired most often with "update" actions, where a required parameter will be a resource id.
+
+*Q: What's the deal with pagination? When is it used and how does it work?*
+
+<a id="paging"></a>
+Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
+
+Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `start` parameter:
+
+```javascript
+const getList = (z, bundle) => {
+  const promise = z.request({
+    url: 'http://example.com/api/list.json',
+    params: {
+      limit: 100,
+      offset: 100 * bundle.meta.page
+    }
+  });
+  return promise.then((response) => response.json);
+};
+```
+
+Lastly, you need to set `canPaginate` to `true` in your polling definition (per the [schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema)).
 
 ## Command Line Tab Completion
 
