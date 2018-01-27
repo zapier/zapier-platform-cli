@@ -599,15 +599,15 @@ This object holds the user's auth details and the data for the API requests.
 `bundle.meta` is extra information useful for doing advanced behaviors depending on what the user is doing. It has the following options:
 
 | key | default | description |
-| ------------- | ------- | ---------------------------------------- |
-| frontend | `false` | whether this poll was initiated via the zap editor |
-| prefill | `false` | whether this poll is being used as a dynamic dropdown |
-| hydrate | `true`  | whether the results of this poll will be hydrated |
-| test_poll | `false` | whether the poll was triggered by a user testing their account |
+| --- | --- | --- |
+| frontend | `false` | if true, this run was initiated manually via the zap editor |
+| prefill | `false` | if true, this poll is being used to populate a dynamic dropdown |
+| hydrate | `true`  | if true, the results of this run will be hydrated (false if we're in the middle of hydrating already) |
+| test_poll | `false` | if true, the poll was triggered by a user testing their account (via [clicking "test"](https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png) on the auth |
 | standard_poll| `true`  | the opposite of `test_poll` |
-| first_poll | `false` | whether the poll was an initial check for items when a zap is turned on (none of which will trigger) |
-| limit | `-1`    | the number of items to fetch for performance reasons. `-1` indicates there's no limit |
-| page | `0`     | used in [paging](#paging) to uniquely identify which page of results should be returned |
+| first_poll | `false` | if true, the results of this poll will be used to initialize the deduplication list rather than trigger a zap. See: [deduplication](#dedup) |
+| limit | `-1` | the number of items to fetch. `-1` indicates there's no limit (which will almost always be the case) |
+| page | `0` | used in [paging](#paging) to uniquely identify which page of results should be returned |
 
 **`bundle.meta.zap.id` is only available in the `performSubscribe` and `performUnsubscribe` methods**
 
@@ -711,7 +711,7 @@ For example, you can access the `process.env` in your perform functions:
 There are two primary ways to make HTTP requests in the Zapier platform:
 
 1. **Shorthand HTTP Requests** - these are simple object literals that make it easy to define simple requests.
-2. **Manual HTTP Requests** - you use `z.request([url], options)` to make the requests and control the response. Use this when you need to change options for certain requests (for all requests, use middleware)
+2. **Manual HTTP Requests** - you use `z.request([url], options)` to make the requests and control the response. Use this when you need to change options for certain requests (for all requests, use middleware).
 
 There are also a few helper constructs you can use to reduce boilerplate:
 
@@ -933,7 +933,7 @@ To manually print a log statement in your code, use `z.console.log`:
 z.console.log('Here are the input fields', bundle.inputData);
 ```
 
-The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/dist/latest-v4.x/docs/api/console.html) class - the only difference is we'll log to our distributed datastore and you can view them via `zapier logs` (more below).
+The `z.console` object has all the same methods and works just like the Node.js [`Console`](https://nodejs.org/docs/latest-v6.x/api/console.html) class - the only difference is we'll log to our distributed datastore and you can view them via `zapier logs` (more below).
 
 ### Viewing Console Logs
 
@@ -1255,10 +1255,11 @@ If the connection between steps 3 and 4 is a common one, you can indicate that i
 
 This is paired most often with "update" actions, where a required parameter will be a resource id.
 
+<a id="paging"></a>
+
 *Q: What's the deal with pagination? When is it used and how does it work?*
 
-<a id="paging"></a>
-Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
+A: Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
 
 Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `start` parameter:
 
@@ -1276,6 +1277,32 @@ const getList = (z, bundle) => {
 ```
 
 Lastly, you need to set `canPaginate` to `true` in your polling definition (per the [schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema)).
+
+<a id="dedup"></a>
+
+*Q: How does deduplication work?*
+
+A: Each time a polling zap runs, Zapier needs to decide which of the items in the response should trigger the zap. To do this, we compare the `id`s to all those we've seen before, trigger on new objects, and update the list of seen `id`s. When a zap is turned on, we initialize the list of seen `id`s with a single poll. When it's turned off, we clear that list. For this reason, it's important that calls to a polling endpoint always return the newest items.
+
+For example, the initial poll returns objects 4, 5, and 6 (where a higher `id` is newer). If a later poll increases the limit and returns objects 1-6, then 1, 2, and 3 will be (incorrectly) treated like new objects.
+
+There's a more in-depth explanation [here](https://zapier.com/developer/documentation/v2/deduplication/).
+
+*Q: Why are my triggers complaining if I don't provide an explicit `id` field? I didn't have to do that in the Web Builder!*
+
+A: For deduplication to work, we need to be able to identify and use a unique field. For WB apps, we guessed if `id` wasn't present. In order to ensure we don't guess wrong, we now require that the developers send us an `id` field. If your objects have a differently-named unique field, feel free to adapt this snippet and ensure this test passes:
+
+```js
+// ...
+let items = z.JSON.parse(response.content).items;
+items.forEach(item => {
+  item.id = item.contactId;
+})
+
+return items;
+```
+
+
 
 ## Command Line Tab Completion
 
