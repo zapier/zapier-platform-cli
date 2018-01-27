@@ -600,7 +600,7 @@ This object holds the user's auth details and the data for the API requests.
 
 | key | default | description |
 | --- | --- | --- |
-| frontend | `false` | if true, this run was initiated manually via the zap editor |
+| frontend | `false` | if true, this run was initiated manually via the Zap editor |
 | prefill | `false` | if true, this poll is being used to populate a dynamic dropdown |
 | hydrate | `true`  | if true, the results of this run will be hydrated (false if we're in the middle of hydrating already) |
 | test_poll | `false` | if true, the poll was triggered by a user testing their account (via [clicking "test"](https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png) on the auth |
@@ -1068,7 +1068,18 @@ zapier test
 
 ### Testing & Environment Variables
 
-These work much like normal environment variables - for example:
+The best way to store sensitive values (like API keys, OAuth secrets, or passwords) is in an `.environment` file ([learn more](https://github.com/motdotla/dotenv#faq)). Then, you can include the following before your tests run:
+
+```js
+const zapier = require('zapier-platform-core');
+zapier.tools.env.inject(); // inject() can take a filename; defaults to ".environment"
+
+// now process.env has all the values in your .environment file
+```
+
+> Remember: don't add your secrets file to version control!
+
+Additionally, you can provide them dynamically at runtime:
 
 ```bash
 CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
@@ -1236,11 +1247,11 @@ A: Update your `zapier-platform-core` dependency in `package.json`.  Each major 
 
 To understand search-powered fields, we have to have a good understanding of dynamic dropdowns.
 
-When users are selecting specific resources (for instance, a Google Sheet), it's important they're able to select the exact sheet they want. Instead of referencing the sheet by name (which may change), we match via `id` instead. Rather than directing the user copy and paste and id for every item they might encounter, there is the notion of a **dynamic dropdown**. A dropdown is a trigger that returns a list of resources. It can pull double duty and use its results to power another trigger, search, or action in the same app.  It provides a list of ids with labels that show the item's name:
+When users are selecting specific resources (for instance, a Google Sheet), it's important they're able to select the exact sheet they want. Instead of referencing the sheet by name (which may change), we match via `id` instead. Rather than directing the user copy and paste an id for every item they might encounter, there is the notion of a **dynamic dropdown**. A dropdown is a trigger that returns a list of resources. It can pull double duty and use its results to power another trigger, search, or action in the same app.  It provides a list of ids with labels that show the item's name:
 
 ![](https://cdn.zapier.com/storage/photos/fb56bdc2aab91504be0e51800bec4d64.png)
 
-The field's value reaches your app as an id. You define this connection with the `dynamic` property, which is a string: `trigger_key.id_key.label_key`. This approach works great if the user setting up the zap always wants the zap to use the same spreadsheet. They specify the id during setup and the zap runs happily.
+The field's value reaches your app as an id. You define this connection with the `dynamic` property, which is a string: `trigger_key.id_key.label_key`. This approach works great if the user setting up the Zap always wants the Zap to use the same spreadsheet. They specify the id during setup and the Zap runs happily.
 
 **Search fields** take this connection a step further. Rather than set the spreadsheet id at setup, the user could precede the action with a search field to make the id dynamic. For instance, let's say you have a different spreadsheet for every day of the week. You could build the following zap:
 
@@ -1249,7 +1260,7 @@ The field's value reaches your app as an id. You define this connection with the
 3. Find the spreadsheet that matches the day from Step 2
 4. Update the spreadsheet (with the id from step 3) with some data
 
-If the connection between steps 3 and 4 is a common one, you can indicate that in your field by specifying `search` as a `search_key.id_key`. When paired **with a dynamic dropdown**, this will add a button to the editor that will add the search step to the user's zap and map the id field correctly.
+If the connection between steps 3 and 4 is a common one, you can indicate that in your field by specifying `search` as a `search_key.id_key`. When paired **with a dynamic dropdown**, this will add a button to the editor that will add the search step to the user's Zap and map the id field correctly.
 
 ![](https://cdn.zapier.com/storage/photos/d263fd3a56cf8108cb89195163e7c9aa.png)
 
@@ -1282,7 +1293,7 @@ Lastly, you need to set `canPaginate` to `true` in your polling definition (per 
 
 *Q: How does deduplication work?*
 
-A: Each time a polling zap runs, Zapier needs to decide which of the items in the response should trigger the zap. To do this, we compare the `id`s to all those we've seen before, trigger on new objects, and update the list of seen `id`s. When a zap is turned on, we initialize the list of seen `id`s with a single poll. When it's turned off, we clear that list. For this reason, it's important that calls to a polling endpoint always return the newest items.
+A: Each time a polling Zap runs, Zapier needs to decide which of the items in the response should trigger the zap. To do this, we compare the `id`s to all those we've seen before, trigger on new objects, and update the list of seen `id`s. When a Zap is turned on, we initialize the list of seen `id`s with a single poll. When it's turned off, we clear that list. For this reason, it's important that calls to a polling endpoint always return the newest items.
 
 For example, the initial poll returns objects 4, 5, and 6 (where a higher `id` is newer). If a later poll increases the limit and returns objects 1-6, then 1, 2, and 3 will be (incorrectly) treated like new objects.
 
