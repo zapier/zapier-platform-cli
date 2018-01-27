@@ -1209,13 +1209,14 @@ See [the wiki](https://github.com/zapier/zapier-platform-cli/wiki/Example-Apps) 
 
 ## FAQs
 
-*Q: Why doesn't Zapier support newer versions of Node.js?*
+### Why doesn't Zapier support newer versions of Node.js?
 
-A: We run your code on AWS Lambda, which only supports a few [versions](https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) of Node (the latest of which is `LAMBDA_VERSION`. As that updates, so too will we.
+We run your code on AWS Lambda, which only supports a few [versions](https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) of Node (the latest of which is `LAMBDA_VERSION`. As that updates, so too will we.
 
-*Q: Does Zapier support XML (SOAP) APIs?*
 
-A: Not natively, but it can! Users have reported that the following `npm` modules are compatible with the CLI Platform:
+### Does Zapier support XML (SOAP) APIs?
+
+Not natively, but it can! Users have reported that the following `npm` modules are compatible with the CLI Platform:
 
 * [pixl-xml](https://github.com/jhuckaby/pixl-xml)
 * [xml2js](https://github.com/Leonidas-from-XIV/node-xml2js)
@@ -1225,9 +1226,9 @@ A: Not natively, but it can! Users have reported that the following `npm` module
 [insert-file:./snippets/xml.js]
 ```
 
-*Q: Is it possible to iterate over pages in a polling trigger?*
+### Is it possible to iterate over pages in a polling trigger?
 
-A: Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may time out (which you should avoid at all costs).
+Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may time out (which you should avoid at all costs).
 
 ```javascript
 [insert-file:./snippets/paging-poll.js]
@@ -1239,11 +1240,11 @@ If you need to do more requests conditionally based on the results of an HTTP ca
 [insert-file:./snippets/async-polling.js]
 ```
 
-*Q: How do I manually set the Node.js version to run my app with?*
+### How do I manually set the Node.js version to run my app with?
 
-A: Update your `zapier-platform-core` dependency in `package.json`.  Each major version ties to a specific version of Node.js. You can find the mapping [here](https://github.com/zapier/zapier-platform-cli/blob/master/src/version-store.js). We only support the version(s) supported by [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html).
+Update your `zapier-platform-core` dependency in `package.json`.  Each major version ties to a specific version of Node.js. You can find the mapping [here](https://github.com/zapier/zapier-platform-cli/blob/master/src/version-store.js). We only support the version(s) supported by [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html).
 
-*Q: How do search-powered fields relate to dynamic dropdowns and why are they both required together?*
+### How do search-powered fields relate to dynamic dropdowns and why are they both required together?
 
 To understand search-powered fields, we have to have a good understanding of dynamic dropdowns.
 
@@ -1267,10 +1268,9 @@ If the connection between steps 3 and 4 is a common one, you can indicate that i
 This is paired most often with "update" actions, where a required parameter will be a resource id.
 
 <a id="paging"></a>
+### What's the deal with pagination? When is it used and how does it work?
 
-*Q: What's the deal with pagination? When is it used and how does it work?*
-
-A: Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
+Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
 
 Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `start` parameter:
 
@@ -1290,18 +1290,17 @@ const getList = (z, bundle) => {
 Lastly, you need to set `canPaginate` to `true` in your polling definition (per the [schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema)).
 
 <a id="dedup"></a>
+### How does deduplication work?
 
-*Q: How does deduplication work?*
-
-A: Each time a polling Zap runs, Zapier needs to decide which of the items in the response should trigger the zap. To do this, we compare the `id`s to all those we've seen before, trigger on new objects, and update the list of seen `id`s. When a Zap is turned on, we initialize the list of seen `id`s with a single poll. When it's turned off, we clear that list. For this reason, it's important that calls to a polling endpoint always return the newest items.
+Each time a polling Zap runs, Zapier needs to decide which of the items in the response should trigger the zap. To do this, we compare the `id`s to all those we've seen before, trigger on new objects, and update the list of seen `id`s. When a Zap is turned on, we initialize the list of seen `id`s with a single poll. When it's turned off, we clear that list. For this reason, it's important that calls to a polling endpoint always return the newest items.
 
 For example, the initial poll returns objects 4, 5, and 6 (where a higher `id` is newer). If a later poll increases the limit and returns objects 1-6, then 1, 2, and 3 will be (incorrectly) treated like new objects.
 
 There's a more in-depth explanation [here](https://zapier.com/developer/documentation/v2/deduplication/).
 
-*Q: Why are my triggers complaining if I don't provide an explicit `id` field? I didn't have to do that in the Web Builder!*
+### Why are my triggers complaining if I don't provide an explicit `id` field? I didn't have to do that in the Web Builder!
 
-A: For deduplication to work, we need to be able to identify and use a unique field. For WB apps, we guessed if `id` wasn't present. In order to ensure we don't guess wrong, we now require that the developers send us an `id` field. If your objects have a differently-named unique field, feel free to adapt this snippet and ensure this test passes:
+For deduplication to work, we need to be able to identify and use a unique field. For WB apps, we guessed if `id` wasn't present. In order to ensure we don't guess wrong, we now require that the developers send us an `id` field. If your objects have a differently-named unique field, feel free to adapt this snippet and ensure this test passes:
 
 ```js
 // ...
