@@ -24,5 +24,6 @@ module.exports = {
   upload: require('./upload'),
   validate: require('./validate'),
   versions: require('./versions'),
-  watch: require('./watch')
+  watch: require('./watch'),
+  convertjson: require('./convertjson')
 };
