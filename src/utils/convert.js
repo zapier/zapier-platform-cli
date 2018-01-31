@@ -674,7 +674,6 @@ const renderStep = (type, definition, key, legacyApp) => {
   let description =
     definition.help_text ||
     stepDescriptionTemplateMap[type]({ lowerNoun: lowerNoun });
-  description = description.replace(/'/g, "\\'");
 
   const hidden = Boolean(definition.hide);
   const important = Boolean(definition.important);
@@ -682,8 +681,8 @@ const renderStep = (type, definition, key, legacyApp) => {
   const templateContext = {
     KEY: key,
     NOUN: noun,
-    DESCRIPTION: description,
-    LABEL: label,
+    DESCRIPTION: escapeSpecialChars(description),
+    LABEL: escapeSpecialChars(label),
     HIDDEN: hidden,
     IMPORTANT: important,
     FIELDS: fields,
@@ -809,7 +808,7 @@ const renderStepTest = (type, definition, key, legacyApp) => {
   const inputData = renderDefaultInputData(definition);
   const templateContext = {
     KEY: key,
-    LABEL: label,
+    LABEL: escapeSpecialChars(label),
     AUTH_DATA: authData,
     INPUT_DATA: inputData
   };
