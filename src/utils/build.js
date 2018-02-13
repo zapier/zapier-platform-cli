@@ -132,7 +132,7 @@ const verifyNodeFeatures = paths => {
   );
 
   if (errors.length) {
-    if (!process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV !== 'test') {
       console.log('\n', cli.getFormatter()(errors));
     }
     throw new Error('Using unsupported features, see above');
