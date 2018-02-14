@@ -5,6 +5,7 @@ const colors = require('colors/safe');
 const path = require('path');
 const fse = require('fs-extra');
 const os = require('os');
+const semver = require('semver');
 
 const { PLATFORM_PACKAGE } = require('../constants');
 
@@ -89,7 +90,7 @@ const isValidNodeVersion = () => {
 
 const isValidAppInstall = command => {
   if (['help', 'init', 'login', 'apps', 'convert'].includes(command)) {
-    return true;
+    return { valid: true };
   }
 
   let packageJson;
@@ -97,31 +98,38 @@ const isValidAppInstall = command => {
     packageJson = require(path.join(process.cwd(), 'package.json'));
     const coreVersion = packageJson.dependencies[PLATFORM_PACKAGE];
     // could check for a lot more, but this is probably enough: https://docs.npmjs.com/files/package.json#dependencies
-    if (!coreVersion || coreVersion.includes('^')) {
-      return false;
+    if (!coreVersion) {
+      return {
+        valid: false,
+        reason: `Your app must depend on ${PLATFORM_PACKAGE}`
+      };
+    } else if (!semver.valid(coreVersion)) {
+      // semver.valid only matches single versions
+      return {
+        valid: false,
+        reason: `Your app must depend on an exact version of ${PLATFORM_PACKAGE}. Found "${coreVersion}" instead`
+      };
     }
   } catch (err) {
-    return false;
+    return { valid: false, reason: String(err) };
   }
 
   // try skipping the CLI itself
   const CLIpackageJson = require(path.join(__dirname, '../../package.json'));
   if (_.isEqual(packageJson, CLIpackageJson)) {
-    return true;
-  }
-
-  const dependencies = packageJson.dependencies || {};
-  if (!dependencies[PLATFORM_PACKAGE]) {
-    return false;
+    return { valid: true };
   }
 
   try {
-    require(`${process.cwd()}/node_modules/${PLATFORM_PACKAGE}`);
+    require(path.join(process.cwd(), 'node_modules', PLATFORM_PACKAGE));
   } catch (err) {
-    return false;
+    return {
+      valid: false,
+      reason: `Unable to find contents of ${PLATFORM_PACKAGE}, run \`npm install\``
+    };
   }
 
-  return true;
+  return { valid: true };
 };
 
 const npmInstall = appDir => {
