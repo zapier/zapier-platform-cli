@@ -1007,7 +1007,10 @@ const writeScripting = (legacyApp, newAppDir) => {
 const writeGitIgnore = newAppDir => {
   const srcPath = path.join(TEMPLATE_DIR, '/gitignore');
   const destPath = path.join(newAppDir, '/.gitignore');
-  return copyFile(srcPath, destPath);
+  return copyFile(srcPath, destPath).then(() => {
+    printStarting('Writing .gitignore');
+    printDone();
+  });
 };
 
 const convertApp = (legacyApp, newAppDir) => {
