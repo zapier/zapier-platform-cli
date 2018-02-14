@@ -1014,6 +1014,9 @@ const renderEnvironment = definition => {
 
 const writeEnvironment = (legacyApp, newAppDir) => {
   const content = renderEnvironment(legacyApp);
+  if (!content) {
+    return Promise.resolve(null);
+  }
   return createFile(content, '.environment', newAppDir);
 };
 
