@@ -36,9 +36,6 @@ const readFile = (fileName, errMsg) => {
 
 // Returns a promise that writes a file.
 const writeFile = (fileName, data) => {
-  if (!data) {
-    throw new Error('No data provided');
-  }
   return fse.writeFile(fixHome(fileName), data);
 };
 
