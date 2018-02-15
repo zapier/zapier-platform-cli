@@ -20,7 +20,7 @@ const test = context => {
     : validate(context);
 
   return validated
-    .then(() => utils.readCredentials(null, false))
+    .then(() => utils.readCredentials(false))
     .then(credentials => {
       context.line(
         `Adding ${

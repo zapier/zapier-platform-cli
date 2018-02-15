@@ -5,16 +5,6 @@ const { AUTH_KEY } = require('../../constants');
 describe('api', () => {
   const answer = 'verysecretkey';
 
-  it('should echo credentials', done => {
-    api
-      .readCredentials(answer)
-      .then(creds => {
-        should.exist(creds[AUTH_KEY]);
-        done();
-      })
-      .catch(done);
-  });
-
   it('should read credentials from env', done => {
     process.env.ZAPIER_DEPLOY_KEY = answer;
     api

@@ -18,10 +18,10 @@ const { prettyJSONstringify, printStarting, printDone } = require('./display');
 const { localAppCommand } = require('./local');
 
 // Reads the JSON file at ~/.zapierrc (AUTH_LOCATION).
-const readCredentials = (credentials, explodeIfMissing = true) => {
-  if (credentials || process.env.ZAPIER_DEPLOY_KEY) {
+const readCredentials = (explodeIfMissing = true) => {
+  if (process.env.ZAPIER_DEPLOY_KEY) {
     return Promise.resolve({
-      [constants.AUTH_KEY]: credentials || process.env.ZAPIER_DEPLOY_KEY
+      [constants.AUTH_KEY]: process.env.ZAPIER_DEPLOY_KEY
     });
   } else {
     return Promise.resolve(
