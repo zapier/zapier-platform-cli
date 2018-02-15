@@ -7,7 +7,7 @@ const fse = require('fs-extra');
 const os = require('os');
 const semver = require('semver');
 
-const { PLATFORM_PACKAGE } = require('../constants');
+const { PLATFORM_PACKAGE, PACKAGE_VERSION } = require('../constants');
 
 const camelCase = str => _.capitalize(_.camelCase(str));
 const snakeCase = str => _.snakeCase(str);
@@ -101,23 +101,17 @@ const isValidAppInstall = command => {
     if (!coreVersion) {
       return {
         valid: false,
-        reason: `Your app must depend on ${PLATFORM_PACKAGE}`
+        reason: `Your app doesn't depend on ${PLATFORM_PACKAGE}. Run \`npm install -E ${PLATFORM_PACKAGE}\` to resolve`
       };
     } else if (!semver.valid(coreVersion)) {
       // semver.valid only matches single versions
       return {
         valid: false,
-        reason: `Your app must depend on an exact version of ${PLATFORM_PACKAGE}. Found "${coreVersion}" instead`
+        reason: `Your app must depend on an exact version of ${PLATFORM_PACKAGE}. Instead of "${coreVersion}", specify an exact version (such as "${PACKAGE_VERSION}")`
       };
     }
   } catch (err) {
     return { valid: false, reason: String(err) };
-  }
-
-  // try skipping the CLI itself
-  const CLIpackageJson = require(path.join(__dirname, '../../package.json'));
-  if (_.isEqual(packageJson, CLIpackageJson)) {
-    return { valid: true };
   }
 
   try {
@@ -125,7 +119,7 @@ const isValidAppInstall = command => {
   } catch (err) {
     return {
       valid: false,
-      reason: `Unable to find contents of ${PLATFORM_PACKAGE}, run \`npm install\``
+      reason: `Looks like you're missing a local installaction of ${PLATFORM_PACKAGE}. Run \`npm install\` to resolve`
     };
   }
 
