@@ -1,7 +1,7 @@
 ## 5.0.0
 
 * :exclamation: (improvement, **breaking**) `samples` is now a required field in `BasicOperationSchema` and friends. See [this doc](https://zapier.com/developer/documentation/v2/trigger-sample-results/) for more info ([PR](https://github.com/zapier/zapier-platform-schema/pull/32))
-* :exclamation: (improvement, **breaking**)`order` has been removed from `BasicDisplaySchema` ([PR](https://github.com/zapier/zapier-platform-schema/pull/27))
+* :exclamation: (improvement, **breaking**) `order` has been removed from `BasicDisplaySchema` ([PR](https://github.com/zapier/zapier-platform-schema/pull/27))
 
 * :tada: (new) The CLI can now run, test, and build on any version of Node.js! ([PR](https://github.com/zapier/zapier-platform-cli/pull/234))
 * :tada: (new) Read deploy key from env if available ([PR](https://github.com/zapier/zapier-platform-cli/pull/239))
