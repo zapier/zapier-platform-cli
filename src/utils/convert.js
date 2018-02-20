@@ -5,6 +5,7 @@ const stripComments = require('strip-comments');
 const { camelCase, snakeCase } = require('./misc');
 const { copyFile, readFile, writeFile, ensureDir } = require('./files');
 const { printStarting, printDone } = require('./display');
+const CLI_VERSION = require('../../package.json').version;
 
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 const ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION = '1.0.0';
@@ -936,7 +937,9 @@ const renderPackageJson = legacyApp => {
 
   const templateContext = {
     NAME: _.kebabCase(legacyApp.general.title),
-    DESCRIPTION: escapeSpecialChars(legacyApp.general.description)
+    DESCRIPTION: escapeSpecialChars(legacyApp.general.description),
+    APP_ID: legacyApp.general.app_id,
+    CLI_VERSION: CLI_VERSION
   };
 
   const zapierCoreVersion = require('../../package.json').version;
