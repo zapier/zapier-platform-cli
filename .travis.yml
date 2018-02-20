@@ -11,4 +11,5 @@ deploy:
   api_key: $NPM_TOKEN
   on:
     tags: true
+    node: "6.10.3"
   skip_cleanup: true
