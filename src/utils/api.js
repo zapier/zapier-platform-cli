@@ -228,7 +228,9 @@ const listInvitees = () => {
 };
 
 const listLogs = opts => {
-  return listEndpoint(`logs?${qs.stringify(opts)}`, 'logs');
+  const cleaned = Object.assign({}, opts); // duplicate the original opts
+  delete cleaned.debug; // deletes debug flag if it exists
+  return listEndpoint(`logs?${qs.stringify(cleaned)}`, 'logs');
 };
 
 const listEnv = version => {
