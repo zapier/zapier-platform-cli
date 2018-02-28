@@ -70,7 +70,9 @@ const runCommand = (command, args, options) => {
 };
 
 const isValidNodeVersion = () => {
-  return semver.satisfies(process.version, `>=${LAMBDA_VERSION}`);
+  const v = semver(LAMBDA_VERSION);
+
+  return semver.satisfies(process.version, `>=${v.major}.${v.minor}`);
 };
 
 const isValidAppInstall = command => {
