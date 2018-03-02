@@ -3,7 +3,12 @@ const createContext = ({ command, args, argOpts } = {}) => {
     command,
     args,
     argOpts,
-    line: _line => console.log(_line || '')
+    line: _line => {
+      // throwing in extra text makes output invalid json
+      if (argOpts.format !== 'json') {
+        console.log(_line || '');
+      }
+    }
   };
 };
 
