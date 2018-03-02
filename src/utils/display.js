@@ -1,7 +1,3 @@
-const readline = require('readline');
-
-const { isWindows } = require('./misc');
-
 // could we explore https://www.npmjs.com/package/columnify
 // to simplify the columns/tables? the | - decoration is big
 const Table = require('cli-table2');
@@ -9,6 +5,7 @@ const colors = require('colors/safe');
 const stringLength = require('string-length');
 const _ = require('lodash');
 const read = require('read');
+const ora = require('ora');
 
 const notUndef = s => String(s === undefined ? '' : s).trim();
 
@@ -225,83 +222,30 @@ const printData = (
   }
 };
 
-let spinner;
-let currentIter = 0;
-let spinSpeed;
-let spinTransitions;
-
-if (isWindows()) {
-  spinSpeed = 240;
-  spinTransitions = ['   ', '.  ', '.. ', '...'];
-} else {
-  spinSpeed = 80;
-  spinTransitions = ['⠃', '⠉', '⠘', '⠰', '⠤', '⠆'];
-}
-const finalTransition = spinTransitions[0];
+const spin = ora();
 
 const clearSpinner = () => {
-  process.stdout.write('\x1b[?25h'); // set cursor to white...
-  clearInterval(spinner);
-  spinner = undefined;
-};
-
-const writeNextSpinnerTick = (
-  final = false,
-  _finalTransition = finalTransition
-) => {
-  readline.moveCursor(process.stdout, -spinTransitions[currentIter].length, 0);
-  currentIter++;
-  if (currentIter >= spinTransitions.length) {
-    currentIter = 0;
-  }
-  process.stdout.write(final ? _finalTransition : spinTransitions[currentIter]);
+  spin.clear();
 };
 
 const startSpinner = () => {
-  process.stdout.write(spinTransitions[currentIter]);
-  clearSpinner();
-  process.stdout.write('\x1b[?25l'); // set cursor to black...
-  spinner = setInterval(() => {
-    writeNextSpinnerTick();
-  }, spinSpeed);
+  spin.start();
 };
 
-const endSpinner = _finalTransition => {
-  if (!spinner) {
-    return;
-  }
-  clearSpinner();
-  writeNextSpinnerTick(true, _finalTransition);
+const endSpinner = () => {
+  spin.succeed();
 };
 
 const printStarting = msg => {
-  if (spinner) {
-    return;
-  }
-  if (msg) {
-    msg = '  ' + msg + ' ';
-  } else {
-    msg = '';
-  }
-  process.stdout.write(msg);
-  startSpinner();
+  spin.start(msg);
 };
 
 const printDone = (success = true, message) => {
-  if (!spinner) {
-    return;
+  if (success) {
+    spin.succeed(message);
+  } else {
+    spin.fail(message);
   }
-  endSpinner();
-
-  if (message) {
-    message = ` ${message}`;
-  }
-
-  const logMsg = success
-    ? colors.green(message || ' done!')
-    : colors.red(message || ' fail!');
-
-  console.log(logMsg);
 };
 
 // Get input from a user.

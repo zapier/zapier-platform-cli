@@ -112,7 +112,7 @@ module.exports = argv => {
       utils.clearSpinner();
     })
     .catch(err => {
-      utils.clearSpinner();
+      utils.printDone(false, err.message);
       if (DEBUG || global.argOpts.debug) {
         context.line();
         context.line(err.stack);
