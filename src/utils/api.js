@@ -13,7 +13,7 @@ const semver = require('semver');
 
 const { writeFile, readFile } = require('./files');
 
-const { prettyJSONstringify, printStarting, printDone } = require('./display');
+const { prettyJSONstringify, startSpinner, endSpinner } = require('./display');
 
 const { localAppCommand } = require('./local');
 
@@ -96,7 +96,7 @@ const callAPI = (route, options, displayError = true) => {
         console.log(`<< ${res.status}`);
         console.log(`<< ${(text || '').substring(0, 2500)}\n`);
       } else if (hitError && displayError) {
-        printDone(false);
+        endSpinner(false);
       }
 
       if (hitError) {
@@ -257,7 +257,7 @@ const upload = (zipPath, appDir) => {
       const binaryZip = fs.readFileSync(fullZipPath);
       const buffer = Buffer.from(binaryZip).toString('base64');
 
-      printStarting(`Uploading version ${definition.version}`);
+      startSpinner(`Uploading version ${definition.version}`);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
         method: 'PUT',
         body: {
@@ -266,7 +266,7 @@ const upload = (zipPath, appDir) => {
       });
     })
     .then(appVersion => {
-      printDone();
+      endSpinner();
 
       if (semver.lt(appVersion.platform_version, appVersion.core_npm_version)) {
         console.log(

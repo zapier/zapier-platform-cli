@@ -222,29 +222,24 @@ const printData = (
   }
 };
 
-const spin = ora();
+// single global instance of the spinner
+const spinner = ora();
 
-const clearSpinner = () => {
-  spin.clear();
+const startSpinner = msg => {
+  spinner.start(msg);
 };
 
-const startSpinner = () => {
-  spin.start();
-};
+const endSpinner = (success = true, message) => {
+  // only stop if it was started in the first place
+  // this is undocumented, but seems like it works; i filed an issue
+  if (!spinner.id) {
+    return;
+  }
 
-const endSpinner = () => {
-  spin.succeed();
-};
-
-const printStarting = msg => {
-  spin.start(msg);
-};
-
-const printDone = (success = true, message) => {
   if (success) {
-    spin.succeed(message);
+    spinner.succeed(message);
   } else {
-    spin.fail(message);
+    spinner.fail(message);
   }
 };
 
@@ -268,8 +263,6 @@ const getInput = (question, { secret = false } = {}) => {
 };
 
 module.exports = {
-  clearSpinner,
-  endSpinner,
   formatStyles,
   getInput,
   makeRowBasedTable,
@@ -277,7 +270,6 @@ module.exports = {
   markdownLog,
   prettyJSONstringify,
   printData,
-  printDone,
-  printStarting,
+  endSpinner,
   startSpinner
 };

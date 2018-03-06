@@ -63,6 +63,7 @@ const promote = (context, version) => {
       return utils.promiseDoWhile(action, stop);
     })
     .then(answer => {
+      context.line();
       if (hasCancelled(answer)) {
         throw new Error('Cancelled promote.');
       }
@@ -74,7 +75,7 @@ const promote = (context, version) => {
         body.changelog = changelog;
       }
 
-      utils.printStarting(`Promoting ${version}`);
+      utils.startSpinner(`Promoting ${version}`);
       return utils.callAPI(
         url,
         {
@@ -85,7 +86,7 @@ const promote = (context, version) => {
       );
     })
     .then(() => {
-      utils.printDone();
+      utils.endSpinner();
       context.line('  Promotion successful!\n');
       context.line(
         'Optionally try the `zapier migrate 1.0.0 1.0.1 [10%]` command to move users to this version.'
@@ -98,7 +99,7 @@ const promote = (context, version) => {
           'You cannot promote until we have approved your app.'
         ) !== -1
       ) {
-        utils.printDone();
+        utils.endSpinner();
         context.line(
           '\nGood news! Your app passes validation and has the required number of testers and active Zaps.\n'
         );
