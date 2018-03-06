@@ -76,14 +76,10 @@ const promote = (context, version) => {
       }
 
       utils.startSpinner(`Promoting ${version}`);
-      return utils.callAPI(
-        url,
-        {
-          method: 'PUT',
-          body
-        },
-        false
-      );
+      return utils.callAPI(url, {
+        method: 'PUT',
+        body
+      });
     })
     .then(() => {
       utils.endSpinner();
