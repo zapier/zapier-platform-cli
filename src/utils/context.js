@@ -4,8 +4,8 @@ const createContext = ({ command, args, argOpts } = {}) => {
     args,
     argOpts,
     line: _line => {
-      // throwing in extra text makes output invalid json
-      if (argOpts.format !== 'json') {
+      // json-like formats should only print json output, not text
+      if (!['json', 'raw'].includes(argOpts.format)) {
         console.log(_line || '');
       }
     }
