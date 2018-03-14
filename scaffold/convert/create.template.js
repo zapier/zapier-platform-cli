@@ -356,7 +356,7 @@ module.exports = {
       getInputFields<% } %>
     ],
     outputFields: [
-<%= SAMPLE_FILEDS %><% if (hasCustomOutputFields) { %><% if (SAMPLE_FIELDS) { %>,<% } %>
+<%= SAMPLE_FIELDS %><% if (hasCustomOutputFields) { %><% if (SAMPLE_FIELDS) { %>,<% } %>
       getOutputFields<% } %>
     ],
     perform: makeRequest,
