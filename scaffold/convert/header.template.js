@@ -42,6 +42,9 @@ if (before && session) { %>const maybeIncludeAuth = (request, z, bundle) => {
 
 if (before && oauth) { %>const maybeIncludeAuth = (request, z, bundle) => {
   if (bundle.authData.access_token) {
+    if (!request.headers) {
+      request.headers = {};
+    }
     request.headers.Authorization = `Bearer ${bundle.authData.access_token}`;
   }
   return request;
