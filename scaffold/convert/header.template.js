@@ -2,7 +2,9 @@
 const { replaceVars } = require('./utils');
 <% } %>
 <% if (before && !session && !oauth && !customBasic) { %>const maybeIncludeAuth = (request, z, bundle) => {
-  <% if (!query) { %>
+  <% if (query) { %>
+    request.params = request.params || {};
+  <% } else { %>
     request.headers = request.headers || {};
   <% } %>
 <%
@@ -35,6 +37,7 @@ const maybeIncludeAuth = (request, z, bundle) => {
 
 if (before && session) { %>const maybeIncludeAuth = (request, z, bundle) => {
 <% if (query) { %>
+  request.params = request.params || {};
   request.params['<%= Object.keys(mapping)[0] %>'] = bundle.authData.sessionKey;;
 <% } else { %>
   request.headers = request.headers || {};
