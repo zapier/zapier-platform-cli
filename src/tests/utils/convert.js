@@ -270,6 +270,8 @@ describe('convert render functions', () => {
       return convert.getHeader(wbDef).then(string => {
         string.should.eql(
           'const maybeIncludeAuth = (request, z, bundle) => {\n' +
+            '  request.params = request.params || {};\n' +
+            '\n' +
             "  request.params['api_key'] = `${bundle.authData['api_key']}`;\n" +
             '\n' +
             '  return request;\n' +
