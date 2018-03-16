@@ -235,8 +235,6 @@ describe('convert render functions', () => {
       return convert.getHeader(wbDef).then(string => {
         string.should.eql(
           'const maybeIncludeAuth = (request, z, bundle) => {\n' +
-            '  request.headers = request.headers || {};\n' +
-            '\n' +
             "  request.headers['Authorization'] = `AccessKey ${bundle.authData['api_key']}`;\n" +
             '\n' +
             '  return request;\n' +
@@ -270,8 +268,6 @@ describe('convert render functions', () => {
       return convert.getHeader(wbDef).then(string => {
         string.should.eql(
           'const maybeIncludeAuth = (request, z, bundle) => {\n' +
-            '  request.params = request.params || {};\n' +
-            '\n' +
             "  request.params['api_key'] = `${bundle.authData['api_key']}`;\n" +
             '\n' +
             '  return request;\n' +
@@ -311,7 +307,6 @@ describe('convert render functions', () => {
 
       return convert.getHeader(wbDef).then(string => {
         string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-  request.headers = request.headers || {};
   request.headers['X-Token'] = bundle.authData.sessionKey;
 
   return request;
@@ -401,7 +396,6 @@ const getSessionKey = (z, bundle) => {
       return convert.getHeader(wbDef).then(string => {
         string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
   if (bundle.authData.access_token) {
-    request.headers = request.headers || {};
     request.headers.Authorization = \`Bearer \${bundle.authData.access_token}\`;
   }
   return request;
@@ -524,7 +518,6 @@ const getSessionKey = (z, bundle) => {
       return convert.getHeader(wbDef).then(string => {
         string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
   if (bundle.authData.access_token) {
-    request.headers = request.headers || {};
     request.headers.Authorization = \`Bearer \${bundle.authData.access_token}\`;
   }
   return request;
