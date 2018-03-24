@@ -46,17 +46,10 @@ module.exports = argv => {
     process.exit(1);
   }
 
-  const notifier = updateNotifier({ pkg: require('../package.json') });
-
-  if (notifier.update) {
-    notifier.notify({
-      message: `Update available ${colors.grey(
-        notifier.update.current
-      )} → ${colors.green(notifier.update.latest)}\nRun ${colors.cyan(
-        'npm i -g zapier-platform-cli'
-      )} to update, and then ${colors.blue('re-test your integration')}.`
-    });
-  }
+  updateNotifier({
+    pkg: require('../package.json'),
+    updateCheckInterval: 1000 * 60 * 60 * 24 * 7 // one week
+  }).notify();
 
   if (DEBUG) {
     console.log('running in:', process.cwd());
