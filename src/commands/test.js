@@ -4,6 +4,7 @@ const _ = require('lodash');
 const constants = require('../constants');
 const utils = require('../utils');
 const validate = require('./validate');
+const updateNotifier = require('update-notifier');
 
 const test = context => {
   const extraEnv = {
@@ -53,6 +54,23 @@ const test = context => {
             context.line(stdout);
           }
         });
+    })
+    .then(() => {
+      // find a package.json for the app and notify on the core dep
+      // `zapier test` won't run if package.json isn't there, so if we get to here we're good
+      return utils.readFile('package.json').then(buf => {
+        const pk = JSON.parse(buf.toString());
+        const reliedVersion = _.get(
+          pk,
+          `dependencies.${constants.PLATFORM_PACKAGE}`
+        );
+        if (reliedVersion) {
+          updateNotifier({
+            pkg: { name: constants.PLATFORM_PACKAGE, version: reliedVersion },
+            updateCheckInterval: constants.UPDATE_NOTIFICATION_INTERVAL
+          }).notify({ isGlobal: false });
+        }
+      });
     });
 };
 test.argsSpec = [];

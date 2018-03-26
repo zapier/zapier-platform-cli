@@ -5,7 +5,11 @@ const _ = require('lodash');
 const colors = require('colors/safe');
 const updateNotifier = require('update-notifier');
 
-const { DEBUG, LAMBDA_VERSION } = require('./constants');
+const {
+  DEBUG,
+  LAMBDA_VERSION,
+  UPDATE_NOTIFICATION_INTERVAL
+} = require('./constants');
 const commands = require('./commands');
 const utils = require('./utils');
 const leven = require('leven');
@@ -48,7 +52,7 @@ module.exports = argv => {
 
   updateNotifier({
     pkg: require('../package.json'),
-    updateCheckInterval: 1000 * 60 * 60 * 24 * 7 // one week
+    updateCheckInterval: UPDATE_NOTIFICATION_INTERVAL
   }).notify();
 
   if (DEBUG) {

@@ -9,7 +9,6 @@ const fs = require('fs');
 const AdmZip = require('adm-zip');
 const fetch = require('node-fetch');
 const path = require('path');
-const semver = require('semver');
 
 const { writeFile, readFile } = require('./files');
 
