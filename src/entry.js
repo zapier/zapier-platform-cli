@@ -78,12 +78,7 @@ module.exports = argv => {
   const context = utils.createContext({ command, args, argOpts });
 
   if (command === 'help' && (argOpts.version || argOpts.v)) {
-    context.line(
-      [
-        `zapier-platform-cli/${require('../package.json').version}`,
-        `node/${process.version}`
-      ].join('\n')
-    );
+    utils.printVersionInfo(context);
     return;
   }
 
