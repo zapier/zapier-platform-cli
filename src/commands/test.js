@@ -5,6 +5,7 @@ const constants = require('../constants');
 const utils = require('../utils');
 const validate = require('./validate');
 const updateNotifier = require('update-notifier');
+const path = require('path');
 
 const test = context => {
   const extraEnv = {
@@ -58,19 +59,17 @@ const test = context => {
     .then(() => {
       // find a package.json for the app and notify on the core dep
       // `zapier test` won't run if package.json isn't there, so if we get to here we're good
-      return utils.readFile('package.json').then(buf => {
-        const pk = JSON.parse(buf.toString());
-        const reliedVersion = _.get(
-          pk,
-          `dependencies.${constants.PLATFORM_PACKAGE}`
-        );
-        if (reliedVersion) {
-          updateNotifier({
-            pkg: { name: constants.PLATFORM_PACKAGE, version: reliedVersion },
-            updateCheckInterval: constants.UPDATE_NOTIFICATION_INTERVAL
-          }).notify({ isGlobal: false });
-        }
-      });
+      const requiredVersion = _.get(
+        require(path.resolve('./package.json')),
+        `dependencies.${constants.PLATFORM_PACKAGE}`
+      );
+
+      if (requiredVersion) {
+        updateNotifier({
+          pkg: { name: constants.PLATFORM_PACKAGE, version: requiredVersion },
+          updateCheckInterval: constants.UPDATE_NOTIFICATION_INTERVAL
+        }).notify({ isGlobal: false });
+      }
     });
 };
 test.argsSpec = [];

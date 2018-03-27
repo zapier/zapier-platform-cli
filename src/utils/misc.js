@@ -172,6 +172,20 @@ const printVersionInfo = context => {
       // the single version their package.json requires
       versions.splice(1, 0, `zapier-platform-core/${requiredVersion}`);
 
+      if (requiredVersion !== PACKAGE_VERSION) {
+        versions.push(
+          `${colors.yellow('\nWarning!')} "CLI" (${colors.green(
+            PACKAGE_VERSION
+          )}) and "core" (${colors.green(
+            requiredVersion
+          )}) versions are out of sync. This is probably fine, but if you're epxeriencing issues, update the ${colors.cyan(
+            PLATFORM_PACKAGE
+          )} dependency in your ${colors.cyan(
+            'package.json'
+          )} to ${colors.green(PACKAGE_VERSION)}.`
+        );
+      }
+
       if (
         fileExistsSync(
           path.resolve(`./node_modules/${PLATFORM_PACKAGE}/package.json`)
