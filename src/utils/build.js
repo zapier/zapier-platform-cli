@@ -271,7 +271,7 @@ const build = (zipPath, wdir) => {
   if (requiredVersion) {
     const notifier = updateNotifier({
       pkg: { name: constants.PLATFORM_PACKAGE, version: requiredVersion },
-      updateCheckInterval: 1 // constants.UPDATE_NOTIFICATION_INTERVAL
+      updateCheckInterval: constants.UPDATE_NOTIFICATION_INTERVAL
     });
 
     if (notifier.update) {
