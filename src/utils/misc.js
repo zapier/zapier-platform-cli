@@ -160,8 +160,6 @@ const printVersionInfo = context => {
   ];
 
   if (fileExistsSync(path.resolve('./package.json'))) {
-    // might be a caret, have to coerce for later comparison
-    //
     let requiredVersion = _.get(
       require(path.resolve('./package.json')),
       `dependencies.${PLATFORM_PACKAGE}`,
