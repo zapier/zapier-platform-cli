@@ -50,10 +50,18 @@ module.exports = argv => {
     process.exit(1);
   }
 
-  updateNotifier({
-    pkg: require('../package.json'),
+  const pkg = require('../package.json');
+  const notifier = updateNotifier({
+    pkg: pkg,
     updateCheckInterval: UPDATE_NOTIFICATION_INTERVAL
-  }).notify();
+  });
+  if (notifier.update && notifier.update.latest !== pkg.version) {
+    notifier.notify({
+      message: `Update available ${pkg.version} → ${colors.green(
+        notifier.update.latest
+      )}\nRun ${colors.cyan('npm i -g ' + pkg.name)} to update`
+    });
+  }
 
   if (DEBUG) {
     console.log('running in:', process.cwd());

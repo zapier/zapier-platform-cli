@@ -274,7 +274,7 @@ const build = (zipPath, wdir) => {
       updateCheckInterval: constants.UPDATE_NOTIFICATION_INTERVAL
     });
 
-    if (notifier.update) {
+    if (notifier.update && notifier.update.latest !== requiredVersion) {
       notifier.notify({
         message: `There's a newer version of ${colors.cyan(
           constants.PLATFORM_PACKAGE
