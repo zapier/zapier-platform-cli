@@ -24,6 +24,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Getting Started
 
+> If you're new to Zapier Platform CLI, we strongly recommend you to walk through the [Tutorial](https://zapier.com/developer/start) for a more thorough introduction.
+
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
@@ -67,8 +69,6 @@ Then you can either swap to that version with `nvm use LAMBDA_VERSION`, or do `n
 
 
 ### Quick Setup Guide
-
-> Be sure to check the [Requirements](#requirements) before you start! Also, we recommend the [Tutorial](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a more thorough introduction.
 
 First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
 
@@ -115,7 +115,7 @@ zapier push
 
 ### Tutorial
 
-For a full tutorial, head over to our [wiki](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
+For a full tutorial, head over to our [Tutorial](https://zapier.com/developer/start) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
 
 ## Creating a Local App
 
