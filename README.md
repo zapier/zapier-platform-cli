@@ -940,7 +940,7 @@ const App = {
 
 ```
 
-Additionally, if there is a field that affects the generation of dynamic fields, you can set the `altersDynamicFields: true` property. This informs the Zapier UI that whenver the value of that field changes, fields need to be recomputed. An example could be a static dropdown of "dessert type" that will change whether the function that generates dynamic fields includes a field "with sprinkles."
+Additionally, if there is a field that affects the generation of dynamic fields, you can set the `altersDynamicFields: true` property. This informs the Zapier UI that whenever the value of that field changes, fields need to be recomputed. An example could be a static dropdown of "dessert type" that will change whether the function that generates dynamic fields includes a field "with sprinkles."
 
 ```javascript
 module.exports = {
@@ -1788,7 +1788,7 @@ various kinds of errors occur.
 
 Errors due to a misconfiguration in a user's Zap should be handled in your app
 by throwing a standard JavaScript `Error` with a user-friendly message.
-Typically, this will be prettifying 4xx responses or API's that return errors as
+Typically, this will be prettifying 4xx responses or APIs that return errors as
 200s with a payload that describes the error.
 
 Example: `throw new Error('Your error message.');`
@@ -2376,7 +2376,7 @@ Finally, restart your shell and start hitting TAB with the `zapier` command!
 
 The Zapier Platform consists of 3 npm packages that are released simultaneously as a trio.
 
-- [`zapier-platform-cli`](https://github.com/zapier/zapier-platform-cli) is the code that powers the `zapier` command. You use it most commaonly with the `test`, `scaffold`, and `push` commands. It's installed with `npm install -g zapier-platform-cli` and does not correspond to a particular app.
+- [`zapier-platform-cli`](https://github.com/zapier/zapier-platform-cli) is the code that powers the `zapier` command. You use it most commonly with the `test`, `scaffold`, and `push` commands. It's installed with `npm install -g zapier-platform-cli` and does not correspond to a particular app.
 
 - [`zapier-platform-core`](https://github.com/zapier/zapier-platform-core) is what allows your app to interact with Zapier. It holds the `z` object and app tester code. Your app depends on a specific version of `zapier-platform-core` in the `package.json` file. It's installed via `npm install` along with the rest of your app's dependencies.
 
@@ -2384,9 +2384,9 @@ The Zapier Platform consists of 3 npm packages that are released simultaneously 
 
 ### Updating
 
-The Zapier platform and its tools are under active development While you don't need to install every release, we release new versions because they are better than the last. We do our best to adhere to [Semantic Versioning](https://semver.org/) wherein we won't break your code unless there's a `major` release. Otherwise, we're just fixing bugs (`patch`) and adding features (`minor`).
+The Zapier platform and its tools are under active development. While you don't need to install every release, we release new versions because they are better than the last. We do our best to adhere to [Semantic Versioning](https://semver.org/) wherein we won't break your code unless there's a `major` release. Otherwise, we're just fixing bugs (`patch`) and adding features (`minor`).
 
-Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never *have* to upgrade your app's platform version, we recommend keeping an eye on the [changelog](https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md) to see what new features and bux fixes are available.
+Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never *have* to upgrade your app's `platform-core` dependency, we recommend keeping an eye on the [changelog](https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md) to see what new features and bux fixes are available.
 
 <!-- TODO: if we decouple releases, change this -->
 The most recently released version of `cli` and `core` is `5.0.0`. You can see the versions you're working with by running `zapier -v`.

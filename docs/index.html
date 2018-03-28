@@ -1817,7 +1817,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Additionally, if there is a field that affects the generation of dynamic fields, you can set the <code>altersDynamicFields: true</code> property. This informs the Zapier UI that whenver the value of that field changes, fields need to be recomputed. An example could be a static dropdown of &quot;dessert type&quot; that will change whether the function that generates dynamic fields includes a field &quot;with sprinkles.&quot;</p>
+      <p>Additionally, if there is a field that affects the generation of dynamic fields, you can set the <code>altersDynamicFields: true</code> property. This informs the Zapier UI that whenever the value of that field changes, fields need to be recomputed. An example could be a static dropdown of &quot;dessert type&quot; that will change whether the function that generates dynamic fields includes a field &quot;with sprinkles.&quot;</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
@@ -3208,7 +3208,7 @@ various kinds of errors occur.</p>
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Errors due to a misconfiguration in a user&apos;s Zap should be handled in your app
 by throwing a standard JavaScript <code>Error</code> with a user-friendly message.
-Typically, this will be prettifying 4xx responses or API&apos;s that return errors as
+Typically, this will be prettifying 4xx responses or APIs that return errors as
 200s with a payload that describes the error.</p><p>Example: <code>throw new Error(&apos;Your error message.&apos;);</code></p><p>A couple best practices to keep in mind:</p><ul>
 <li>Elaborate on terse messages. &quot;not_authenticated&quot; -&gt; &quot;Your API Key is invalid. Please reconnect your account.&quot;</li>
 <li>If the error calls out a specific field, surface that information to the user. &quot;Invalid Request&quot; -&gt; &quot;contact name is invalid&quot;</li>
@@ -4159,7 +4159,7 @@ curl https://raw.githubusercontent.com/zapier/zapier-platform-cli/master/goodies
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>The Zapier Platform consists of 3 npm packages that are released simultaneously as a trio.</p><ul>
-<li><p><a href="https://github.com/zapier/zapier-platform-cli"><code>zapier-platform-cli</code></a> is the code that powers the <code>zapier</code> command. You use it most commaonly with the <code>test</code>, <code>scaffold</code>, and <code>push</code> commands. It&apos;s installed with <code>npm install -g zapier-platform-cli</code> and does not correspond to a particular app.</p>
+<li><p><a href="https://github.com/zapier/zapier-platform-cli"><code>zapier-platform-cli</code></a> is the code that powers the <code>zapier</code> command. You use it most commonly with the <code>test</code>, <code>scaffold</code>, and <code>push</code> commands. It&apos;s installed with <code>npm install -g zapier-platform-cli</code> and does not correspond to a particular app.</p>
 </li>
 <li><p><a href="https://github.com/zapier/zapier-platform-core"><code>zapier-platform-core</code></a> is what allows your app to interact with Zapier. It holds the <code>z</code> object and app tester code. Your app depends on a specific version of <code>zapier-platform-core</code> in the <code>package.json</code> file. It&apos;s installed via <code>npm install</code> along with the rest of your app&apos;s dependencies.</p>
 </li>
@@ -4183,7 +4183,7 @@ curl https://raw.githubusercontent.com/zapier/zapier-platform-cli/master/goodies
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The Zapier platform and its tools are under active development While you don&apos;t need to install every release, we release new versions because they are better than the last. We do our best to adhere to <a href="https://semver.org/">Semantic Versioning</a> wherein we won&apos;t break your code unless there&apos;s a <code>major</code> release. Otherwise, we&apos;re just fixing bugs (<code>patch</code>) and adding features (<code>minor</code>).</p><p>Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never <em>have</em> to upgrade your app&apos;s platform version, we recommend keeping an eye on the <a href="https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md">changelog</a> to see what new features and bux fixes are available.</p><p>The most recently released version of <code>cli</code> and <code>core</code> is <code>5.0.0</code>. You can see the versions you&apos;re working with by running <code>zapier -v</code>.</p><p>To update <code>cli</code>, run <code>npm install -g zapier-platform-cli</code>.</p><p>To update the version of <code>core</code> your app depends on, set the <code>zapier-platform-core</code> dependency in your <code>package.json</code> to a version listed <a href="https://github.com/zapier/zapier-platform-core/releases">here</a> and run <code>npm install</code>.</p><p>For maximum compatibility, keep the versions of <code>cli</code> and <code>core</code> in sync.</p>
+      <p>The Zapier platform and its tools are under active development. While you don&apos;t need to install every release, we release new versions because they are better than the last. We do our best to adhere to <a href="https://semver.org/">Semantic Versioning</a> wherein we won&apos;t break your code unless there&apos;s a <code>major</code> release. Otherwise, we&apos;re just fixing bugs (<code>patch</code>) and adding features (<code>minor</code>).</p><p>Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never <em>have</em> to upgrade your app&apos;s <code>platform-core</code> dependency, we recommend keeping an eye on the <a href="https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md">changelog</a> to see what new features and bux fixes are available.</p><p>The most recently released version of <code>cli</code> and <code>core</code> is <code>5.0.0</code>. You can see the versions you&apos;re working with by running <code>zapier -v</code>.</p><p>To update <code>cli</code>, run <code>npm install -g zapier-platform-cli</code>.</p><p>To update the version of <code>core</code> your app depends on, set the <code>zapier-platform-core</code> dependency in your <code>package.json</code> to a version listed <a href="https://github.com/zapier/zapier-platform-core/releases">here</a> and run <code>npm install</code>.</p><p>For maximum compatibility, keep the versions of <code>cli</code> and <code>core</code> in sync.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
