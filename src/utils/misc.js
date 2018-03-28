@@ -162,12 +162,11 @@ const printVersionInfo = context => {
   if (fileExistsSync(path.resolve('./package.json'))) {
     let requiredVersion = _.get(
       require(path.resolve('./package.json')),
-      `dependencies.${PLATFORM_PACKAGE}`,
-      {}
-    ).version;
+      `dependencies.${PLATFORM_PACKAGE}`
+    );
     if (requiredVersion) {
       // might be a caret, have to coerce for later comparison
-      requiredVersion = semver.coerce(requiredVersion);
+      requiredVersion = semver.coerce(requiredVersion).version;
 
       // the single version their package.json requires
       versions.splice(1, 0, `zapier-platform-core/${requiredVersion}`);
