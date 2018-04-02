@@ -316,7 +316,7 @@ const build = (zipPath, wdir) => {
         'node_modules',
         constants.PLATFORM_PACKAGE
       );
-      if (!fs.exists(corePath)) {
+      if (!fs.existsSync(corePath)) {
         throw new Error(
           'Could not install dependencies properly. Error log:\n' +
             output.stderr
