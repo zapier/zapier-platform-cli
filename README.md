@@ -66,6 +66,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [`bundle.inputData`](#bundleinputdata)
   * [`bundle.inputDataRaw`](#bundleinputdataraw)
   * [`bundle.meta`](#bundlemeta)
+  * [`bundle.rawRequest`](#bundlerawrequest)
+  * [`bundle.cleanedRequest`](#bundlecleanedrequest)
 - [Environment](#environment)
   * [Defining Environment Variables](#defining-environment-variables)
   * [Accessing Environment Variables](#accessing-environment-variables)
@@ -1210,6 +1212,41 @@ module.exports = {
   // ...
 };
 ```
+
+### `bundle.rawRequest`
+***`bundle.rawRequest` is only available in the `perform` for web hooks and `getAccessToken` for oauth authentication methods***
+
+`bundle.rawRequest` holds raw information about the HTTP request that triggered the `perform` method or that represents the users browser request that triggered the `getAccessToken` call:
+
+```
+{
+	method: 'POST',
+	querystring:'key=value;key2=value2',
+	content:'{key:value}'
+}
+```
+
+
+
+### `bundle.cleanedRequest`
+***`bundle.cleanedRequest` is only available in the `perform` for web hooks and `getAccessToken` for oauth authentication methods***
+
+`bundle.cleanedRequest` will return a formatted and parsed version of the request. Some or all of the following will be available:
+
+```
+{
+	headers: {
+		'header':'value of header'
+	},
+	body: {
+		key:'value'
+	},
+	querystring: {
+		key: 'value'
+	}
+}
+```
+
 
 ## Environment
 

@@ -303,6 +303,8 @@ a code {
 <li><a href="#bundleinputdata"><code>bundle.inputData</code></a></li>
 <li><a href="#bundleinputdataraw"><code>bundle.inputDataRaw</code></a></li>
 <li><a href="#bundlemeta"><code>bundle.meta</code></a></li>
+<li><a href="#bundlerawrequest"><code>bundle.rawRequest</code></a></li>
+<li><a href="#bundlecleanedrequest"><code>bundle.cleanedRequest</code></a></li>
 </ul>
 </li>
 <li><a href="#environment">Environment</a><ul>
@@ -484,6 +486,8 @@ a code {
 <li><a href="#bundleinputdata"><code>bundle.inputData</code></a></li>
 <li><a href="#bundleinputdataraw"><code>bundle.inputDataRaw</code></a></li>
 <li><a href="#bundlemeta"><code>bundle.meta</code></a></li>
+<li><a href="#bundlerawrequest"><code>bundle.rawRequest</code></a></li>
+<li><a href="#bundlecleanedrequest"><code>bundle.cleanedRequest</code></a></li>
 </ul>
 </li>
 <li><a href="#environment">Environment</a><ul>
@@ -2364,6 +2368,58 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
   performSubscribe: subscribeHook,
   <span class="hljs-comment">// ...</span>
 };
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="bundlerawrequest"><code>bundle.rawRequest</code></h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p><strong><em><code>bundle.rawRequest</code> is only available in the <code>perform</code> for web hooks and <code>getAccessToken</code> for oauth authentication methods</em></strong></p><p><code>bundle.rawRequest</code> holds raw information about the HTTP request that triggered the <code>perform</code> method or that represents the users browser request that triggered the <code>getAccessToken</code> call:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>{
+    method: &apos;POST&apos;,
+    querystring:&apos;key=value;key2=value2&apos;,
+    content:&apos;{key:value}&apos;
+}
+</code></pre>
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="bundlecleanedrequest"><code>bundle.cleanedRequest</code></h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p><strong><em><code>bundle.cleanedRequest</code> is only available in the <code>perform</code> for web hooks and <code>getAccessToken</code> for oauth authentication methods</em></strong></p><p><code>bundle.cleanedRequest</code> will return a formatted and parsed version of the request. Some or all of the following will be available:</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height  docs-code">
+      <pre><code>{
+    headers: {
+        &apos;header&apos;:&apos;value of header&apos;
+    },
+    body: {
+        key:&apos;value&apos;
+    },
+    querystring: {
+        key: &apos;value&apos;
+    }
+}
 </code></pre>
     </div>
   </div>

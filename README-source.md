@@ -633,6 +633,41 @@ module.exports = {
 };
 ```
 
+### `bundle.rawRequest`
+***`bundle.rawRequest` is only available in the `perform` for web hooks and `getAccessToken` for oauth authentication methods***
+
+`bundle.rawRequest` holds raw information about the HTTP request that triggered the `perform` method or that represents the users browser request that triggered the `getAccessToken` call:
+
+```
+{
+	method: 'POST',
+	querystring:'key=value;key2=value2',
+	content:'{key:value}'
+}
+```
+
+
+
+### `bundle.cleanedRequest`
+***`bundle.cleanedRequest` is only available in the `perform` for web hooks and `getAccessToken` for oauth authentication methods***
+
+`bundle.cleanedRequest` will return a formatted and parsed version of the request. Some or all of the following will be available:
+
+```
+{
+	headers: {
+		'header':'value of header'
+	},
+	body: {
+		key:'value'
+	},
+	querystring: {
+		key: 'value'
+	}
+}
+```
+
+
 ## Environment
 
 Apps can define environment variables that are available when the app's code executes. They work just like environment
