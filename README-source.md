@@ -467,7 +467,7 @@ In some cases, it might be necessary to provide fields that are dynamically gene
 
 > You should see `bundle.inputData` partially filled in as users provide data - even in field retrieval. This allows you to build hierarchical relationships into fields (EG: only show issues from the previously selected project).
 
-> A function that returns dynamic fields cannot return additional functions to call for dynamic fields.
+> A function that returns a list of dynamic fields cannot include additional functions in that list to call for dynamic fields.
 
 ```javascript
 [insert-file:./snippets/custom-fields.js]
