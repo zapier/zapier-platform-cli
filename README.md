@@ -695,7 +695,7 @@ module.exports = App;
 
 ```
 
-> Note - For OAuth, `authentication.oauth2Config.authorizeUrl`, `authentication.oauth2Config.getAccessToken`, and `authentication.oauth2Config.refreshAccessToken`  will have the provided fields in `bundle.inputData` instead of `bundle.authData` because `bundle.authData` will only have "previously existing" values, which will be empty the first time the Zap runs.
+> Note - For OAuth, `authentication.oauth2Config.authorizeUrl`, `authentication.oauth2Config.getAccessToken`, and `authentication.oauth2Config.refreshAccessToken`  will have the provided fields in `bundle.inputData` instead of `bundle.authData` because `bundle.authData` will only have "previously existing" values, which will be empty the first time the Zap runs. Also note that `authentication.oauth2Config.getAccessToken` has access to the users return values in `rawRequest` and `cleanedRequest` should you need to extract other values (for example from the query string)
 
 
 ## Resources

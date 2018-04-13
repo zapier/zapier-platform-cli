@@ -1467,7 +1467,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Note - For OAuth, <code>authentication.oauth2Config.authorizeUrl</code>, <code>authentication.oauth2Config.getAccessToken</code>, and <code>authentication.oauth2Config.refreshAccessToken</code>  will have the provided fields in <code>bundle.inputData</code> instead of <code>bundle.authData</code> because <code>bundle.authData</code> will only have &quot;previously existing&quot; values, which will be empty the first time the Zap runs.</p>
+<p>Note - For OAuth, <code>authentication.oauth2Config.authorizeUrl</code>, <code>authentication.oauth2Config.getAccessToken</code>, and <code>authentication.oauth2Config.refreshAccessToken</code>  will have the provided fields in <code>bundle.inputData</code> instead of <code>bundle.authData</code> because <code>bundle.authData</code> will only have &quot;previously existing&quot; values, which will be empty the first time the Zap runs. Also note that <code>authentication.oauth2Config.getAccessToken</code> has access to the users return values in <code>rawRequest</code> and <code>cleanedRequest</code> should you need to extract other values (for example from the query string)</p>
 </blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
