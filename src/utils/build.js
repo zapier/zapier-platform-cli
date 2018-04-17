@@ -74,6 +74,12 @@ const requiredFiles = (cwd, entryPoints) => {
   return new Promise((resolve, reject) => {
     b.on('error', reject);
 
+    const ignoredDependencies = [
+      'debug' // Causes https://github.com/zapier/zapier-platform-cli/issues/189
+    ];
+
+    b.exclude(ignoredDependencies);
+
     const paths = [];
     b.pipeline.get('deps').push(
       through
