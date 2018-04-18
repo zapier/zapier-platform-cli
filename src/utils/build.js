@@ -65,7 +65,7 @@ const requiredFiles = (cwd, entryPoints) => {
       'Buffer.isBuffer': undefined,
       Buffer: undefined
     },
-    ignoreMissing: false,
+    ignoreMissing: true,
     debug: false,
     standalone: undefined
   };
@@ -74,18 +74,11 @@ const requiredFiles = (cwd, entryPoints) => {
   return new Promise((resolve, reject) => {
     b.on('error', reject);
 
-    const ignoredDependencies = [
-      'debug' // Causes https://github.com/zapier/zapier-platform-cli/issues/189
-    ];
-
-    b.exclude(ignoredDependencies);
-
     const paths = [];
     b.pipeline.get('deps').push(
       through
         .obj((row, enc, next) => {
           const filePath = row.file || row.id;
-          // why does browserify add /private + filePath?
           paths.push(stripPath(cwd, filePath));
           next();
         })
