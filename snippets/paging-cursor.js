@@ -21,7 +21,7 @@ const performWihoutAsync = (z, bundle) => {
     })
     .then(response => {
       // need to save the cursor and return a promise, but also need to pass the data along
-      return Promise.all([data.items, z.cursor.set(response.nextPage)]);
+      return Promise.all([response.items, z.cursor.set(response.nextPage)]);
     })
     .then(promises => {
       // [items[], null]
