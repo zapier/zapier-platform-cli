@@ -219,7 +219,11 @@ const printData = (
     (global.argOpts || {}).format || (useRowBasedTable ? 'row' : DEFAULT_STYLE);
   const formatter = formatStyles[formatStyle] || formatStyles[DEFAULT_STYLE];
   if (rows && !rows.length) {
-    console.log(ifEmptyMessage);
+    if (['json', 'raw'].includes(formatStyle)) {
+      console.log([]);
+    } else {
+      console.log(ifEmptyMessage);
+    }
   } else {
     console.log(formatter(rows, columnDefs));
   }
@@ -234,8 +238,7 @@ const startSpinner = msg => {
 
 const endSpinner = (success = true, message) => {
   // only stop if it was started in the first place
-  // this is undocumented, but seems like it works; i filed an issue
-  if (!spinner.id) {
+  if (!spinner.isSpinning) {
     return;
   }
 
