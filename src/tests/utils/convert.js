@@ -100,6 +100,26 @@ describe('convert render functions', () => {
       field.helpText.should.eql("That's ok");
     });
 
+    it('should convert a static dropdown', () => {
+      const wbKey = 'genre';
+      const wbDef = {
+        key: 'genre',
+        label: 'Genre',
+        type: 'Unicode',
+        required: true,
+        choices: 'drama,scifi|Sci-Fi,super-hero|Super Hero,thriller'
+      };
+
+      const string = convert.renderField(wbDef, wbKey);
+      const field = s2js(string);
+      field.choices.should.eql({
+        drama: 'Drama',
+        scifi: 'Sci-Fi',
+        'super-hero': 'Super Hero',
+        thriller: 'Thriller'
+      });
+    });
+
     it('should convert a dynamic dropdown', () => {
       const wbKey = 'test';
       const wbDef = {
@@ -213,12 +233,13 @@ describe('convert render functions', () => {
       const wbDef = definitions.apiHeader;
 
       return convert.getHeader(wbDef).then(string => {
-        string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-  request.headers['Authorization'] = bundle.authData['api_key'];
-
-  return request;
-};
-`);
+        string.should.eql(
+          'const maybeIncludeAuth = (request, z, bundle) => {\n' +
+            "  request.headers['Authorization'] = `AccessKey ${bundle.authData['api_key']}`;\n" +
+            '\n' +
+            '  return request;\n' +
+            '};\n'
+        );
       });
     });
 
@@ -245,12 +266,13 @@ describe('convert render functions', () => {
       const wbDef = definitions.apiQuery;
 
       return convert.getHeader(wbDef).then(string => {
-        string.should.eql(`const maybeIncludeAuth = (request, z, bundle) => {
-  request.params['api_key'] = bundle.authData['api_key'];
-
-  return request;
-};
-`);
+        string.should.eql(
+          'const maybeIncludeAuth = (request, z, bundle) => {\n' +
+            "  request.params['api_key'] = `${bundle.authData['api_key']}`;\n" +
+            '\n' +
+            '  return request;\n' +
+            '};\n'
+        );
       });
     });
 
@@ -624,7 +646,7 @@ const getSessionKey = (z, bundle) => {
     });
   });
 
-  describe('render sample', () => {
+  describe('render sample fields', () => {
     it('should render sample output fields', () => {
       const wbFields = [
         { type: 'float', key: 'bounds__northeast__lat' },
@@ -640,7 +662,7 @@ const getSessionKey = (z, bundle) => {
         }
       ];
 
-      const string = '[' + convert.renderSample(wbFields) + ']';
+      const string = '[' + convert.renderSampleFields(wbFields) + ']';
       const cliFields = s2js(string);
       cliFields.should.eql([
         { type: 'number', key: 'bounds__northeast__lat' },

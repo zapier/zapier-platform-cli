@@ -13,6 +13,8 @@ const {
   LAMBDA_VERSION
 } = require('../constants');
 
+const { fileExistsSync } = require('./files');
+
 const camelCase = str => _.capitalize(_.camelCase(str));
 const snakeCase = str => _.snakeCase(str);
 
@@ -41,9 +43,10 @@ const runCommand = (command, args, options) => {
     let stdout = '';
     if (result.stdout) {
       result.stdout.on('data', data => {
-        stdout += data.toString();
+        const str = data.toString();
+        stdout += str;
         if (global.argOpts.debug) {
-          console.log(colors.green(stdout));
+          process.stdout.write(colors.green(str));
         }
       });
     }
@@ -51,9 +54,10 @@ const runCommand = (command, args, options) => {
     let stderr = '';
     if (result.stderr) {
       result.stderr.on('data', data => {
-        stderr += data.toString();
+        const str = data.toString();
+        stderr += str;
         if (global.argOpts.debug) {
-          console.log(colors.red(stdout));
+          process.stderr.write(colors.red(str));
         }
       });
     }
@@ -64,7 +68,7 @@ const runCommand = (command, args, options) => {
       if (code !== 0) {
         reject(new Error(stderr));
       }
-      resolve(stdout);
+      resolve({ stdout, stderr });
     });
   });
 };
@@ -106,7 +110,7 @@ const isValidAppInstall = command => {
   } catch (err) {
     return {
       valid: false,
-      reason: `Looks like you're missing a local installaction of ${PLATFORM_PACKAGE}. Run \`npm install\` to resolve`
+      reason: `Looks like you're missing a local installation of ${PLATFORM_PACKAGE}. Run \`npm install\` to resolve`
     };
   }
 
@@ -151,6 +155,64 @@ const entryPoint = dir => {
   return fse.realpathSync(path.resolve(dir, packageJson.main));
 };
 
+const printVersionInfo = context => {
+  const versions = [
+    `zapier-platform-cli/${PACKAGE_VERSION}`,
+    `node/${process.version}`
+  ];
+
+  if (fileExistsSync(path.resolve('./package.json'))) {
+    let requiredVersion = _.get(
+      require(path.resolve('./package.json')),
+      `dependencies.${PLATFORM_PACKAGE}`
+    );
+    if (requiredVersion) {
+      // might be a caret, have to coerce for later comparison
+      requiredVersion = semver.coerce(requiredVersion).version;
+
+      // the single version their package.json requires
+      versions.splice(1, 0, `zapier-platform-core/${requiredVersion}`);
+
+      if (requiredVersion !== PACKAGE_VERSION) {
+        versions.push(
+          `${colors.yellow('\nWarning!')} "CLI" (${colors.green(
+            PACKAGE_VERSION
+          )}) and "core" (${colors.green(
+            requiredVersion
+          )}) versions are out of sync. This is probably fine, but if you're epxeriencing issues, update the ${colors.cyan(
+            PLATFORM_PACKAGE
+          )} dependency in your ${colors.cyan(
+            'package.json'
+          )} to ${colors.green(PACKAGE_VERSION)}.`
+        );
+      }
+
+      if (
+        fileExistsSync(
+          path.resolve(`./node_modules/${PLATFORM_PACKAGE}/package.json`)
+        )
+      ) {
+        // double check they have the right version installed
+        const installedPkgVersion = require(path.resolve(
+          `./node_modules/${PLATFORM_PACKAGE}/package.json`
+        )).version;
+
+        if (requiredVersion !== installedPkgVersion) {
+          versions.push(
+            `${colors.yellow('\nWarning!')} Required version (${colors.green(
+              requiredVersion
+            )}) and installed version (${colors.green(
+              installedPkgVersion
+            )}) are out of sync. Run ${colors.cyan('`npm install`')} to fix.\n`
+          );
+        }
+      }
+    }
+  }
+
+  context.line(versions.join('\n'));
+};
+
 module.exports = {
   camelCase,
   entryPoint,
@@ -158,6 +220,7 @@ module.exports = {
   isValidNodeVersion,
   isWindows,
   npmInstall,
+  printVersionInfo,
   promiseDoWhile,
   promiseForever,
   runCommand,

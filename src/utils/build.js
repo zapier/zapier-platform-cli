@@ -9,6 +9,8 @@ const archiver = require('archiver');
 const fs = require('fs');
 const fse = require('fs-extra');
 const klaw = require('klaw');
+const updateNotifier = require('update-notifier');
+const colors = require('colors/safe');
 
 const eslint = require('eslint');
 
@@ -63,7 +65,7 @@ const requiredFiles = (cwd, entryPoints) => {
       'Buffer.isBuffer': undefined,
       Buffer: undefined
     },
-    ignoreMissing: false,
+    ignoreMissing: true,
     debug: false,
     standalone: undefined
   };
@@ -77,7 +79,6 @@ const requiredFiles = (cwd, entryPoints) => {
       through
         .obj((row, enc, next) => {
           const filePath = row.file || row.id;
-          // why does browserify add /private + filePath?
           paths.push(stripPath(cwd, filePath));
           next();
         })
@@ -91,13 +92,20 @@ const requiredFiles = (cwd, entryPoints) => {
 };
 
 const listFiles = dir => {
+  const isBlacklisted = file_path => {
+    return ['.git', '.env', 'build'].find(excluded => {
+      return file_path.search(excluded) === 0;
+    });
+  };
+
   return new Promise((resolve, reject) => {
     const paths = [];
     const cwd = dir + path.sep;
     klaw(dir)
       .on('data', item => {
-        if (!item.stats.isDirectory()) {
-          paths.push(stripPath(cwd, item.path));
+        const stripped_path = stripPath(cwd, item.path);
+        if (!item.stats.isDirectory() && !isBlacklisted(stripped_path)) {
+          paths.push(stripped_path);
         }
       })
       .on('error', reject)
@@ -252,6 +260,32 @@ const build = (zipPath, wdir) => {
     'zapier-' + crypto.randomBytes(4).toString('hex')
   );
 
+  // find a package.json for the app and notify on the core dep
+  // `build` won't run if package.json isn't there, so if we get to here we're good
+  const requiredVersion = _.get(
+    require(path.resolve('./package.json')),
+    `dependencies.${constants.PLATFORM_PACKAGE}`
+  );
+
+  if (requiredVersion) {
+    const notifier = updateNotifier({
+      pkg: { name: constants.PLATFORM_PACKAGE, version: requiredVersion },
+      updateCheckInterval: constants.UPDATE_NOTIFICATION_INTERVAL
+    });
+
+    if (notifier.update && notifier.update.latest !== requiredVersion) {
+      notifier.notify({
+        message: `There's a newer version of ${colors.cyan(
+          constants.PLATFORM_PACKAGE
+        )} available.\nConsider updating the dependency in your\n${colors.cyan(
+          'package.json'
+        )} (${colors.grey(notifier.update.current)} → ${colors.green(
+          notifier.update.latest
+        )}) and then running ${colors.red('zapier test')}.`
+      });
+    }
+  }
+
   return ensureDir(tmpDir)
     .then(() => ensureDir(constants.BUILD_DIR))
     .then(() => {
@@ -273,6 +307,20 @@ const build = (zipPath, wdir) => {
       endSpinner();
       startSpinner('Installing project dependencies');
       return runCommand('npm', ['install', '--production'], { cwd: tmpDir });
+    })
+    .then(output => {
+      // `npm install` may fail silently without returning a non-zero exit code, need to check further here
+      const corePath = path.join(
+        tmpDir,
+        'node_modules',
+        constants.PLATFORM_PACKAGE
+      );
+      if (!fs.existsSync(corePath)) {
+        throw new Error(
+          'Could not install dependencies properly. Error log:\n' +
+            output.stderr
+        );
+      }
     })
     .then(() => {
       endSpinner();

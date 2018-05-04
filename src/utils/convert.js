@@ -8,7 +8,7 @@ const { startSpinner, endSpinner } = require('./display');
 const { PACKAGE_VERSION } = require('../constants');
 
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
-const ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION = '1.0.0';
+const ZAPIER_LEGACY_SCRIPTING_RUNNER_VERSION = '1.2.0';
 
 // map WB auth types to CLI
 const authTypeMap = {
@@ -162,6 +162,19 @@ const renderField = (definition, key, indent = 0) => {
     );
   }
 
+  if (definition.choices) {
+    const choices = {};
+    _.each(definition.choices.split(','), choice => {
+      const parts = choice.split('|');
+      const choiceKey = parts[0].trim();
+      const choiceLabel =
+        parts.length > 1 ? parts[1].trim() : _.startCase(choiceKey);
+      choices[choiceKey] = choiceLabel;
+    });
+
+    props.push(renderProp('choices', JSON.stringify(choices)));
+  }
+
   props = props.map(s => ' '.repeat(indent + 2) + s);
   const padding = ' '.repeat(indent);
 
@@ -199,7 +212,7 @@ ${props.join(',\n')}
 ${padding}}`;
 };
 
-const renderSample = (fields, indent = 0) => {
+const renderSampleFields = (fields, indent = 0) => {
   const results = [];
   _.each(fields, field => {
     results.push(renderSampleField(field, indent));
@@ -662,7 +675,8 @@ const renderStep = (type, definition, key, legacyApp) => {
   const stepMeta = getStepMetaData(legacyApp, type, key);
 
   const fields = renderFields(definition.fields, 6);
-  const sample = renderSample(definition.sample_result_fields, 6);
+  const sampleFields = renderSampleFields(definition.sample_result_fields, 6);
+  const sample = JSON.stringify(definition.sample_result) || 'null';
 
   const url = definition.url
     ? definition.url
@@ -687,8 +701,11 @@ const renderStep = (type, definition, key, legacyApp) => {
     HIDDEN: hidden,
     IMPORTANT: important,
     FIELDS: fields,
+    SAMPLE_FIELDS: sampleFields,
     SAMPLE: sample,
     URL: url,
+    CUSTOM_FIELDS_URL: null,
+    CUSTOM_FIELDS_RESULT_URL: null,
     scripting: stepMeta.hasScripting,
     preScripting: stepMeta.hasPreScripting,
     postScripting: stepMeta.hasPostScripting,
@@ -746,50 +763,46 @@ const writeStep = (type, definition, key, legacyApp, newAppDir) => {
   );
 };
 
-// render the authData used in the trigger/search/create test code
-const renderAuthData = definition => {
+// Get auth field keys that will be put into test code
+const getAuthFieldKeys = definition => {
   const authType = getAuthType(definition);
-  let result;
+  let fieldKeys;
   switch (authType) {
+    case 'api-header': // fall through
+    case 'api-query': // fall through
     case 'basic': {
-      let lines = _.map(definition.auth_fields, (field, key) => {
-        const upperKey = key.toUpperCase();
-        return `        ${key}: process.env.${upperKey}`;
-      });
-      result = `{
-${lines.join(',\n')}
-      }`;
+      fieldKeys = _.keys(definition.auth_fields);
       break;
     }
     case 'oauth2':
-      result = `{
-        access_token: process.env.ACCESS_TOKEN
-      }`;
+      fieldKeys = ['access_token'];
       break;
     case 'oauth2-refresh':
-      result = `{
-        access_token: process.env.ACCESS_TOKEN,
-        refresh_token: process.env.REFRESH_TOKEN
-      }`;
-      break;
-    case 'api-header': // Fall through
-    case 'api-query':
-      result = `{
-        apiKey: process.env.API_KEY
-      }`;
+      fieldKeys = ['access_token', 'refresh_token'];
       break;
     case 'session':
-      result = `{
-        sessionKey: process.env.SESSION_KEY
-      }`;
+      fieldKeys = ['sessionKey'];
       break;
     default:
-      result = `{
-        // TODO: Put your custom auth data here
-      }`;
+      fieldKeys = [];
       break;
   }
-  return result;
+  return fieldKeys;
+};
+
+// Render authData for test code
+const renderAuthData = definition => {
+  const fieldKeys = getAuthFieldKeys(definition);
+  const lines = _.map(fieldKeys, key => {
+    const upperKey = _.snakeCase(key).toUpperCase();
+    return `${key}: process.env.${upperKey}`;
+  });
+  if (_.isEmpty(lines)) {
+    return `{
+      // TODO: Put your custom auth data here
+    }`;
+  }
+  return '{' + lines.join(',\n') + '}';
 };
 
 const renderDefaultInputData = definition => {
@@ -1020,8 +1033,9 @@ const writeScripting = (legacyApp, newAppDir) => {
 };
 
 const renderEnvironment = definition => {
-  const lines = _.map(definition.auth_fields, (field, key) => {
-    const upperKey = key.toUpperCase();
+  const authFields = getAuthFieldKeys(definition);
+  const lines = _.map(authFields, key => {
+    const upperKey = _.snakeCase(key).toUpperCase();
     return `${upperKey}=YOUR_${upperKey}`;
   });
   return lines.join('\n');
@@ -1032,7 +1046,7 @@ const writeEnvironment = (legacyApp, newAppDir) => {
   if (!content) {
     return Promise.resolve(null);
   }
-  return createFile(content, '.environment', newAppDir);
+  return createFile(content, '.env', newAppDir);
 };
 
 const writeGitIgnore = newAppDir => {
@@ -1074,7 +1088,7 @@ module.exports = {
   renderAuth,
   renderField,
   renderIndex,
-  renderSample,
+  renderSampleFields,
   renderScripting,
   renderStep,
   renderTemplate,

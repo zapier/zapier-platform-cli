@@ -1,3 +1,64 @@
+## 5.2.0
+
+### cli
+
+* :tada: (new) Add option to `zapier logs` to show bundle logs ([PR](https://github.com/zapier/zapier-platform-cli/pull/291))
+* (fix) Fix `zapier build` from crashing on missing packages ([PR](https://github.com/zapier/zapier-platform-cli/pull/301))
+* (fix) Fix `zapier convert` from crashing on certain OAuth config ([PR](https://github.com/zapier/zapier-platform-cli/pull/299))
+* (fix) Fix `zapier convert` from crashing on a number in auth mapping ([PR](https://github.com/zapier/zapier-platform-cli/pull/305))
+* (improvement) `zapier build` prints any errors from `npm install` ([PR](https://github.com/zapier/zapier-platform-cli/pull/288))
+* (docs) Add note about nested dynamic functions ([PR](https://github.com/zapier/zapier-platform-cli/pull/296))
+* (docs) Add docs about `bundle.cleanedRequest` and `bundle.rawRequest` ([PR](https://github.com/zapier/zapier-platform-cli/pull/298))
+
+### schema
+
+* (fix) Correctly invalidate field grandchildren ([PR](https://github.com/zapier/zapier-platform-schema/pull/40))
+* (docs) More examples on functional constraints ([PR](https://github.com/zapier/zapier-platform-schema/pull/39))
+
+### core
+
+* (fix) Raise exception for bad requests when stashing a file ([PR](https://github.com/zapier/zapier-platform-core/pull/75))
+* (fix) Better log censoring ([PR](https://github.com/zapier/zapier-platform-core/pull/77))
+
+## 5.1.0
+
+### cli
+
+* :tada: (new) Add "did you mean" on unrecognized commands ([PR](https://github.com/zapier/zapier-platform-cli/pull/278))
+* (fix) Fix hang issue when printing data on skinny terminal ([PR](https://github.com/zapier/zapier-platform-cli/pull/283))
+* (fix) Server returns error when running `zapier logs --debug` ([PR](https://github.com/zapier/zapier-platform-cli/pull/254))
+* (fix) Exclude unwanted files when doing `zapier build --disable-dependency-detection` ([PR](https://github.com/zapier/zapier-platform-cli/pull/258))
+* (fix) Don't overwrite `.zapierapprc` completely ([PR](https://github.com/zapier/zapier-platform-cli/pull/275))
+* (fix) Fix "CUSTOM_FIELDS_URL is not defined" error for `zapier convert` ([PR](https://github.com/zapier/zapier-platform-cli/pull/277))
+* (improvement) Less nagging about updating packages ([PR](https://github.com/zapier/zapier-platform-cli/pull/282))
+* (improvement) Add "github" and "search-or-create" example apps ([PR](https://github.com/zapier/zapier-platform-cli/pull/259), [PR2](https://github.com/zapier/zapier-platform-cli/pull/287))
+* (improvement) `zapier promote` error messages now look better ([PR](https://github.com/zapier/zapier-platform-cli/pull/280))
+* (improvement) Remove unnecessary `.nvmrc` logic ([PR](https://github.com/zapier/zapier-platform-cli/pull/256))
+* (improvement) `zapier convert` supports static dropdown ([PR](https://github.com/zapier/zapier-platform-cli/pull/267))
+* (improvement) `zapier convert` supports auth mapping better ([PR](https://github.com/zapier/zapier-platform-cli/pull/257))
+* (improvement) Fix auth issue with full scripting methods for `zapier convert` ([PR](https://github.com/zapier/zapier-platform-cli/pull/271))
+* (improvement) `zapier convert` converts samples, too ([PR](https://github.com/zapier/zapier-platform-cli/pull/266))
+* (improvement) `zapier convert` respects auth field keys in test code ([PR](https://github.com/zapier/zapier-platform-cli/pull/274))
+* (improvement) `zapier convert` generates `.env` instead of `.environment` ([PR](https://github.com/zapier/zapier-platform-cli/pull/276))
+* (improvement) `zapier convert` includes input fields to test code ([PR](https://github.com/zapier/zapier-platform-cli/pull/246))
+* (improvement) Fix session auth environment variable name for `zapier convert` ([PR](https://github.com/zapier/zapier-platform-cli/pull/281))
+* (docs) FAQ about when to use placeholders or curlies ([PR](https://github.com/zapier/zapier-platform-cli/pull/252))
+
+### schema
+
+* (fix) Only require samples for non-hidden operations ([PR](https://github.com/zapier/zapier-platform-schema/pull/33))
+* (fix) Correctly validate `children` as an array of fields ([PR](https://github.com/zapier/zapier-platform-schema/pull/34))
+* (fix) Doc rendering issue ([PR](https://github.com/zapier/zapier-platform-schema/pull/35))
+* (docs) Add doc annotation ([PR](https://github.com/zapier/zapier-platform-schema/pull/38))
+
+### core
+
+* (improvement) Bump Node version to 6.10.3 ([PR](https://github.com/zapier/zapier-platform-core/pull/69))
+* (improvement) Deprecate `.environment` in favor of `.env` ([PR](https://github.com/zapier/zapier-platform-core/pull/70))
+* (improvement) Support test framework other than Mocah ([PR](https://github.com/zapier/zapier-platform-core/pull/65))
+* (improvement) `z.console.log` also calls `console.log` ([PR](https://github.com/zapier/zapier-platform-core/pull/66))
+* (improvement) Check for object in create ([PR](https://github.com/zapier/zapier-platform-core/pull/67))
+
 ## 5.0.0
 
 ### cli
@@ -5,7 +66,7 @@
 * :tada: (new) The CLI can now run, test, and build on any version of Node.js! ([PR](https://github.com/zapier/zapier-platform-cli/pull/234))
 * :tada: (new) Read deploy key from env if available ([PR](https://github.com/zapier/zapier-platform-cli/pull/239))
 * (improvement) More specific error messages for invalid installs ([PR](https://github.com/zapier/zapier-platform-cli/pull/238))
-* (fix) `zaiper env` no longer throws an error on Node versions >=8.0 ([PR](https://github.com/zapier/zapier-platform-cli/pull/242))
+* (fix) `zapier env` no longer throws an error on Node versions >=8.0 ([PR](https://github.com/zapier/zapier-platform-cli/pull/242))
 * (improvement) `zapier convert` creates a .gitignore for new apps ([PR](https://github.com/zapier/zapier-platform-cli/pull/237))
 * (improvement) `zapier convert` properly escapes labels and descriptions ([PR](https://github.com/zapier/zapier-platform-cli/pull/233), [commit](https://github.com/zapier/zapier-platform-cli/commit/6d8014e9c04abb5f939affd19888c447ae1abca1))
 * (improvement) `zapier convert` only sends a token when it exists, not before ([PR](https://github.com/zapier/zapier-platform-cli/pull/236))

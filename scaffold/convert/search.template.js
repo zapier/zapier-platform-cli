@@ -1,6 +1,11 @@
 // Search stub created by 'zapier convert'. This is just a stub - you will need to edit!
 const _ = require('lodash');
 const { replaceVars } = require('../utils');
+
+<% if (fullScripting || resourceFullScripting || inputFieldFullScripting || outputFieldFullScripting) { %>
+  const { runBeforeMiddlewares } = require('../utils');
+<% } %>
+
 <%
 // Template for just _pre_search()
 if (preScripting && !postScripting && !fullScripting) { %>
@@ -29,13 +34,19 @@ const getList = (z, bundle) => {
 
       const results = z.JSON.parse(response.content);
 
-      // Do a _read_resource() from scripting.
-      const fullResourceEvent = {
-        name: 'search.resource',
-        key: '<%= KEY %>',
-        results
-      };
-      return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, 0));
+      resourceBundle.request = { url: resourceBundle._legacyUrl };
+      return runBeforeMiddlewares(resourceBundle.request, z, resourceBundle)
+        .then(request => {
+          // Do a _read_resource() from scripting.
+          const fullResourceEvent = {
+            name: 'search.resource',
+            key: '<%= KEY %>',
+            results
+          };
+          resourceBundle.request = request;
+          return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+        });
     })
     .then(results => {
       // WB would return a single record, but in CLI we expect an array
@@ -214,14 +225,19 @@ const getList = (z, bundle) => {
     .then(postSearchResult => {
       const results = postSearchResult;
 
-      // Do a _read_resource() from scripting.
-      const fullResourceEvent = {
-        name: 'search.resource',
-        key: '<%= KEY %>',
-        results
-      };
       resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, 0));
-      return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+      resourceBundle.request = { url: resourceBundle._legacyUrl };
+      return runBeforeMiddlewares(resourceBundle.request, z, resourceBundle)
+        .then(request => {
+          // Do a _read_resource() from scripting.
+          const fullResourceEvent = {
+            name: 'search.resource',
+            key: '<%= KEY %>',
+            results
+          };
+          resourceBundle.request = request;
+          return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+        });
     })
     .then(results => {
       // WB would return a single record, but in CLI we expect an array
@@ -385,14 +401,19 @@ const getList = (z, bundle) => {
     .then(postSearchResult => {
       const results = postSearchResult;
 
-      // Do a _read_resource() from scripting.
-      const fullResourceEvent = {
-        name: 'search.resource',
-        key: '<%= KEY %>',
-        results
-      };
       resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, 0));
-      return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+      resourceBundle.request = { url: resourceBundle._legacyUrl };
+      return runBeforeMiddlewares(resourceBundle.request, z, resourceBundle)
+        .then(request => {
+          // Do a _read_resource() from scripting.
+          const fullResourceEvent = {
+            name: 'search.resource',
+            key: '<%= KEY %>',
+            results
+          };
+          resourceBundle.request = request;
+          return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+        });
     })
     .then(results => {
       // WB would return a single record, but in CLI we expect an array
@@ -534,27 +555,38 @@ const getList = (z, bundle) => {
 
   bundle._legacyUrl = '<%= URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+  bundle.request = { url: bundle._legacyUrl };
 
   resourceBundle._legacyUrl = '<%= RESOURCE_URL %>';
 
-  // Do a _search() from scripting.
-  const fullSearchEvent = {
-    name: 'search.search',
-    key: '<%= KEY %>'
-  };
-  return legacyScriptingRunner.runEvent(fullSearchEvent, z, bundle)
+  return runBeforeMiddlewares(bundle.request, z, bundle)
+    .then(request => {
+      bundle.request = request;
+
+      // Do a _search() from scripting.
+      const fullSearchEvent = {
+        name: 'search.search',
+        key: '<%= KEY %>'
+      };
+      return legacyScriptingRunner.runEvent(fullSearchEvent, z, bundle);
+    })
 <% if (resourceFullScripting) { %>
     .then(fullSearchResult => {
       const results = fullSearchResult;
 
-      // Do a _read_resource() from scripting.
-      const fullResourceEvent = {
-        name: 'search.resource',
-        key: '<%= KEY %>',
-        results
-      };
       resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, 0));
-      return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+      resourceBundle.request = { url: resourceBundle._legacyUrl };
+      return runBeforeMiddlewares(resourceBundle.request, z, resourceBundle)
+        .then(request => {
+          // Do a _read_resource() from scripting.
+          const fullResourceEvent = {
+            name: 'search.resource',
+            key: '<%= KEY %>',
+            results
+          };
+          resourceBundle.request = request;
+          return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+        });
     })
     .then(results => {
       // WB would return a single record, but in CLI we expect an array
@@ -710,14 +742,19 @@ const getList = (z, bundle) => {
 
       const results = z.JSON.parse(response.content);
 
-      // Do a _read_resource() from scripting.
-      const fullResourceEvent = {
-        name: 'search.resource',
-        key: '<%= KEY %>',
-        results
-      };
-      resourceBundle._legacyUrl = replaceVars(bundle._legacyUrl, resourceBundle, _.get(results, 0));
-      return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+      resourceBundle._legacyUrl = replaceVars(resourceBundle._legacyUrl, resourceBundle, _.get(results, 0));
+      resourceBundle.request = { url: resourceBundle._legacyUrl };
+      return runBeforeMiddlewares(resourceBundle.request, z, resourceBundle)
+        .then(request => {
+          // Do a _read_resource() from scripting.
+          const fullResourceEvent = {
+            name: 'search.resource',
+            key: '<%= KEY %>',
+            results
+          };
+          resourceBundle.request = request;
+          return legacyScriptingRunner.runEvent(fullResourceEvent, z, resourceBundle);
+        });
     })
     .then(results => {
       // WB would return a single record, but in CLI we expect an array
@@ -864,23 +901,38 @@ const getInputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+  bundle.request = { url: bundle._legacyUrl };
+<% } else { %>
+  bundle._legacyUrl = null;
+  bundle.request = {};
+<% } %>
 
-  // Do a _custom_search_fields() from scripting.
-  const fullFieldsEvent = {
-    name: 'search.input',
-    key: '<%= KEY %>'
-  };
-  return legacyScriptingRunner.runEvent(fullFieldsEvent, z, bundle);
+  return runBeforeMiddlewares(bundle.request, z, bundle)
+    .then(request => {
+      bundle.request = request;
+
+      // Do a _custom_search_fields() from scripting.
+      const fullFieldsEvent = {
+        name: 'search.input',
+        key: '<%= KEY %>'
+      };
+      return legacyScriptingRunner.runEvent(fullFieldsEvent, z, bundle);
+    });
 };
 <% } else if (inputFieldPreScripting && !inputFieldPostScripting) { %>
 const getInputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+<% } else { %>
+  bundle._legacyUrl = null;
+<% } %>
 
   // Do a _pre_custom_search_fields() from scripting.
   const preFieldsEvent = {
@@ -899,8 +951,12 @@ const getInputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+<% } else { %>
+  bundle._legacyUrl = null;
+<% } %>
 
   // Do a _pre_custom_search_fields() from scripting.
   const preFieldsEvent = {
@@ -926,8 +982,12 @@ const getInputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+<% } else { %>
+  bundle._legacyUrl = null;
+<% } %>
 
   const responsePromise = z.request({
     url: bundle._legacyUrl
@@ -964,23 +1024,38 @@ const getOutputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_RESULT_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+  bundle.request = { url: bundle._legacyUrl };
+<% } else { %>
+  bundle._legacyUrl = null;
+  bundle.request = {};
+<% } %>
 
-  // Do a _custom_search_result_fields() from scripting.
-  const fullResultFieldsEvent = {
-    name: 'search.output',
-    key: '<%= KEY %>'
-  };
-  return legacyScriptingRunner.runEvent(fullResultFieldsEvent, z, bundle);
+  return runBeforeMiddlewares(bundle.request, z, bundle)
+    .then(request => {
+      bundle.request = request;
+
+      // Do a _custom_search_result_fields() from scripting.
+      const fullResultFieldsEvent = {
+        name: 'search.output',
+        key: '<%= KEY %>'
+      };
+      return legacyScriptingRunner.runEvent(fullResultFieldsEvent, z, bundle);
+    });
 };
 <% } else if (outputFieldPreScripting && !outputFieldPostScripting) { %>
 const getOutputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_RESULT_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+<% } else { %>
+  bundle._legacyUrl = null;
+<% } %>
 
   // Do a _pre_custom_search_result_fields() from scripting.
   const preResultFieldsEvent = {
@@ -999,8 +1074,12 @@ const getOutputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_RESULT_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+<% } else { %>
+  bundle._legacyUrl = null;
+<% } %>
 
   // Do a _pre_custom_search_result_fields() from scripting.
   const preResultFieldsEvent = {
@@ -1026,8 +1105,12 @@ const getOutputFields = (z, bundle) => {
   const scripting = require('../scripting');
   const legacyScriptingRunner = require('zapier-platform-legacy-scripting-runner')(scripting);
 
+<% if (CUSTOM_FIELDS_RESULT_URL) { %>
   bundle._legacyUrl = '<%= CUSTOM_FIELDS_RESULT_URL %>';
   bundle._legacyUrl = replaceVars(bundle._legacyUrl, bundle);
+<% } else { %>
+  bundle._legacyUrl = null;
+<% } %>
 
   const responsePromise = z.request({
     url: bundle._legacyUrl
@@ -1075,9 +1158,10 @@ module.exports = {
       getInputFields<% } %>
     ],
     outputFields: [
-<%= SAMPLE %><% if (hasCustomOutputFields) { %><% if (SAMPLE) { %>,<% } %>
+<%= SAMPLE_FIELDS %><% if (hasCustomOutputFields) { %><% if (SAMPLE_FIELDS) { %>,<% } %>
       getOutputFields<% } %>
     ],
-    perform: getList
+    perform: getList,
+    sample: <%= SAMPLE %>
   }
 };

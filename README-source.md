@@ -24,6 +24,8 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 
 ## Getting Started
 
+> If you're new to Zapier Platform CLI, we strongly recommend you to walk through the [Tutorial](https://zapier.com/developer/start) for a more thorough introduction.
+
 ### What is an App?
 
 A CLI App is an implementation of your app's API. You build a Node.js application
@@ -67,8 +69,6 @@ Then you can either swap to that version with `nvm use LAMBDA_VERSION`, or do `n
 
 
 ### Quick Setup Guide
-
-> Be sure to check the [Requirements](#requirements) before you start! Also, we recommend the [Tutorial](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a more thorough introduction.
 
 First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
 
@@ -115,7 +115,7 @@ zapier push
 
 ### Tutorial
 
-For a full tutorial, head over to our [wiki](https://github.com/zapier/zapier-platform-cli/wiki/Tutorial) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
+For a full tutorial, head over to our [Tutorial](https://zapier.com/developer/start) for a comprehensive walkthrough for creating your first app. If this isn't your first rodeo, read on!
 
 ## Creating a Local App
 
@@ -360,7 +360,7 @@ Your auth definition would look something like this:
 [insert-file:./snippets/oauth2.js]
 ```
 
-> Note - For OAuth, `authentication.oauth2Config.authorizeUrl`, `authentication.oauth2Config.getAccessToken`, and `authentication.oauth2Config.refreshAccessToken`  will have the provided fields in `bundle.inputData` instead of `bundle.authData` because `bundle.authData` will only have "previously existing" values, which will be empty the first time the Zap runs.
+> Note - For OAuth, `authentication.oauth2Config.authorizeUrl`, `authentication.oauth2Config.getAccessToken`, and `authentication.oauth2Config.refreshAccessToken`  will have the provided fields in `bundle.inputData` instead of `bundle.authData` because `bundle.authData` will only have "previously existing" values, which will be empty the first time the Zap runs. Also note that `authentication.oauth2Config.getAccessToken` has access to the users return values in `rawRequest` and `cleanedRequest` should you need to extract other values (for example from the query string)
 
 
 ## Resources
@@ -467,15 +467,19 @@ In some cases, it might be necessary to provide fields that are dynamically gene
 
 > You should see `bundle.inputData` partially filled in as users provide data - even in field retrieval. This allows you to build hierarchical relationships into fields (EG: only show issues from the previously selected project).
 
+> A function that returns a list of dynamic fields cannot include additional functions in that list to call for dynamic fields.
+
 ```javascript
 [insert-file:./snippets/custom-fields.js]
 ```
 
-Additionally, if there is a field that affects the generation of dynamic fields, you can set the `altersDynamicFields: true` property. This informs the Zapier UI that whenver the value of that field changes, fields need to be recomputed. An example could be a static dropdown of "dessert type" that will change whether the function that generates dynamic fields includes a field "with sprinkles."
+Additionally, if there is a field that affects the generation of dynamic fields, you can set the `altersDynamicFields: true` property. This informs the Zapier UI that whenever the value of that field changes, fields need to be recomputed. An example could be a static dropdown of "dessert type" that will change whether the function that generates dynamic fields includes a field "with sprinkles."
 
 ```javascript
 [insert-file:./snippets/alters-dynamic-fields.js]
 ```
+
+> Only dropdowns support `altersDynamicFields`.
 
 ### Dynamic Dropdowns
 
@@ -605,7 +609,7 @@ This object holds the user's auth details and the data for the API requests.
 | limit | `-1` | the number of items to fetch. `-1` indicates there's no limit (which will almost always be the case) |
 | page | `0` | used in [paging](#paging) to uniquely identify which page of results should be returned |
 
-**`bundle.meta.zap.id` is only available in the `performSubscribe` and `performUnsubscribe` methods**
+> `bundle.meta.zap.id` is only available in the `performSubscribe` and `performUnsubscribe` methods
 
 The user's Zap ID is available during the [subscribe and unsubscribe](https://zapier.github.io/zapier-platform-schema/build/schema.html#basichookoperationschema) methods.
 
@@ -633,6 +637,46 @@ module.exports = {
 };
 ```
 
+### `bundle.rawRequest`
+> `bundle.rawRequest` is only available in the `perform` for web hooks and `getAccessToken` for oauth authentication methods
+
+`bundle.rawRequest` holds raw information about the HTTP request that triggered the `perform` method or that represents the users browser request that triggered the `getAccessToken` call:
+
+```
+{
+  method: 'POST',
+  querystring: 'foo=bar&baz=qux',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  content: '{"hello": "world"}'
+}
+```
+
+
+
+### `bundle.cleanedRequest`
+> `bundle.cleanedRequest` is only available in the `perform` for web hooks and `getAccessToken` for oauth authentication methods
+
+`bundle.cleanedRequest` will return a formatted and parsed version of the request. Some or all of the following will be available:
+
+```
+{
+  method: 'POST',
+  querystring: {
+    foo: 'bar',
+    baz: 'qux'
+  },
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  content: {
+    hello: 'world'
+  }
+}
+```
+
+
 ## Environment
 
 Apps can define environment variables that are available when the app's code executes. They work just like environment
@@ -659,11 +703,13 @@ You will likely also want to set the value locally for testing.
 export MY_SECRET_VALUE=1234
 ```
 
-Alternatively, we provide some extra tooling to work with an `.environment` that looks like this:
+Alternatively, we provide some extra tooling to work with an `.env` (or `.environment`, see below note) that looks like this:
 
 ```
 MY_SECRET_VALUE=1234
 ```
+
+> `.env` is the new recommended name for the environment file since v5.1.0. The old name `.environment` is depreated but will continue to work for backward compatibility.
 
 And then in your `test/basic.js` file:
 
@@ -913,7 +959,7 @@ See a full example with dehydration/hydration wired in correctly:
 
 There are two types of logs for a Zapier app, console logs and HTTP logs. The console logs are created by your app through the use of the `z.console.log` method ([see below for details](#console-logging)). The HTTP logs are created automatically by Zapier whenever your app makes HTTP requests (as long as you use `z.request([url], options)` or shorthand request objects).
 
-To view the logs for your application, use the `zapier logs` command. There are two types of logs, `http` (logged automatically by Zapier on HTTP requests) and `console` (manual logs via `z.console.log()` statements).
+To view the logs for your application, use the `zapier logs` command. There are three types of logs, `http` (logged automatically by Zapier on HTTP requests), `bundle` (logged automatically on every method execution), and `console` (manual logs via `z.console.log()` statements).
 
 For advanced logging options including only displaying the logs for a certain user or app version, look at the help for the logs command:
 
@@ -937,6 +983,14 @@ To see your `z.console.log` logs, do:
 
 ```bash
 zapier logs --type=console
+```
+
+### Viewing Bundle Logs
+
+To see the bundle logs, do:
+
+```bash
+zapier logs --type=bundle
 ```
 
 ### HTTP Logging
@@ -982,7 +1036,7 @@ various kinds of errors occur.
 
 Errors due to a misconfiguration in a user's Zap should be handled in your app
 by throwing a standard JavaScript `Error` with a user-friendly message.
-Typically, this will be prettifying 4xx responses or API's that return errors as
+Typically, this will be prettifying 4xx responses or APIs that return errors as
 200s with a payload that describes the error.
 
 Example: `throw new Error('Your error message.');`
@@ -1064,16 +1118,18 @@ zapier test
 
 ### Testing & Environment Variables
 
-The best way to store sensitive values (like API keys, OAuth secrets, or passwords) is in an `.environment` file ([learn more](https://github.com/motdotla/dotenv#faq)). Then, you can include the following before your tests run:
+The best way to store sensitive values (like API keys, OAuth secrets, or passwords) is in an `.env` (or `.environment`, see below note) file ([learn more](https://github.com/motdotla/dotenv#faq)). Then, you can include the following before your tests run:
 
 ```js
 const zapier = require('zapier-platform-core');
-zapier.tools.env.inject(); // inject() can take a filename; defaults to ".environment"
+zapier.tools.env.inject(); // inject() can take a filename; defaults to ".env"
 
-// now process.env has all the values in your .environment file
+// now process.env has all the values in your .env file
 ```
 
-> Remember: don't add your secrets file to version control!
+> `.env` is the new recommended name for the environment file since v5.1.0. The old name `.environment` is depreated but will continue to work for backward compatibility.
+
+> Remember: **NEVER** add your secrets file to version control!
 
 Additionally, you can provide them dynamically at runtime:
 
@@ -1366,39 +1422,34 @@ source ~/.bash_completion.d/_zapier
 
 Finally, restart your shell and start hitting TAB with the `zapier` command!
 
-## Upgrading Zapier Platform CLI or Zapier Platform Core
+## The Zapier Platform Packages
 
-The CLI version of the Platform has 3 public packages:
+The Zapier Platform consists of 3 npm packages that are released simultaneously as a trio.
 
-- [`zapier-platform-cli`](https://github.com/zapier/zapier-platform-cli): This is the `zapier` command. Should be installed with `npm install -g zapier-platform-cli` and is used to interact with your app and Zapier, but doesn't run in nor is included by your app.
+- [`zapier-platform-cli`](https://github.com/zapier/zapier-platform-cli) is the code that powers the `zapier` command. You use it most commonly with the `test`, `scaffold`, and `push` commands. It's installed with `npm install -g zapier-platform-cli` and does not correspond to a particular app.
 
-- [`zapier-platform-core`](https://github.com/zapier/zapier-platform-core): This is what allows your app to interact with Zapier. Apps require this package in their `package.json` file, and a specific version by design, so you can keep using an older "core" version without having to upgrade your code, but still being able to update your app. Should be installed with `npm install` in your app. You should manually keep this version number in sync with your `zapier-platform-cli` global one, but it's not required for all upgrades.
+- [`zapier-platform-core`](https://github.com/zapier/zapier-platform-core) is what allows your app to interact with Zapier. It holds the `z` object and app tester code. Your app depends on a specific version of `zapier-platform-core` in the `package.json` file. It's installed via `npm install` along with the rest of your app's dependencies.
 
-- [`zapier-platform-schema`](https://github.com/zapier/zapier-platform-schema): This is a separate package for maintainability purposes. It's a dependency installed automatically by `zapier-platform-core`. It's basically the package that enforces app schemas to match what Zapier has in the backend.
+- [`zapier-platform-schema`](https://github.com/zapier/zapier-platform-schema) enforces app structure behind the scenes. It's a dependency of `core`, so it will be installed automatically.
 
-### Upgrading Zapier Platform CLI
+### Updating
 
-Check your version with `$ zapier --version` and update with `$ npm -g update zapier-platform-cli`.
+The Zapier platform and its tools are under active development. While you don't need to install every release, we release new versions because they are better than the last. We do our best to adhere to [Semantic Versioning](https://semver.org/) wherein we won't break your code unless there's a `major` release. Otherwise, we're just fixing bugs (`patch`) and adding features (`minor`).
 
-You can also [look at the Changelog](https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md) to understand what changed between versions.
+Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never *have* to upgrade your app's `platform-core` dependency, we recommend keeping an eye on the [changelog](https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md) to see what new features and bux fixes are available.
 
-#### When to Update CLI
+<!-- TODO: if we decouple releases, change this -->
+The most recently released version of `cli` and `core` is `PACKAGE_VERSION`. You can see the versions you're working with by running `zapier -v`.
 
-You should keep your `zapier-platform-cli` global package up-to-date to get the latest features and bug fixes for interacting with your app, but it's not mandatory. You should be able to use any publicly available `zapier-platform-cli` version.
+To update `cli`, run `npm install -g zapier-platform-cli`.
 
-### Upgrading Zapier Platform Core
+To update the version of `core` your app depends on, set the `zapier-platform-core` dependency in your `package.json` to a version listed [here](https://github.com/zapier/zapier-platform-core/releases) and run `npm install`.
 
-Open your app's `package.json` file and update the number for the `zapier-platform-core` entry to what the latest public version is. You can see it on the right side of the [NPM registry page](https://www.npmjs.com/package/zapier-platform-core). After that you should be able to run `npm update` and get the latest goodies!
-
-#### When To Update Core
-
-You should keep your `zapier-platform-core` package up-to-date to get the latest features and bug fixes for your app when interacting with Zapier, but it's not mandatory. You should be able to use any publicly available `zapier-platform-core` version.
-
-While not always required, it's also recommended you use the same `zapier-platform-cli` global package as the app's `zapier-platform-core` one, to ensure maximum compatibility.
+For maximum compatibility, keep the versions of `cli` and `core` in sync.
 
 ## Development of the CLI
 
-This section is only relevant if you're editing the `zapier-platform-cli` package
+This section is only relevant if you're editing the `zapier-platform-cli` package itself.
 
 ### Commands
 

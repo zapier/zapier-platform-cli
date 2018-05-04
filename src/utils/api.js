@@ -9,7 +9,6 @@ const fs = require('fs');
 const AdmZip = require('adm-zip');
 const fetch = require('node-fetch');
 const path = require('path');
-const semver = require('semver');
 
 const { writeFile, readFile } = require('./files');
 
@@ -41,7 +40,7 @@ const readCredentials = (explodeIfMissing = true) => {
 };
 
 // Calls the underlying platform REST API with proper authentication.
-const callAPI = (route, options) => {
+const callAPI = (route, options, rawError = false) => {
   options = options || {};
   const url = options.url || constants.ENDPOINT + route;
 
@@ -98,9 +97,18 @@ const callAPI = (route, options) => {
       }
 
       if (hitError) {
-        throw new Error(
-          `"${requestOptions.url}" returned "${res.status}" saying "${errors}"`
-        );
+        const niceMessage = `"${requestOptions.url}" returned "${
+          res.status
+        }" saying "${errors}"`;
+
+        if (rawError) {
+          res.text = text;
+          res.json = JSON.parse(text);
+          res.errText = niceMessage;
+          return Promise.reject(res);
+        } else {
+          throw new Error(niceMessage);
+        }
       }
 
       return JSON.parse(text);
@@ -135,12 +143,21 @@ const writeLinkedAppConfig = (app, appDir) => {
     ? path.resolve(appDir, constants.CURRENT_APP_FILE)
     : constants.CURRENT_APP_FILE;
 
-  return writeFile(
-    file,
-    prettyJSONstringify({
-      id: app.id,
-      key: app.key
-    })
+  // read contents of existing config before writing
+  return (
+    readFile(file)
+      .then(configBuff => {
+        return Promise.resolve(JSON.parse(configBuff.toString()));
+      })
+      // we want to eat errors about bad json and missing files
+      // and ensure the below code is passes a js object
+      .catch(() => Promise.resolve({}))
+      .then(config => {
+        return Object.assign({}, config, { id: app.id, key: app.key });
+      })
+      .then(updatedConfig =>
+        writeFile(file, prettyJSONstringify(updatedConfig))
+      )
   );
 };
 
@@ -263,18 +280,8 @@ const upload = (zipPath, appDir) => {
         }
       });
     })
-    .then(appVersion => {
+    .then(() => {
       endSpinner();
-
-      if (semver.lt(appVersion.platform_version, appVersion.core_npm_version)) {
-        console.log(
-          `\n**NOTE:** Your app is using zapier-platform-core@${
-            appVersion.platform_version
-          }, and there's a new version: ${
-            appVersion.core_npm_version
-          }. Please consider updating it: https://zapier.github.io/zapier-platform-cli/#upgrading-zapier-platform-cli-or-zapier-platform-core`
-        );
-      }
     });
 };
 
