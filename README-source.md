@@ -1346,7 +1346,7 @@ This is paired most often with "update" actions, where a required parameter will
 
 Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
 
-Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `start` parameter:
+Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `offset` parameter:
 
 ```js
 (z, bundle) => {
@@ -1367,7 +1367,7 @@ If your API uses cursor-based paging instead of an offset, you can use `z.cursor
 [insert-file:./snippets/paging-cursor.js]
 ```
 
-Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if `bundle.meta.page === 0`, so you don't accidentally reuse a cursor from a previous poll.
+Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if `bundle.meta.page !== 0`, so you don't accidentally reuse a cursor from a previous poll.
 
 Lastly, you need to set `canPaginate` to `true` in your polling definition (per the [schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema)) for the `z.cursor` methods to work as expected.
 

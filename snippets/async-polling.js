@@ -21,7 +21,7 @@ const asyncExample = async (z, bundle) => {
   // then we know we almost certainly havne't missed anything and can let
   //   deduper handle the rest
 
-  while (new Date(results[results.length - 1].createdAt) < hoursAgo) {
+  while (new Date(results[results.length - 1].createdAt) > hoursAgo) {
     start += limit; // next page
 
     response = await z.request({

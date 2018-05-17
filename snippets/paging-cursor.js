@@ -1,7 +1,7 @@
 // the perform method of our trigger
 // ensure operation.canPaginate is true!
 
-const performWihoutAsync = (z, bundle) => {
+const performWithoutAsync = (z, bundle) => {
   return Promise.resolve()
     .then(() => {
       if (bundle.meta.page === 0) {
@@ -23,16 +23,18 @@ const performWihoutAsync = (z, bundle) => {
       // need to save the cursor and return a promise, but also need to pass the data along
       return Promise.all([response.items, z.cursor.set(response.nextPage)]);
     })
-    .then(promises => {
-      // [items[], null]
-      return promises[0];
+    .then(([items /* null */]) => {
+      return items;
     });
 };
 
 // ---------------------------------------------------
 
 const performWithAsync = async (z, bundle) => {
-  const cursor = await z.cursor.get(); // string | null
+  let cursor;
+  if (bundle.meta.page) {
+    cursor = await z.cursor.get(); // string | null
+  }
 
   const response = await z.request(
     'https://5ae7ad3547436a00143e104d.mockapi.io/api/recipes',
