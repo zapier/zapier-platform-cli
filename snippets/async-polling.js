@@ -18,7 +18,7 @@ const asyncExample = async (z, bundle) => {
   let results = response.json;
 
   // keep paging until the last item was created over two hours ago
-  // then we know we almost certainly havne't missed anything and can let
+  // then we know we almost certainly haven't missed anything and can let
   //   deduper handle the rest
 
   while (new Date(results[results.length - 1].createdAt) > hoursAgo) {
