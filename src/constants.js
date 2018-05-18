@@ -18,6 +18,7 @@ const PLATFORM_PACKAGE = 'zapier-platform-core';
 const BUILD_DIR = 'build';
 const DEFINITION_PATH = `${BUILD_DIR}/definition.json`;
 const BUILD_PATH = `${BUILD_DIR}/build.zip`;
+const SOURCE_PATH = `${BUILD_DIR}/source.zip`;
 const nodeVersion = semver.Comparator(
   versionStore[versionStore.length - 1].nodeVersion
 ).semver.version;
@@ -55,6 +56,7 @@ module.exports = {
   BASE_ENDPOINT,
   BUILD_DIR,
   BUILD_PATH,
+  SOURCE_PATH,
   CURRENT_APP_FILE,
   DEBUG,
   DEFINITION_PATH,

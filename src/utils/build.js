@@ -172,6 +172,38 @@ const forceIncludeDumbPath = (appConfig, filePath) => {
   );
 };
 
+const writeZipFromPaths = (dir, zipPath, paths) => {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(zipPath);
+    const zip = archiver('zip', {
+      store: true // Sets the compression method to STORE.
+    });
+
+    // listen for all archive data to be written
+    output.on('close', function() {
+      resolve();
+    });
+
+    zip.on('error', function(err) {
+      reject(err);
+    });
+
+    // pipe archive data to the file
+    zip.pipe(output);
+
+    paths.forEach(function(filePath) {
+      var basePath = path.dirname(filePath);
+      if (basePath === '.') {
+        basePath = undefined;
+      }
+      var name = path.join(dir, filePath);
+      zip.file(name, { name: filePath, mode: 0o755 });
+    });
+
+    zip.finalize();
+  });
+};
+
 const makeZip = (dir, zipPath) => {
   const entryPoints = [
     path.resolve(dir, 'zapierwrapper.js'),
@@ -200,37 +232,22 @@ const makeZip = (dir, zipPath) => {
       return finalPaths;
     })
     .then(verifyNodeFeatures)
-    .then(paths => {
-      return new Promise((resolve, reject) => {
-        const output = fs.createWriteStream(zipPath);
-        const zip = archiver('zip', {
-          store: true // Sets the compression method to STORE.
-        });
+    .then(writeZipFromPaths.bind(this, dir, zipPath));
+};
 
-        // listen for all archive data to be written
-        output.on('close', function() {
-          resolve();
-        });
-
-        zip.on('error', function(err) {
-          reject(err);
-        });
-
-        // pipe archive data to the file
-        zip.pipe(output);
-
-        paths.forEach(function(filePath) {
-          var basePath = path.dirname(filePath);
-          if (basePath === '.') {
-            basePath = undefined;
-          }
-          var name = path.join(dir, filePath);
-          zip.file(name, { name: filePath, mode: 0o755 });
-        });
-
-        zip.finalize();
-      });
-    });
+const makeSourceZip = (dir, zipPath) => {
+  // TODO: Ignore files ignored by .gitignore, plus some standard ones (.environment, .DS_Store, *.log, *.zip)
+  return listFiles(dir)
+    .then(finalPaths => {
+      finalPaths.sort();
+      if (global.argOpts.debug) {
+        console.log('\nSource Zip files:');
+        finalPaths.map(filePath => console.log(`  ${filePath}`));
+        console.log('');
+      }
+      return finalPaths;
+    })
+    .then(writeZipFromPaths.bind(this, dir, zipPath));
 };
 
 // Similar to utils.appCommand, but given a ready to go app
@@ -251,9 +268,10 @@ const _appCommandZapierWrapper = (dir, event) => {
   });
 };
 
-const build = (zipPath, wdir) => {
+const build = (zipPath, sourceZipPath, wdir) => {
   wdir = wdir || process.cwd();
   zipPath = zipPath || constants.BUILD_PATH;
+  sourceZipPath = sourceZipPath || constants.SOURCE_PATH;
   const osTmpDir = fse.realpathSync(os.tmpdir());
   const tmpDir = path.join(
     osTmpDir,
@@ -404,6 +422,9 @@ const build = (zipPath, wdir) => {
       return makeZip(tmpDir, wdir + path.sep + zipPath);
     })
     .then(() => {
+      return makeSourceZip(tmpDir, wdir + path.sep + sourceZipPath);
+    })
+    .then(() => {
       // tries to do a reproducible build at least
       // https://blog.pivotal.io/labs/labs/barriers-deterministic-reproducible-zip-files
       // https://reproducible-builds.org/tools/ or strip-nondeterminism
@@ -430,15 +451,16 @@ const build = (zipPath, wdir) => {
     });
 };
 
-const buildAndUploadDir = (zipPath, appDir) => {
+const buildAndUploadDir = (zipPath, sourceZipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
   appDir = appDir || '.';
+  sourceZipPath = sourceZipPath || constants.SOURCE_PATH;
   return checkCredentials()
     .then(() => {
-      return build(zipPath, appDir);
+      return build(zipPath, sourceZipPath, appDir);
     })
     .then(() => {
-      return upload(zipPath, appDir);
+      return upload(zipPath, sourceZipPath, appDir);
     });
 };
 
@@ -446,6 +468,7 @@ module.exports = {
   build,
   buildAndUploadDir,
   makeZip,
+  makeSourceZip,
   listFiles,
   requiredFiles,
   verifyNodeFeatures
