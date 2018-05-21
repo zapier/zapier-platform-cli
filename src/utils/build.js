@@ -11,6 +11,8 @@ const fse = require('fs-extra');
 const klaw = require('klaw');
 const updateNotifier = require('update-notifier');
 const colors = require('colors/safe');
+const ignore = require('ignore');
+const gitIgnore = require('parse-gitignore');
 
 const eslint = require('eslint');
 
@@ -92,9 +94,9 @@ const requiredFiles = (cwd, entryPoints) => {
 };
 
 const listFiles = dir => {
-  const isBlacklisted = file_path => {
-    return ['.git', '.env', 'build'].find(excluded => {
-      return file_path.search(excluded) === 0;
+  const isBlacklisted = filePath => {
+    return constants.BLACKLISTED_PATHS.find(excluded => {
+      return filePath.search(excluded) === 0;
     });
   };
 
@@ -103,9 +105,9 @@ const listFiles = dir => {
     const cwd = dir + path.sep;
     klaw(dir)
       .on('data', item => {
-        const stripped_path = stripPath(cwd, item.path);
-        if (!item.stats.isDirectory() && !isBlacklisted(stripped_path)) {
-          paths.push(stripped_path);
+        const strippedPath = stripPath(cwd, item.path);
+        if (!item.stats.isDirectory() && !isBlacklisted(strippedPath)) {
+          paths.push(strippedPath);
         }
       })
       .on('error', reject)
@@ -113,6 +115,16 @@ const listFiles = dir => {
         paths.sort();
         resolve(paths);
       });
+  });
+};
+
+// Exclude file paths in .gitignore
+const respectGitIgnore = (dir, paths) => {
+  return new Promise(resolve => {
+    const gitIgnorePath = path.join(dir, '.gitignore');
+    const gitIgnoredPaths = gitIgnore(gitIgnorePath);
+    const gitFilter = ignore().add(gitIgnoredPaths);
+    resolve(gitFilter.filter(paths));
   });
 };
 
@@ -236,8 +248,8 @@ const makeZip = (dir, zipPath) => {
 };
 
 const makeSourceZip = (dir, zipPath) => {
-  // TODO: Ignore files ignored by .gitignore, plus some standard ones (.environment, .DS_Store, *.log, *.zip)
   return listFiles(dir)
+    .then(respectGitIgnore.bind(this, dir))
     .then(finalPaths => {
       finalPaths.sort();
       if (global.argOpts.debug) {

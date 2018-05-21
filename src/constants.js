@@ -19,6 +19,13 @@ const BUILD_DIR = 'build';
 const DEFINITION_PATH = `${BUILD_DIR}/definition.json`;
 const BUILD_PATH = `${BUILD_DIR}/build.zip`;
 const SOURCE_PATH = `${BUILD_DIR}/source.zip`;
+const BLACKLISTED_PATHS = [
+  // Will be excluded from build.zip and source.zip
+  '.git',
+  '.env',
+  '.environment',
+  'build'
+];
 const nodeVersion = semver.Comparator(
   versionStore[versionStore.length - 1].nodeVersion
 ).semver.version;
@@ -57,6 +64,7 @@ module.exports = {
   BUILD_DIR,
   BUILD_PATH,
   SOURCE_PATH,
+  BLACKLISTED_PATHS,
   CURRENT_APP_FILE,
   DEBUG,
   DEFINITION_PATH,

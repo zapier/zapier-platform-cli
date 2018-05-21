@@ -134,8 +134,7 @@ describe('build', () => {
       });
   });
 
-  it.only('should make a source.zip', () => {
-    // TODO: Remove .only
+  it('should make a source.zip without .gitignore', () => {
     const osTmpDir = fse.realpathSync(os.tmpdir());
     const tmpProjectDir = path.join(
       osTmpDir,
@@ -152,9 +151,7 @@ describe('build', () => {
     );
     const tmpIndexPath = path.join(tmpProjectDir, 'index.js');
     const tmpReadmePath = path.join(tmpProjectDir, 'README.md');
-
-    // TODO: Add a .gitignore that ignores a .DS_Store file
-    // TODO: Add a .environment file that we should automatically ignore anyway
+    const tmpZapierAppPath = path.join(tmpProjectDir, '.zapierapprc');
 
     fse.outputFileSync(
       path.join(tmpProjectDir, 'zapierwrapper.js'),
@@ -163,7 +160,7 @@ describe('build', () => {
     fse.outputFileSync(tmpIndexPath, "console.log('hello!')");
     fse.outputFileSync(tmpReadmePath, 'README');
     fs.chmodSync(tmpIndexPath, 0o700);
-    fse.outputFileSync(path.join(tmpProjectDir, '.zapierapprc'), '{}');
+    fse.outputFileSync(tmpZapierAppPath, '{}');
     fse.ensureDirSync(path.dirname(tmpZipPath));
 
     global.argOpts = {};
@@ -172,7 +169,6 @@ describe('build', () => {
       .makeSourceZip(tmpProjectDir, tmpZipPath)
       .then(() => decompress(tmpZipPath, tmpUnzipPath))
       .then(files => {
-        console.log(files); // TODO: Remove this
         files.length.should.equal(4);
 
         const indexFile = files.find(
@@ -196,6 +192,83 @@ describe('build', () => {
           ({ path: filePath }) => filePath === 'README.md'
         );
         should.exist(readmeFile);
+      });
+  });
+
+  it('should make a source.zip with .gitignore', () => {
+    const osTmpDir = fse.realpathSync(os.tmpdir());
+    const tmpProjectDir = path.join(
+      osTmpDir,
+      'zapier-' + crypto.randomBytes(4).toString('hex')
+    );
+    const tmpZipPath = path.join(
+      osTmpDir,
+      'zapier-' + crypto.randomBytes(4).toString('hex'),
+      'source.zip'
+    );
+    const tmpUnzipPath = path.join(
+      osTmpDir,
+      'zapier-' + crypto.randomBytes(4).toString('hex')
+    );
+    const tmpIndexPath = path.join(tmpProjectDir, 'index.js');
+    const tmpReadmePath = path.join(tmpProjectDir, 'README.md');
+    const tmpZapierAppPath = path.join(tmpProjectDir, '.zapierapprc');
+    const tmpGitIgnorePath = path.join(tmpProjectDir, '.gitignore');
+    const tmpTestLogPath = path.join(tmpProjectDir, 'test.log');
+    const tmpDSStorePath = path.join(tmpProjectDir, '.DS_Store');
+    const tmpEnvironmentPath = path.join(tmpProjectDir, '.environment');
+
+    fse.outputFileSync(
+      path.join(tmpProjectDir, 'zapierwrapper.js'),
+      "console.log('hello!')"
+    );
+    fse.outputFileSync(tmpIndexPath, "console.log('hello!')");
+    fs.chmodSync(tmpIndexPath, 0o700);
+    fse.outputFileSync(tmpReadmePath, 'README');
+    fse.outputFileSync(tmpZapierAppPath, '{}');
+    fse.outputFileSync(tmpGitIgnorePath, '.DS_Store\n*.log');
+    fse.outputFileSync(tmpTestLogPath, 'Something');
+    fse.outputFileSync(tmpDSStorePath, 'Something Else');
+    fse.outputFileSync(tmpEnvironmentPath, 'ZAPIER_TOKEN=YEAH');
+    fse.ensureDirSync(path.dirname(tmpZipPath));
+
+    global.argOpts = {};
+
+    return build
+      .makeSourceZip(tmpProjectDir, tmpZipPath)
+      .then(() => decompress(tmpZipPath, tmpUnzipPath))
+      .then(files => {
+        files.length.should.equal(4);
+
+        const indexFile = files.find(
+          ({ path: filePath }) => filePath === 'index.js'
+        );
+        should.exist(indexFile);
+
+        const readmeFile = files.find(
+          ({ path: filePath }) => filePath === 'README.md'
+        );
+        should.exist(readmeFile);
+
+        const gitIgnoreFile = files.find(
+          ({ path: filePath }) => filePath === '.gitignore'
+        );
+        should.not.exist(gitIgnoreFile);
+
+        const testLogFile = files.find(
+          ({ path: filePath }) => filePath === 'test.log'
+        );
+        should.not.exist(testLogFile);
+
+        const DSStoreFile = files.find(
+          ({ path: filePath }) => filePath === '.DS_Store'
+        );
+        should.not.exist(DSStoreFile);
+
+        const environmentFile = files.find(
+          ({ path: filePath }) => filePath === '.environment'
+        );
+        should.not.exist(environmentFile);
       });
   });
 });
