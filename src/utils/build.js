@@ -424,6 +424,12 @@ const build = (zipPath, sourceZipPath, wdir) => {
     .then(styleChecksResponse => {
       const errors = styleChecksResponse.errors;
       if (!_.isEmpty(errors)) {
+        if (global.argOpts.debug) {
+          console.log('\nErrors:');
+          console.log(errors);
+          console.log('');
+        }
+
         throw new Error(
           'We hit some validation errors, try running `zapier validate` to see them!'
         );

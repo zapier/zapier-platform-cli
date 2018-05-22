@@ -259,6 +259,7 @@ const listEnv = version => {
 const upload = (zipPath, sourceZipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
   sourceZipPath = sourceZipPath || constants.SOURCE_PATH;
+  appDir = appDir || '.';
 
   const fullZipPath = path.resolve(appDir, zipPath);
   const fullSourceZipPath = path.resolve(appDir, sourceZipPath);
