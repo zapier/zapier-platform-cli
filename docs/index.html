@@ -268,7 +268,6 @@ a code {
 <li><a href="#authentication">Authentication</a><ul>
 <li><a href="#basic">Basic</a></li>
 <li><a href="#custom">Custom</a></li>
-<li><a href="#digest">Digest</a></li>
 <li><a href="#session">Session</a></li>
 <li><a href="#oauth2">OAuth2</a></li>
 </ul>
@@ -452,7 +451,6 @@ a code {
 <li><a href="#authentication">Authentication</a><ul>
 <li><a href="#basic">Basic</a></li>
 <li><a href="#custom">Custom</a></li>
-<li><a href="#digest">Digest</a></li>
 <li><a href="#session">Session</a></li>
 <li><a href="#oauth2">OAuth2</a></li>
 </ul>
@@ -1208,44 +1206,6 @@ zapier convert 1234 my-app
   <span class="hljs-comment">// ...</span>
   authentication: authentication,
   <span class="hljs-attr">beforeRequest</span>: [addApiKeyToHeader]
-  <span class="hljs-comment">// ...</span>
-};
-
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="digest">Digest</h3>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
-      
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Very similar to the &quot;Basic&quot; authentication method above, but uses digest authentication instead of Basic authentication.</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-js"><span class="hljs-keyword">const</span> authentication = {
-  <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;digest&apos;</span>,
-  <span class="hljs-comment">// &quot;test&quot; could also be a function</span>
-  test: {
-    <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://example.com/api/accounts/me.json&apos;</span>
-  },
-  <span class="hljs-attr">connectionLabel</span>: <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
-    <span class="hljs-comment">// Can also be a string, check basic auth above for an example</span>
-    <span class="hljs-comment">// bundle.inputData has whatever comes back from the .test function/request, assuming it returns a JSON object</span>
-    <span class="hljs-keyword">return</span> bundle.inputData.email;
-  }
-  <span class="hljs-comment">// you can provide additional fields, but Zapier will provide `username`/`password` automatically</span>
-};
-
-<span class="hljs-keyword">const</span> App = {
-  <span class="hljs-comment">// ...</span>
-  authentication: authentication
   <span class="hljs-comment">// ...</span>
 };
 
@@ -4056,10 +4016,10 @@ npm run zapier-push
   <span class="hljs-keyword">let</span> results = response.json;
 
   <span class="hljs-comment">// keep paging until the last item was created over two hours ago</span>
-  <span class="hljs-comment">// then we know we almost certainly havne&apos;t missed anything and can let</span>
+  <span class="hljs-comment">// then we know we almost certainly haven&apos;t missed anything and can let</span>
   <span class="hljs-comment">//   deduper handle the rest</span>
 
-  <span class="hljs-keyword">while</span> (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(results[results.length - <span class="hljs-number">1</span>].createdAt) &lt; hoursAgo) {
+  <span class="hljs-keyword">while</span> (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(results[results.length - <span class="hljs-number">1</span>].createdAt) &gt; hoursAgo) {
     start += limit; <span class="hljs-comment">// next page</span>
 
     response = <span class="hljs-keyword">await</span> z.request({
@@ -4114,7 +4074,7 @@ npm run zapier-push
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Paging is <strong>only used when a trigger is part of a dynamic dropdown</strong>. Depending on how many items exist and how many are returned in the first poll, it&apos;s possible that the resource the user is looking for isn&apos;t in the initial poll. If they hit the &quot;see more&quot; button, we&apos;ll increment the value of <code>bundle.meta.page</code> and poll again.</p><p>Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a <code>start</code> parameter:</p>
+      <p>Paging is <strong>only used when a trigger is part of a dynamic dropdown</strong>. Depending on how many items exist and how many are returned in the first poll, it&apos;s possible that the resource the user is looking for isn&apos;t in the initial poll. If they hit the &quot;see more&quot; button, we&apos;ll increment the value of <code>bundle.meta.page</code> and poll again.</p><p>Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a <code>offset</code> parameter:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-js">(z, bundle) =&gt; {
@@ -4139,7 +4099,7 @@ npm run zapier-push
       <pre><code class="lang-js"><span class="hljs-comment">// the perform method of our trigger</span>
 <span class="hljs-comment">// ensure operation.canPaginate is true!</span>
 
-<span class="hljs-keyword">const</span> performWihoutAsync = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
+<span class="hljs-keyword">const</span> performWithoutAsync = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve()
     .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
       <span class="hljs-keyword">if</span> (bundle.meta.page === <span class="hljs-number">0</span>) {
@@ -4159,23 +4119,27 @@ npm run zapier-push
     })
     .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> {
       <span class="hljs-comment">// need to save the cursor and return a promise, but also need to pass the data along</span>
-      <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all([data.items, z.cursor.set(response.nextPage)]);
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all([response.items, z.cursor.set(response.nextPage)]);
     })
-    .then(<span class="hljs-function"><span class="hljs-params">promises</span> =&gt;</span> {
-      <span class="hljs-comment">// [items[], null]</span>
-      <span class="hljs-keyword">return</span> promises[<span class="hljs-number">0</span>];
+    .then(<span class="hljs-function">(<span class="hljs-params">[items <span class="hljs-regexp">/* null */</span>]</span>) =&gt;</span> {
+      <span class="hljs-keyword">return</span> items;
     });
 };
 
 <span class="hljs-comment">// ---------------------------------------------------</span>
 
 <span class="hljs-keyword">const</span> performWithAsync = <span class="hljs-keyword">async</span> (z, bundle) =&gt; {
-  <span class="hljs-keyword">const</span> cursor = <span class="hljs-keyword">await</span> z.cursor.get(); <span class="hljs-comment">// string | null</span>
+  <span class="hljs-keyword">let</span> cursor;
+  <span class="hljs-keyword">if</span> (bundle.meta.page) {
+    cursor = <span class="hljs-keyword">await</span> z.cursor.get(); <span class="hljs-comment">// string | null</span>
+  }
 
   <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> z.request(
     <span class="hljs-string">&apos;https://5ae7ad3547436a00143e104d.mockapi.io/api/recipes&apos;</span>,
     {
-      <span class="hljs-attr">params</span>: { <span class="hljs-attr">cursor</span>: cursor } <span class="hljs-comment">// if cursor is null, it&apos;s ignored here</span>
+      <span class="hljs-comment">// if cursor is null, it&apos;s sent as an empty query</span>
+      <span class="hljs-comment">//   param and should be ignored by the server</span>
+      params: { <span class="hljs-attr">cursor</span>: cursor }
     }
   );
 
@@ -4191,7 +4155,7 @@ npm run zapier-push
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if <code>bundle.meta.page === 0</code>, so you don&apos;t accidentally reuse a cursor from a previous poll.</p><p>Lastly, you need to set <code>canPaginate</code> to <code>true</code> in your polling definition (per the <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema">schema</a>) for the <code>z.cursor</code> methods to work as expected.</p><p><a id="dedup"></a></p>
+      <p>Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if <code>bundle.meta.page !== 0</code>, so you don&apos;t accidentally reuse a cursor from a previous poll.</p><p>Lastly, you need to set <code>canPaginate</code> to <code>true</code> in your polling definition (per the <a href="https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema">schema</a>) for the <code>z.cursor</code> methods to work as expected.</p><p><a id="dedup"></a></p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       

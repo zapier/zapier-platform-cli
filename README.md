@@ -41,7 +41,6 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Authentication](#authentication)
   * [Basic](#basic)
   * [Custom](#custom)
-  * [Digest](#digest)
   * [Session](#session)
   * [OAuth2](#oauth2)
 - [Resources](#resources)
@@ -482,33 +481,6 @@ const App = {
   // ...
   authentication: authentication,
   beforeRequest: [addApiKeyToHeader]
-  // ...
-};
-
-```
-
-### Digest
-
-Very similar to the "Basic" authentication method above, but uses digest authentication instead of Basic authentication.
-
-```js
-const authentication = {
-  type: 'digest',
-  // "test" could also be a function
-  test: {
-    url: 'https://example.com/api/accounts/me.json'
-  },
-  connectionLabel: (z, bundle) => {
-    // Can also be a string, check basic auth above for an example
-    // bundle.inputData has whatever comes back from the .test function/request, assuming it returns a JSON object
-    return bundle.inputData.email;
-  }
-  // you can provide additional fields, but Zapier will provide `username`/`password` automatically
-};
-
-const App = {
-  // ...
-  authentication: authentication
   // ...
 };
 
@@ -2306,10 +2278,10 @@ const asyncExample = async (z, bundle) => {
   let results = response.json;
 
   // keep paging until the last item was created over two hours ago
-  // then we know we almost certainly havne't missed anything and can let
+  // then we know we almost certainly haven't missed anything and can let
   //   deduper handle the rest
 
-  while (new Date(results[results.length - 1].createdAt) < hoursAgo) {
+  while (new Date(results[results.length - 1].createdAt) > hoursAgo) {
     start += limit; // next page
 
     response = await z.request({
@@ -2356,7 +2328,7 @@ This is paired most often with "update" actions, where a required parameter will
 
 Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
 
-Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `start` parameter:
+Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `offset` parameter:
 
 ```js
 (z, bundle) => {
@@ -2377,7 +2349,7 @@ If your API uses cursor-based paging instead of an offset, you can use `z.cursor
 // the perform method of our trigger
 // ensure operation.canPaginate is true!
 
-const performWihoutAsync = (z, bundle) => {
+const performWithoutAsync = (z, bundle) => {
   return Promise.resolve()
     .then(() => {
       if (bundle.meta.page === 0) {
@@ -2397,23 +2369,27 @@ const performWihoutAsync = (z, bundle) => {
     })
     .then(response => {
       // need to save the cursor and return a promise, but also need to pass the data along
-      return Promise.all([data.items, z.cursor.set(response.nextPage)]);
+      return Promise.all([response.items, z.cursor.set(response.nextPage)]);
     })
-    .then(promises => {
-      // [items[], null]
-      return promises[0];
+    .then(([items /* null */]) => {
+      return items;
     });
 };
 
 // ---------------------------------------------------
 
 const performWithAsync = async (z, bundle) => {
-  const cursor = await z.cursor.get(); // string | null
+  let cursor;
+  if (bundle.meta.page) {
+    cursor = await z.cursor.get(); // string | null
+  }
 
   const response = await z.request(
     'https://5ae7ad3547436a00143e104d.mockapi.io/api/recipes',
     {
-      params: { cursor: cursor } // if cursor is null, it's ignored here
+      // if cursor is null, it's sent as an empty query
+      //   param and should be ignored by the server
+      params: { cursor: cursor }
     }
   );
 
@@ -2425,7 +2401,7 @@ const performWithAsync = async (z, bundle) => {
 
 ```
 
-Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if `bundle.meta.page === 0`, so you don't accidentally reuse a cursor from a previous poll.
+Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if `bundle.meta.page !== 0`, so you don't accidentally reuse a cursor from a previous poll.
 
 Lastly, you need to set `canPaginate` to `true` in your polling definition (per the [schema](https://github.com/zapier/zapier-platform-schema/blob/master/docs/build/schema.md#basicpollingoperationschema)) for the `z.cursor` methods to work as expected.
 
