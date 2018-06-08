@@ -9,7 +9,7 @@ const hasCancelled = answer =>
 const hasAccepted = answer =>
   answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
 
-const promote = (context, version) => {
+const promote = (context, version, printMigrateHint = true) => {
   if (!version) {
     context.line('Error: No deploment/version selected...\n');
     return Promise.resolve();
@@ -89,9 +89,11 @@ const promote = (context, version) => {
     .then(() => {
       utils.endSpinner();
       context.line('  Promotion successful!\n');
-      context.line(
-        'Optionally, run the `zapier migrate` command to move users to this version.'
-      );
+      if (printMigrateHint) {
+        context.line(
+          'Optionally, run the `zapier migrate` command to move users to this version.'
+        );
+      }
     })
     .catch(response => {
       // we probalby have a raw response, might have a thrown error
