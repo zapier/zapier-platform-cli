@@ -19,7 +19,7 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   return utils
     .getLinkedApp()
     .then(app => {
-      let promoteFirst = false;
+      let answerPromise = false;
       if (
         optionalPercent === 100 &&
         app.public &&
@@ -39,15 +39,15 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
           if (!yes && !no) {
             throw new Error('That answer is not valid. Please try "y" or "n".');
           }
-          return yes;
+          return true;
         };
-        promoteFirst = utils.promiseDoWhile(action, stop);
+        answerPromise = utils.promiseDoWhile(action, stop);
       }
-      return Promise.all([app, promoteFirst]);
+      return Promise.all([app, answerPromise]);
     })
-    .then(([app, promoteFirst]) => {
+    .then(([app, answer]) => {
       let promotePromise = null;
-      if (promoteFirst) {
+      if (hasAccepted(answer)) {
         promotePromise = promote(context, toVersion, false);
       }
       return Promise.all([app, promotePromise]);
