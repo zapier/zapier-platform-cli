@@ -16,23 +16,22 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   }
   optionalPercent = parseInt(optionalPercent, 10);
 
-  let app;
-
   return utils
     .getLinkedApp()
-    .then(linkedApp => {
-      app = linkedApp;
+    .then(app => {
+      let promoteFirst = false;
       if (
         optionalPercent === 100 &&
         app.public &&
         toVersion !== app.latest_version
       ) {
         context.line(
-          `You're trying to migrate all the users to ${toVersion}, which is not the current production version.`
+          `You're trying to migrate all the users to ${toVersion}, ` +
+            'which is not the current production version.'
         );
         const action = () =>
           utils.getInput(
-            `Do you want to promote ${toVersion} to production first? (y/n) (Ctrl-C to cancel)\n\n`
+            `Do you want to promote ${toVersion} to production first? (y/n) (Ctrl-C to cancel) `
           );
         const stop = answer => {
           const yes = hasAccepted(answer);
@@ -40,20 +39,20 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
           if (!yes && !no) {
             throw new Error('That answer is not valid. Please try "y" or "n".');
           }
-          return answer;
+          return yes;
         };
-
-        return utils.promiseDoWhile(action, stop);
+        promoteFirst = utils.promiseDoWhile(action, stop);
       }
-      return 'n';
+      return Promise.all([app, promoteFirst]);
     })
-    .then(answer => {
-      if (hasAccepted(answer)) {
-        return promote(context, toVersion, false);
+    .then(([app, promoteFirst]) => {
+      let promotePromise = null;
+      if (promoteFirst) {
+        promotePromise = promote(context, toVersion, false);
       }
-      return null;
+      return Promise.all([app, promotePromise]);
     })
-    .then(() => {
+    .then(([app]) => {
       const body = {
         percent: optionalPercent
       };
