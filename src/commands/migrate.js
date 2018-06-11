@@ -1,12 +1,6 @@
 const promote = require('./promote');
 const utils = require('../utils');
 
-const hasAccepted = answer =>
-  answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
-
-const hasRejected = answer =>
-  answer.toLowerCase() === 'n' || answer.toLowerCase() === 'no';
-
 const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   if (!toVersion) {
     context.line(
@@ -19,7 +13,7 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   return utils
     .getLinkedApp()
     .then(app => {
-      let answerPromise = false;
+      let promoteFirst = false;
       if (
         optionalPercent === 100 &&
         app.public &&
@@ -29,25 +23,15 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
           `You're trying to migrate all the users to ${toVersion}, ` +
             'which is not the current production version.'
         );
-        const action = () =>
-          utils.getInput(
-            `Do you want to promote ${toVersion} to production first? (y/n) (Ctrl-C to cancel) `
-          );
-        const stop = answer => {
-          const yes = hasAccepted(answer);
-          const no = hasRejected(answer);
-          if (!yes && !no) {
-            throw new Error('That answer is not valid. Please try "y" or "n".');
-          }
-          return true;
-        };
-        answerPromise = utils.promiseDoWhile(action, stop);
+        promoteFirst = utils.getYesNoInput(
+          `Do you want to promote ${toVersion} to production first?`
+        );
       }
-      return Promise.all([app, answerPromise]);
+      return Promise.all([app, promoteFirst]);
     })
-    .then(([app, answer]) => {
+    .then(([app, promoteFirst]) => {
       let promotePromise = null;
-      if (hasAccepted(answer)) {
+      if (promoteFirst) {
         promotePromise = promote(context, toVersion, false);
       }
       return Promise.all([app, promotePromise]);

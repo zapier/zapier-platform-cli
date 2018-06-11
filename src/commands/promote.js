@@ -2,13 +2,6 @@ const colors = require('colors/safe');
 const utils = require('../utils');
 const _ = require('lodash');
 
-const hasCancelled = answer =>
-  answer.toLowerCase() === 'n' ||
-  answer.toLowerCase() === 'no' ||
-  answer.toLowerCase() === 'cancel';
-const hasAccepted = answer =>
-  answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
-
 const promote = (context, version, printMigrateHint = true) => {
   if (!version) {
     context.line('Error: No deploment/version selected...\n');
@@ -30,15 +23,16 @@ const promote = (context, version, printMigrateHint = true) => {
         `Preparing to promote version ${version} of your app "${app.title}".\n`
       );
 
-      let action;
+      let shouldContinue = false;
 
       if (changelog) {
         context.line(colors.green(`Changelog found for ${version}!`));
         context.line(`\n---\n${changelog}\n---\n`);
-        action = () =>
-          utils.getInput(
-            'Would you like to continue promoting with this changelog? (y/n) (Ctrl-C to cancel)\n\n'
-          );
+
+        shouldContinue = utils.getYesNoInput(
+          'Would you like to continue promoting with this changelog?',
+          false
+        );
       } else {
         context.line(
           `${colors.yellow(
@@ -47,25 +41,17 @@ const promote = (context, version, printMigrateHint = true) => {
             'https://gist.github.com/xavdid/b9ede3565f1188ce339292acc29612b2'
           )}, with user-facing descriptions.\n`
         );
-        action = () =>
-          utils.getInput(
-            'Would you like to continue promoting without a changelog? (y/n)\n\n'
-          );
+
+        shouldContinue = utils.getYesNoInput(
+          'Would you like to continue promoting without a changelog?',
+          false
+        );
       }
-
-      const stop = answer => {
-        if (!hasCancelled(answer) && !hasAccepted(answer)) {
-          throw new Error('That answer is not valid. Please try "y" or "n".');
-        }
-
-        return hasCancelled(answer) || hasAccepted(answer);
-      };
-
-      return utils.promiseDoWhile(action, stop);
+      return shouldContinue;
     })
-    .then(answer => {
+    .then(shouldContinue => {
       context.line();
-      if (hasCancelled(answer)) {
+      if (!shouldContinue) {
         throw new Error('Cancelled promote.');
       }
 
