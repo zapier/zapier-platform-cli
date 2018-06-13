@@ -7,6 +7,11 @@
   "author": "Bryan Helmig <bryan@zapier.com>",
   "license": "UNLICENSED",
   "main": "zapier.js",
+  "files": [
+      "lib/*.js",
+      "lib/commands/*.js",
+      "lib/utils/*.js"
+  ],
   "engines": {
     "node": ">=v6.10.2"
   },
