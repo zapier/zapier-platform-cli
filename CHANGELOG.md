@@ -1,3 +1,11 @@
+## 7.0.0
+
+### cli
+### schema
+### core
+
+* (**BREAKING**) Apps with dependency zapier-platform-core=">=7.0.0" run only on Node.js `v8.10.0` in AWS Lambda. If you need to continue running on Node.js `v6.10.3`, use zapier-platform-core="<=6.1.0".
+
 ## 6.1.0
 
 ### cli
