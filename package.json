@@ -11,7 +11,8 @@
       "/lib/*.js",
       "/lib/commands/",
       "/lib/utils/",
-      "/scaffold/"
+      "/scaffold/",
+      "/zapier.js"
   ],
   "engines": {
     "node": ">=v6.10.2"
