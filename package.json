@@ -8,9 +8,10 @@
   "license": "UNLICENSED",
   "main": "zapier.js",
   "files": [
-      "lib/*.js",
-      "lib/commands/*.js",
-      "lib/utils/*.js"
+      "/lib/*.js",
+      "/lib/commands/",
+      "/lib/utils/",
+      "/scaffold/"
   ],
   "engines": {
     "node": ">=v6.10.2"
