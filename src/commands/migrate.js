@@ -41,6 +41,7 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
         percent: optionalPercent
       };
       const user = global.argOpts.user;
+      const updateMigrations = global.argOpts.updateMigrations;
 
       if (user) {
         if (optionalPercent !== 100) {
@@ -70,13 +71,26 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
         );
       }
 
-      return utils.callAPI(
-        `/apps/${app.id}/versions/${fromVersion}/migrate-to/${toVersion}`,
-        {
-          method: 'POST',
-          body
+      let buildPromise = null;
+      if (updateMigrations) {
+        buildPromise = utils.build();
+      } else {
+        buildPromise = Promise.resolve(null);
+      }
+
+      return buildPromise.then(zipPath => {
+        if (zipPath) {
+          body.zip_file = utils.getBufferFromZipPath(zipPath);
         }
-      );
+
+        return utils.callAPI(
+          `/apps/${app.id}/versions/${fromVersion}/migrate-to/${toVersion}`,
+          {
+            method: 'POST',
+            body
+          }
+        );
+      });
     })
     .then(() => {
       utils.endSpinner();
@@ -85,6 +99,7 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
       );
     });
 };
+
 migrate.argsSpec = [
   {
     name: 'fromVersion',
@@ -109,6 +124,9 @@ migrate.argOptsSpec = {
   user: {
     help: 'migrate only this user',
     example: 'user@example.com'
+  },
+  updateMigrations: {
+    help: 'Updates migration code with code from working directory'
   }
 };
 migrate.help = 'Migrate users from one version of your app to another.';

@@ -256,13 +256,23 @@ const listEnv = version => {
   return listEndpoint(endpoint, 'environment');
 };
 
+const getBufferFromZipPath = (zipPath, appDir) => {
+  zipPath = zipPath || constants.BUILD_PATH;
+  appDir = appDir || '.';
+
+  const fullZipPath = path.resolve(appDir, zipPath);
+
+  const binaryZip = fs.readFileSync(fullZipPath);
+  const buffer = Buffer.from(binaryZip).toString('base64');
+  return buffer;
+};
+
 const upload = (zipPath, sourceZipPath, appDir) => {
   zipPath = zipPath || constants.BUILD_PATH;
   sourceZipPath = sourceZipPath || constants.SOURCE_PATH;
   appDir = appDir || '.';
 
   const fullZipPath = path.resolve(appDir, zipPath);
-  const fullSourceZipPath = path.resolve(appDir, sourceZipPath);
 
   return getLinkedApp(appDir)
     .then(app => {
@@ -273,11 +283,8 @@ const upload = (zipPath, sourceZipPath, appDir) => {
       }
       const definition = JSON.parse(definitionJson);
 
-      const binaryZip = fs.readFileSync(fullZipPath);
-      const buffer = Buffer.from(binaryZip).toString('base64');
-
-      const binarySourceZip = fs.readFileSync(fullSourceZipPath);
-      const sourceBuffer = Buffer.from(binarySourceZip).toString('base64');
+      const buffer = getBufferFromZipPath(zipPath, appDir);
+      const sourceBuffer = getBufferFromZipPath(sourceZipPath, appDir);
 
       startSpinner(`Uploading version ${definition.version}`);
       return callAPI(`/apps/${app.id}/versions/${definition.version}`, {
@@ -297,6 +304,7 @@ module.exports = {
   callAPI,
   checkCredentials,
   createCredentials,
+  getBufferFromZipPath,
   getLinkedApp,
   getLinkedAppConfig,
   getVersionInfo,
