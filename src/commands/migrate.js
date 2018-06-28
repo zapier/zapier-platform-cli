@@ -1,6 +1,37 @@
 const promote = require('./promote');
 const utils = require('../utils');
 
+const maybePromote = (
+  context,
+  fromVersion,
+  toVersion,
+  optionalPercent,
+  app
+) => {
+  let promoteFirst = false;
+  if (
+    optionalPercent === 100 &&
+    app.public &&
+    toVersion !== app.latest_version
+  ) {
+    context.line(
+      `You're trying to migrate all the users to ${toVersion}, ` +
+        'which is not the current production version.'
+    );
+    promoteFirst = utils.getYesNoInput(
+      `Do you want to promote ${toVersion} to production first?`
+    );
+  }
+
+  return Promise.all([app, promoteFirst]).then(([app, promoteFirst]) => {
+    let promotePromise = null;
+    if (promoteFirst) {
+      promotePromise = promote(context, toVersion, false);
+    }
+    return Promise.all([app, promotePromise]);
+  });
+};
+
 const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   if (!toVersion) {
     context.line(
@@ -13,28 +44,13 @@ const migrate = (context, fromVersion, toVersion, optionalPercent = '100%') => {
   return utils
     .getLinkedApp()
     .then(app => {
-      let promoteFirst = false;
-      if (
-        optionalPercent === 100 &&
-        app.public &&
-        toVersion !== app.latest_version
-      ) {
-        context.line(
-          `You're trying to migrate all the users to ${toVersion}, ` +
-            'which is not the current production version.'
-        );
-        promoteFirst = utils.getYesNoInput(
-          `Do you want to promote ${toVersion} to production first?`
-        );
-      }
-      return Promise.all([app, promoteFirst]);
-    })
-    .then(([app, promoteFirst]) => {
-      let promotePromise = null;
-      if (promoteFirst) {
-        promotePromise = promote(context, toVersion, false);
-      }
-      return Promise.all([app, promotePromise]);
+      return maybePromote(
+        context,
+        fromVersion,
+        toVersion,
+        optionalPercent,
+        app
+      );
     })
     .then(([app]) => {
       const body = {
