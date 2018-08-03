@@ -443,7 +443,9 @@ Each of the 3 types of function expects a certain type of object. As of core `v1
 
 ## Fields
 
-On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "create contact" action with fields like "First name", "Last name", "Email", etc.
+On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "create contact" action with fields like "First name", "Last name", "Email", etc. These fields will be able to accept input from previous steps in a Zap, for example:
+
+![screenshot of an example File field in Zap Editor](https://cdn.zapier.com/storage/photos/605b1ecc8cd972bea71603796a548eac.png)
 
 You can find more details on each and every field option at [Field Schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema).
 
