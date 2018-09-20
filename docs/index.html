@@ -291,6 +291,7 @@ a code {
 <li><a href="#zrequesturl-options"><code>z.request([url], options)</code></a></li>
 <li><a href="#zconsole"><code>z.console</code></a></li>
 <li><a href="#zdehydratefunc-inputdata"><code>z.dehydrate(func, inputData)</code></a></li>
+<li><a href="#zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta"><code>z.dehydrateFile(func, inputData)</code> or <code>z.dehydrateFile(url, request, meta)</code></a></li>
 <li><a href="#zstashfilebufferstringstream-knownlength-filename-contenttype"><code>z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])</code></a></li>
 <li><a href="#zjson"><code>z.JSON</code></a></li>
 <li><a href="#zhash"><code>z.hash()</code></a></li>
@@ -323,7 +324,10 @@ a code {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
-<li><a href="#dehydration">Dehydration</a></li>
+<li><a href="#dehydration">Dehydration</a><ul>
+<li><a href="#file-dehydration">File Dehydration</a></li>
+</ul>
+</li>
 <li><a href="#stashing-files">Stashing Files</a></li>
 <li><a href="#logging">Logging</a><ul>
 <li><a href="#console-logging">Console Logging</a></li>
@@ -474,6 +478,7 @@ a code {
 <li><a href="#zrequesturl-options"><code>z.request([url], options)</code></a></li>
 <li><a href="#zconsole"><code>z.console</code></a></li>
 <li><a href="#zdehydratefunc-inputdata"><code>z.dehydrate(func, inputData)</code></a></li>
+<li><a href="#zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta"><code>z.dehydrateFile(func, inputData)</code> or <code>z.dehydrateFile(url, request, meta)</code></a></li>
 <li><a href="#zstashfilebufferstringstream-knownlength-filename-contenttype"><code>z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])</code></a></li>
 <li><a href="#zjson"><code>z.JSON</code></a></li>
 <li><a href="#zhash"><code>z.hash()</code></a></li>
@@ -506,7 +511,10 @@ a code {
 <li><a href="#http-response-object">HTTP Response Object</a></li>
 </ul>
 </li>
-<li><a href="#dehydration">Dehydration</a></li>
+<li><a href="#dehydration">Dehydration</a><ul>
+<li><a href="#file-dehydration">File Dehydration</a></li>
+</ul>
+</li>
 <li><a href="#stashing-files">Stashing Files</a></li>
 <li><a href="#logging">Logging</a><ul>
 <li><a href="#console-logging">Console Logging</a></li>
@@ -2075,6 +2083,24 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta"><code>z.dehydrateFile(func, inputData)</code> or <code>z.dehydrateFile(url, request, meta)</code></h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p><code>z.dehydrateFile</code> is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See <a href="#dehydration">Dehydration</a>.</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h3 id="zstashfilebufferstringstream-knownlength-filename-contenttype"><code>z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])</code></h3>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -2946,8 +2972,8 @@ zapier env 1.0.0
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Dehydration, and its counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.</p><ul>
-<li><strong>Dehydration</strong> - think of this as &quot;make a pointer&quot;, you control the creation of pointers with <code>z.dehydrate(func, inputData)</code></li>
-<li><strong>Hydration</strong> - think of this as an automatic step that &quot;consumes a pointer&quot; and &quot;returns some data&quot;, Zapier does this automatically behind the scenes</li>
+<li><strong>Dehydration</strong> - think of this as &quot;make a pointer&quot;, you control the creation of pointers with <code>z.dehydrate(func, inputData)</code> (or <code>z.dehydrateFile</code> for files). This usually happens in a trigger step.</li>
+<li><strong>Hydration</strong> - think of this as an automatic step that &quot;consumes a pointer&quot; and &quot;returns some data&quot;, Zapier does this automatically behind the scenes. This usually happens in an action step.</li>
 </ul><blockquote>
 <p>This is very common when <a href="#stashing-files">Stashing Files</a> - but that isn&apos;t their only use!</p>
 </blockquote><p>The method <code>z.dehydrate(func, inputData)</code> has two required arguments:</p><ul>
@@ -3022,6 +3048,32 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <h3 id="file-dehydration">File Dehydration</h3>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
+      <p>The method <code>z.dehydrateFile</code> allows you to download a file lazily. It has two forms: <code>z.dehydrateFile(func, inputData)</code> and <code>z.dehydrateFile(url, request, meta)</code>.</p><p><code>z.dehydrateFile(func, inputData)</code> takes the identical arguments as <code>z.dehydrate(func, inputData)</code> does.</p><p><code>z.dehydrateFile(url, request, meta)</code> allows you to make a file pointer from an HTTP request. It takes three arguments:</p><ul>
+<li><code>url</code> - a URL string to the file.</li>
+<li><code>request</code> (optional) - request options. This is where you can specify HTTP headers, parameters, etc.</li>
+<li><code>meta</code> (optional) - file meta information, which can include <code>filename</code>, <code>contentType</code>, and <code>knownLength</code>.</li>
+</ul><blockquote>
+<p><strong>What&apos;s the difference between <code>z.dehydrateFile</code> and <code>z.dehydrate</code>?</strong> The difference is in the Zap editor. The Zap editor behaves differently to dehydration based on how the pointer was made. If it&apos;s made by <code>z.dehydrate(func, inputData)</code>, the Zap editor will load the data immediately in the trigger step when users pull the sample. This allows users to map those fields in the subsequent steps. If the pointer is made by <code>z.dehydrateFile</code>, the Zap editor won&apos;t do that because it&apos;s unnecessary. There&apos;s nothing in binary file data for users to map in the subsequent steps.</p>
+</blockquote><blockquote>
+<p><code>z.dehydrateFile</code> is new in v7.3.0. We used to recommend to use <code>z.dehydrate(func, inputData)</code> for files, too. But it&apos;s not the case anymore. Please change it to <code>z.dehydrateFile</code> for better user expereience in the Zap editor.</p>
+</blockquote>
+    </div>
+    <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
+      
+    </div>
+  </div>
+</div><div class="row">
+  <div class="row-height">
+    <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <h2 id="stashing-files">Stashing Files</h2>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
@@ -3080,7 +3132,7 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
       <span class="hljs-keyword">return</span> results.map(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> {
         <span class="hljs-comment">// lazily convert a secret_download_url to a stashed url</span>
         <span class="hljs-comment">// zapier won&apos;t do this until we need it</span>
-        result.file = z.dehydrate(stashPDFfunction, {
+        result.file = z.dehydrateFile(stashPDFfunction, {
           <span class="hljs-attr">downloadUrl</span>: result.secret_download_url
         });
         <span class="hljs-keyword">delete</span> result.secret_download_url;
