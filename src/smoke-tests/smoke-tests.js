@@ -5,6 +5,7 @@ const os = require('os');
 const path = require('path');
 
 require('should');
+const fetch = require('node-fetch');
 
 describe('smoke tests - going to take some time', () => {
   const context = {
@@ -67,6 +68,20 @@ describe('smoke tests - going to take some time', () => {
   after(() => {
     fs.unlink(context.package.path);
     fs.remove(context.workdir);
+  });
+
+  it('package size should not change much', async () => {
+    const baseUrl = 'https://registry.npmjs.org/zapier-platform-cli';
+    let res = await fetch(baseUrl);
+    const packageInfo = await res.json();
+    const latestVersion = packageInfo['dist-tags'].latest;
+
+    res = await fetch(`${baseUrl}/-/zapier-platform-cli-${latestVersion}.tgz`, {
+      method: 'HEAD'
+    });
+    const baselineSize = res.headers.get('content-length');
+    const newSize = fs.statSync(context.package.path).size;
+    newSize.should.be.within(baselineSize * 0.7, baselineSize * 1.3);
   });
 
   it('cli executable should exist', () => {
