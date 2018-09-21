@@ -23,7 +23,7 @@ describe('smoke tests - going to take some time', () => {
       if (!fs.existsSync(rcPath)) {
         fs.writeFileSync(
           rcPath,
-          JSON.strigify({ deployKey: process.env.DEPLOY_KEY })
+          JSON.stringify({ deployKey: process.env.DEPLOY_KEY })
         );
       }
     }
