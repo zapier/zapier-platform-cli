@@ -18,6 +18,16 @@ describe('smoke tests - going to take some time', () => {
   };
 
   before(() => {
+    if (process.env.DEPLOY_KEY) {
+      const rcPath = path.join(os.homedir(), '.zapierrc');
+      if (!fs.existsSync(rcPath)) {
+        fs.writeFileSync(
+          rcPath,
+          JSON.strigify({ deployKey: process.env.DEPLOY_KEY })
+        );
+      }
+    }
+
     const npmPack = spawnSync('npm', ['pack'], { encoding: 'utf8' });
     const lines = npmPack.stdout.split('\n');
     for (let i = lines.length - 1; i >= 0; i--) {
