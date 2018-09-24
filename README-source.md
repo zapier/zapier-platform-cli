@@ -70,7 +70,7 @@ Then you can either swap to that version with `nvm use LAMBDA_VERSION`, or do `n
 
 ### Quick Setup Guide
 
-First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
+First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap Editor](https://zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
@@ -605,7 +605,7 @@ This object holds the user's auth details and the data for the API requests.
 
 | key | default | description |
 | --- | --- | --- |
-| frontend | `false` | if true, this run was initiated manually via the Zap editor |
+| frontend | `false` | if true, this run was initiated manually via the Zap Editor |
 | prefill | `false` | if true, this poll is being used to populate a dynamic dropdown |
 | hydrate | `true`  | if true, the results of this run will be hydrated (false if we're in the middle of hydrating already) |
 | test_poll | `false` | if true, the poll was triggered by a user testing their account (via [clicking "test"](https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png) on the auth |
@@ -936,12 +936,12 @@ The method `z.dehydrateFile` allows you to download a file lazily. It has two fo
 `z.dehydrateFile(url, request, meta)` allows you to make a file pointer from an HTTP request. It takes three arguments:
 
 * `url` - a URL string to the file.
-* `request` (optional) - request options. This is where you can specify HTTP headers, parameters, etc.
+* `request` (optional) - the same request options that `z.request` accepts. This is where you can specify HTTP headers, parameters, etc.
 * `meta` (optional) - file meta information, which can include `filename`, `contentType`, and `knownLength`.
 
-> **What's the difference between `z.dehydrateFile` and `z.dehydrate`?** The difference is in the Zap editor. The Zap editor behaves differently to dehydration based on how the pointer was made. If it's made by `z.dehydrate(func, inputData)`, the Zap editor will load the data immediately in the trigger step when users pull the sample. This allows users to map those fields in the subsequent steps. If the pointer is made by `z.dehydrateFile`, the Zap editor won't do that because it's unnecessary. There's nothing in binary file data for users to map in the subsequent steps.
+> **What's the difference between `z.dehydrateFile` and `z.dehydrate`?** The difference has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by `z.dehydrate`, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by `z.dehydrateFile`, the Zap Editor will wait to hydrate the file. There's nothing in binary file data for users to map in the subsequent steps.
 
-> `z.dehydrateFile` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, too. But it's not the case anymore. Please change it to `z.dehydrateFile` for better user expereience in the Zap editor.
+> `z.dehydrateFile` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, too. But it's not the case anymore. Please change it to `z.dehydrateFile` for a better user expereience.
 
 ## Stashing Files
 
