@@ -7,55 +7,77 @@ const path = require('path');
 require('should');
 const fetch = require('node-fetch');
 
-describe('smoke tests - going to take some time', () => {
+const setupZapierRC = () => {
+  let hasRC = false;
+  if (process.env.DEPLOY_KEY) {
+    const rcPath = path.join(os.homedir(), '.zapierrc');
+    if (!fs.existsSync(rcPath)) {
+      fs.writeFileSync(
+        rcPath,
+        JSON.stringify({ deployKey: process.env.DEPLOY_KEY })
+      );
+      hasRC = true;
+    }
+  }
+  return hasRC;
+};
+
+const npmPack = () => {
+  let filename;
+  const proc = spawnSync('npm', ['pack'], { encoding: 'utf8' });
+  const lines = proc.stdout.split('\n');
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim();
+    if (line) {
+      filename = line;
+      break;
+    }
+  }
+  return filename;
+};
+
+const setupTempWorkingDir = () => {
+  let workdir;
+  const tmpBaseDir = os.tmpdir();
+  while (!workdir || fs.existsSync(workdir)) {
+    workdir = path.join(tmpBaseDir, crypto.randomBytes(20).toString('hex'));
+  }
+  fs.mkdirSync(workdir);
+  return workdir;
+};
+
+const npmInstall = (packagePath, workdir) => {
+  spawnSync('npm', ['install', '--production', packagePath], {
+    encoding: 'utf8',
+    cwd: workdir
+  });
+};
+
+describe('smoke tests - setup will take some time', () => {
   const context = {
+    // Global context that will be available for all test cases in this test suite
     package: {
       filename: null,
       version: null,
       path: null
     },
     workdir: null,
-    cliBin: null
+    cliBin: null,
+    hasRC: false
   };
 
   before(() => {
-    if (process.env.DEPLOY_KEY) {
-      const rcPath = path.join(os.homedir(), '.zapierrc');
-      if (!fs.existsSync(rcPath)) {
-        fs.writeFileSync(
-          rcPath,
-          JSON.stringify({ deployKey: process.env.DEPLOY_KEY })
-        );
-      }
-    }
+    context.hasRC = setupZapierRC();
 
-    const npmPack = spawnSync('npm', ['pack'], { encoding: 'utf8' });
-    const lines = npmPack.stdout.split('\n');
-    for (let i = lines.length - 1; i >= 0; i--) {
-      const line = lines[i].trim();
-      if (line) {
-        context.package.filename = line;
-        break;
-      }
-    }
+    context.package.filename = npmPack();
     context.package.version = context.package.filename.match(
       /\d+\.\d+\.\d+/
     )[0];
     context.package.path = path.join(process.cwd(), context.package.filename);
 
-    const tmpBaseDir = os.tmpdir();
-    while (!context.workdir || fs.existsSync(context.workdir)) {
-      context.workdir = path.join(
-        tmpBaseDir,
-        crypto.randomBytes(20).toString('hex')
-      );
-    }
-    fs.mkdirSync(context.workdir);
+    context.workdir = setupTempWorkingDir();
 
-    spawnSync('npm', ['install', '--production', context.package.path], {
-      encoding: 'utf8',
-      cwd: context.workdir
-    });
+    npmInstall(context.package.path, context.workdir);
 
     context.cliBin = path.join(
       context.workdir,
@@ -109,7 +131,7 @@ describe('smoke tests - going to take some time', () => {
   });
 
   it('zapier apps', function() {
-    if (!process.env.DEPLOY_KEY) {
+    if (!context.hasRC) {
       this.skip();
     }
     const proc = spawnSync(context.cliBin, ['apps', '--format=json'], {
