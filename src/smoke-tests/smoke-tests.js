@@ -7,6 +7,8 @@ const path = require('path');
 require('should');
 const fetch = require('node-fetch');
 
+const REGEX_VERSION = /\d+\.\d+\.\d+/;
+
 const setupZapierRC = () => {
   let hasRC = false;
   if (process.env.DEPLOY_KEY) {
@@ -70,9 +72,7 @@ describe('smoke tests - setup will take some time', () => {
     context.hasRC = setupZapierRC();
 
     context.package.filename = npmPack();
-    context.package.version = context.package.filename.match(
-      /\d+\.\d+\.\d+/
-    )[0];
+    context.package.version = context.package.filename.match(REGEX_VERSION)[0];
     context.package.path = path.join(process.cwd(), context.package.filename);
 
     context.workdir = setupTempWorkingDir();
