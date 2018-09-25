@@ -939,9 +939,15 @@ The method `z.dehydrateFile` allows you to download a file lazily. It has two fo
 * `request` (optional) - the same request options that `z.request` accepts. This is where you can specify HTTP headers, parameters, etc.
 * `meta` (optional) - file meta information, which can include `filename`, `contentType`, and `knownLength`.
 
+Here's an example of using `z.dehydrateFile(url, request, meta)`. The example of `z.dehydrateFile(func, inputData)` can be found in the [Stashing Files](#stashing-files) section.
+
+```js
+[insert-file:./snippets/file-dehydration.js]
+```
+
 > **What's the difference between `z.dehydrateFile` and `z.dehydrate`?** The difference has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by `z.dehydrate`, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by `z.dehydrateFile`, the Zap Editor will wait to hydrate the file. There's nothing in binary file data for users to map in the subsequent steps.
 
-> `z.dehydrateFile` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, too. But it's not the case anymore. Please change it to `z.dehydrateFile` for a better user expereience.
+> `z.dehydrateFile` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, but it's not the case anymore. Please change it to `z.dehydrateFile` for a better user expereience.
 
 ## Stashing Files
 
@@ -965,7 +971,7 @@ z.stashFile(fileRequest) // knownLength and filename will be sniffed from the re
 // https://zapier-dev-files.s3.amazonaws.com/cli-platform/74bc623c-d94d-4cac-81f1-f71d7d517bc7
 ```
 
-> Note: you should only be using `z.stashFile()` in a hydration method - otherwise it can be very expensive to stash dozens of files in a polling call - for example!
+> Note: you should only be using `z.stashFile()` in a hydration method or a hook trigger's `perform` if you're sending over a short-lived URL to a file. Otherwise, it can be very expensive to stash dozens of files in a polling call - for example!
 
 See a full example with dehydration/hydration wired in correctly:
 
