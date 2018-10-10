@@ -3061,7 +3061,7 @@ zapier env 1.0.0
 <li><code>url</code> - a URL string to the file.</li>
 <li><code>request</code> (optional) - the same request options that <code>z.request</code> accepts. This is where you can specify HTTP headers, parameters, etc.</li>
 <li><code>meta</code> (optional) - file meta information, which can include <code>filename</code>, <code>contentType</code>, and <code>knownLength</code>.</li>
-</ul><p>Here&apos;s an example of using <code>z.dehydrateFile(url, request, meta)</code>. The example of <code>z.dehydrateFile(func, inputData)</code> can be found in the <a href="#stashing-files">Stashing Files</a> section.</p>
+</ul><p>If the <code>request</code> argument is absent, <code>beforeRequest</code> and <code>afterResponse</code> middlewares will run. That means the auth data is automatically included to the file download request. On the other hand, if the <code>request</code> argument is provided, <code>beforeRequest</code> and <code>afterResponse</code> middlewares won&apos;t run. That makes you responsible for authorization and we won&apos;t refresh tokens or sessions before hydrating.</p><p>Here&apos;s an example of using <code>z.dehydrateFile(url, request, meta)</code>. The example of <code>z.dehydrateFile(func, inputData)</code> can be found in the <a href="#stashing-files">Stashing Files</a> section.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
       <pre><code class="lang-js"><span class="hljs-keyword">const</span> movieList = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {

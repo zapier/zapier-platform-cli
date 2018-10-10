@@ -1681,6 +1681,8 @@ The method `z.dehydrateFile` allows you to download a file lazily. It has two fo
 * `request` (optional) - the same request options that `z.request` accepts. This is where you can specify HTTP headers, parameters, etc.
 * `meta` (optional) - file meta information, which can include `filename`, `contentType`, and `knownLength`.
 
+If the `request` argument is absent, `beforeRequest` and `afterResponse` middlewares will run. That means the auth data is automatically included to the file download request. On the other hand, if the `request` argument is provided, `beforeRequest` and `afterResponse` middlewares won't run. That makes you responsible for authorization and we won't refresh tokens or sessions before hydrating.
+
 Here's an example of using `z.dehydrateFile(url, request, meta)`. The example of `z.dehydrateFile(func, inputData)` can be found in the [Stashing Files](#stashing-files) section.
 
 ```js
