@@ -56,7 +56,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [`z.request([url], options)`](#zrequesturl-options)
   * [`z.console`](#zconsole)
   * [`z.dehydrate(func, inputData)`](#zdehydratefunc-inputdata)
-  * [`z.dehydrateFile(func, inputData)` or `z.dehydrateFile(url, request, meta)`](#zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta)
+  * [`z.dehydrateFile(func, inputData)`](#zdehydratefilefunc-inputdata)
   * [`z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`](#zstashfilebufferstringstream-knownlength-filename-contenttype)
   * [`z.JSON`](#zjson)
   * [`z.hash()`](#zhash)
@@ -1090,9 +1090,9 @@ We provide several methods off of the `z` object, which is provided as the first
 
 `z.dehydrate(func, inputData)` is used to lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
 
-### `z.dehydrateFile(func, inputData)` or `z.dehydrateFile(url, request, meta)`
+### `z.dehydrateFile(func, inputData)`
 
-`z.dehydrateFile` is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
+`z.dehydrateFile` is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See [File Dehydration](#file-dehydration).
 
 ### `z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`
 
@@ -1600,7 +1600,7 @@ z.request({
 
 Dehydration, and its counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.
 
-* **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)` (or `z.dehydrateFile` for files). This usually happens in a trigger step.
+* **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)` (or `z.dehydrateFile(func, inputData)` for files). This usually happens in a trigger step.
 * **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the scenes. This usually happens in an action step.
 
 > This is very common when [Stashing Files](#stashing-files) - but that isn't their only use!
@@ -1671,66 +1671,13 @@ And in future steps of the Zap - if Zapier encounters a pointer as returned by `
 
 ### File Dehydration
 
-The method `z.dehydrateFile` allows you to download a file lazily. It has two forms: `z.dehydrateFile(func, inputData)` and `z.dehydrateFile(url, request, meta)`.
+The method `z.dehydrateFile(func, inputData)` allows you to download a file lazily. It takes the identical arguments as `z.dehydrate(func, inputData)` does.
 
-`z.dehydrateFile(func, inputData)` takes the identical arguments as `z.dehydrate(func, inputData)` does.
+An example can be found in the [Stashing Files](#stashing-files) section.
 
-`z.dehydrateFile(url, request, meta)` allows you to make a file pointer from an HTTP request. It takes three arguments:
+What makes `z.dehydrateFile` different from `z.dehydrate` has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by `z.dehydrate`, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by `z.dehydrateFile`, the Zap Editor will wait to hydrate the file. There's nothing in binary file data for users to map in the subsequent steps.
 
-* `url` - a URL string to the file.
-* `request` (optional) - the same request options that `z.request` accepts. This is where you can specify HTTP headers, parameters, etc.
-* `meta` (optional) - file meta information, which can include `filename`, `contentType`, and `knownLength`.
-
-If the `request` argument is absent, `beforeRequest` and `afterResponse` middlewares will run. That means the auth data is automatically included to the file download request. On the other hand, if the `request` argument is provided, `beforeRequest` and `afterResponse` middlewares won't run. That makes you responsible for authorization and we won't refresh tokens or sessions before hydrating.
-
-Here's an example of using `z.dehydrateFile(url, request, meta)`. The example of `z.dehydrateFile(func, inputData)` can be found in the [Stashing Files](#stashing-files) section.
-
-```js
-const movieList = (z, bundle) => {
-  return z
-    .request('http://example.com/movies.json')
-    .then(res => z.JSON.parse(res.content))
-    .then(movies => {
-      return movies.map(movie => {
-        const imageUrl = `http://example.com/movie-images/${movie.id}.jpg`;
-        const requestOptions = {
-          params: {
-            size: 'small'
-          }
-        };
-        movie.poster = z.dehydrateFile(imageUrl, requestOptions, {
-          contentType: 'image/jpeg'
-        });
-        return movie;
-      });
-    });
-};
-
-const App = {
-  version: require('./package.json').version,
-  platformVersion: require('zapier-platform-core').version,
-
-  triggers: {
-    new_movie: {
-      noun: 'Movie',
-      display: {
-        label: 'New Movie',
-        description: 'Triggers when a new Movie is added.'
-      },
-      operation: {
-        perform: movieList
-      }
-    }
-  }
-};
-
-module.exports = App;
-
-```
-
-> **What's the difference between `z.dehydrateFile` and `z.dehydrate`?** The difference has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by `z.dehydrate`, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by `z.dehydrateFile`, the Zap Editor will wait to hydrate the file. There's nothing in binary file data for users to map in the subsequent steps.
-
-> `z.dehydrateFile` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, but it's not the case anymore. Please change it to `z.dehydrateFile` for a better user expereience.
+> `z.dehydrateFile(func, inputData)` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, but it's not the case anymore. Please change it to `z.dehydrateFile(func, inputData)` for a better user expereience.
 
 ## Stashing Files
 

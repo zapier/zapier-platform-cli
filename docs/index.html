@@ -291,7 +291,7 @@ a code {
 <li><a href="#zrequesturl-options"><code>z.request([url], options)</code></a></li>
 <li><a href="#zconsole"><code>z.console</code></a></li>
 <li><a href="#zdehydratefunc-inputdata"><code>z.dehydrate(func, inputData)</code></a></li>
-<li><a href="#zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta"><code>z.dehydrateFile(func, inputData)</code> or <code>z.dehydrateFile(url, request, meta)</code></a></li>
+<li><a href="#zdehydratefilefunc-inputdata"><code>z.dehydrateFile(func, inputData)</code></a></li>
 <li><a href="#zstashfilebufferstringstream-knownlength-filename-contenttype"><code>z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])</code></a></li>
 <li><a href="#zjson"><code>z.JSON</code></a></li>
 <li><a href="#zhash"><code>z.hash()</code></a></li>
@@ -478,7 +478,7 @@ a code {
 <li><a href="#zrequesturl-options"><code>z.request([url], options)</code></a></li>
 <li><a href="#zconsole"><code>z.console</code></a></li>
 <li><a href="#zdehydratefunc-inputdata"><code>z.dehydrate(func, inputData)</code></a></li>
-<li><a href="#zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta"><code>z.dehydrateFile(func, inputData)</code> or <code>z.dehydrateFile(url, request, meta)</code></a></li>
+<li><a href="#zdehydratefilefunc-inputdata"><code>z.dehydrateFile(func, inputData)</code></a></li>
 <li><a href="#zstashfilebufferstringstream-knownlength-filename-contenttype"><code>z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])</code></a></li>
 <li><a href="#zjson"><code>z.JSON</code></a></li>
 <li><a href="#zhash"><code>z.hash()</code></a></li>
@@ -2083,7 +2083,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <h3 id="zdehydratefilefunc-inputdata-or-zdehydratefileurl-request-meta"><code>z.dehydrateFile(func, inputData)</code> or <code>z.dehydrateFile(url, request, meta)</code></h3>
+      <h3 id="zdehydratefilefunc-inputdata"><code>z.dehydrateFile(func, inputData)</code></h3>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2092,7 +2092,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p><code>z.dehydrateFile</code> is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See <a href="#dehydration">Dehydration</a>.</p>
+      <p><code>z.dehydrateFile</code> is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See <a href="#file-dehydration">File Dehydration</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2972,7 +2972,7 @@ zapier env 1.0.0
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Dehydration, and its counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.</p><ul>
-<li><strong>Dehydration</strong> - think of this as &quot;make a pointer&quot;, you control the creation of pointers with <code>z.dehydrate(func, inputData)</code> (or <code>z.dehydrateFile</code> for files). This usually happens in a trigger step.</li>
+<li><strong>Dehydration</strong> - think of this as &quot;make a pointer&quot;, you control the creation of pointers with <code>z.dehydrate(func, inputData)</code> (or <code>z.dehydrateFile(func, inputData)</code> for files). This usually happens in a trigger step.</li>
 <li><strong>Hydration</strong> - think of this as an automatic step that &quot;consumes a pointer&quot; and &quot;returns some data&quot;, Zapier does this automatically behind the scenes. This usually happens in an action step.</li>
 </ul><blockquote>
 <p>This is very common when <a href="#stashing-files">Stashing Files</a> - but that isn&apos;t their only use!</p>
@@ -3057,63 +3057,8 @@ zapier env 1.0.0
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>The method <code>z.dehydrateFile</code> allows you to download a file lazily. It has two forms: <code>z.dehydrateFile(func, inputData)</code> and <code>z.dehydrateFile(url, request, meta)</code>.</p><p><code>z.dehydrateFile(func, inputData)</code> takes the identical arguments as <code>z.dehydrate(func, inputData)</code> does.</p><p><code>z.dehydrateFile(url, request, meta)</code> allows you to make a file pointer from an HTTP request. It takes three arguments:</p><ul>
-<li><code>url</code> - a URL string to the file.</li>
-<li><code>request</code> (optional) - the same request options that <code>z.request</code> accepts. This is where you can specify HTTP headers, parameters, etc.</li>
-<li><code>meta</code> (optional) - file meta information, which can include <code>filename</code>, <code>contentType</code>, and <code>knownLength</code>.</li>
-</ul><p>If the <code>request</code> argument is absent, <code>beforeRequest</code> and <code>afterResponse</code> middlewares will run. That means the auth data is automatically included to the file download request. On the other hand, if the <code>request</code> argument is provided, <code>beforeRequest</code> and <code>afterResponse</code> middlewares won&apos;t run. That makes you responsible for authorization and we won&apos;t refresh tokens or sessions before hydrating.</p><p>Here&apos;s an example of using <code>z.dehydrateFile(url, request, meta)</code>. The example of <code>z.dehydrateFile(func, inputData)</code> can be found in the <a href="#stashing-files">Stashing Files</a> section.</p>
-    </div>
-    <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-js"><span class="hljs-keyword">const</span> movieList = <span class="hljs-function">(<span class="hljs-params">z, bundle</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> z
-    .request(<span class="hljs-string">&apos;http://example.com/movies.json&apos;</span>)
-    .then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> z.JSON.parse(res.content))
-    .then(<span class="hljs-function"><span class="hljs-params">movies</span> =&gt;</span> {
-      <span class="hljs-keyword">return</span> movies.map(<span class="hljs-function"><span class="hljs-params">movie</span> =&gt;</span> {
-        <span class="hljs-keyword">const</span> imageUrl = <span class="hljs-string">`http://example.com/movie-images/<span class="hljs-subst">${movie.id}</span>.jpg`</span>;
-        <span class="hljs-keyword">const</span> requestOptions = {
-          <span class="hljs-attr">params</span>: {
-            <span class="hljs-attr">size</span>: <span class="hljs-string">&apos;small&apos;</span>
-          }
-        };
-        movie.poster = z.dehydrateFile(imageUrl, requestOptions, {
-          <span class="hljs-attr">contentType</span>: <span class="hljs-string">&apos;image/jpeg&apos;</span>
-        });
-        <span class="hljs-keyword">return</span> movie;
-      });
-    });
-};
-
-<span class="hljs-keyword">const</span> App = {
-  <span class="hljs-attr">version</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./package.json&apos;</span>).version,
-  <span class="hljs-attr">platformVersion</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;zapier-platform-core&apos;</span>).version,
-
-  <span class="hljs-attr">triggers</span>: {
-    <span class="hljs-attr">new_movie</span>: {
-      <span class="hljs-attr">noun</span>: <span class="hljs-string">&apos;Movie&apos;</span>,
-      <span class="hljs-attr">display</span>: {
-        <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;New Movie&apos;</span>,
-        <span class="hljs-attr">description</span>: <span class="hljs-string">&apos;Triggers when a new Movie is added.&apos;</span>
-      },
-      <span class="hljs-attr">operation</span>: {
-        <span class="hljs-attr">perform</span>: movieList
-      }
-    }
-  }
-};
-
-<span class="hljs-built_in">module</span>.exports = App;
-
-</code></pre>
-    </div>
-  </div>
-</div><div class="row">
-  <div class="row-height">
-    <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <blockquote>
-<p><strong>What&apos;s the difference between <code>z.dehydrateFile</code> and <code>z.dehydrate</code>?</strong> The difference has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by <code>z.dehydrate</code>, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by <code>z.dehydrateFile</code>, the Zap Editor will wait to hydrate the file. There&apos;s nothing in binary file data for users to map in the subsequent steps.</p>
-</blockquote><blockquote>
-<p><code>z.dehydrateFile</code> is new in v7.3.0. We used to recommend to use <code>z.dehydrate(func, inputData)</code> for files, but it&apos;s not the case anymore. Please change it to <code>z.dehydrateFile</code> for a better user expereience.</p>
+      <p>The method <code>z.dehydrateFile(func, inputData)</code> allows you to download a file lazily. It takes the identical arguments as <code>z.dehydrate(func, inputData)</code> does.</p><p>An example can be found in the <a href="#stashing-files">Stashing Files</a> section.</p><p>What makes <code>z.dehydrateFile</code> different from <code>z.dehydrate</code> has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by <code>z.dehydrate</code>, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by <code>z.dehydrateFile</code>, the Zap Editor will wait to hydrate the file. There&apos;s nothing in binary file data for users to map in the subsequent steps.</p><blockquote>
+<p><code>z.dehydrateFile(func, inputData)</code> is new in v7.3.0. We used to recommend to use <code>z.dehydrate(func, inputData)</code> for files, but it&apos;s not the case anymore. Please change it to <code>z.dehydrateFile(func, inputData)</code> for a better user expereience.</p>
 </blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
