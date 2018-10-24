@@ -40,6 +40,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
 - [Converting an Existing App](#converting-an-existing-app)
 - [Authentication](#authentication)
   * [Basic](#basic)
+  * [Digest](#digest)
   * [Custom](#custom)
   * [Session](#session)
   * [OAuth2](#oauth2)
@@ -428,6 +429,35 @@ Useful if your app requires two pieces of information to authentication: `userna
 ```js
 const authentication = {
   type: 'basic',
+  // "test" could also be a function
+  test: {
+    url: 'https://example.com/api/accounts/me.json'
+  },
+  connectionLabel: '{{bundle.authData.username}}' // Can also be a function, check digest auth below for an example
+  // you can provide additional fields, but we'll provide `username`/`password` automatically
+};
+
+const App = {
+  // ...
+  authentication: authentication
+  // ...
+};
+
+```
+
+### Digest
+
+*New in v7.4.0.*
+
+The setup and user experience of Digest Auth is identical to Basic Auth. Users will provide Zapier their username and password. And Zapier will handle all the nonce and quality of protection details automatically.
+
+> Example App: check out https://github.com/zapier/zapier-platform-example-app-digest-auth for a working example app for digest auth.
+
+> Currently, only MD5 algorithm is supported. And server nonces are not reused. That means for every `z.request` call, Zapier will sends an additional request beforehand to get the server nonce. This could be slightly slower than Basic Auth.
+
+```js
+const authentication = {
+  type: 'digest',
   // "test" could also be a function
   test: {
     url: 'https://example.com/api/accounts/me.json'
