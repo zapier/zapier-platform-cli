@@ -178,7 +178,12 @@ const forceIncludeDumbPath = (appConfig, filePath) => {
   return (
     filePath.endsWith('package.json') ||
     filePath.endsWith('definition.json') ||
-    filePath.endsWith(`/bin/linux-x64-node-${nodeMajorVersion}/deasync.node`) || // Special, for zapier-platform-legacy-scripting-runner
+    filePath.endsWith(
+      // Special, for zapier-platform-legacy-scripting-runner
+      path.sep === '\\'
+        ? `\\bin\\linux-x64-node-${nodeMajorVersion}\\deasync.node`
+        : `/bin/linux-x64-node-${nodeMajorVersion}/deasync.node`
+    ) ||
     filePath.match(
       path.sep === '\\' ? /aws-sdk\\apis\\.*\.json/ : /aws-sdk\/apis\/.*\.json/
     ) ||
