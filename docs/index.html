@@ -647,7 +647,9 @@ for. This is used during the &quot;Connect Accounts&quot; section of the Zap Edi
       <p>Zapier takes the App you upload and sends it over to Amazon Web Service&apos;s Lambda.
 We then make calls to execute the operations your App defines as we execute Zaps.
 Your App takes the input data we provide (if any), makes the necessary HTTP calls,
-and returns the relevant data, which gets fed back into Zapier.</p>
+and returns the relevant data, which gets fed back into Zapier.</p><p>Here&apos;s a flow chart for how that works for a simple, polling based trigger:</p><p><img src="https://cdn.zapier.com/storage/photos/98ee1d46bbe5f5c11077fd83e7aed2f4.png" alt=""></p><blockquote>
+<p>The dashed lines indicate that if you define <code>perform</code> as a function instead of a request configuration, you can still use <code>z.request()</code>, <code>throwForStatus</code>, <code>z.JSON.parse</code> and other tools packaged in <code>zapier-platform-core</code>.</p>
+</blockquote>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       

@@ -50,6 +50,12 @@ We then make calls to execute the operations your App defines as we execute Zaps
 Your App takes the input data we provide (if any), makes the necessary HTTP calls,
 and returns the relevant data, which gets fed back into Zapier.
 
+Here's a flow chart for how that works for a simple, polling based trigger:
+
+![](https://cdn.zapier.com/storage/photos/98ee1d46bbe5f5c11077fd83e7aed2f4.png)
+
+> The dashed lines indicate that if you define `perform` as a function instead of a request configuration, you can still use `z.request()`, `throwForStatus`, `z.JSON.parse` and other tools packaged in `zapier-platform-core`.
+
 ### CLI vs the Web Builder Platform
 
 From a user perspective, both the CLI and the existing web builder platform offer the same experience. The biggest difference is how they're developed. The CLI takes a much more code-first approach, allowing you to develop your Zapier app just like you would any other programming project. The web builder, on the other hand, is much better for folks who want to make an app with minimal coding involved. Both will continue to coexist, so pick whichever fits your needs best!
