@@ -47,15 +47,18 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Resource Definition](#resource-definition)
 - [Triggers/Searches/Creates](#triggerssearchescreates)
   * [Return Types](#return-types)
-- [Fields](#fields)
+- [Input Fields](#input-fields)
   * [Custom/Dynamic Fields](#customdynamic-fields)
   * [Dynamic Dropdowns](#dynamic-dropdowns)
   * [Search-Powered Fields](#search-powered-fields)
   * [Computed Fields](#computed-fields)
+- [Output Fields](#output-fields)
+  * [Nested & Children (Line Item) Fields](#nested--children-line-item-fields)
 - [Z Object](#z-object)
   * [`z.request([url], options)`](#zrequesturl-options)
   * [`z.console`](#zconsole)
   * [`z.dehydrate(func, inputData)`](#zdehydratefunc-inputdata)
+  * [`z.dehydrateFile(func, inputData)`](#zdehydratefilefunc-inputdata)
   * [`z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`](#zstashfilebufferstringstream-knownlength-filename-contenttype)
   * [`z.JSON`](#zjson)
   * [`z.hash()`](#zhash)
@@ -79,6 +82,7 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [HTTP Request Options](#http-request-options)
   * [HTTP Response Object](#http-response-object)
 - [Dehydration](#dehydration)
+  * [File Dehydration](#file-dehydration)
 - [Stashing Files](#stashing-files)
 - [Logging](#logging)
   * [Console Logging](#console-logging)
@@ -170,7 +174,7 @@ Then you can either swap to that version with `nvm use v8.10.0`, or do `nvm exec
 
 ### Quick Setup Guide
 
-First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap editor](https://zapier.com/app/editor).
+First up is installing the CLI and setting up your auth to create a working "Zapier Example" application. It will be private to you and visible in your live [Zap Editor](https://zapier.com/app/editor).
 
 ```bash
 # install the CLI globally
@@ -837,9 +841,9 @@ Each of the 3 types of function expects a certain type of object. As of core `v1
 | Search | Array | 0 or more objects. If len > 0, put the best match first |
 | Action | Object | Return values are evaluated by [`isPlainObject`](https://lodash.com/docs#isPlainObject) |
 
-## Fields
+## Input Fields
 
-On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Fields are what your users would see in the main Zapier user interface. For example, you might have a "Create Contact" action with fields like "First name", "Last name", "Email", etc. These fields will be able to accept input from previous steps in a Zap, for example:
+On each trigger, search, or create in the `operation` directive - you can provide an array of objects as fields under the `inputFields`. Input Fields are what your users would see in the main Zapier user interface. For example, you might have a "Create Contact" action with fields like "First name", "Last name", "Email", etc. These fields will be able to accept input from previous steps in a Zap, for example:
 
 ![gif of setting up an action field in Zap Editor](https://cdn.zapier.com/storage/photos/6bd938f7cad7e34c75ba1c1d3be75ac5.gif)
 
@@ -1074,6 +1078,74 @@ In OAuth and Session Auth, you might want to store fields in `bundle.authData` (
 
 For those situations, you need a computed field. It's just like another field, but with a `computed: true` property (don't forget to also make it `required: false`). You can see examples in the [OAuth](#oauth2) or [Session Auth](#session) example sections.
 
+## Output Fields
+
+On each trigger, search, or create in the operation directive - you can provide an array of objects as fields under the `outputFields`. Output Fields are what your users would see when they select a field provided by your trigger, search or create to map it to another.
+
+Output Fields are optional, but can be used to:
+
+- Define friendly labels for the returned fields. By default, we will *humanize* for example `my_key` as *My Key*.
+- Mark certain fields as `important` to sort them higher in the list of available fields to map.
+- Make sure that custom fields that may not be found in every live sample and - since they're custom to the connected account - cannot be defined in the static sample, can still be mapped.
+
+The [schema](https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema) for `outputFields` is shared with `inputFields` but only the `key`, `required` and `important` properties are relevant.
+
+Custom/Dynamic Output Fields are defined in the same way as [Custom/Dynamic Input Fields](#customdynamic-fields).
+
+### Nested & Children (Line Item) Fields
+
+To define an Output Field for a nested field use `{{parent}}__{{key}}`. For children (line item) fields use `{{parent}}[]{{key}}`.
+
+```js
+const recipeOutputFields = (z, bundle) => {
+  const response = z.request('http://example.com/api/v2/fields.json');
+  // json is like [{"key":"field_1","label":"Label for Custom Field"}]
+  return response.then(res => res.json);
+};
+
+const App = {
+  //...
+  triggers: {
+    new_recipe: {
+      //...
+      operation: {
+        perform: () => {},
+        sample: {
+          id: 1,
+          nested_parent: {
+            key: 'Nested Field'
+          },
+          children_parent: [
+            {
+              key: 'Children Field'
+            }
+          ]
+        },
+        // an array of objects is the simplest way
+        outputFields: [
+          {
+            key: 'id',
+            label: 'Label for Simple Field'
+          },
+          {
+            key: 'nested_parent__key',
+            label: 'Label for Nested Field',
+            important: true
+          },
+          {
+            key: 'children_parent[]key',
+            label: 'Label for Children Field',
+            important: true
+          },
+          recipeOutputFields // provide a function inline - we'll merge the results!
+        ]
+      }
+    }
+  }
+};
+
+```
+
 ## Z Object
 
 We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your app.
@@ -1091,6 +1163,10 @@ We provide several methods off of the `z` object, which is provided as the first
 ### `z.dehydrate(func, inputData)`
 
 `z.dehydrate(func, inputData)` is used to lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
+
+### `z.dehydrateFile(func, inputData)`
+
+`z.dehydrateFile` is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See [File Dehydration](#file-dehydration).
 
 ### `z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`
 
@@ -1166,7 +1242,7 @@ This object holds the user's auth details and the data for the API requests.
 
 | key | default | description |
 | --- | --- | --- |
-| frontend | `false` | if true, this run was initiated manually via the Zap editor |
+| frontend | `false` | if true, this run was initiated manually via the Zap Editor |
 | prefill | `false` | if true, this poll is being used to populate a dynamic dropdown |
 | hydrate | `true`  | if true, the results of this run will be hydrated (false if we're in the middle of hydrating already) |
 | test_poll | `false` | if true, the poll was triggered by a user testing their account (via [clicking "test"](https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png) on the auth |
@@ -1598,8 +1674,8 @@ z.request({
 
 Dehydration, and its counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.
 
-* **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)`
-* **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the scenes
+* **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)` (or `z.dehydrateFile(func, inputData)` for files). This usually happens in a trigger step.
+* **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the scenes. This usually happens in an action step.
 
 > This is very common when [Stashing Files](#stashing-files) - but that isn't their only use!
 
@@ -1667,6 +1743,16 @@ And in future steps of the Zap - if Zapier encounters a pointer as returned by `
 > **Why can't I just load the data immediately?** Isn't it easier? In some cases it can be - but imagine an API that returns 100 records when polling - doing 100x `GET /id.json` aggressive inline HTTP calls when 99% of the time Zapier doesn't _need_ the data yet is wasteful.
 
 
+### File Dehydration
+
+The method `z.dehydrateFile(func, inputData)` allows you to download a file lazily. It takes the identical arguments as `z.dehydrate(func, inputData)` does.
+
+An example can be found in the [Stashing Files](#stashing-files) section.
+
+What makes `z.dehydrateFile` different from `z.dehydrate` has to do with efficiency and when Zapier chooses to hydrate data. Knowing which pointers give us back files helps us delay downloading files until its absolutely necessary. A good example is users creating Zaps in the Zap Editor. If a pointer is made by `z.dehydrate`, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by `z.dehydrateFile`, the Zap Editor will wait to hydrate the file. There's nothing in binary file data for users to map in the subsequent steps.
+
+> `z.dehydrateFile(func, inputData)` is new in v7.3.0. We used to recommend to use `z.dehydrate(func, inputData)` for files, but it's not the case anymore. Please change it to `z.dehydrateFile(func, inputData)` for a better user expereience.
+
 ## Stashing Files
 
 It can be expensive to download and stream files or they can require complex handshakes to authorize downloads - so we provide a helpful stash routine that will take any `String`, `Buffer` or `Stream` and return a URL file pointer suitable for returning from triggers, searches, creates, etc.
@@ -1689,7 +1775,7 @@ z.stashFile(fileRequest) // knownLength and filename will be sniffed from the re
 // https://zapier-dev-files.s3.amazonaws.com/cli-platform/74bc623c-d94d-4cac-81f1-f71d7d517bc7
 ```
 
-> Note: you should only be using `z.stashFile()` in a hydration method - otherwise it can be very expensive to stash dozens of files in a polling call - for example!
+> Note: you should only be using `z.stashFile()` in a hydration method or a hook trigger's `perform` if you're sending over a short-lived URL to a file. Otherwise, it can be very expensive to stash dozens of files in a polling call - for example!
 
 See a full example with dehydration/hydration wired in correctly:
 
@@ -1712,7 +1798,7 @@ const pdfList = (z, bundle) => {
       return results.map(result => {
         // lazily convert a secret_download_url to a stashed url
         // zapier won't do this until we need it
-        result.file = z.dehydrate(stashPDFfunction, {
+        result.file = z.dehydrateFile(stashPDFfunction, {
           downloadUrl: result.secret_download_url
         });
         delete result.secret_download_url;
@@ -2259,7 +2345,7 @@ module.exports = {
 
 ```
 
-If you need to do more requests conditionally based on the results of an HTTP call (such as getting "next url" param, using `async/await` with a transpiler is the way to go. If you go this route, only page as far as you need to. Keep an eye on the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that have probably been seen in a previous poll.
+If you need to do more requests conditionally based on the results of an HTTP call (such as the "next url" param or similar value), using `async/await` (as shown in the example below) is a good way to go. If you go this route, only page as far as you need to. Keep an eye on the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that have probably been seen in a previous poll.
 
 ```js
 // a hypothetical API where payloads are big so we want to heavily limit how much comes back
@@ -2492,7 +2578,11 @@ The Zapier platform and its tools are under active development. While you don't 
 Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never *have* to upgrade your app's `platform-core` dependency, we recommend keeping an eye on the [changelog](https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md) to see what new features and bux fixes are available.
 
 <!-- TODO: if we decouple releases, change this -->
+<<<<<<< HEAD
 The most recently released version of `cli` and `core` is `7.2.0`. You can see the versions you're working with by running `zapier -v`.
+=======
+The most recently released version of `cli` and `core` is `7.3.0`. You can see the versions you're working with by running `zapier -v`.
+>>>>>>> master
 
 To update `cli`, run `npm install -g zapier-platform-cli`.
 

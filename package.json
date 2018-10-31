@@ -1,6 +1,6 @@
 {
   "name": "zapier-platform-cli",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "description": "The CLI for apps in the Zapier Developer Platform.",
   "repository": "zapier/zapier-platform-cli",
   "homepage": "https://zapier.com/",
@@ -18,7 +18,7 @@
     "node": ">=8.10.0"
   },
   "scripts": {
-    "docs": "npm run build && node lib/bin/docs.js",
+    "docs": "npm run build && ZAPIER_BASE_ENDPOINT='' node lib/bin/docs.js",
     "preversion": "git pull && npm test",
     "version": "npm run docs && npm run gen-completions && git add docs/* goodies/* README.md",
     "postversion": "git push && git push --tags",
@@ -27,7 +27,9 @@
     "watch": "rm -rf lib && node_modules/babel-cli/bin/babel.js --watch src -d lib --copy-files",
     "lint": "node_modules/.bin/eslint zapier.js src",
     "lint-snippets": "node_modules/.bin/eslint snippets --rule 'no-unused-vars: 0' --ignore-pattern snippets/next.js",
-    "test": "npm run build && NODE_ENV=test node_modules/mocha/bin/mocha -t 30000 --recursive lib/tests && npm run lint && npm run lint-snippets",
+    "pretest": "npm run build",
+    "test": "NODE_ENV=test mocha -t 30000 --recursive lib/tests && npm run lint && npm run lint-snippets",
+    "smoke-test": "npm run build && NODE_ENV=test mocha -t 30000 --recursive lib/smoke-tests",
     "zapier": "zapier.js",
     "validate-templates": "./scripts/validate-app-templates.js",
     "set-template-versions": "./scripts/set-app-template-versions.js",

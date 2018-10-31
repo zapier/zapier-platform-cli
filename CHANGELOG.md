@@ -1,3 +1,54 @@
+## 7.4.0
+
+### cli
+
+* (fix) deasync binary is missing in Windows build ([#370](https://github.com/zapier/zapier-platform-cli/pull/370))
+* (doc) Document digest auth ([#368](https://github.com/zapier/zapier-platform-cli/pull/368))
+
+### schema
+
+* :tada: (new) Add support for App Middlewares ([#56](https://github.com/zapier/zapier-platform-schema/pull/56))
+
+### core
+
+* :tada: (new) Add support for digest auth. Read [doc](https://zapier.github.io/zapier-platform-cli/#digest) for detail. ([#123](https://github.com/zapier/zapier-platform-core/pull/123))
+* :tada: (new) Add Support for App Middlewares ([#119](https://github.com/zapier/zapier-platform-core/pull/119))
+* (fix) `z.stashFile` doesn't pick up filename in `Content-Disposition` ([#124](https://github.com/zapier/zapier-platform-core/pull/124))
+
+## 7.3.0
+
+### cli
+
+* (improvement) Add Dynamic Dropdown example app ([#363](https://github.com/zapier/zapier-platform-cli/pull/363))
+* (improvement) Add smoke tests ([#361](https://github.com/zapier/zapier-platform-cli/pull/361), [#362](https://github.com/zapier/zapier-platform-cli/pull/362))
+* (doc) Document `z.dehydrateFile` ([#360](https://github.com/zapier/zapier-platform-cli/pull/360))
+* (doc) Document `outputFields` ([#365](https://github.com/zapier/zapier-platform-cli/pull/365))
+* (doc) Update docs to reflect support for `async/await` ([#359](https://github.com/zapier/zapier-platform-cli/pull/359))
+
+### schema
+
+* :tada: (new) Add `omitEmptyParams` to `RequestSchema` ([#57](https://github.com/zapier/zapier-platform-schema/pull/57))
+* (improvement) Add smoke tests ([#55](https://github.com/zapier/zapier-platform-schema/pull/55))
+
+### core
+
+* :tada: (new) Introduce `z.dehydrateFile` - a new recommended method to dehydrate a file. Read [doc](https://zapier.github.io/zapier-platform-cli/#file-dehydration) for detail. ([#112](https://github.com/zapier/zapier-platform-core/pull/112), [#120](https://github.com/zapier/zapier-platform-core/pull/120))
+* :tada: (new) Add `omitEmptyParams` option to clean up empty request params automatically. Read [doc](https://zapier.github.io/zapier-platform-schema/build/schema.html#requestschema) for detail. ([#121](https://github.com/zapier/zapier-platform-core/pull/121))
+* (fix) Fix null error handling ([#117](https://github.com/zapier/zapier-platform-core/pull/117))
+* (improvement) Add smoke tests ([#116](https://github.com/zapier/zapier-platform-core/pull/116))
+
+## 7.2.2
+
+### core
+
+* (fix) Sign dehydrated payloads for better security ([#111](https://github.com/zapier/zapier-platform-core/pull/111))
+
+## 7.2.1
+
+### core
+
+* (fix) Allow to disable SSL certificate check ([#110](https://github.com/zapier/zapier-platform-core/pull/110))
+
 ## 7.2.0
 
 ### cli
