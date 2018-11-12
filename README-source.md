@@ -346,7 +346,7 @@ The flow works like this:
 
   1. Zapier makes a call to your API requesting a "request token" (also known as "temporary credentials")
   2. Zapier sends the user to the authorization URL, defined by your app, along with the request token
-  3. Once authorized, your website sends the user to the `redirect_uri` Zapier provided (`zapier describe` to find out what it is)
+  3. Once authorized, your website sends the user to the `redirect_uri` Zapier provided. Use `zapier describe` command to find out what it is: ![](https://zappy.zapier.com/117ECB35-5CCA-4C98-B74A-35F1AD9A3337.png)
   4. Zapier makes a call on the backend to your API to exchange the request token for an "access token" (also known as "long-lived credentials")
   5. Zapier remembers the access token and makes calls on behalf of the user
 
@@ -384,7 +384,7 @@ Zapier's OAuth2 implementation is based on the `authorization_code` flow, simila
 It looks like this:
 
   1. Zapier sends the user to the authorization URL defined by your app
-  2. Once authorized, your website sends the user to the `redirect_uri` Zapier provided (`zapier describe` to find out what it is)
+  2. Once authorized, your website sends the user to the `redirect_uri` Zapier provided. Use `zapier describe` command to find out what it is: ![](https://zappy.zapier.com/83E12494-0A03-4DB4-AA46-5A2AF6A9ECCC.png)
   3. Zapier makes a call on the backend to your API to exchange the `code` for an `access_token`
   4. Zapier remembers the `access_token` and makes calls on behalf of the user
   5. (Optionally) Zapier can refresh the token if it expires
