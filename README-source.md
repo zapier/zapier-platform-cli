@@ -363,7 +363,7 @@ You'll also likely need to set your `CLIENT_ID` and `CLIENT_SECRET` as environme
 $ zapier env 1.0.0 CLIENT_ID 1234
 $ zapier env 1.0.0 CLIENT_SECRET abcd
 
-# and when running tests locally, don't forget to define them!
+# and when running tests locally, don't forget to define them in .env or in the command!
 $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 ```
 
@@ -396,7 +396,7 @@ You are required to define the authorization URL and the API call to fetch the a
 $ zapier env 1.0.0 CLIENT_ID 1234
 $ zapier env 1.0.0 CLIENT_SECRET abcd
 
-# and when running tests locally, don't forget to define them!
+# and when running tests locally, don't forget to define them in .env or in the command!
 $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier test
 ```
 
