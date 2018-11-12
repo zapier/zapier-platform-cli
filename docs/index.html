@@ -1468,7 +1468,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
     <span class="hljs-comment">// For OAuth1 we store `oauth_token` and `oauth_token_secret` automatically</span>
     <span class="hljs-comment">// in `bundle.authData` for future use. If you need to save/use something</span>
     <span class="hljs-comment">// that the user shouldn&apos;t need to type/choose, add a &quot;computed&quot; field, like:</span>
-    <span class="hljs-comment">// {key: &apos;something&apos;: type: &apos;string&apos;, required: false, computed: true}</span>
+    <span class="hljs-comment">// {key: &apos;user_id&apos;: type: &apos;string&apos;, required: false, computed: true}</span>
     <span class="hljs-comment">// And remember to return it in oauth1Config.getAccessToken</span>
   ]
 };
@@ -1600,7 +1600,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
     <span class="hljs-comment">// For OAuth2 we store `access_token` and `refresh_token` automatically</span>
     <span class="hljs-comment">// in `bundle.authData` for future use. If you need to save/use something</span>
     <span class="hljs-comment">// that the user shouldn&apos;t need to type/choose, add a &quot;computed&quot; field, like:</span>
-    <span class="hljs-comment">// {key: &apos;something&apos;: type: &apos;string&apos;, required: false, computed: true}</span>
+    <span class="hljs-comment">// {key: &apos;user_id&apos;: type: &apos;string&apos;, required: false, computed: true}</span>
     <span class="hljs-comment">// And remember to return it in oauth2Config.getAccessToken/refreshAccessToken</span>
   ]
 };

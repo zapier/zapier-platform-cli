@@ -43,7 +43,7 @@ const authentication = {
     // For OAuth1 we store `oauth_token` and `oauth_token_secret` automatically
     // in `bundle.authData` for future use. If you need to save/use something
     // that the user shouldn't need to type/choose, add a "computed" field, like:
-    // {key: 'something': type: 'string', required: false, computed: true}
+    // {key: 'user_id': type: 'string', required: false, computed: true}
     // And remember to return it in oauth1Config.getAccessToken
   ]
 };
