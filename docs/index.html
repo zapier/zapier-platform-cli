@@ -1399,7 +1399,7 @@ zapier convert 1234 my-app
 <li>Zapier makes a call to your API requesting a &quot;request token&quot; (also known as &quot;temporary credentials&quot;)</li>
 <li>Zapier sends the user to the authorization URL, defined by your app, along with the request token</li>
 <li>Once authorized, your website sends the user to the <code>redirect_uri</code> Zapier provided. Use <code>zapier describe</code> command to find out what it is: <img src="https://zappy.zapier.com/117ECB35-5CCA-4C98-B74A-35F1AD9A3337.png" alt=""></li>
-<li>Zapier makes a call on the backend to your API to exchange the request token for an &quot;access token&quot; (also known as &quot;long-lived credentials&quot;)</li>
+<li>Zapier makes a call on our backend to your API to exchange the request token for an &quot;access token&quot; (also known as &quot;long-lived credentials&quot;)</li>
 <li>Zapier remembers the access token and makes calls on behalf of the user</li>
 </ol><p>You are required to define:</p><ul>
 <li><code>getRequestToken</code>: The API call to fetch the request token</li>
@@ -1530,7 +1530,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
 </blockquote><p>It looks like this:</p><ol>
 <li>Zapier sends the user to the authorization URL defined by your app</li>
 <li>Once authorized, your website sends the user to the <code>redirect_uri</code> Zapier provided. Use <code>zapier describe</code> command to find out what it is: <img src="https://zappy.zapier.com/83E12494-0A03-4DB4-AA46-5A2AF6A9ECCC.png" alt=""></li>
-<li>Zapier makes a call on the backend to your API to exchange the <code>code</code> for an <code>access_token</code></li>
+<li>Zapier makes a call on our backend to your API to exchange the <code>code</code> for an <code>access_token</code></li>
 <li>Zapier remembers the <code>access_token</code> and makes calls on behalf of the user</li>
 <li>(Optionally) Zapier can refresh the token if it expires</li>
 </ol><p>You are required to define the authorization URL and the API call to fetch the access token. You&apos;ll also likely want to set your <code>CLIENT_ID</code> and <code>CLIENT_SECRET</code> as environment variables:</p>
