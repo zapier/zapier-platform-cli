@@ -1429,23 +1429,26 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
   <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;oauth1&apos;</span>,
   <span class="hljs-attr">oauth1Config</span>: {
     <span class="hljs-attr">getRequestToken</span>: {
-      <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://example.com/request-token&apos;</span>,
+      <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://{{bundle.inputData.subdomain}}.example.com/request-token&apos;</span>,
       <span class="hljs-attr">method</span>: <span class="hljs-string">&apos;POST&apos;</span>,
       <span class="hljs-attr">auth</span>: {
         <span class="hljs-attr">oauth_consumer_key</span>: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
         <span class="hljs-attr">oauth_consumer_secret</span>: <span class="hljs-string">&apos;{{process.env.CLIENT_SECRET}}&apos;</span>,
-        <span class="hljs-attr">oauth_signature_method</span>: <span class="hljs-string">&apos;HMAC-SHA1&apos;</span>,
+
+        <span class="hljs-comment">// &apos;HMAC-SHA1&apos; is used by default if not specified.</span>
+        <span class="hljs-comment">// &apos;HMAC-SHA256&apos;, &apos;RSA-SHA1&apos;, &apos;PLAINTEXT&apos; are also supported.</span>
+        oauth_signature_method: <span class="hljs-string">&apos;HMAC-SHA1&apos;</span>,
         <span class="hljs-attr">oauth_callback</span>: <span class="hljs-string">&apos;{{bundle.inputData.redirect_uri}}&apos;</span>
       }
     },
     <span class="hljs-attr">authorizeUrl</span>: {
-      <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://example.com/authorize&apos;</span>,
+      <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://{{bundle.inputData.subdomain}}.example.com/authorize&apos;</span>,
       <span class="hljs-attr">params</span>: {
         <span class="hljs-attr">oauth_token</span>: <span class="hljs-string">&apos;{{bundle.inputData.oauth_token}}&apos;</span>
       }
     },
     <span class="hljs-attr">getAccessToken</span>: {
-      <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://example.com/access-token&apos;</span>,
+      <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://{{bundle.inputData.subdomain}}.example.com/access-token&apos;</span>,
       <span class="hljs-attr">method</span>: <span class="hljs-string">&apos;POST&apos;</span>,
       <span class="hljs-attr">auth</span>: {
         <span class="hljs-attr">oauth_consumer_key</span>: <span class="hljs-string">&apos;{{process.env.CLIENT_ID}}&apos;</span>,
@@ -1457,10 +1460,11 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
     }
   },
   <span class="hljs-attr">test</span>: {
-    <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://example.com/me&apos;</span>
+    <span class="hljs-attr">url</span>: <span class="hljs-string">&apos;https://{{bundle.authData.subdomain}}.example.com/me&apos;</span>
   },
   <span class="hljs-comment">// If you need any fields upfront, put them here</span>
   fields: [
+    { <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;subdomain&apos;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">default</span>: <span class="hljs-string">&apos;app&apos;</span> }
     <span class="hljs-comment">// For OAuth1 we store `oauth_token` and `oauth_token_secret` automatically</span>
     <span class="hljs-comment">// in `bundle.authData` for future use. If you need to save/use something</span>
     <span class="hljs-comment">// that the user shouldn&apos;t need to type/choose, add a &quot;computed&quot; field, like:</span>
@@ -1593,7 +1597,7 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
   <span class="hljs-comment">// If you need any fields upfront, put them here</span>
   fields: [
     { <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;subdomain&apos;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>, <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">default</span>: <span class="hljs-string">&apos;app&apos;</span> }
-    <span class="hljs-comment">// For OAuth we store `access_token` and `refresh_token` automatically</span>
+    <span class="hljs-comment">// For OAuth2 we store `access_token` and `refresh_token` automatically</span>
     <span class="hljs-comment">// in `bundle.authData` for future use. If you need to save/use something</span>
     <span class="hljs-comment">// that the user shouldn&apos;t need to type/choose, add a &quot;computed&quot; field, like:</span>
     <span class="hljs-comment">// {key: &apos;something&apos;: type: &apos;string&apos;, required: false, computed: true}</span>
