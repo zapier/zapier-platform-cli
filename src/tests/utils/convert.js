@@ -30,10 +30,11 @@ const loadAuthModuleFromString = string => {
 
   // utils doesn't exist during testing neither, so let's mock it, too.
   string = string.replace(
-    /const { replaceVars, performAuthTest } = require\(.*;/,
+    /const { replaceVars, ensureObject } = require\(.*;/,
     ''
   );
-  string = 'const performAuthTest = func => func;\n' + string;
+  string = string.replace(/const { ensureObject } = require\(.*;/, '');
+  string = 'const ensureObject = func => func;\n' + string;
 
   return requireFromString(string);
 };

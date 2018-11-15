@@ -33,17 +33,19 @@ const runBeforeMiddlewares = (request, z, bundle) => {
 // Wrap legacy auth test triggers to handle array responses.
 // Web builder test triggers can return arrays, which the CLI
 // does not handle. So, if an array is returned from the test
-// trigger, grab the first result and return that. 
-const performAuthTest = testTrigger =>
-  testTrigger.operation.perform(z, bundle).then(response => {
-    if (Array.isArray(response)) {
-      // if legacy test trigger returns an array, return the first element:
-      return response[0];
-    }
-    return response;
-  });
+// trigger, grab the first result and return that.
+const ensureObject = perform => {
+  return (z, bundle) =>
+    perform(z, bundle).then(response => {
+      if (Array.isArray(response) && response.length > 0) {
+        return response[0];
+      }
+      return response;
+    });
+};
 
 module.exports = {
   replaceVars,
-  runBeforeMiddlewares
+  runBeforeMiddlewares,
+  ensureObject
 };
