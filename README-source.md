@@ -870,7 +870,7 @@ For simple HTTP requests that do not require special pre or post processing, you
 This features:
 
 1. Lazy `{{curly}}` replacement.
-2. JSON de-serialization.
+2. JSON and form body de-serialization.
 3. Automatic non-2xx error raising.
 
 ```js
