@@ -4,9 +4,9 @@ const _ = require('lodash');
 const prettier = require('prettier');
 
 const { PACKAGE_VERSION } = require('../constants');
-const { startSpinner, endSpinner } = require('./display');
-const { ensureDir, readFile, writeFile } = require('./files');
+const { copyFile, ensureDir, readFile, writeFile } = require('./files');
 const { snakeCase } = require('./misc');
+const { startSpinner, endSpinner } = require('./display');
 const { getPackageLatestVersion } = require('./npm');
 
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
@@ -21,15 +21,12 @@ const makePlaceholder = replacement => `${REPLACE_DIRECTIVE}${replacement}`;
 const replacePlaceholders = str =>
   str.replace(new RegExp(`"${REPLACE_DIRECTIVE}([^"]+)"`, 'g'), '$1');
 
-const createFile = (content, fileName, dir) => {
-  const destFile = path.join(dir, fileName);
-
-  return ensureDir(path.dirname(destFile))
-    .then(() => writeFile(destFile, content))
-    .then(() => {
-      startSpinner(`Writing ${fileName}`);
-      endSpinner();
-    });
+const createFile = async (content, filename, dir) => {
+  const destFile = path.join(dir, filename);
+  await ensureDir(path.dirname(destFile));
+  await writeFile(destFile, content);
+  startSpinner(`Writing ${filename}`);
+  endSpinner();
 };
 
 const prettifyJs = code => prettier.format(code, { singleQuote: true });
@@ -57,6 +54,34 @@ const renderTemplate = async (
   }
 
   return content;
+};
+
+const getAuthFieldKeys = appDefinition => {
+  const authFields = _.get(appDefinition, 'authentication.inputFields') || [];
+  const fieldKeys = authFields.map(f => f.key);
+
+  const authType = _.get(appDefinition, 'authentication.type');
+  switch (authType) {
+    case 'basic': {
+      fieldKeys.push('username', 'password');
+      break;
+    }
+    case 'oauth1':
+      fieldKeys.push('oauth_access_token');
+      break;
+    case 'oauth2':
+      fieldKeys.push('access_token', 'refresh_token');
+      break;
+    default:
+      fieldKeys.push(
+        'oauth_consumer_key',
+        'oauth_consumer_secret',
+        'oauth_token',
+        'oauth_token_secret'
+      );
+      break;
+  }
+  return fieldKeys;
 };
 
 const renderPackageJson = async (legacyApp, appDefinition) => {
@@ -233,7 +258,7 @@ const renderIndex = async appDefinition => {
   if (appDefinition.legacy && appDefinition.legacy.scriptingSource) {
     importBlock += "\nconst fs = require('fs');\n";
     importBlock +=
-      "const scriptingSource = fs.readFileSync('./scripting.js');\n\n";
+      "const scriptingSource = fs.readFileSync('./scripting.js', { encoding: 'utf8' });\n\n";
     exportBlock.legacy.scriptingSource = makePlaceholder('scriptingSource');
   }
 
@@ -242,6 +267,15 @@ const renderIndex = async appDefinition => {
   )};`;
 
   return prettifyJs(importBlock + '\n' + functionBlock + exportBlock);
+};
+
+const renderEnvironment = appDefinition => {
+  const authFieldKeys = getAuthFieldKeys(appDefinition);
+  const lines = _.map(authFieldKeys, key => {
+    const upperKey = _.snakeCase(key).toUpperCase();
+    return `${upperKey}=YOUR_${upperKey}`;
+  });
+  return lines.join('\n');
 };
 
 const writeStep = async (
@@ -288,6 +322,19 @@ const writeIndex = async (appDefinition, newAppDir) => {
   await createFile(content, 'index.js', newAppDir);
 };
 
+const writeEnvironment = async (appDefinition, newAppDir) => {
+  const content = renderEnvironment(appDefinition);
+  await createFile(content, '.env', newAppDir);
+};
+
+const writeGitIgnore = async newAppDir => {
+  const srcPath = path.join(TEMPLATE_DIR, '/gitignore');
+  const destPath = path.join(newAppDir, '/.gitignore');
+  await copyFile(srcPath, destPath);
+  startSpinner('Writing .gitignore');
+  endSpinner();
+};
+
 const convertApp = async (legacyApp, appDefinition, newAppDir) => {
   const promises = [];
 
@@ -314,8 +361,8 @@ const convertApp = async (legacyApp, appDefinition, newAppDir) => {
 
   promises.push(writePackageJson(legacyApp, appDefinition, newAppDir));
   promises.push(writeIndex(appDefinition, newAppDir));
-  // promises.push(writeEnvironment(appDefinition, newAppDir));
-  // promises.push(writeGitIgnore(newAppDir));
+  promises.push(writeEnvironment(appDefinition, newAppDir));
+  promises.push(writeGitIgnore(newAppDir));
 
   return await Promise.all(promises);
 };
