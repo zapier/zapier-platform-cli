@@ -335,6 +335,15 @@ const writeGitIgnore = async newAppDir => {
   endSpinner();
 };
 
+const writeZapierAppRc = async newAppDir => {
+  const content = JSON.stringify({
+    includeInBuild: ['scripting.js']
+  });
+  await createFile(content, '.zapierapprc', newAppDir);
+  startSpinner('Writing .zapierapprc');
+  endSpinner();
+};
+
 const convertApp = async (legacyApp, appDefinition, newAppDir) => {
   const promises = [];
 
@@ -363,6 +372,7 @@ const convertApp = async (legacyApp, appDefinition, newAppDir) => {
   promises.push(writeIndex(appDefinition, newAppDir));
   promises.push(writeEnvironment(appDefinition, newAppDir));
   promises.push(writeGitIgnore(newAppDir));
+  promises.push(writeZapierAppRc(newAppDir));
 
   return await Promise.all(promises);
 };
