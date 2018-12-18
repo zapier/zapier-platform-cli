@@ -21,6 +21,10 @@ const makePlaceholder = replacement => `${REPLACE_DIRECTIVE}${replacement}`;
 const replacePlaceholders = str =>
   str.replace(new RegExp(`"${REPLACE_DIRECTIVE}([^"]+)"`, 'g'), '$1');
 
+const quote = s => `'${s}'`;
+
+const escapeSpecialChars = s => s.replace(/\n/g, '\\n').replace(/'/g, "\\'");
+
 const createFile = async (content, filename, dir) => {
   const destFile = path.join(dir, filename);
   await ensureDir(path.dirname(destFile));
@@ -96,12 +100,12 @@ const renderPackageJson = async (legacyApp, appDefinition) => {
   );
 
   const templateContext = {
-    NAME: _.kebabCase(legacyApp.general.title),
-    DESCRIPTION: description,
-    APP_ID: legacyApp.general.app_id,
-    CLI_VERSION: PACKAGE_VERSION,
-    CORE_VERSION: appDefinition.platformVersion,
-    RUNNER_VERSION: runnerVersion
+    name: _.kebabCase(legacyApp.general.title),
+    description,
+    appId: legacyApp.general.app_id || 'null',
+    cliVersion: PACKAGE_VERSION,
+    coreVersion: appDefinition.platformVersion,
+    runnerVersion
   };
 
   const templateFile = path.join(TEMPLATE_DIR, '/package.template.json');
@@ -150,6 +154,61 @@ const renderStep = (type, definition) => {
   )};\n`;
 
   return prettifyJs(functionBlock + exportBlock);
+};
+
+// Render authData for test code
+const renderAuthData = appDefinition => {
+  const fieldKeys = getAuthFieldKeys(appDefinition);
+  const lines = _.map(fieldKeys, key => {
+    const upperKey = _.snakeCase(key).toUpperCase();
+    return `${key}: process.env.${upperKey}`;
+  });
+  if (_.isEmpty(lines)) {
+    return `{
+      // TODO: Put your custom auth data here
+    }`;
+  }
+  return '{' + lines.join(',\n') + '}';
+};
+
+const renderDefaultInputData = definition => {
+  const lines = [];
+
+  if (definition.inputFields) {
+    definition.inputFields.forEach(field => {
+      if (field.default || field.required) {
+        const defaultValue = field.default
+          ? quote(escapeSpecialChars(field.default))
+          : null;
+        lines.push(`'${field.key}': ${defaultValue}`);
+      }
+    });
+  }
+
+  if (lines.length === 0) {
+    return '{}';
+  }
+  return `{
+    // TODO: Pulled from input fields' default values. Edit if necessary.
+    ${lines.join(',\n')}
+  }`;
+};
+
+const renderStepTest = async (stepType, definition, appDefinition) => {
+  const templateName = {
+    triggers: 'trigger-test.template.js',
+    creates: 'create-test.template.js',
+    searches: 'search-test.template.js'
+  }[stepType];
+
+  const templateContext = {
+    key: definition.key,
+    authData: renderAuthData(appDefinition),
+    inputData: renderDefaultInputData(definition)
+  };
+
+  const templateFile = path.join(TEMPLATE_DIR, templateName);
+  return renderTemplate(templateFile, templateContext);
 };
 
 const renderAuth = async appDefinition => {
@@ -278,21 +337,23 @@ const renderEnvironment = appDefinition => {
   return lines.join('\n');
 };
 
-const writeStep = async (
+const writeStep = async (stepType, definition, key, newAppDir) => {
+  const filename = `${stepType}/${snakeCase(key)}.js`;
+  const content = await renderStep(stepType, definition);
+  await createFile(content, filename, newAppDir);
+};
+
+const writeStepTest = async (
   stepType,
   definition,
   key,
   appDefinition,
   newAppDir
 ) => {
-  const filename = `${stepType}/${snakeCase(key)}.js`;
-  const content = await renderStep(stepType, definition);
+  const filename = `test/${stepType}/${snakeCase(key)}.js`;
+  const content = await renderStepTest(stepType, definition, appDefinition);
   await createFile(content, filename, newAppDir);
 };
-
-// const writeStepTest = (stepType, definition, key, appDefinition, newAppDir) => {
-// };
-//
 
 const writeAuth = async (appDefinition, newAppDir) => {
   const content = await renderAuth(appDefinition, appDefinition);
@@ -358,12 +419,10 @@ const convertApp = async (
 
   ['triggers', 'creates', 'searches'].forEach(stepType => {
     _.each(appDefinition[stepType], (definition, key) => {
+      promises.push(writeStep(stepType, definition, key, newAppDir));
       promises.push(
-        writeStep(stepType, definition, key, appDefinition, newAppDir)
+        writeStepTest(stepType, definition, key, appDefinition, newAppDir)
       );
-      // promises.push(
-      //   writeStepTest(stepType, definition, key, appDefinition, newAppDir)
-      // );
     });
   });
 

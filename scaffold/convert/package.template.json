@@ -1,7 +1,7 @@
 {
-  "name": "<%= NAME %>",
+  "name": "<%= name %>",
   "version": "1.0.0",
-  "description": "<%= DESCRIPTION %>",
+  "description": "<%= description %>",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive -t 10000"
@@ -11,8 +11,8 @@
     "npm": ">=5.6.0"
   },
   "dependencies": {
-    "zapier-platform-core": "<%= CORE_VERSION %>",
-    "zapier-platform-legacy-scripting-runner": "<%= RUNNER_VERSION %>"
+    "zapier-platform-core": "<%= coreVersion %>",
+    "zapier-platform-legacy-scripting-runner": "<%= runnerVersion %>"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
@@ -20,7 +20,7 @@
   },
   "private": true,
   "zapier": {
-    "convertedFromAppID": <%= APP_ID %>,
-    "convertedByCLIVersion": "<%= CLI_VERSION %>"
+    "convertedFromAppID": <%= appId %>,
+    "convertedByCLIVersion": "<%= cliVersion %>"
   }
 }

@@ -63,9 +63,11 @@ describe('convert', () => {
     [
       '.zapierapprc',
       '.gitignore',
+      '.env',
       'package.json',
       'index.js',
-      'triggers/movie.js'
+      'triggers/movie.js',
+      'test/triggers/movie.js'
     ].forEach(filename => {
       const filepath = path.join(tempAppDir, filename);
       fs.existsSync(filepath).should.be.true();
