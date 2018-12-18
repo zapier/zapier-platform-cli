@@ -6,8 +6,8 @@ const prettier = require('prettier');
 const { PACKAGE_VERSION } = require('../constants');
 const { copyFile, ensureDir, readFile, writeFile } = require('./files');
 const { snakeCase } = require('./misc');
-const { startSpinner, endSpinner } = require('./display');
 const { getPackageLatestVersion } = require('./npm');
+let { startSpinner, endSpinner } = require('./display');
 
 const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 
@@ -57,7 +57,7 @@ const renderTemplate = async (
 };
 
 const getAuthFieldKeys = appDefinition => {
-  const authFields = _.get(appDefinition, 'authentication.inputFields') || [];
+  const authFields = _.get(appDefinition, 'authentication.fields') || [];
   const fieldKeys = authFields.map(f => f.key);
 
   const authType = _.get(appDefinition, 'authentication.type');
@@ -344,7 +344,16 @@ const writeZapierAppRc = async newAppDir => {
   endSpinner();
 };
 
-const convertApp = async (legacyApp, appDefinition, newAppDir) => {
+const convertApp = async (
+  legacyApp,
+  appDefinition,
+  newAppDir,
+  silent = false
+) => {
+  if (silent) {
+    startSpinner = endSpinner = () => null;
+  }
+
   const promises = [];
 
   ['triggers', 'creates', 'searches'].forEach(stepType => {
