@@ -37,11 +37,9 @@ const maybeRegisterApp = async context => {
     context.line(
       "Looks like this is your first push. Let's register your app on Zapier."
     );
-    return await getInput('Enter app title (Ctrl-C to cancel):\n\n  ').then(
-      title => register(context, title, { printWhenDone: false })
-    );
+    const title = await getInput('Enter app title (Ctrl-C to cancel):\n\n  ');
+    await register(context, title, { printWhenDone: false });
   }
-  return null;
 };
 
 module.exports = {
