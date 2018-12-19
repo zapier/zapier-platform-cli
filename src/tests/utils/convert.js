@@ -59,7 +59,7 @@ const setupTempWorkingDir = () => {
   return workdir;
 };
 
-describe.only('convert', () => {
+describe('convert', () => {
   let tempAppDir;
 
   beforeEach(() => {
