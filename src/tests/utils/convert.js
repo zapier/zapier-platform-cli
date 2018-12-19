@@ -8,6 +8,18 @@ require('should');
 const { convertApp } = require('../../utils/convert');
 
 const appDefinition = {
+  beforeRequest: [
+    {
+      args: ['request', 'z', 'bundle'],
+      source: 'return request;'
+    }
+  ],
+  afterResponse: [
+    {
+      args: ['response', 'z', 'bundle'],
+      source: 'return response;'
+    }
+  ],
   authentication: {
     type: 'custom',
     test: {
@@ -47,7 +59,7 @@ const setupTempWorkingDir = () => {
   return workdir;
 };
 
-describe('convert', () => {
+describe.only('convert', () => {
   let tempAppDir;
 
   beforeEach(() => {

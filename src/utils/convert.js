@@ -114,16 +114,16 @@ const renderPackageJson = async (legacyApp, appDefinition) => {
 
 const renderStep = (type, definition) => {
   let exportBlock = _.cloneDeep(definition),
-    functionBlock = '';
+    functionBlock = [];
 
   ['perform', 'performList', 'performSubscribe', 'performUnsubscribe'].forEach(
     funcName => {
       const func = definition.operation[funcName];
       if (func && func.source) {
         const args = func.args || ['z', 'bundle'];
-        functionBlock += `const ${funcName} = (${args.join(', ')}) => {${
-          func.source
-        }};\n\n`;
+        functionBlock.push(
+          `const ${funcName} = (${args.join(', ')}) => {${func.source}};`
+        );
 
         exportBlock.operation[funcName] = makePlaceholder(funcName);
       }
@@ -138,9 +138,9 @@ const renderStep = (type, definition) => {
       if (func && func.source) {
         const args = func.args || ['z', 'bundle'];
         const funcName = `get${_.upperFirst(key)}`;
-        functionBlock += `const ${funcName} = (${args.join(', ')}) => {${
-          func.source
-        }};\n\n`;
+        functionBlock.push(
+          `const ${funcName} = (${args.join(', ')}) => {${func.source}};`
+        );
 
         exportBlock.operation[key][fields.length - 1] = makePlaceholder(
           funcName
@@ -153,7 +153,9 @@ const renderStep = (type, definition) => {
     JSON.stringify(exportBlock)
   )};\n`;
 
-  return prettifyJs(functionBlock + exportBlock);
+  functionBlock = functionBlock.join('\n\n');
+
+  return prettifyJs(functionBlock + '\n\n' + exportBlock);
 };
 
 // Render authData for test code
@@ -213,7 +215,7 @@ const renderStepTest = async (stepType, definition, appDefinition) => {
 
 const renderAuth = async appDefinition => {
   let exportBlock = _.cloneDeep(appDefinition.authentication),
-    functionBlock = '';
+    functionBlock = [];
 
   _.each(
     {
@@ -224,9 +226,9 @@ const renderAuth = async appDefinition => {
       const func = appDefinition.authentication[key];
       if (func && func.source) {
         const args = func.args || ['z', 'bundle'];
-        functionBlock += `const ${funcName} = (${args.join(', ')}) => {${
-          func.source
-        }};\n\n`;
+        functionBlock.push(
+          `const ${funcName} = (${args.join(', ')}) => {${func.source}};`
+        );
 
         exportBlock[key] = makePlaceholder(funcName);
       }
@@ -237,19 +239,21 @@ const renderAuth = async appDefinition => {
     JSON.stringify(exportBlock)
   )};\n`;
 
-  return prettifyJs(functionBlock + exportBlock);
+  functionBlock = functionBlock.join('\n\n');
+
+  return prettifyJs(functionBlock + '\n\n' + exportBlock);
 };
 
 const renderHydrators = async appDefinition => {
   let exportBlock = _.cloneDeep(appDefinition.hydrators),
-    functionBlock = '';
+    functionBlock = [];
 
   _.each(appDefinition.hydrators, (func, funcName) => {
     if (func && func.source) {
       const args = func.args || ['z', 'bundle'];
-      functionBlock += `const ${funcName} = (${args.join(', ')}) => {${
-        func.source
-      }};\n\n`;
+      functionBlock.push(
+        `const ${funcName} = (${args.join(', ')}) => {${func.source}};`
+      );
       exportBlock[funcName] = makePlaceholder(funcName);
     }
   });
@@ -258,16 +262,18 @@ const renderHydrators = async appDefinition => {
     JSON.stringify(exportBlock)
   )};\n`;
 
-  return prettifyJs(functionBlock + exportBlock);
+  functionBlock = functionBlock.join('\n\n');
+
+  return prettifyJs(functionBlock + '\n\n' + exportBlock);
 };
 
 const renderIndex = async appDefinition => {
   let exportBlock = _.cloneDeep(appDefinition),
-    functionBlock = '',
-    importBlock = '';
+    functionBlock = [],
+    importBlock = [];
 
   if (appDefinition.authentication) {
-    importBlock += "const authentication = require('./authentication');\n";
+    importBlock.push("const authentication = require('./authentication');");
     exportBlock.authentication = makePlaceholder('authentication');
   }
 
@@ -282,7 +288,7 @@ const renderIndex = async appDefinition => {
         const importName = _.camelCase(key) + importNameSuffix;
         const filepath = `./${stepType}/${_.snakeCase(key)}.js`;
 
-        importBlock += `const ${importName} = require('${filepath}');\n`;
+        importBlock.push(`const ${importName} = require('${filepath}');`);
 
         delete exportBlock[stepType][key];
         exportBlock[stepType][
@@ -293,7 +299,7 @@ const renderIndex = async appDefinition => {
   );
 
   if (!_.isEmpty(appDefinition.hydrators)) {
-    importBlock += "const hydrators = require('./hydrators');\n";
+    importBlock.push("const hydrators = require('./hydrators');");
     exportBlock.hydrators = makePlaceholder('hydrators');
   }
 
@@ -305,9 +311,9 @@ const renderIndex = async appDefinition => {
       if (func.source) {
         const args = func.args || ['z', 'bundle'];
         const funcName = middlewareType;
-        functionBlock += `const ${funcName} = (${args.join(', ')}) => {${
-          func.source
-        }};\n\n`;
+        functionBlock.push(
+          `const ${funcName} = (${args.join(', ')}) => {${func.source}};`
+        );
 
         exportBlock[middlewareType][0] = makePlaceholder(funcName);
       }
@@ -315,9 +321,10 @@ const renderIndex = async appDefinition => {
   });
 
   if (appDefinition.legacy && appDefinition.legacy.scriptingSource) {
-    importBlock += "\nconst fs = require('fs');\n";
-    importBlock +=
-      "const scriptingSource = fs.readFileSync('./scripting.js', { encoding: 'utf8' });\n\n";
+    importBlock.push("\nconst fs = require('fs');");
+    importBlock.push(
+      "const scriptingSource = fs.readFileSync('./scripting.js', { encoding: 'utf8' });"
+    );
     exportBlock.legacy.scriptingSource = makePlaceholder('scriptingSource');
   }
 
@@ -325,7 +332,12 @@ const renderIndex = async appDefinition => {
     JSON.stringify(exportBlock)
   )};`;
 
-  return prettifyJs(importBlock + '\n' + functionBlock + exportBlock);
+  importBlock = importBlock.join('\n');
+  functionBlock = functionBlock.join('\n\n');
+
+  return prettifyJs(
+    importBlock + '\n\n' + functionBlock + '\n\n' + exportBlock
+  );
 };
 
 const renderEnvironment = appDefinition => {
