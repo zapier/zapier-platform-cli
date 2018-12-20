@@ -355,7 +355,7 @@ const build = async (zipPath, sourceZipPath, wdir) => {
     'node_modules',
     constants.PLATFORM_PACKAGE
   );
-  if (!await fs.exists(corePath)) {
+  if (!fs.existsSync(corePath)) {
     throw new Error(
       'Could not install dependencies properly. Error log:\n' + output.stderr
     );
@@ -383,7 +383,7 @@ const build = async (zipPath, sourceZipPath, wdir) => {
 
   const fileWriteError = await writeFile(
     `${tmpDir}/definition.json`,
-    prettyJSONstringify(rawDefinition.results)
+    prettyJSONstringify(rawDefinition)
   );
 
   if (fileWriteError) {
