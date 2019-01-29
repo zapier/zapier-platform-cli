@@ -680,7 +680,7 @@ This object holds the user's auth details and the data for the API requests.
 
 ### `bundle.meta`
 
-`bundle.meta` is extra information useful for doing advanced behaviors depending on what the user is doing. It has the following options:
+`bundle.meta` contains extra information useful for doing advanced behaviors depending on what the user is doing. It has the following options:
 
 | key | default | description |
 | --- | --- | --- |
@@ -691,7 +691,9 @@ This object holds the user's auth details and the data for the API requests.
 | `limit` | `-1` | The number of items you should fetch. `-1` indicates there's no limit. Build this into your calls insofar as you are able |
 | `page` | `0` | Used in [paging](#paging) to uniquely identify which page of results should be returned |
 
-> `bundle.meta.zap.id` is only available in the `performSubscribe` and `performUnsubscribe` methods.
+> Before version `8.0.0`, the information in `bundle.mta` was different. See [the old docs](https://github.com/zapier/zapier-platform-cli/blob/a058e6d538a75d215d2e0c52b9f49a97218640c4/README.md#bundlemeta) the previous values and [the wiki](https://github.com/zapier/zapier-platform-cli/wiki/bundle.meta-changes) for a mapping of old values to new.
+
+There's also `bundle.meta.zap.id`, which is only available in the `performSubscribe` and `performUnsubscribe` methods.
 
 The user's Zap ID is available during the [subscribe and unsubscribe](https://zapier.github.io/zapier-platform-schema/build/schema.html#basichookoperationschema) methods.
 
