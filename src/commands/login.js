@@ -59,7 +59,7 @@ const login = async (context, firstTime = true) => {
     }
   }
 
-  const { key: deployKey } = goodResponse;
+  const deployKey = goodResponse.key;
 
   await utils.writeFile(
     constants.AUTH_LOCATION,
