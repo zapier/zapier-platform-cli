@@ -2647,11 +2647,6 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 <td>If true, this poll is being used to populate a dynamic dropdown. You only need to return the fields you specified (such as <code>id</code> and <code>name</code>), though returning everything is fine too</td>
 </tr>
 <tr>
-<td><code>isTestingAuth</code></td>
-<td><code>false</code></td>
-<td>If true, the poll was triggered by a user testing their account (via <a href="https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png">clicking &quot;test&quot;</a> or during setup). We use this data to populate the auth label, but it&apos;s mostly used to verify we made a successful authenticated request</td>
-</tr>
-<tr>
 <td><code>isPopulatingDedupe</code></td>
 <td><code>false</code></td>
 <td>If true, the results of this poll will be used to initialize the deduplication list rather than trigger a zap. You should grab as many items as possible. See also: <a href="#dedup">deduplication</a></td>
@@ -2666,6 +2661,11 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
 <td><code>0</code></td>
 <td>Used in <a href="#paging">paging</a> to uniquely identify which page of results should be returned</td>
 </tr>
+<tr>
+<td><code>isTestingAuth</code></td>
+<td><code>false</code></td>
+<td>(legacy property) If true, the poll was triggered by a user testing their account (via <a href="https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png">clicking &quot;test&quot;</a> or during setup). We use this data to populate the auth label, but it&apos;s mostly used to verify we made a successful authenticated request</td>
+</tr>
 </tbody>
 </table>
     </div>
@@ -2677,7 +2677,7 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
-<p>Before version <code>8.0.0</code>, the information in <code>bundle.mta</code> was different. See <a href="https://github.com/zapier/zapier-platform-cli/blob/a058e6d538a75d215d2e0c52b9f49a97218640c4/README.md#bundlemeta">the old docs</a> the previous values and <a href="https://github.com/zapier/zapier-platform-cli/wiki/bundle.meta-changes">the wiki</a> for a mapping of old values to new.</p>
+<p>Before version <code>8.0.0</code>, the information in <code>bundle.meta</code> was different. See <a href="https://github.com/zapier/zapier-platform-cli/blob/a058e6d538a75d215d2e0c52b9f49a97218640c4/README.md#bundlemeta">the old docs</a> for the previous values and <a href="https://github.com/zapier/zapier-platform-cli/wiki/bundle.meta-changes">the wiki</a> for a mapping of old values to new.</p>
 </blockquote><p>There&apos;s also <code>bundle.meta.zap.id</code>, which is only available in the <code>performSubscribe</code> and <code>performUnsubscribe</code> methods.</p><p>The user&apos;s Zap ID is available during the <a href="https://zapier.github.io/zapier-platform-schema/build/schema.html#basichookoperationschema">subscribe and unsubscribe</a> methods.</p><p>For example - you could do:</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
