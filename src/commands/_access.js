@@ -79,6 +79,18 @@ const makeAccess = (command, recordType) => {
               colors.bold(data.invite_url)
           );
         }
+
+        if (
+          data &&
+          data.versions_invite_urls &&
+          Object.keys(data.versions_invite_urls).length
+        ) {
+          context.line();
+          context.line('Or you can invite users to a specific version:\n');
+          _.each(data.versions_invite_urls, (invite_url, _version) => {
+            context.line(`  ${_version}: ${colors.bold(invite_url)}`);
+          });
+        }
       });
     }
   };
