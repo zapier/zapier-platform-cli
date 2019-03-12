@@ -3,6 +3,19 @@
 A quick bugfix to resolve a regression
 
 ### cli
+* (feature) add per app version invite public urls ([#406](https://github.com/zapier/zapier-platform-cli/pull/406))
+
+### schema
+None!
+
+### core
+None!
+
+## 8.0.1
+
+A quick bugfix to resolve a regression
+
+### cli
 None!
 
 ### schema
