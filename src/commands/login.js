@@ -44,8 +44,11 @@ const login = async (context, firstTime = true) => {
       )
     );
   }
-  const username = await utils.getInput(QUESTION_USERNAME);
-  const password = await utils.getInput(QUESTION_PASSWORD, { secret: true });
+  const username =
+    context.argOpts['username'] || (await utils.getInput(QUESTION_USERNAME));
+  const password =
+    context.argOpts['password'] ||
+    (await utils.getInput(QUESTION_PASSWORD, { secret: true }));
 
   let goodResponse;
   try {
@@ -79,12 +82,26 @@ const login = async (context, firstTime = true) => {
   }
 };
 login.argsSpec = [];
-login.argOptsSpec = {};
+login.argOptsSpec = {
+  username: {
+    flag: false,
+    help: 'username'
+  },
+  password: {
+    flag: false,
+    help: 'password'
+  }
+};
 login.help = `Configure your \`${
   constants.AUTH_LOCATION_RAW
 }\` with a deploy key.`;
 login.example = 'zapier login';
 login.docs = `
+
+**Arguments**
+
+${utils.argOptsFragment(login.argOptsSpec)}
+
 This is an interactive prompt which will create, retrieve and store a deploy key.
 
 > This will change the  \`${
