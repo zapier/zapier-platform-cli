@@ -2223,31 +2223,39 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       <p>When your action needs to accept an array of items, you can include an input field with the <code>children</code> attribute. The <code>children</code> attribute accepts a list of <a href="https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema">fields</a> that can be input for each item in this array.  </p>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
-      <pre><code class="lang-js">[
-  {
-    <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;lineItems&apos;</span>,
-    <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
-    <span class="hljs-attr">children</span>: [
+      <pre><code class="lang-js"><span class="hljs-keyword">const</span> App = {
+  <span class="hljs-comment">//...</span>
+  operation: {
+    <span class="hljs-comment">//...</span>
+    inputFields: [
       {
-        <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;lineItemId&apos;</span>,
-        <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;integer&apos;</span>,
-        <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Line Item ID&apos;</span>,
-        <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
-      },
-      {
-        <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;name&apos;</span>,
-        <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>,
-        <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Name&apos;</span>,
-        <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
-      },
-      {
-        <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;description&apos;</span>,
-        <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>,
-        <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Description&apos;</span>
+      <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;lineItems&apos;</span>,
+      <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">children</span>: [
+          {
+          <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;lineItemId&apos;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;integer&apos;</span>,
+          <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Line Item ID&apos;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
+          },
+          {
+          <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;name&apos;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>,
+          <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Name&apos;</span>,
+          <span class="hljs-attr">required</span>: <span class="hljs-literal">true</span>
+          },
+          {
+          <span class="hljs-attr">key</span>: <span class="hljs-string">&apos;description&apos;</span>,
+          <span class="hljs-attr">type</span>: <span class="hljs-string">&apos;string&apos;</span>,
+          <span class="hljs-attr">label</span>: <span class="hljs-string">&apos;Description&apos;</span>
+          }
+        ]
       }
-    ]
+    ],
+    <span class="hljs-comment">// ...</span>
   }
-];
+}
+;
 
 </code></pre>
     </div>

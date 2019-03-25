@@ -1249,31 +1249,39 @@ You can see examples of computed fields in the [OAuth2](#oauth2) or [Session Aut
 When your action needs to accept an array of items, you can include an input field with the `children` attribute. The `children` attribute accepts a list of [fields](https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema) that can be input for each item in this array.  
 
 ```js
-[
-  {
-    key: 'lineItems',
-    required: true,
-    children: [
+const App = {
+  //...
+  operation: {
+    //...
+    inputFields: [
       {
-        key: 'lineItemId',
-        type: 'integer',
-        label: 'Line Item ID',
-        required: true
-      },
-      {
-        key: 'name',
-        type: 'string',
-        label: 'Name',
-        required: true
-      },
-      {
-        key: 'description',
-        type: 'string',
-        label: 'Description'
+      key: 'lineItems',
+      required: true,
+      children: [
+          {
+          key: 'lineItemId',
+          type: 'integer',
+          label: 'Line Item ID',
+          required: true
+          },
+          {
+          key: 'name',
+          type: 'string',
+          label: 'Name',
+          required: true
+          },
+          {
+          key: 'description',
+          type: 'string',
+          label: 'Description'
+          }
+        ]
       }
-    ]
+    ],
+    // ...
   }
-];
+}
+;
 
 ```
 
