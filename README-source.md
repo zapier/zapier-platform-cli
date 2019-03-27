@@ -257,7 +257,7 @@ You can also invite anyone on the internet to your app by observing the URL at t
 
 ### Promoting an App Version
 
-Promotion is how you would share your app with every one of the 1 million+ Zapier users. If this is your first time promoting - you may have to wait for the Zapier team to review and approve your app.
+Promotion is how you would share your app with every one of the 1 million+ Zapier users. If this is your first time promoting - this will start the platform quality assurance process by alerting the Zapier platform team of your intent to make your app public. We'll respond within a few business days.
 
 If this isn't the first time you've promoted your app - you might have users on older versions. You can `zapier migrate` to either move users over (which can be dangerous if you have breaking changes). Or, you can `zapier deprecate` to give users some time to move over themselves.
 
