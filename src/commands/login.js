@@ -7,6 +7,7 @@ const QUESTION_USERNAME =
   'What is your Zapier login email address? (Ctrl-C to cancel)';
 const QUESTION_PASSWORD = 'What is your Zapier login password?';
 const QUESTION_TOTP = 'What is your current 6-digit 2FA code?';
+const DEPLOY_KEY_DASH_URL = `${constants.BASE_ENDPOINT}/developer/dashboard`; // TODO: fix
 
 const login = async (context, firstTime = true) => {
   const checks = [
@@ -44,22 +45,32 @@ const login = async (context, firstTime = true) => {
       )
     );
   }
-  const username = await utils.getInput(QUESTION_USERNAME);
-  const password = await utils.getInput(QUESTION_PASSWORD, { secret: true });
+  let deployKey;
+  const email = await utils.getInput(QUESTION_USERNAME);
+  const isSaml = await utils.isSamlEmail(email);
 
-  let goodResponse;
-  try {
-    goodResponse = await utils.createCredentials(username, password);
-  } catch ({ errText, json: { errors } }) {
-    if (errors[0].startsWith('missing totp_code')) {
-      const code = await utils.getInput(QUESTION_TOTP);
-      goodResponse = await utils.createCredentials(username, password, code);
-    } else {
-      throw new Error(errText);
+  if (isSaml) {
+    context.line(
+      `To generate a deploy key, go to ${DEPLOY_KEY_DASH_URL}, follow the instructions, and then paste the result below.`
+    );
+    deployKey = await utils.getInput('Paste your deploy key:');
+  } else {
+    const password = await utils.getInput(QUESTION_PASSWORD, { secret: true });
+
+    let goodResponse;
+    try {
+      goodResponse = await utils.createCredentials(email, password);
+    } catch ({ errText, json: { errors } }) {
+      if (errors[0].startsWith('missing totp_code')) {
+        const code = await utils.getInput(QUESTION_TOTP);
+        goodResponse = await utils.createCredentials(email, password, code);
+      } else {
+        throw new Error(errText);
+      }
     }
-  }
 
-  const deployKey = goodResponse.key;
+    deployKey = goodResponse.key;
+  }
 
   await utils.writeFile(
     constants.AUTH_LOCATION,
