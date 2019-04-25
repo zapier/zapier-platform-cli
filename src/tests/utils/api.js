@@ -53,4 +53,21 @@ describe('api', () => {
 
     afterEach(mock.restore);
   });
+
+  describe('SAML checking', () => {
+    it('should throw for bad emails', async () => {
+      await api.isSamlEmail('asdf').should.be.rejected();
+    });
+
+    it('should be false for non-saml emails', async () => {
+      const res = await api.isSamlEmail('bruce@wayneenterprises.com');
+      res.should.be.false();
+    });
+
+    // TODO: need an actual saml domain for this to work
+    it.skip('should work for saml emails', async () => {
+      const res = await api.isSamlEmail('bruce@wayneenterprises.com');
+      res.should.be.true();
+    });
+  });
 });
