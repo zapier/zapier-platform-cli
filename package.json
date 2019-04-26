@@ -26,7 +26,7 @@
     "build": "rm -rf lib && babel src -d lib --copy-files",
     "watch": "rm -rf lib && babel --watch src -d lib --copy-files",
     "lint": "eslint zapier.js src",
-    "lint-snippets": "eslint snippets --rule 'no-unused-vars: 0' --ignore-pattern snippets/next.js",
+    "lint-snippets": "eslint snippets --rule 'no-unused-vars: 0' --ignore-pattern snippets/next.js --ignore-pattern 'snippets/dynamic-dropdowns-*'",
     "pretest": "npm run build",
     "test": "NODE_ENV=test mocha -t 50000 --recursive lib/tests && npm run lint && npm run lint-snippets",
     "smoke-test": "npm run build && NODE_ENV=test mocha -t 30000 --recursive lib/smoke-tests",
