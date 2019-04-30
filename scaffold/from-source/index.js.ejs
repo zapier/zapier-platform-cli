@@ -1,0 +1,27 @@
+<%= imports %>
+
+const App = {
+  version: require('./package.json').version,
+  platformVersion: require('zapier-platform-core').version,
+
+  <%= authentication
+    ? 'authentication,' : null %>
+
+  beforeRequest: [],
+
+  afterResponse: [],
+
+  <%= 
+    Object.entries(sources).reduce(
+    (definitions, [serviceType, keys]) => {
+      definitions[serviceType] = keys.reduce((allServices, service) => {
+        allServices[${service}.key] = service;
+        return allServices;
+      }, {});
+
+      return definitions;
+    },
+    {}
+  )
+  %>
+}

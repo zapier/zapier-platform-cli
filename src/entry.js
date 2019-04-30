@@ -1,9 +1,11 @@
 /*eslint no-process-exit: 0 */
 require('babel-polyfill');
 
+const path = require('path');
 const _ = require('lodash');
 const colors = require('colors/safe');
 const updateNotifier = require('update-notifier');
+const scaffoldFrom = require('./utils/json-source');
 
 const {
   DEBUG,
@@ -143,4 +145,13 @@ module.exports = argv => {
     }
     process.exit(1);
   });
+};
+
+module.exports.convert = () => {
+  console.log('Converting app...\n\n');
+  const SOURCE = 'app.example.json';
+  // Just building it right in the CLI project for testing
+  const ROOT = path.join(__dirname, '../', 'delete-me');
+  const app = require(path.join(__dirname, SOURCE));
+  scaffoldFrom(app, ROOT);
 };

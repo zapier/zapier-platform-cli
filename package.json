@@ -35,7 +35,10 @@
     "set-template-versions": "./scripts/set-app-template-versions.js",
     "gen-completions": "./scripts/gen-zsh-completions.js > ./goodies/zsh/_zapier && ./scripts/gen-bash-completions.js > ./goodies/bash/_zapier",
     "test-convert": "./scripts/test-convert.js",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "preconvert": "rm -rf delete-me && zapier init delete-me",
+    "convert": "node -e 'require(\"./src/entry\").convert()'",
+    "debug": "node --inspect-brk=9229 -e 'require(\"./src/entry\").convert()'"
   },
   "dependencies": {
     "adm-zip": "0.4.11",

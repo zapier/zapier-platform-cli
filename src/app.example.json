@@ -1,0 +1,1226 @@
+{
+  "platform_version": "8.0.1",
+  "user_count": 1,
+  "oauth_redirect_uri":
+    "https://zapier.com/dashboard/auth/oauth/return/App7915CLIAPI/",
+  "changelog": null,
+  "core_npm_version": "8.1.0",
+  "is_ui": true,
+  "app_id": 7915,
+  "selected_api": "App7915CLIAPI@1.0.0",
+  "deprecation_date": null,
+  "environment": {
+    "API_BASE": "https://api.github.com",
+    "CLIENT_SECRET": "6557e919e4277b23785c0372419a1a642274040c",
+    "CLIENT_ID": "523b43372fa3443d260f"
+  },
+  "etag": "f62d3cb4bd781dd5487b42d2c3184142",
+  "id": 103889,
+  "definition_override": {
+    "searches": {
+      "find_user": {
+        "operation": {
+          "perform": {
+            "body": { "q": "{{bundle.inputData.email}}" },
+            "url": "{{process.env.API_BASE}}/search/users",
+            "removeMissingValuesFrom": { "params": false },
+            "headers": {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Authorization": "Bearer {{bundle.authData.access_token}}"
+            },
+            "params": { "q": "{{bundle.inputData.email}}" },
+            "method": "POST"
+          },
+          "inputFields": [
+            {
+              "required": true,
+              "list": false,
+              "label": "Email Address",
+              "helpText": "The email address of the user you want to find.",
+              "key": "email",
+              "type": "string",
+              "altersDynamicFields": false
+            }
+          ]
+        },
+        "noun": "User",
+        "display": {
+          "hidden": false,
+          "important": true,
+          "description": "Finds a specific user",
+          "label": "Find User"
+        },
+        "key": "find_user"
+      }
+    },
+    "triggers": {
+      "new_repo": {
+        "operation": {
+          "perform": {
+            "source":
+              "const options = {\n  url: `${process.env.API_BASE}/user/repos`,\n  method: 'GET',\n  headers: {\n    'Accept': 'application/json',\n    'Authorization': `Bearer ${bundle.authData.access_token}`\n  },\n  params: {\n    ...bundle.inputData,\n    page: bundle.meta.page + 1,\n    per_page: 50,\n  }\n};\n\nreturn z.request(options)\n  .then((response) => {\n    response.throwForStatus();\n    const results = z.JSON.parse(response.content);\n\n    // You can do any parsing you need for results here before returning them\n\n    return response.json;\n  });\n"
+          },
+          "sample": {
+            "issues_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/issues{/number}",
+            "deployments_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/deployments",
+            "has_wiki": false,
+            "forks_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/forks",
+            "mirror_url": null,
+            "subscription_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/subscription",
+            "notifications_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/notifications{?since,all,participating}",
+            "collaborators_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/collaborators{/collaborator}",
+            "updated_at": "2018-10-09T17:19:06Z",
+            "private": false,
+            "pulls_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/pulls{/number}",
+            "issue_comment_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/issues/comments{/number}",
+            "labels_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/labels{/name}",
+            "full_name": "IMSGlobal/caliper-central",
+            "owner": {
+              "following_url":
+                "https://api.github.com/users/IMSGlobal/following{/other_user}",
+              "events_url":
+                "https://api.github.com/users/IMSGlobal/events{/privacy}",
+              "organizations_url":
+                "https://api.github.com/users/IMSGlobal/orgs",
+              "url": "https://api.github.com/users/IMSGlobal",
+              "gists_url":
+                "https://api.github.com/users/IMSGlobal/gists{/gist_id}",
+              "html_url": "https://github.com/IMSGlobal",
+              "subscriptions_url":
+                "https://api.github.com/users/IMSGlobal/subscriptions",
+              "avatar_url":
+                "https://avatars1.githubusercontent.com/u/3170527?v=4",
+              "repos_url": "https://api.github.com/users/IMSGlobal/repos",
+              "received_events_url":
+                "https://api.github.com/users/IMSGlobal/received_events",
+              "gravatar_id": "",
+              "starred_url":
+                "https://api.github.com/users/IMSGlobal/starred{/owner}{/repo}",
+              "site_admin": false,
+              "login": "IMSGlobal",
+              "node_id": "MDEyOk9yZ2FuaXphdGlvbjMxNzA1Mjc=",
+              "type": "Organization",
+              "id": 3170527,
+              "followers_url":
+                "https://api.github.com/users/IMSGlobal/followers"
+            },
+            "statuses_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/statuses/{sha}",
+            "id": 45548775,
+            "keys_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/keys{/key_id}",
+            "size": 4,
+            "tags_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/tags",
+            "archived": false,
+            "downloads_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/downloads",
+            "assignees_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/assignees{/user}",
+            "contents_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/contents/{+path}",
+            "description":
+              "Issues of a cross-cutting nature that are of relevance to Caliper documentation and/or the various Caliper Sensor reference implementations and supporting repos.",
+            "git_refs_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/git/refs{/sha}",
+            "has_projects": true,
+            "clone_url": "https://github.com/IMSGlobal/caliper-central.git",
+            "watchers_count": 8,
+            "git_tags_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/git/tags{/sha}",
+            "milestones_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/milestones{/number}",
+            "license": null,
+            "stargazers_count": 8,
+            "hooks_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/hooks",
+            "homepage": "",
+            "fork": false,
+            "commits_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/commits{/sha}",
+            "releases_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/releases{/id}",
+            "issue_events_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/issues/events{/number}",
+            "has_downloads": true,
+            "has_pages": false,
+            "events_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/events",
+            "contributors_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/contributors",
+            "html_url": "https://github.com/IMSGlobal/caliper-central",
+            "compare_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/compare/{base}...{head}",
+            "open_issues": 79,
+            "node_id": "MDEwOlJlcG9zaXRvcnk0NTU0ODc3NQ==",
+            "git_commits_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/git/commits{/sha}",
+            "git_url": "git://github.com/IMSGlobal/caliper-central.git",
+            "svn_url": "https://github.com/IMSGlobal/caliper-central",
+            "merges_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/merges",
+            "has_issues": true,
+            "ssh_url": "git@github.com:IMSGlobal/caliper-central.git",
+            "blobs_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/git/blobs{/sha}",
+            "forks": 0,
+            "permissions": { "admin": false, "push": false, "pull": true },
+            "open_issues_count": 79,
+            "comments_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/comments{/number}",
+            "name": "caliper-central",
+            "language": null,
+            "url": "https://api.github.com/repos/IMSGlobal/caliper-central",
+            "watchers": 8,
+            "archive_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/{archive_format}{/ref}",
+            "pushed_at": "2018-05-21T13:35:31Z",
+            "forks_count": 0,
+            "default_branch": "master",
+            "teams_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/teams",
+            "trees_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/git/trees{/sha}",
+            "languages_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/languages",
+            "branches_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/branches{/branch}",
+            "subscribers_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/subscribers",
+            "created_at": "2015-11-04T15:39:29Z",
+            "stargazers_url":
+              "https://api.github.com/repos/IMSGlobal/caliper-central/stargazers"
+          },
+          "canPaginate": true,
+          "outputFields": [
+            { "key": "issues_url" },
+            { "key": "deployments_url" },
+            { "key": "has_wiki" },
+            { "key": "forks_url" },
+            { "key": "mirror_url" },
+            { "key": "issue_events_url" },
+            { "key": "subscription_url" },
+            { "key": "merges_url" },
+            { "key": "collaborators_url" },
+            { "key": "updated_at" },
+            { "key": "private" },
+            { "key": "pulls_url" },
+            { "key": "issue_comment_url" },
+            { "key": "trees_url" },
+            { "key": "full_name" },
+            { "key": "owner" },
+            { "key": "statuses_url" },
+            { "key": "id" },
+            { "key": "keys_url" },
+            { "key": "size" },
+            { "key": "tags_url" },
+            { "key": "archived" },
+            { "key": "contributors_url" },
+            { "key": "downloads_url" },
+            { "key": "has_downloads" },
+            { "key": "assignees_url" },
+            { "key": "contents_url" },
+            { "key": "has_pages" },
+            { "key": "git_refs_url" },
+            { "key": "has_projects" },
+            { "key": "clone_url" },
+            { "key": "watchers_count" },
+            { "key": "git_tags_url" },
+            { "key": "milestones_url" },
+            { "key": "stargazers_count" },
+            { "key": "permissions" },
+            { "key": "homepage" },
+            { "key": "branches_url" },
+            { "key": "fork" },
+            { "key": "commits_url" },
+            { "key": "releases_url" },
+            { "key": "description" },
+            { "key": "archive_url" },
+            { "key": "labels_url" },
+            { "key": "events_url" },
+            { "key": "comments_url" },
+            { "key": "html_url" },
+            { "key": "forks" },
+            { "key": "compare_url" },
+            { "key": "language" },
+            { "key": "node_id" },
+            { "key": "git_url" },
+            { "key": "svn_url" },
+            { "key": "notifications_url" },
+            { "key": "has_issues" },
+            { "key": "ssh_url" },
+            { "key": "blobs_url" },
+            { "key": "languages_url" },
+            { "key": "hooks_url" },
+            { "key": "open_issues_count" },
+            { "key": "watchers" },
+            { "key": "name" },
+            { "key": "license" },
+            { "key": "url" },
+            { "key": "created_at" },
+            { "key": "pushed_at" },
+            { "key": "forks_count" },
+            { "key": "default_branch" },
+            { "key": "teams_url" },
+            { "key": "open_issues" },
+            { "key": "git_commits_url" },
+            { "key": "subscribers_url" },
+            { "key": "stargazers_url" }
+          ]
+        },
+        "noun": "Repo",
+        "display": {
+          "hidden": false,
+          "important": true,
+          "description": "Triggers when a new repo is added.",
+          "label": "New Repo"
+        },
+        "key": "new_repo"
+      },
+      "pull_request": {
+        "operation": {
+          "perform": {
+            "body": {},
+            "url":
+              "{{process.env.API_BASE}}/repos/{{bundle.inputData.repo_full_name}}/pulls",
+            "removeMissingValuesFrom": { "params": false },
+            "headers": {
+              "Authorization": "Bearer {{bundle.authData.access_token}}",
+              "Accept": "application/json"
+            },
+            "params": {},
+            "method": "GET"
+          },
+          "inputFields": [
+            {
+              "dynamic": "new_repo.full_name.full_name",
+              "required": false,
+              "list": false,
+              "label": "Repo Name",
+              "key": "repo_full_name",
+              "type": "string",
+              "altersDynamicFields": false
+            }
+          ],
+          "sample": {
+            "issues_url":
+              "https://api.github.com/repos/zapier/zapier/issues{/number}",
+            "deployments_url":
+              "https://api.github.com/repos/zapier/zapier/deployments",
+            "has_wiki": true,
+            "forks_url": "https://api.github.com/repos/zapier/zapier/forks",
+            "mirror_url": null,
+            "issue_events_url":
+              "https://api.github.com/repos/zapier/zapier/issues/events{/number}",
+            "subscription_url":
+              "https://api.github.com/repos/zapier/zapier/subscription",
+            "merges_url": "https://api.github.com/repos/zapier/zapier/merges",
+            "subscribers_count": 69,
+            "updated_at": "2018-12-03T13:05:15Z",
+            "svn_url": "https://github.com/zapier/zapier",
+            "pulls_url":
+              "https://api.github.com/repos/zapier/zapier/pulls{/number}",
+            "owner": {
+              "following_url":
+                "https://api.github.com/users/zapier/following{/other_user}",
+              "gists_url":
+                "https://api.github.com/users/zapier/gists{/gist_id}",
+              "organizations_url": "https://api.github.com/users/zapier/orgs",
+              "url": "https://api.github.com/users/zapier",
+              "events_url":
+                "https://api.github.com/users/zapier/events{/privacy}",
+              "html_url": "https://github.com/zapier",
+              "subscriptions_url":
+                "https://api.github.com/users/zapier/subscriptions",
+              "avatar_url":
+                "https://avatars1.githubusercontent.com/u/1261889?v=4",
+              "repos_url": "https://api.github.com/users/zapier/repos",
+              "followers_url": "https://api.github.com/users/zapier/followers",
+              "received_events_url":
+                "https://api.github.com/users/zapier/received_events",
+              "gravatar_id": "",
+              "starred_url":
+                "https://api.github.com/users/zapier/starred{/owner}{/repo}",
+              "site_admin": false,
+              "login": "zapier",
+              "type": "Organization",
+              "id": 1261889,
+              "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyNjE4ODk="
+            },
+            "trees_url":
+              "https://api.github.com/repos/zapier/zapier/git/trees{/sha}",
+            "full_name": "zapier/zapier",
+            "issue_comment_url":
+              "https://api.github.com/repos/zapier/zapier/issues/comments{/number}",
+            "statuses_url":
+              "https://api.github.com/repos/zapier/zapier/statuses/{sha}",
+            "id": 2493599,
+            "keys_url":
+              "https://api.github.com/repos/zapier/zapier/keys{/key_id}",
+            "size": 385437,
+            "tags_url": "https://api.github.com/repos/zapier/zapier/tags",
+            "archived": false,
+            "network_count": 1,
+            "downloads_url":
+              "https://api.github.com/repos/zapier/zapier/downloads",
+            "assignees_url":
+              "https://api.github.com/repos/zapier/zapier/assignees{/user}",
+            "contents_url":
+              "https://api.github.com/repos/zapier/zapier/contents/{+path}",
+            "has_pages": false,
+            "git_refs_url":
+              "https://api.github.com/repos/zapier/zapier/git/refs{/sha}",
+            "open_issues_count": 523,
+            "allow_rebase_merge": false,
+            "allow_merge_commit": true,
+            "has_projects": true,
+            "clone_url": "https://github.com/zapier/zapier.git",
+            "watchers_count": 19,
+            "git_tags_url":
+              "https://api.github.com/repos/zapier/zapier/git/tags{/sha}",
+            "milestones_url":
+              "https://api.github.com/repos/zapier/zapier/milestones{/number}",
+            "stargazers_count": 19,
+            "hooks_url": "https://api.github.com/repos/zapier/zapier/hooks",
+            "homepage": "https://zapier.com/",
+            "branches_url":
+              "https://api.github.com/repos/zapier/zapier/branches{/branch}",
+            "fork": false,
+            "commits_url":
+              "https://api.github.com/repos/zapier/zapier/commits{/sha}",
+            "releases_url":
+              "https://api.github.com/repos/zapier/zapier/releases{/id}",
+            "description":
+              ":zap: Zapier makes you happier by automating the boring stuff with web applications.",
+            "has_downloads": true,
+            "labels_url":
+              "https://api.github.com/repos/zapier/zapier/labels{/name}",
+            "events_url": "https://api.github.com/repos/zapier/zapier/events",
+            "comments_url":
+              "https://api.github.com/repos/zapier/zapier/comments{/number}",
+            "html_url": "https://github.com/zapier/zapier",
+            "compare_url":
+              "https://api.github.com/repos/zapier/zapier/compare/{base}...{head}",
+            "language": "Python",
+            "node_id": "MDEwOlJlcG9zaXRvcnkyNDkzNTk5",
+            "private": true,
+            "forks_count": 1,
+            "notifications_url":
+              "https://api.github.com/repos/zapier/zapier/notifications{?since,all,participating}",
+            "has_issues": true,
+            "ssh_url": "git@github.com:zapier/zapier.git",
+            "blobs_url":
+              "https://api.github.com/repos/zapier/zapier/git/blobs{/sha}",
+            "forks": 1,
+            "permissions": { "admin": true, "push": true, "pull": true },
+            "allow_squash_merge": false,
+            "languages_url":
+              "https://api.github.com/repos/zapier/zapier/languages",
+            "name": "zapier",
+            "license": {
+              "spdx_id": "NOASSERTION",
+              "url": null,
+              "node_id": "MDc6TGljZW5zZTA=",
+              "name": "Other",
+              "key": "other"
+            },
+            "url": "https://api.github.com/repos/zapier/zapier",
+            "watchers": 19,
+            "archive_url":
+              "https://api.github.com/repos/zapier/zapier/{archive_format}{/ref}",
+            "pushed_at": "2018-12-03T13:40:51Z",
+            "collaborators_url":
+              "https://api.github.com/repos/zapier/zapier/collaborators{/collaborator}",
+            "default_branch": "develop",
+            "teams_url": "https://api.github.com/repos/zapier/zapier/teams",
+            "contributors_url":
+              "https://api.github.com/repos/zapier/zapier/contributors",
+            "open_issues": 523,
+            "organization": {
+              "following_url":
+                "https://api.github.com/users/zapier/following{/other_user}",
+              "gists_url":
+                "https://api.github.com/users/zapier/gists{/gist_id}",
+              "organizations_url": "https://api.github.com/users/zapier/orgs",
+              "url": "https://api.github.com/users/zapier",
+              "events_url":
+                "https://api.github.com/users/zapier/events{/privacy}",
+              "html_url": "https://github.com/zapier",
+              "subscriptions_url":
+                "https://api.github.com/users/zapier/subscriptions",
+              "avatar_url":
+                "https://avatars1.githubusercontent.com/u/1261889?v=4",
+              "repos_url": "https://api.github.com/users/zapier/repos",
+              "followers_url": "https://api.github.com/users/zapier/followers",
+              "received_events_url":
+                "https://api.github.com/users/zapier/received_events",
+              "gravatar_id": "",
+              "starred_url":
+                "https://api.github.com/users/zapier/starred{/owner}{/repo}",
+              "site_admin": false,
+              "login": "zapier",
+              "type": "Organization",
+              "id": 1261889,
+              "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyNjE4ODk="
+            },
+            "git_commits_url":
+              "https://api.github.com/repos/zapier/zapier/git/commits{/sha}",
+            "subscribers_url":
+              "https://api.github.com/repos/zapier/zapier/subscribers",
+            "created_at": "2011-10-01T04:53:31Z",
+            "stargazers_url":
+              "https://api.github.com/repos/zapier/zapier/stargazers",
+            "git_url": "git://github.com/zapier/zapier.git"
+          },
+          "outputFields": [
+            { "key": "issues_url" },
+            { "key": "deployments_url" },
+            { "key": "has_wiki" },
+            { "key": "forks_url" },
+            { "key": "mirror_url" },
+            { "key": "issue_events_url" },
+            { "key": "subscription_url" },
+            { "key": "merges_url" },
+            { "key": "subscribers_count" },
+            { "key": "updated_at" },
+            { "key": "private" },
+            { "key": "pulls_url" },
+            { "key": "issue_comment_url" },
+            { "key": "trees_url" },
+            { "key": "full_name" },
+            { "key": "owner" },
+            { "key": "statuses_url" },
+            { "key": "id" },
+            { "key": "keys_url" },
+            { "key": "size" },
+            { "key": "tags_url" },
+            { "key": "archived" },
+            { "key": "network_count" },
+            { "key": "downloads_url" },
+            { "key": "has_downloads" },
+            { "key": "assignees_url" },
+            { "key": "contents_url" },
+            { "key": "has_pages" },
+            { "key": "git_refs_url" },
+            { "key": "forks_count" },
+            { "key": "allow_merge_commit" },
+            { "key": "has_projects" },
+            { "key": "clone_url" },
+            { "key": "watchers_count" },
+            { "key": "git_tags_url" },
+            { "key": "labels_url" },
+            { "key": "stargazers_count" },
+            { "key": "hooks_url" },
+            { "key": "homepage" },
+            { "key": "branches_url" },
+            { "key": "fork" },
+            { "key": "milestones_url" },
+            { "key": "commits_url" },
+            { "key": "releases_url" },
+            { "key": "description" },
+            { "key": "archive_url" },
+            { "key": "collaborators_url" },
+            { "key": "events_url" },
+            { "key": "comments_url" },
+            { "key": "open_issues_count" },
+            { "key": "html_url" },
+            { "key": "compare_url" },
+            { "key": "language" },
+            { "key": "node_id" },
+            { "key": "git_url" },
+            { "key": "svn_url" },
+            { "key": "notifications_url" },
+            { "key": "has_issues" },
+            { "key": "ssh_url" },
+            { "key": "blobs_url" },
+            { "key": "allow_rebase_merge" },
+            { "key": "forks" },
+            { "key": "allow_squash_merge" },
+            { "key": "languages_url" },
+            { "key": "name" },
+            { "key": "license" },
+            { "key": "url" },
+            { "key": "created_at" },
+            { "key": "pushed_at" },
+            { "key": "watchers" },
+            { "key": "default_branch" },
+            { "key": "teams_url" },
+            { "key": "contributors_url" },
+            { "key": "open_issues" },
+            { "key": "organization" },
+            { "key": "git_commits_url" },
+            { "key": "subscribers_url" },
+            { "key": "permissions" },
+            { "key": "stargazers_url" }
+          ]
+        },
+        "noun": "Pull Request",
+        "display": {
+          "hidden": false,
+          "important": true,
+          "description": "Triggers when a new pull request is created",
+          "label": "New Pull Request"
+        },
+        "key": "pull_request"
+      }
+    },
+    "creates": {
+      "add_review_request": {
+        "operation": {
+          "perform": {
+            "source":
+              "const { reviewers } = bundle.inputData;\nconst options = {\n  url: `${process.env.API_BASE}/repos/${bundle.inputData.repo_full_name}/pulls/${bundle.inputData.pr_number}/requested_reviewers`,\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    'Accept': 'application/json',\n    'Authorization': `Bearer ${bundle.authData.access_token}`\n  },\n  body: {\n    reviewers: typeof reviewers === 'string' ? reviewers.split(',') : reviewers\n  },\n};\n\nreturn z.request(options)\n  .then((response) => {\n    response.throwForStatus();\n    const results = z.JSON.parse(response.content);\n\n    // You can do any parsing you need for results here before returning them\n\n    return results;\n  });\n"
+          },
+          "inputFields": [
+            {
+              "list": false,
+              "required": true,
+              "dynamic": "new_repo.full_name.full_name",
+              "label": "Repo",
+              "key": "repo_full_name",
+              "type": "string",
+              "altersDynamicFields": false
+            },
+            {
+              "required": true,
+              "list": false,
+              "label": "Pull Request Number",
+              "helpText": "The identifying number of the pull request",
+              "key": "pr_number",
+              "type": "integer",
+              "altersDynamicFields": false
+            },
+            {
+              "required": true,
+              "list": false,
+              "label": "Requested Reviewer(s)",
+              "helpText":
+                "The GitHub user login name of the reviewer or reviewers you'd like to add to the PR",
+              "key": "reviewers",
+              "type": "string",
+              "altersDynamicFields": false
+            }
+          ],
+          "sample": {
+            "merge_commit_sha": "e1f9af8696526b405acd1d66987bf1a7319a6b5d",
+            "labels": [
+              {
+                "name": "frontend",
+                "default": false,
+                "url":
+                  "https://api.github.com/repos/zapier/zapier/labels/frontend",
+                "node_id": "MDU6TGFiZWwxMDc0MzAy",
+                "id": 1074302,
+                "color": "46caef"
+              },
+              {
+                "name": "lab/production",
+                "default": false,
+                "url":
+                  "https://api.github.com/repos/zapier/zapier/labels/lab/production",
+                "node_id": "MDU6TGFiZWw5OTg3NDExNjU=",
+                "id": 998741165,
+                "color": "ffc43e"
+              },
+              {
+                "name": "team-dev-engagement",
+                "default": false,
+                "url":
+                  "https://api.github.com/repos/zapier/zapier/labels/team-dev-engagement",
+                "node_id": "MDU6TGFiZWw5MTQ2MDYyNDI=",
+                "id": 914606242,
+                "color": "add2fa"
+              }
+            ],
+            "number": 21807,
+            "assignee": null,
+            "closed_at": null,
+            "requested_reviewers": [
+              {
+                "following_url":
+                  "https://api.github.com/users/szchenghuang/following{/other_user}",
+                "events_url":
+                  "https://api.github.com/users/szchenghuang/events{/privacy}",
+                "organizations_url":
+                  "https://api.github.com/users/szchenghuang/orgs",
+                "url": "https://api.github.com/users/szchenghuang",
+                "gists_url":
+                  "https://api.github.com/users/szchenghuang/gists{/gist_id}",
+                "html_url": "https://github.com/szchenghuang",
+                "subscriptions_url":
+                  "https://api.github.com/users/szchenghuang/subscriptions",
+                "avatar_url":
+                  "https://avatars2.githubusercontent.com/u/6309412?v=4",
+                "repos_url": "https://api.github.com/users/szchenghuang/repos",
+                "received_events_url":
+                  "https://api.github.com/users/szchenghuang/received_events",
+                "gravatar_id": "",
+                "starred_url":
+                  "https://api.github.com/users/szchenghuang/starred{/owner}{/repo}",
+                "site_admin": false,
+                "login": "szchenghuang",
+                "node_id": "MDQ6VXNlcjYzMDk0MTI=",
+                "type": "User",
+                "id": 6309412,
+                "followers_url":
+                  "https://api.github.com/users/szchenghuang/followers"
+              },
+              {
+                "following_url":
+                  "https://api.github.com/users/ZaneLyon/following{/other_user}",
+                "events_url":
+                  "https://api.github.com/users/ZaneLyon/events{/privacy}",
+                "organizations_url":
+                  "https://api.github.com/users/ZaneLyon/orgs",
+                "url": "https://api.github.com/users/ZaneLyon",
+                "gists_url":
+                  "https://api.github.com/users/ZaneLyon/gists{/gist_id}",
+                "html_url": "https://github.com/ZaneLyon",
+                "subscriptions_url":
+                  "https://api.github.com/users/ZaneLyon/subscriptions",
+                "avatar_url":
+                  "https://avatars2.githubusercontent.com/u/8919478?v=4",
+                "repos_url": "https://api.github.com/users/ZaneLyon/repos",
+                "received_events_url":
+                  "https://api.github.com/users/ZaneLyon/received_events",
+                "gravatar_id": "",
+                "starred_url":
+                  "https://api.github.com/users/ZaneLyon/starred{/owner}{/repo}",
+                "site_admin": false,
+                "login": "ZaneLyon",
+                "node_id": "MDQ6VXNlcjg5MTk0Nzg=",
+                "type": "User",
+                "id": 8919478,
+                "followers_url":
+                  "https://api.github.com/users/ZaneLyon/followers"
+              }
+            ],
+            "statuses_url":
+              "https://api.github.com/repos/zapier/zapier/statuses/10e655e68f49b11e8156e5ab56c9f54c2149c0c1",
+            "id": 235080905,
+            "title":
+              "[PDE-472] Add tweaks based on new mocks for configuring Godzilla Test\u2026",
+            "merged_at": null,
+            "state": "open",
+            "_links": {
+              "review_comment": {
+                "href":
+                  "https://api.github.com/repos/zapier/zapier/pulls/comments{/number}"
+              },
+              "commits": {
+                "href":
+                  "https://api.github.com/repos/zapier/zapier/pulls/21807/commits"
+              },
+              "self": {
+                "href": "https://api.github.com/repos/zapier/zapier/pulls/21807"
+              },
+              "review_comments": {
+                "href":
+                  "https://api.github.com/repos/zapier/zapier/pulls/21807/comments"
+              },
+              "html": { "href": "https://github.com/zapier/zapier/pull/21807" },
+              "comments": {
+                "href":
+                  "https://api.github.com/repos/zapier/zapier/issues/21807/comments"
+              },
+              "issue": {
+                "href":
+                  "https://api.github.com/repos/zapier/zapier/issues/21807"
+              },
+              "statuses": {
+                "href":
+                  "https://api.github.com/repos/zapier/zapier/statuses/10e655e68f49b11e8156e5ab56c9f54c2149c0c1"
+              }
+            },
+            "diff_url": "https://github.com/zapier/zapier/pull/21807.diff",
+            "issue_url":
+              "https://api.github.com/repos/zapier/zapier/issues/21807",
+            "body":
+              "\u2026 Data\r\n\r\n## Description\r\nUpdates the look and copy of Test Data based on [new mocks](https://zapier.invisionapp.com/boards/SA3RH889XYZ/). The behavior is slightly different in that fields in the Pretty view are disabled and synced with Input Fields.\r\n\r\nThere are also a couple tweaks to the Godzilla TextInput so that our specificity overrides the default TextInput. Disabled styles now match Formatic disabled styles.\r\n\r\n## Type of Changes\r\n<!-- Put an `\u2713` for the applicable box: -->\r\n|   | Type |\r\n| ------------- | ------------- |\r\n| \u2713  | :bug: Bug fix  |\r\n| \u2713  | :hammer: Refactoring  |\r\n\r\n\r\n## Related Issue\r\n\r\nhttps://zapierorg.atlassian.net/browse/PDE-472\r\n\r\n## Before / Current Behavior\r\n\r\nTest Data pretty fields worked like regular ol' KeyValues.\r\n\r\n## After / New Behavior\r\n\r\n<a href=\"https://cl.ly/ffd5217cd16d\" target=\"_blank\"><img src=\"https://s3.amazonaws.com/zapier-cloudapp/items/0r0O081s1K2r0T06340K/Screen%20Recording%202018-11-30%20at%2012.52%20PM.gif\" style=\"display: block;height: auto;width: 100%;\"/></a>\r\n\r\nNo Input Fields:\r\n![](https://zappy.zapier.com/25EC1F69-E8B8-474E-ACDB-B4ECA2F30FE9.png)\r\n\r\n## Testing Steps / QA Criteria\r\n\r\n1. Go to a Godzilla App.\r\n2. Make sure you have at least one input field\r\n3. Go to API Config\r\n4. Go to Test Request. There should only be request fields for the input fields you have defined.\r\n\r\n\r\n## TODOs\r\n\r\n* [ ] Add tests\r\n* [ ] Test on Review Lab and identify any regressions\r\n* [ ] Address any potential security concerns\r\n* [ ] Add the `needs-review` label (and `backend`/`frontend` or other labels as necessary).\r\n<!-- Front-end todos -->\r\n* [ ] Run an a11y audit using the [aXe Chrome extension](https://chrome.google.com/webstore/detail/axe/lhdoppojpmngadmnindnejefpokejbdd)\r\n* [ ] Test in [supported browsers](https://zapier.quip.com/Cv3YAivNbIj4#EeDACAvCsPL) and [at different screen sizes](https://zapier.quip.com/Cv3YAivNbIj4#EeDACAXkNBe)\r\n",
+            "head": {
+              "repo": {
+                "issues_url":
+                  "https://api.github.com/repos/zapier/zapier/issues{/number}",
+                "deployments_url":
+                  "https://api.github.com/repos/zapier/zapier/deployments",
+                "has_wiki": true,
+                "forks_url": "https://api.github.com/repos/zapier/zapier/forks",
+                "mirror_url": null,
+                "subscription_url":
+                  "https://api.github.com/repos/zapier/zapier/subscription",
+                "notifications_url":
+                  "https://api.github.com/repos/zapier/zapier/notifications{?since,all,participating}",
+                "collaborators_url":
+                  "https://api.github.com/repos/zapier/zapier/collaborators{/collaborator}",
+                "updated_at": "2018-12-03T19:08:10Z",
+                "private": true,
+                "pulls_url":
+                  "https://api.github.com/repos/zapier/zapier/pulls{/number}",
+                "issue_comment_url":
+                  "https://api.github.com/repos/zapier/zapier/issues/comments{/number}",
+                "labels_url":
+                  "https://api.github.com/repos/zapier/zapier/labels{/name}",
+                "full_name": "zapier/zapier",
+                "owner": {
+                  "following_url":
+                    "https://api.github.com/users/zapier/following{/other_user}",
+                  "events_url":
+                    "https://api.github.com/users/zapier/events{/privacy}",
+                  "organizations_url":
+                    "https://api.github.com/users/zapier/orgs",
+                  "url": "https://api.github.com/users/zapier",
+                  "gists_url":
+                    "https://api.github.com/users/zapier/gists{/gist_id}",
+                  "html_url": "https://github.com/zapier",
+                  "subscriptions_url":
+                    "https://api.github.com/users/zapier/subscriptions",
+                  "avatar_url":
+                    "https://avatars1.githubusercontent.com/u/1261889?v=4",
+                  "repos_url": "https://api.github.com/users/zapier/repos",
+                  "received_events_url":
+                    "https://api.github.com/users/zapier/received_events",
+                  "gravatar_id": "",
+                  "starred_url":
+                    "https://api.github.com/users/zapier/starred{/owner}{/repo}",
+                  "site_admin": false,
+                  "login": "zapier",
+                  "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyNjE4ODk=",
+                  "type": "Organization",
+                  "id": 1261889,
+                  "followers_url":
+                    "https://api.github.com/users/zapier/followers"
+                },
+                "statuses_url":
+                  "https://api.github.com/repos/zapier/zapier/statuses/{sha}",
+                "id": 2493599,
+                "keys_url":
+                  "https://api.github.com/repos/zapier/zapier/keys{/key_id}",
+                "size": 385508,
+                "tags_url": "https://api.github.com/repos/zapier/zapier/tags",
+                "archived": false,
+                "downloads_url":
+                  "https://api.github.com/repos/zapier/zapier/downloads",
+                "assignees_url":
+                  "https://api.github.com/repos/zapier/zapier/assignees{/user}",
+                "contents_url":
+                  "https://api.github.com/repos/zapier/zapier/contents/{+path}",
+                "description":
+                  ":zap: Zapier makes you happier by automating the boring stuff with web applications.",
+                "git_refs_url":
+                  "https://api.github.com/repos/zapier/zapier/git/refs{/sha}",
+                "has_projects": true,
+                "clone_url": "https://github.com/zapier/zapier.git",
+                "watchers_count": 19,
+                "git_tags_url":
+                  "https://api.github.com/repos/zapier/zapier/git/tags{/sha}",
+                "milestones_url":
+                  "https://api.github.com/repos/zapier/zapier/milestones{/number}",
+                "license": {
+                  "spdx_id": "NOASSERTION",
+                  "url": null,
+                  "node_id": "MDc6TGljZW5zZTA=",
+                  "name": "Other",
+                  "key": "other"
+                },
+                "stargazers_count": 19,
+                "homepage": "https://zapier.com/",
+                "fork": false,
+                "commits_url":
+                  "https://api.github.com/repos/zapier/zapier/commits{/sha}",
+                "releases_url":
+                  "https://api.github.com/repos/zapier/zapier/releases{/id}",
+                "issue_events_url":
+                  "https://api.github.com/repos/zapier/zapier/issues/events{/number}",
+                "has_downloads": true,
+                "has_pages": false,
+                "events_url":
+                  "https://api.github.com/repos/zapier/zapier/events",
+                "contributors_url":
+                  "https://api.github.com/repos/zapier/zapier/contributors",
+                "html_url": "https://github.com/zapier/zapier",
+                "compare_url":
+                  "https://api.github.com/repos/zapier/zapier/compare/{base}...{head}",
+                "open_issues": 515,
+                "node_id": "MDEwOlJlcG9zaXRvcnkyNDkzNTk5",
+                "git_commits_url":
+                  "https://api.github.com/repos/zapier/zapier/git/commits{/sha}",
+                "git_url": "git://github.com/zapier/zapier.git",
+                "svn_url": "https://github.com/zapier/zapier",
+                "merges_url":
+                  "https://api.github.com/repos/zapier/zapier/merges",
+                "has_issues": true,
+                "ssh_url": "git@github.com:zapier/zapier.git",
+                "blobs_url":
+                  "https://api.github.com/repos/zapier/zapier/git/blobs{/sha}",
+                "forks": 1,
+                "hooks_url": "https://api.github.com/repos/zapier/zapier/hooks",
+                "open_issues_count": 515,
+                "comments_url":
+                  "https://api.github.com/repos/zapier/zapier/comments{/number}",
+                "name": "zapier",
+                "language": "Python",
+                "url": "https://api.github.com/repos/zapier/zapier",
+                "watchers": 19,
+                "archive_url":
+                  "https://api.github.com/repos/zapier/zapier/{archive_format}{/ref}",
+                "pushed_at": "2018-12-03T19:31:03Z",
+                "forks_count": 1,
+                "default_branch": "develop",
+                "teams_url": "https://api.github.com/repos/zapier/zapier/teams",
+                "trees_url":
+                  "https://api.github.com/repos/zapier/zapier/git/trees{/sha}",
+                "languages_url":
+                  "https://api.github.com/repos/zapier/zapier/languages",
+                "branches_url":
+                  "https://api.github.com/repos/zapier/zapier/branches{/branch}",
+                "subscribers_url":
+                  "https://api.github.com/repos/zapier/zapier/subscribers",
+                "created_at": "2011-10-01T04:53:31Z",
+                "stargazers_url":
+                  "https://api.github.com/repos/zapier/zapier/stargazers"
+              },
+              "sha": "10e655e68f49b11e8156e5ab56c9f54c2149c0c1",
+              "ref": "fix/godzilla-test-data",
+              "user": {
+                "following_url":
+                  "https://api.github.com/users/zapier/following{/other_user}",
+                "events_url":
+                  "https://api.github.com/users/zapier/events{/privacy}",
+                "organizations_url": "https://api.github.com/users/zapier/orgs",
+                "url": "https://api.github.com/users/zapier",
+                "gists_url":
+                  "https://api.github.com/users/zapier/gists{/gist_id}",
+                "html_url": "https://github.com/zapier",
+                "subscriptions_url":
+                  "https://api.github.com/users/zapier/subscriptions",
+                "avatar_url":
+                  "https://avatars1.githubusercontent.com/u/1261889?v=4",
+                "repos_url": "https://api.github.com/users/zapier/repos",
+                "received_events_url":
+                  "https://api.github.com/users/zapier/received_events",
+                "gravatar_id": "",
+                "starred_url":
+                  "https://api.github.com/users/zapier/starred{/owner}{/repo}",
+                "site_admin": false,
+                "login": "zapier",
+                "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyNjE4ODk=",
+                "type": "Organization",
+                "id": 1261889,
+                "followers_url": "https://api.github.com/users/zapier/followers"
+              },
+              "label": "zapier:fix/godzilla-test-data"
+            },
+            "commits_url":
+              "https://api.github.com/repos/zapier/zapier/pulls/21807/commits",
+            "author_association": "CONTRIBUTOR",
+            "comments_url":
+              "https://api.github.com/repos/zapier/zapier/issues/21807/comments",
+            "html_url": "https://github.com/zapier/zapier/pull/21807",
+            "updated_at": "2018-12-03T19:49:17Z",
+            "node_id": "MDExOlB1bGxSZXF1ZXN0MjM1MDgwOTA1",
+            "user": {
+              "following_url":
+                "https://api.github.com/users/stevelikesmusic/following{/other_user}",
+              "events_url":
+                "https://api.github.com/users/stevelikesmusic/events{/privacy}",
+              "organizations_url":
+                "https://api.github.com/users/stevelikesmusic/orgs",
+              "url": "https://api.github.com/users/stevelikesmusic",
+              "gists_url":
+                "https://api.github.com/users/stevelikesmusic/gists{/gist_id}",
+              "html_url": "https://github.com/stevelikesmusic",
+              "subscriptions_url":
+                "https://api.github.com/users/stevelikesmusic/subscriptions",
+              "avatar_url":
+                "https://avatars1.githubusercontent.com/u/8683779?v=4",
+              "repos_url": "https://api.github.com/users/stevelikesmusic/repos",
+              "received_events_url":
+                "https://api.github.com/users/stevelikesmusic/received_events",
+              "gravatar_id": "",
+              "starred_url":
+                "https://api.github.com/users/stevelikesmusic/starred{/owner}{/repo}",
+              "site_admin": false,
+              "login": "stevelikesmusic",
+              "node_id": "MDQ6VXNlcjg2ODM3Nzk=",
+              "type": "User",
+              "id": 8683779,
+              "followers_url":
+                "https://api.github.com/users/stevelikesmusic/followers"
+            },
+            "milestone": null,
+            "requested_teams": [],
+            "locked": false,
+            "url": "https://api.github.com/repos/zapier/zapier/pulls/21807",
+            "created_at": "2018-11-30T18:47:42Z",
+            "review_comments_url":
+              "https://api.github.com/repos/zapier/zapier/pulls/21807/comments",
+            "assignees": [],
+            "review_comment_url":
+              "https://api.github.com/repos/zapier/zapier/pulls/comments{/number}",
+            "base": {
+              "repo": {
+                "issues_url":
+                  "https://api.github.com/repos/zapier/zapier/issues{/number}",
+                "deployments_url":
+                  "https://api.github.com/repos/zapier/zapier/deployments",
+                "has_wiki": true,
+                "forks_url": "https://api.github.com/repos/zapier/zapier/forks",
+                "mirror_url": null,
+                "subscription_url":
+                  "https://api.github.com/repos/zapier/zapier/subscription",
+                "notifications_url":
+                  "https://api.github.com/repos/zapier/zapier/notifications{?since,all,participating}",
+                "collaborators_url":
+                  "https://api.github.com/repos/zapier/zapier/collaborators{/collaborator}",
+                "updated_at": "2018-12-03T19:08:10Z",
+                "private": true,
+                "pulls_url":
+                  "https://api.github.com/repos/zapier/zapier/pulls{/number}",
+                "issue_comment_url":
+                  "https://api.github.com/repos/zapier/zapier/issues/comments{/number}",
+                "labels_url":
+                  "https://api.github.com/repos/zapier/zapier/labels{/name}",
+                "full_name": "zapier/zapier",
+                "owner": {
+                  "following_url":
+                    "https://api.github.com/users/zapier/following{/other_user}",
+                  "events_url":
+                    "https://api.github.com/users/zapier/events{/privacy}",
+                  "organizations_url":
+                    "https://api.github.com/users/zapier/orgs",
+                  "url": "https://api.github.com/users/zapier",
+                  "gists_url":
+                    "https://api.github.com/users/zapier/gists{/gist_id}",
+                  "html_url": "https://github.com/zapier",
+                  "subscriptions_url":
+                    "https://api.github.com/users/zapier/subscriptions",
+                  "avatar_url":
+                    "https://avatars1.githubusercontent.com/u/1261889?v=4",
+                  "repos_url": "https://api.github.com/users/zapier/repos",
+                  "received_events_url":
+                    "https://api.github.com/users/zapier/received_events",
+                  "gravatar_id": "",
+                  "starred_url":
+                    "https://api.github.com/users/zapier/starred{/owner}{/repo}",
+                  "site_admin": false,
+                  "login": "zapier",
+                  "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyNjE4ODk=",
+                  "type": "Organization",
+                  "id": 1261889,
+                  "followers_url":
+                    "https://api.github.com/users/zapier/followers"
+                },
+                "statuses_url":
+                  "https://api.github.com/repos/zapier/zapier/statuses/{sha}",
+                "id": 2493599,
+                "keys_url":
+                  "https://api.github.com/repos/zapier/zapier/keys{/key_id}",
+                "size": 385508,
+                "tags_url": "https://api.github.com/repos/zapier/zapier/tags",
+                "archived": false,
+                "downloads_url":
+                  "https://api.github.com/repos/zapier/zapier/downloads",
+                "assignees_url":
+                  "https://api.github.com/repos/zapier/zapier/assignees{/user}",
+                "contents_url":
+                  "https://api.github.com/repos/zapier/zapier/contents/{+path}",
+                "description":
+                  ":zap: Zapier makes you happier by automating the boring stuff with web applications.",
+                "git_refs_url":
+                  "https://api.github.com/repos/zapier/zapier/git/refs{/sha}",
+                "has_projects": true,
+                "clone_url": "https://github.com/zapier/zapier.git",
+                "watchers_count": 19,
+                "git_tags_url":
+                  "https://api.github.com/repos/zapier/zapier/git/tags{/sha}",
+                "milestones_url":
+                  "https://api.github.com/repos/zapier/zapier/milestones{/number}",
+                "license": {
+                  "spdx_id": "NOASSERTION",
+                  "url": null,
+                  "node_id": "MDc6TGljZW5zZTA=",
+                  "name": "Other",
+                  "key": "other"
+                },
+                "stargazers_count": 19,
+                "homepage": "https://zapier.com/",
+                "fork": false,
+                "commits_url":
+                  "https://api.github.com/repos/zapier/zapier/commits{/sha}",
+                "releases_url":
+                  "https://api.github.com/repos/zapier/zapier/releases{/id}",
+                "issue_events_url":
+                  "https://api.github.com/repos/zapier/zapier/issues/events{/number}",
+                "has_downloads": true,
+                "has_pages": false,
+                "events_url":
+                  "https://api.github.com/repos/zapier/zapier/events",
+                "contributors_url":
+                  "https://api.github.com/repos/zapier/zapier/contributors",
+                "html_url": "https://github.com/zapier/zapier",
+                "compare_url":
+                  "https://api.github.com/repos/zapier/zapier/compare/{base}...{head}",
+                "open_issues": 515,
+                "node_id": "MDEwOlJlcG9zaXRvcnkyNDkzNTk5",
+                "git_commits_url":
+                  "https://api.github.com/repos/zapier/zapier/git/commits{/sha}",
+                "git_url": "git://github.com/zapier/zapier.git",
+                "svn_url": "https://github.com/zapier/zapier",
+                "merges_url":
+                  "https://api.github.com/repos/zapier/zapier/merges",
+                "has_issues": true,
+                "ssh_url": "git@github.com:zapier/zapier.git",
+                "blobs_url":
+                  "https://api.github.com/repos/zapier/zapier/git/blobs{/sha}",
+                "forks": 1,
+                "hooks_url": "https://api.github.com/repos/zapier/zapier/hooks",
+                "open_issues_count": 515,
+                "comments_url":
+                  "https://api.github.com/repos/zapier/zapier/comments{/number}",
+                "name": "zapier",
+                "language": "Python",
+                "url": "https://api.github.com/repos/zapier/zapier",
+                "watchers": 19,
+                "archive_url":
+                  "https://api.github.com/repos/zapier/zapier/{archive_format}{/ref}",
+                "pushed_at": "2018-12-03T19:31:03Z",
+                "forks_count": 1,
+                "default_branch": "develop",
+                "teams_url": "https://api.github.com/repos/zapier/zapier/teams",
+                "trees_url":
+                  "https://api.github.com/repos/zapier/zapier/git/trees{/sha}",
+                "languages_url":
+                  "https://api.github.com/repos/zapier/zapier/languages",
+                "branches_url":
+                  "https://api.github.com/repos/zapier/zapier/branches{/branch}",
+                "subscribers_url":
+                  "https://api.github.com/repos/zapier/zapier/subscribers",
+                "created_at": "2011-10-01T04:53:31Z",
+                "stargazers_url":
+                  "https://api.github.com/repos/zapier/zapier/stargazers"
+              },
+              "sha": "9d160fee194b892be6c9d529d541e91fa90d60eb",
+              "ref": "develop",
+              "user": {
+                "following_url":
+                  "https://api.github.com/users/zapier/following{/other_user}",
+                "events_url":
+                  "https://api.github.com/users/zapier/events{/privacy}",
+                "organizations_url": "https://api.github.com/users/zapier/orgs",
+                "url": "https://api.github.com/users/zapier",
+                "gists_url":
+                  "https://api.github.com/users/zapier/gists{/gist_id}",
+                "html_url": "https://github.com/zapier",
+                "subscriptions_url":
+                  "https://api.github.com/users/zapier/subscriptions",
+                "avatar_url":
+                  "https://avatars1.githubusercontent.com/u/1261889?v=4",
+                "repos_url": "https://api.github.com/users/zapier/repos",
+                "received_events_url":
+                  "https://api.github.com/users/zapier/received_events",
+                "gravatar_id": "",
+                "starred_url":
+                  "https://api.github.com/users/zapier/starred{/owner}{/repo}",
+                "site_admin": false,
+                "login": "zapier",
+                "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyNjE4ODk=",
+                "type": "Organization",
+                "id": 1261889,
+                "followers_url": "https://api.github.com/users/zapier/followers"
+              },
+              "label": "zapier:develop"
+            },
+            "patch_url": "https://github.com/zapier/zapier/pull/21807.patch"
+          },
+          "outputFields": []
+        },
+        "noun": "Review Request",
+        "display": {
+          "hidden": false,
+          "important": true,
+          "description": "Requests a user to be review a given PR",
+          "label": "Request PR Reviewer"
+        },
+        "key": "add_review_request"
+      }
+    },
+    "authentication": {
+      "test": {
+        "body": {},
+        "url": "https://api.github.com/user",
+        "removeMissingValuesFrom": { "params": false },
+        "headers": {
+          "X-SUBODOMAIN": "{{bundle.authData.subodomain}}",
+          "Authorization": "Bearer {{bundle.authData.access_token}}"
+        },
+        "params": { "subodomain": "{{bundle.authData.subodomain}}" },
+        "method": "GET"
+      },
+      "fields": [],
+      "oauth2Config": {
+        "authorizeUrl": {
+          "url": "https://github.com/login/oauth/authorize",
+          "params": {
+            "state": "{{bundle.inputData.state}}",
+            "redirect_uri": "{{bundle.inputData.redirect_uri}}",
+            "response_type": "code",
+            "client_id": "{{process.env.CLIENT_ID}}"
+          },
+          "method": "GET"
+        },
+        "refreshAccessToken": {
+          "body": {
+            "grant_type": "refresh_token",
+            "refresh_token": "{{bundle.authData.refresh_token}}"
+          },
+          "url": "",
+          "removeMissingValuesFrom": { "params": false },
+          "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "accept": "application/json"
+          },
+          "params": {},
+          "method": "POST"
+        },
+        "scope": "user,public_repo,repo,notifications,gist",
+        "autoRefresh": false,
+        "getAccessToken": {
+          "body": {
+            "code": "{{bundle.inputData.code}}",
+            "client_secret": "{{process.env.CLIENT_SECRET}}",
+            "redirect_uri": "{{bundle.inputData.redirect_uri}}",
+            "client_id": "{{process.env.CLIENT_ID}}",
+            "grant_type": "authorization_code"
+          },
+          "url": "https://github.com/login/oauth/access_token",
+          "removeMissingValuesFrom": { "params": false },
+          "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "accept": "application/json"
+          },
+          "params": {},
+          "method": "POST"
+        }
+      },
+      "type": "oauth2",
+      "connectionLabel": "{{login}}"
+    },
+    "version": "1.0.0",
+    "platformVersion": "8.0.1"
+  },
+  "version": "1.0.0",
+  "deployment": "non-production",
+  "date": "2018-12-03T02:50:23+00:00",
+  "invite_url":
+    "https://zapier.com/developer/public-invite/7915/103889/2df919a60c1fc774c777c0ba4ec75cd5/"
+}
