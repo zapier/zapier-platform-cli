@@ -5,7 +5,7 @@ const path = require('path');
 
 require('should');
 
-const { convertApp } = require('../../utils/convert');
+const { convertLegacyApp } = require('../../utils/convert');
 
 const appDefinition = {
   beforeRequest: [
@@ -71,7 +71,7 @@ describe('convert', () => {
   });
 
   it('should create separate files', async () => {
-    await convertApp(legacyApp, appDefinition, tempAppDir, true);
+    await convertLegacyApp(legacyApp, appDefinition, tempAppDir, true);
     [
       '.zapierapprc',
       '.gitignore',

@@ -417,7 +417,7 @@ const writeZapierAppRc = async newAppDir => {
   endSpinner();
 };
 
-const convertApp = async (
+const convertLegacyApp = async (
   legacyApp,
   appDefinition,
   newAppDir,
@@ -457,7 +457,12 @@ const convertApp = async (
   return await Promise.all(promises);
 };
 
+const convertVisualApp = async (appInfo, versionInfo, tempAppDir) => {
+  console.log('converted a godzilla app!');
+};
+
 module.exports = {
   renderTemplate,
-  convertApp
+  convertLegacyApp,
+  convertVisualApp
 };
