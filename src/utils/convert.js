@@ -35,6 +35,7 @@ const createFile = async (content, filename, dir) => {
 };
 
 const prettifyJs = code => prettier.format(code, { singleQuote: true });
+const prettifyJSON = origString => JSON.stringify(origString, null, 2);
 
 const renderTemplate = async (
   templateFile,
@@ -50,7 +51,7 @@ const renderTemplate = async (
   if (prettify) {
     const ext = path.extname(templateFile).toLowerCase();
     const prettifier = {
-      '.json': origString => JSON.stringify(JSON.parse(origString), null, 2),
+      '.json': origString => prettifyJSON(JSON.parse(origString)),
       '.js': prettifyJs
     }[ext];
     if (prettifier) {
@@ -136,7 +137,7 @@ const renderVisualPackageJson = (appInfo, appDefinition) => {
     private: true
   };
 
-  return JSON.stringify(pkg, null, 2);
+  return prettifyJSON(pkg);
 };
 
 const renderStep = (type, definition) => {
@@ -437,9 +438,18 @@ const writeGitIgnore = async newAppDir => {
   endSpinner();
 };
 
-const writeZapierAppRc = async newAppDir => {
-  const content = JSON.stringify({
+const writeLegacyZapierAppRc = async newAppDir => {
+  const content = prettifyJSON({
     includeInBuild: ['scripting.js']
+  });
+  await createFile(content, '.zapierapprc', newAppDir);
+  startSpinner('Writing .zapierapprc');
+  endSpinner();
+};
+
+const writeVisualZapierAppRc = async (newAppDir, id) => {
+  const content = prettifyJSON({
+    id
   });
   await createFile(content, '.zapierapprc', newAppDir);
   startSpinner('Writing .zapierapprc');
@@ -481,7 +491,11 @@ const convertApp = async (appInfo, appDefinition, newAppDir, opts = {}) => {
   promises.push(writeIndex(appDefinition, newAppDir));
   promises.push(writeEnvironment(appDefinition, newAppDir));
   promises.push(writeGitIgnore(newAppDir));
-  promises.push(writeZapierAppRc(newAppDir));
+  promises.push(
+    legacy
+      ? writeLegacyZapierAppRc(newAppDir)
+      : writeVisualZapierAppRc(newAppDir, appDefinition.app_id)
+  );
 
   return await Promise.all(promises);
 };
@@ -513,6 +527,5 @@ const convertLegacyApp = async (
 module.exports = {
   renderTemplate,
   convertLegacyApp,
-  convertVisualApp,
-  convertApp
+  convertVisualApp
 };
