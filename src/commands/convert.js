@@ -2,7 +2,7 @@ const utils = require('../utils');
 const constants = require('../constants');
 
 const convert = (context, appid, location) => {
-  context.line('Welcome to the Zapier Platform! :-D');
+  context.line('Welcome to the Zapier Platform!');
   context.line();
   context.line(constants.ART);
   context.line();
@@ -18,26 +18,66 @@ const convert = (context, appid, location) => {
   }
 
   const createApp = async tempAppDir => {
-    const legacyDumpUrl = `${
-      constants.BASE_ENDPOINT
-    }/api/developer/v1/apps/${appid}/dump`;
-    const cliDumpUrl = `${
-      constants.BASE_ENDPOINT
-    }/api/developer/v1/apps/${appid}/cli-dump`;
+    if (context.argOpts.version) {
+      // has info about the app, such as title
+      const appInfoUrl = `${
+        constants.BASE_ENDPOINT
+      }/api/platform/cli/apps/${appid}`;
+      // has a CLI version of the actual app implementation
+      const versionInfoUrl = `${
+        constants.BASE_ENDPOINT
+      }/api/platform/cli/apps/${appid}/versions/${context.argOpts.version}`;
 
-    utils.startSpinner('Downloading app from Zapier');
+      utils.startSpinner('Downloading app from Zapier');
+      let [appInfo, versionInfo] = [];
+      try {
+        [appInfo, versionInfo] = await Promise.all([
+          utils.callAPI(null, { url: appInfoUrl }, true),
+          utils.callAPI(null, { url: versionInfoUrl }, true)
+        ]);
+      } catch (e) {
+        if (e.status === 404) {
+          throw new Error(
+            `Visual Builder app ${appid} @ ${
+              context.argOpts.version
+            } not found. If you want to convert a Legacy Web Builder app, don't pass a \`--version\` option.`
+          );
+        }
+      }
+      utils.endSpinner();
+      return utils.convertVisualApp(appInfo, versionInfo, tempAppDir);
+    } else {
+      // has info about the app, such as title
+      const legacyDumpUrl = `${
+        constants.BASE_ENDPOINT
+      }/api/developer/v1/apps/${appid}/dump`;
+      // has a CLI version of the actual app implementation
+      const cliDumpUrl = `${
+        constants.BASE_ENDPOINT
+      }/api/developer/v1/apps/${appid}/cli-dump`;
 
-    const [legacyApp, appDefinition] = await Promise.all([
-      utils.callAPI(null, { url: legacyDumpUrl }),
-      utils.callAPI(null, { url: cliDumpUrl })
-    ]);
+      utils.startSpinner('Downloading app from Zapier');
+      let [legacyApp, appDefinition] = [];
+      try {
+        [legacyApp, appDefinition] = await Promise.all([
+          utils.callAPI(null, { url: legacyDumpUrl }, true),
+          utils.callAPI(null, { url: cliDumpUrl }, true)
+        ]);
+      } catch (e) {
+        if (e.status === 404) {
+          throw new Error(
+            `Legacy Web Builder app ${appid} not found. If you want to convert a Visual Builder app, make sure to pass a \`--version\` option.`
+          );
+        }
+      }
 
-    // The JSON dump of the app doesn't have app ID, let's add it here
-    legacyApp.general.app_id = appid;
+      // The JSON dump of the app doesn't have app ID, let's add it here
+      legacyApp.general.app_id = appid;
 
-    utils.endSpinner();
+      utils.endSpinner();
 
-    return await utils.convertApp(legacyApp, appDefinition, tempAppDir);
+      return utils.convertLegacyApp(legacyApp, appDefinition, tempAppDir);
+    }
   };
 
   return utils.initApp(context, location, createApp).then(() => {
@@ -66,6 +106,13 @@ convert.argsSpec = [
     help: 'Relative to your current path - IE: `.` for current directory'
   }
 ];
+convert.argOptsSpec = {
+  version: {
+    help:
+      'Convert a specific version. Required when converting a Visual Builder app',
+    example: '1.0.0'
+  }
+};
 convert.help = 'Converts a Zapier Platform app to a CLI app, stubs only.';
 convert.example = 'zapier convert appid path';
 convert.docs = `

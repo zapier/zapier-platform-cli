@@ -2,8 +2,9 @@ const path = require('path');
 
 const _ = require('lodash');
 const prettier = require('prettier');
+const semver = require('semver');
 
-const { PACKAGE_VERSION } = require('../constants');
+const { PACKAGE_VERSION, PLATFORM_PACKAGE } = require('../constants');
 const { copyFile, ensureDir, readFile, writeFile } = require('./files');
 const { snakeCase } = require('./misc');
 const { getPackageLatestVersion } = require('./npm');
@@ -88,7 +89,7 @@ const getAuthFieldKeys = appDefinition => {
   return fieldKeys;
 };
 
-const renderPackageJson = async (legacyApp, appDefinition) => {
+const renderLegacyPackageJson = async (legacyApp, appDefinition) => {
   // Not using escapeSpecialChars because we don't want to escape single quotes (not
   // allowed in JSON)
   const description = legacyApp.general.description
@@ -110,6 +111,32 @@ const renderPackageJson = async (legacyApp, appDefinition) => {
 
   const templateFile = path.join(TEMPLATE_DIR, '/package.template.json');
   return renderTemplate(templateFile, templateContext);
+};
+
+const renderVisualPackageJson = (appInfo, appDefinition) => {
+  const pkg = {
+    name: _.kebabCase(appInfo.title),
+    version: semver.inc(appDefinition.version, 'patch'),
+    description: appInfo.description,
+    main: 'index.js',
+    scripts: {
+      test: 'mocha --recursive -t 10000'
+    },
+    engines: {
+      node: '8.10.0',
+      npm: '>=5.6.0'
+    },
+    dependencies: {
+      [PLATFORM_PACKAGE]: appDefinition.platformVersion
+    },
+    devDependencies: {
+      mocha: '^5.2.0',
+      should: '^13.2.0'
+    },
+    private: true
+  };
+
+  return JSON.stringify(pkg, null, 2);
 };
 
 const renderStep = (type, definition) => {
@@ -372,8 +399,10 @@ const writeAuth = async (appDefinition, newAppDir) => {
   await createFile(content, 'authentication.js', newAppDir);
 };
 
-const writePackageJson = async (legacyApp, appDefinition, newAppDir) => {
-  const content = await renderPackageJson(legacyApp, appDefinition);
+const writePackageJson = async (appInfo, appDefinition, newAppDir, legacy) => {
+  const content = legacy
+    ? await renderLegacyPackageJson(appInfo, appDefinition)
+    : renderVisualPackageJson(appInfo, appDefinition);
   await createFile(content, 'package.json', newAppDir);
 };
 
@@ -417,12 +446,12 @@ const writeZapierAppRc = async newAppDir => {
   endSpinner();
 };
 
-const convertApp = async (
-  legacyApp,
-  appDefinition,
-  newAppDir,
-  silent = false
-) => {
+const convertApp = async (appInfo, appDefinition, newAppDir, opts = {}) => {
+  const defaultOpts = { silent: false, legacy: true };
+  // need to bump babel so this works
+  // const { silent, legacy } = { ...defaultOpts, ...opts };
+  const { silent, legacy } = Object.assign({}, defaultOpts, opts);
+
   if (silent) {
     startSpinner = endSpinner = () => null;
   }
@@ -448,7 +477,7 @@ const convertApp = async (
     promises.push(writeScripting(appDefinition, newAppDir));
   }
 
-  promises.push(writePackageJson(legacyApp, appDefinition, newAppDir));
+  promises.push(writePackageJson(appInfo, appDefinition, newAppDir, legacy));
   promises.push(writeIndex(appDefinition, newAppDir));
   promises.push(writeEnvironment(appDefinition, newAppDir));
   promises.push(writeGitIgnore(newAppDir));
@@ -457,7 +486,33 @@ const convertApp = async (
   return await Promise.all(promises);
 };
 
+const convertVisualApp = async (
+  appInfo,
+  versionInfo,
+  tempAppDir,
+  silent = false
+) => {
+  return convertApp(appInfo, versionInfo.definition_override, tempAppDir, {
+    silent,
+    legacy: false
+  });
+};
+
+const convertLegacyApp = async (
+  appInfo,
+  appDefinition,
+  tempAppDir,
+  silent = false
+) => {
+  return convertApp(appInfo, appDefinition, tempAppDir, {
+    legacy: true,
+    silent
+  });
+};
+
 module.exports = {
   renderTemplate,
+  convertLegacyApp,
+  convertVisualApp,
   convertApp
 };
