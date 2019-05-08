@@ -17,6 +17,7 @@ const TEMPLATE_DIR = path.join(__dirname, '../../scaffold/convert');
 // special and NO regex reserved chars.
 const REPLACE_DIRECTIVE = '__REPLACE_ME@';
 
+// used to turn strings of code into real code
 const makePlaceholder = replacement => `${REPLACE_DIRECTIVE}${replacement}`;
 
 const replacePlaceholders = str =>
@@ -299,6 +300,12 @@ const renderIndex = async appDefinition => {
   let exportBlock = _.cloneDeep(appDefinition),
     functionBlock = [],
     importBlock = [];
+
+  // replace version and platformVersion with dynamic reference
+  exportBlock.version = makePlaceholder("require('./package.json').version");
+  exportBlock.platformVersion = makePlaceholder(
+    "require('zapier-platform-core').version"
+  );
 
   if (appDefinition.authentication) {
     importBlock.push("const authentication = require('./authentication');");

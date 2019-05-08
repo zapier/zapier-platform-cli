@@ -30,7 +30,7 @@
     "postlint": "npm run lint-snippets",
     "pretest": "npm run build",
     "test": "NODE_ENV=test mocha -t 50000 --recursive lib/tests",
-    "posttest": "npm run lint",
+    "/posttest": "npm run lint",
     "smoke-test": "npm run build && NODE_ENV=test mocha -t 30000 --recursive lib/smoke-tests",
     "zapier": "zapier.js",
     "validate-templates": "./scripts/validate-app-templates.js",

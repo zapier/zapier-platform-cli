@@ -304,6 +304,19 @@ describe('convert', () => {
         fs.existsSync(filepath).should.be.true(`failed to create ${filename}`);
       });
 
+      // needed for the test below which expects to be able to import core
+      await fs.outputFile(
+        path.join(
+          tempAppDir,
+          'node_modules',
+          'zapier-platform-core',
+          'index.js'
+        ),
+        `module.exports = {version: "${
+          visualAppDefinition.definition_override.platformVersion
+        }"}`
+      );
+
       const pkg = require(path.join(tempAppDir, 'package.json'));
       should(pkg.name).eql('my-w-istia-app');
       should(pkg.dependencies['zapier-platform-core']).eql(
@@ -317,9 +330,24 @@ describe('convert', () => {
       should(rcFile.id).eql(visualApp.id);
       should(rcFile.includeInBuild).be.undefined();
 
-      const endFile = await fs.readFile(path.join(tempAppDir, '.env'), 'utf-8');
-      should(endFile.includes('ACCESS_TOKEN')).be.true();
-      should(endFile.includes('REFRESH_TOKEN')).be.true();
+      const envFile = await fs.readFile(path.join(tempAppDir, '.env'), 'utf-8');
+      should(envFile.includes('ACCESS_TOKEN')).be.true();
+      should(envFile.includes('REFRESH_TOKEN')).be.true();
+
+      const idxFile = await fs.readFile(
+        path.join(tempAppDir, 'index.js'),
+        'utf-8'
+      );
+      should(idxFile.includes("require('./package.json').version")).be.true();
+      should(
+        idxFile.includes("require('zapier-platform-core').version")
+      ).be.true();
+
+      const idx = require(path.join(tempAppDir, 'index.js'));
+      should(idx.version).eql('1.0.2'); // bumped from 1.0.1
+      should(idx.platformVersion).eql(
+        visualAppDefinition.definition_override.platformVersion
+      );
     });
   });
 });
