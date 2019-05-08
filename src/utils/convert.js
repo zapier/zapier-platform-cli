@@ -494,7 +494,7 @@ const convertApp = async (appInfo, appDefinition, newAppDir, opts = {}) => {
   promises.push(
     legacy
       ? writeLegacyZapierAppRc(newAppDir)
-      : writeVisualZapierAppRc(newAppDir, appDefinition.app_id)
+      : writeVisualZapierAppRc(newAppDir, appInfo.id)
   );
 
   return await Promise.all(promises);

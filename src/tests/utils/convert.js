@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const os = require('os');
 const path = require('path');
 
-require('should');
+const should = require('should');
 
 const { convertLegacyApp, convertVisualApp } = require('../../utils/convert');
 
@@ -200,6 +200,50 @@ const legacyApp = {
   }
 };
 
+const visualApp = {
+  latest_core_version: '8.0.1',
+  image: null,
+  early_access: false,
+  id: 17741,
+  invite_url:
+    'https://zapier.com/developer/public-invite/17741/cf2bab685c2901fafb946b22f369f89f/',
+  stats: {
+    Auth: {
+      Accounts: { Paused: 1, Live: 0, Total: 1 },
+      Users: { Paused: 0, Live: 0, Total: 0 }
+    },
+    Trigger: {
+      'New Code Trigger': { Paused: 0, Live: 0, Total: 0 },
+      'New Project': { Paused: 0, Live: 0, Total: 0 }
+    },
+    Action: {
+      'Create a New Project': { Paused: 0, Live: 0, Total: 0 }
+    },
+    Search: {},
+    App: { Totals: { Paused: 1, Live: 0, Total: 1 } }
+  },
+  title: 'My WIstia app',
+  public_ish: false,
+  homepage_url: null,
+  intention: 'private',
+  role: 'user',
+  public: false,
+  pending: false,
+  app_category: 'accounting',
+  description: 'adsfasdfsadfasdfasdfasdf',
+  key: 'App17741',
+  latest_core_npm_version: '8.1.0',
+  date: '2019-04-30T18:09:26+00:00',
+  slug: null,
+  versions: ['1.0.0', '1.0.1'],
+  app_category_other: null,
+  all_versions: ['1.0.0', '1.0.1'],
+  latest_version: '1.0.1',
+  core_versions: ['8.0.1', '8.0.1'],
+  service_id: null,
+  is_beta: null
+};
+
 const setupTempWorkingDir = () => {
   let workdir;
   const tmpBaseDir = os.tmpdir();
@@ -239,14 +283,9 @@ describe('convert', () => {
     });
   });
 
-  describe('visual apps apps', () => {
+  describe.only('visual apps apps', () => {
     it('should create separate files', async () => {
-      await convertVisualApp(
-        legacyApp.general,
-        visualAppDefinition,
-        tempAppDir,
-        true
-      );
+      await convertVisualApp(visualApp, visualAppDefinition, tempAppDir, true);
       [
         '.zapierapprc',
         '.gitignore',
@@ -264,6 +303,23 @@ describe('convert', () => {
         const filepath = path.join(tempAppDir, filename);
         fs.existsSync(filepath).should.be.true(`failed to create ${filename}`);
       });
+
+      const pkg = require(path.join(tempAppDir, 'package.json'));
+      should(pkg.name).eql('my-w-istia-app');
+      should(pkg.dependencies['zapier-platform-core']).eql(
+        visualAppDefinition.definition_override.platformVersion
+      );
+      should(pkg.version).eql('1.0.2');
+
+      const rcFile = JSON.parse(
+        await fs.readFile(path.join(tempAppDir, '.zapierapprc'), 'utf-8')
+      );
+      should(rcFile.id).eql(visualApp.id);
+      should(rcFile.includeInBuild).be.undefined();
+
+      const endFile = await fs.readFile(path.join(tempAppDir, '.env'), 'utf-8');
+      should(endFile.includes('ACCESS_TOKEN')).be.true();
+      should(endFile.includes('REFRESH_TOKEN')).be.true();
     });
   });
 });

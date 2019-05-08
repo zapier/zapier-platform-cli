@@ -16,9 +16,10 @@ const convert = (context, appid, location) => {
     }/developer/builder/ (check the URL).`;
     return Promise.reject(new Error(message));
   }
+  const isVisual = Boolean(context.argOpts.version);
 
   const createApp = async tempAppDir => {
-    if (context.argOpts.version) {
+    if (isVisual) {
       // has info about the app, such as title
       const appInfoUrl = `${
         constants.BASE_ENDPOINT
@@ -83,22 +84,25 @@ const convert = (context, appid, location) => {
   return utils.initApp(context, location, createApp).then(() => {
     context.line();
     context.line(
-      `Finished! You may try \`npm install\` and then \`zapier test\` in "${location}" directory.`
+      `Finished! You may try \`npm install\` and then \`zapier test\` in the "${location}" directory.`
     );
     context.line(
       "Also, if your app has authentication, don't forget to set environment variables:"
     );
     context.line('* for local testing, edit the .env file');
-    context.line('* for produciton, use `zapier env` command');
+    if (!isVisual) {
+      // converted apps already have this set
+      context.line('* for produciton, use `zapier env` command');
+    }
   });
 };
 convert.argsSpec = [
   {
     name: 'appid',
     required: true,
-    help: `Get the appid from ${
+    help: `Get the appid from "${
       constants.BASE_ENDPOINT
-    }/developer/builder/ (check the URL)`
+    }/app/developer", clicking on an integration, and taking the number after "/app" in the url.`
   },
   {
     name: 'location',
@@ -113,14 +117,19 @@ convert.argOptsSpec = {
     example: '1.0.0'
   }
 };
-convert.help = 'Converts a Zapier Platform app to a CLI app, stubs only.';
+convert.help =
+  'Converts a Legacy Web Builder or Visual Builder app to a CLI app.';
 convert.example = 'zapier convert appid path';
 convert.docs = `
-Creates a new Zapier app from an existing app. **The new app contains code stubs only.** It is supposed to get you started - it isn't going to create a complete app!
+Creates a new CLI app from an existing app.
+
+If you're converting a **Legacy Web Builder** app: the new app contains code stubs only. It is supposed to get you started - it isn't going to create a complete app!
 
 After running this, you'll have a new app in your directory, with stubs for your trigger and actions.  If you re-run this command on an existing directory it will leave existing files alone and not clobber them.
 
-> Note: this doesn't register or push the app with Zapier - try \`zapier register "Example"\` and \`zapier push\` for that!
+Once you've run the command, make sure to run \`zapier push\` to see it in the editor.
+
+If you're converting a **Visual Builder** app, then it will be identical and ready to push and use immediately! You'll need to do a \`zapier push\` before the new version is visible in the editor, but otherwise you're good to go.
 
 **Arguments**
 
