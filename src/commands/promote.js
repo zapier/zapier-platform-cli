@@ -2,6 +2,19 @@ const colors = require('colors/safe');
 const utils = require('../utils');
 const _ = require('lodash');
 
+const runAppReviewChecks = async (appId, appVersion, context) => {
+  context.line('\nRunning App Review Checks.\n');
+  const url = `/apps/${appId}/versions/${appVersion}/app-review-run`;
+  const response = await utils.callAPI(url, true);
+  const errorList = response.failed || [];
+  if (errorList.length > 0) {
+    const message = `Promotion failed for the following reasons:\n\n${errorList
+      .map(e => `* ${e.message}`)
+      .join('\n')}\n`;
+    throw new Error(message);
+  }
+};
+
 const promote = (context, version, printMigrateHint = true) => {
   if (!version) {
     context.line('Error: No deploment/version selected...\n');
@@ -81,10 +94,12 @@ const promote = (context, version, printMigrateHint = true) => {
         );
       }
     })
-    .catch(response => {
+    .catch(async response => {
       // we probalby have a raw response, might have a thrown error
       // The server 403s when the app hasn't been approved yet
       if (_.get(response, 'json.activationInfo')) {
+        await runAppReviewChecks(app.id, version, context);
+
         utils.endSpinner();
         context.line(
           '\nGood news! Your app passes validation and has the required number of testers and active Zaps.\n'
