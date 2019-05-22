@@ -162,19 +162,22 @@ const renderStep = (type, definition) => {
   ['inputFields', 'outputFields'].forEach(key => {
     const fields = definition.operation[key];
     if (Array.isArray(fields) && fields.length > 0) {
-      // Backend converter always put custom field function at the end of the array
-      const func = fields[fields.length - 1];
-      if (func && func.source) {
-        const args = func.args || ['z', 'bundle'];
-        const funcName = `get${_.upperFirst(key)}`;
-        functionBlock.push(
-          `const ${funcName} = (${args.join(', ')}) => {${func.source}};`
-        );
+      // Godzilla currently doesn't allow mutliple dynamic fields (see PDE-948) but when it does, this will account for it
+      let funcNum = 0;
+      fields.forEach((maybeFunc, index) => {
+        if (maybeFunc.source) {
+          const args = maybeFunc.args || ['z', 'bundle'];
+          // always increment the number, but only return a value if it's > 0
+          const funcName = `get${_.upperFirst(key)}${
+            funcNum ? funcNum++ : ++funcNum && ''
+          }`;
+          functionBlock.push(
+            `const ${funcName} = (${args.join(', ')}) => {${maybeFunc.source}};`
+          );
 
-        exportBlock.operation[key][fields.length - 1] = makePlaceholder(
-          funcName
-        );
-      }
+          exportBlock.operation[key][index] = makePlaceholder(funcName);
+        }
+      });
     }
   });
 
@@ -464,12 +467,12 @@ const writeVisualZapierAppRc = async (newAppDir, id) => {
 };
 
 const convertApp = async (appInfo, appDefinition, newAppDir, opts = {}) => {
-  const defaultOpts = { silent: false, legacy: true };
+  const defaultOpts = { legacy: true };
   // need to bump babel so this works
   // const { silent, legacy } = { ...defaultOpts, ...opts };
-  const { silent, legacy } = Object.assign({}, defaultOpts, opts);
+  const { legacy } = Object.assign({}, defaultOpts, opts);
 
-  if (silent) {
+  if (process.env.NODE_ENV === 'test') {
     startSpinner = endSpinner = () => null;
   }
 
@@ -507,29 +510,8 @@ const convertApp = async (appInfo, appDefinition, newAppDir, opts = {}) => {
   return await Promise.all(promises);
 };
 
-const convertVisualApp = async (
-  appInfo,
-  versionInfo,
-  tempAppDir,
-  silent = false
-) => {
-  return convertApp(appInfo, versionInfo.definition_override, tempAppDir, {
-    silent,
-    legacy: false
-  });
-};
-
-const convertLegacyApp = async (
-  appInfo,
-  appDefinition,
-  tempAppDir,
-  silent = false
-) => {
-  return convertApp(appInfo, appDefinition, tempAppDir, {
-    legacy: true,
-    silent
-  });
-};
+const convertVisualApp = _.partialRight(convertApp, { legacy: false });
+const convertLegacyApp = _.partialRight(convertApp, { legacy: true });
 
 module.exports = {
   renderTemplate,
