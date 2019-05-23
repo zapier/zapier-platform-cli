@@ -72,6 +72,7 @@
   "devDependencies": {
     "babel-eslint": "7.2.3",
     "decompress": "4.2.0",
+    "eslint-plugin-mocha": "^5.3.0",
     "fetch-mock": "5.11.0",
     "husky": "0.14.3",
     "jayson": "2.0.6",
