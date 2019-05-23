@@ -18,14 +18,14 @@
     "node": ">=8.10.0"
   },
   "scripts": {
-    "docs": "ZAPIER_BASE_ENDPOINT='' node lib/bin/docs.js",
+    "docs": "ZAPIER_BASE_ENDPOINT='' node src/bin/docs.js",
     "preversion": "git pull && npm run validate",
     "version": "npm run docs && npm run gen-completions && git add docs/* goodies/* README.md",
     "postversion": "git push && git push --tags",
     "lint-snippets": "eslint snippets --rule 'no-unused-vars: 0' --ignore-pattern snippets/next.js --ignore-pattern 'snippets/dynamic-dropdowns-*'",
     "lint-code": "eslint zapier.js src",
     "lint": "npm run lint-snippets && npm run lint-code",
-    "test": "NODE_ENV=test mocha -t 50000 --recursive lib/tests",
+    "test": "NODE_ENV=test mocha -t 50000 --recursive src/tests",
     "smoke-test": "NODE_ENV=test mocha -t 30000 --recursive src/smoke-tests",
     "zapier": "zapier.js",
     "validate-templates": "./scripts/validate-app-templates.js",

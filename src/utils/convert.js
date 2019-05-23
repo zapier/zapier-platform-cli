@@ -468,9 +468,7 @@ const writeVisualZapierAppRc = async (newAppDir, id) => {
 
 const convertApp = async (appInfo, appDefinition, newAppDir, opts = {}) => {
   const defaultOpts = { legacy: true };
-  // need to bump babel so this works
-  // const { silent, legacy } = { ...defaultOpts, ...opts };
-  const { legacy } = Object.assign({}, defaultOpts, opts);
+  const { legacy } = { ...defaultOpts, ...opts };
 
   if (process.env.NODE_ENV === 'test') {
     startSpinner = endSpinner = () => null;
