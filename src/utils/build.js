@@ -121,13 +121,18 @@ const listFiles = dir => {
 
 // Exclude file paths in .gitignore
 const respectGitIgnore = (dir, paths) => {
-  return new Promise(resolve => {
-    const gitIgnorePath = path.join(dir, '.gitignore');
-    const gitIgnoredPaths = gitIgnore(gitIgnorePath);
-    const gitFilter = ignore().add(gitIgnoredPaths);
+  const gitIgnorePath = path.join(dir, '.gitignore');
+  if (!fs.existsSync(gitIgnorePath)) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(
+        '\n\n!!Warning!! There is no .gitignore, so we are including all files. This might make the source.zip file too large\n\n'
+      );
+    }
+  }
+  const gitIgnoredPaths = gitIgnore(gitIgnorePath);
+  const gitFilter = ignore().add(gitIgnoredPaths);
 
-    resolve(gitFilter.filter(paths));
-  });
+  return gitFilter.filter(paths);
 };
 
 // returns paths as to be chainable
@@ -260,7 +265,7 @@ const makeZip = async (dir, zipPath) => {
 
 const makeSourceZip = async (dir, zipPath) => {
   const paths = await listFiles(dir);
-  const finalPaths = await respectGitIgnore(dir, paths);
+  const finalPaths = respectGitIgnore(dir, paths);
   finalPaths.sort();
 
   if (global.argOpts.debug) {

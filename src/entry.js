@@ -1,6 +1,4 @@
 /*eslint no-process-exit: 0 */
-require('babel-polyfill');
-
 const _ = require('lodash');
 const colors = require('colors/safe');
 const updateNotifier = require('update-notifier');
@@ -123,7 +121,7 @@ module.exports = argv => {
     process.exit(1);
   }
 
-  commandFunc.apply(commands, [context].concat(args)).catch(err => {
+  commandFunc(context, ...args).catch(err => {
     utils.endSpinner(false);
 
     if (DEBUG || global.argOpts.debug) {

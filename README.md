@@ -54,8 +54,9 @@ Zapier is a platform for creating integrations and workflows. This CLI is your g
   * [Dynamic Dropdowns](#dynamic-dropdowns)
   * [Search-Powered Fields](#search-powered-fields)
   * [Computed Fields](#computed-fields)
-- [Output Fields](#output-fields)
   * [Nested & Children (Line Item) Fields](#nested--children-line-item-fields)
+- [Output Fields](#output-fields)
+  * [Nested & Children (Line Item) Fields](#nested--children-line-item-fields-1)
 - [Z Object](#z-object)
   * [`z.request([url], options)`](#zrequesturl-options)
   * [`z.console`](#zconsole)
@@ -347,7 +348,7 @@ If you'd like to manage your **App**, use these commands:
 
 ## Deploying an App Version
 
-An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. By default, **every App Version is private** but you can `zapier promote` it to production for use by over 1 million Zapier users.
+An App Version is related to a specific App but is an "immutable" implementation of your app. This makes it easy to run multiple versions for multiple users concurrently. The App Version is pulled from the version within the `package.json`. To create a new App Version, update the version number in that file. By default, **every App Version is private** but you can `zapier promote` it to production for use by over 1 million Zapier users.
 
 ```bash
 # push your app version to Zapier
@@ -1126,11 +1127,62 @@ module.exports = {
 
 ### Dynamic Dropdowns
 
-Sometimes, API endpoints require clients to specify a parent object in order to create or access the child resources. Imagine having to specify a company id in order to get a list of employees for that company. Since people don't speak in auto-incremented ID's, it is necessary that Zapier offer a simple way to select that parent using human readable handles.
+Sometimes, API endpoints require clients to specify a parent object in order to create or access the child resources. For instance, specifying a spreadsheet id in order to retrieve its worksheets. Since people don't speak in auto-incremented ID's, it is necessary that Zapier offer a simple way to select that parent using human readable handles.
 
 Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns "dynamic dropdowns."
 
-To define one, you can provide the `dynamic` property on your field to specify the trigger that should be used to populate the options for the dropdown. The value for the property is a dot-separated concatenation of a trigger's key, the field to use for the value, and the field to use for the label.
+To define one you include the `dynamic` property on the `inputFields` object. The value for the property is a dot-separated _string_ concatenation.
+
+```js
+//...
+issue: {
+  key: 'issue',
+  //...
+  create: {
+    //...
+    operation: {
+      inputFields: [
+        {
+          key: 'project_id',
+          required: true,
+          label: 'This is a dynamic dropdown',
+          dynamic: 'project.id.name'
+        }, // will call the trigger with a key of project
+        {
+          key: 'title',
+          required: true,
+          label: 'Title',
+          helpText: 'What is the name of the issue?'
+        }
+      ]
+    }
+  }
+}
+
+```
+
+The dot-separated string concatenation follows this pattern:
+
+- The key of the trigger you want to use to power the dropdown. _required_
+- The value to be made available in bundle.inputData. _required_
+- The human friendly value to be shown on the left of the dropdown in bold. _optional_
+
+In the above code example the dynamic property makes reference to a trigger with a key of project. Assuming the project trigger returns an array of objects and each object contains an id and name key, i.e.  
+
+```js
+[
+  { id: '1', name: 'First Option', dateCreated: '01/01/2000' },
+  { id: '2', name: 'Second Option', dateCreated: '01/01/2000' },
+  { id: '3', name: 'Third Option', dateCreated: '01/01/2000' },
+  { id: '4', name: 'Fourth Option', dateCreated: '01/01/2000' }
+];
+
+```  
+
+The dynamic dropdown would look something like this.  
+![screenshot of dynamic dropdown in Zap Editor](https://cdn.zapier.com/storage/photos/dd31fa761e0cf9d0abc9b50438f95210.png)
+
+In the first code example the dynamic dropdown is powered by a trigger. You can also use a resource to power a dynamic dropdown. To do this combine the resource key and the resource method using camel case.  
 
 ```js
 const App = {
@@ -1174,11 +1226,139 @@ const App = {
   }
 };
 
-```
+```  
 
-In the UI, users will see something like this:
+In some cases you will need to power a dynamic dropdown but do not want to make the Trigger available to the end user. Here it is best practice to create the trigger and set `hidden: true` on it's display object.  
 
-![screenshot of dynamic dropdown in Zap Editor](https://cdn.zapier.com/storage/photos/dd31fa761e0cf9d0abc9b50438f95210.png)
+```js
+const App = {
+  //...
+  triggers: {
+    new_project: {
+      key: 'project',
+      noun: 'Project',
+      // `display` controls the presentation in the Zapier Editor
+      display: {
+        label: 'New Project',
+        description: 'Triggers when a new project is added.',
+        hidden: true
+      },
+      operation: {
+        perform: projectListRequest
+      }
+    },
+    another_trigger: {
+      // Another trigger definition...
+    }
+  }
+};
+
+```  
+
+You can have multiple dynamic dropdowns in a single Trigger or Action. And a dynamic dropdown can depend on the value chosen in another dynamic dropdown when making it's API call. Such as a Spreadsheet and Worksheet dynamic dropdown in a trigger or action. This means you must make sure that the key of the first dynamic dropdown is the same as referenced in the trigger powering the second.
+
+Let's say you have a Worksheet trigger with a `perform` method similar to this.  
+
+```js
+perform: () => {
+  return z
+    .request('http://example.com/api/v2/projects.json', {
+      params: {
+        spreadsheet_id: bundle.inputData.spreadsheet_id
+      }
+    })
+    .then(response => z.JSON.parse(response.content));
+};
+
+```  
+
+And your New Records trigger has a Spreadsheet and a Worksheet dynamic dropdown. The Spreadsheet dynamic dropdown must have a key of `spreadsheet_id`. When the user selects a spreadsheet via the dynamic dropdown the value chosen is made available in `bundle.inputData`. It will then be passed to the Worksheet trigger when the user clicks on the Worksheet dynamic dropdown.  
+
+```js
+const App = {
+  //...
+  triggers: {
+    //...
+    issue: {
+      key: 'new_records',
+      //...
+      create: {
+        //...
+        operation: {
+          inputFields: [
+            {
+              key: 'spreadsheet_id',
+              required: true,
+              label: 'Spreadsheet',
+              dynamic: 'spreadsheet.id.name'
+            },
+            {
+              key: 'worksheet_id',
+              required: true,
+              label: 'Worksheet',
+              dynamic: 'worksheet.id.name'
+            }
+          ]
+        }
+      }
+    }
+  }
+};
+
+```  
+
+The [Google Sheets](https://zapier.com/apps/google-sheets/integrations#triggers-and-actions) integration is an example of this pattern.
+
+If you want your trigger to perform specific scripting for a dynamic dropdown you will need to make use of `bundle.meta.isFillingDynamicDropdown`. This can be useful if need to make use of [pagination](#whats-the-deal-with-pagination-when-is-it-used-and-how-does-it-work) in the dynamic dropdown to load more options.  
+
+```js
+const App = {
+  //...
+  resources: {
+    project: {
+      key: 'project',
+      //...
+      list: {
+        //...
+        operation: {
+          canPaginate: true,
+          perform: () => {
+            if (bundle.meta.isFillingDynamicDropdown) {
+              // perform pagination request here
+            } else {
+              return [{ id: 123, name: 'Project 1' }];
+            }
+          }
+        }
+      }
+    },
+    issue: {
+      key: 'issue',
+      //...
+      create: {
+        //...
+        operation: {
+          inputFields: [
+            {
+              key: 'project_id',
+              required: true,
+              label: 'Project',
+              dynamic: 'projectList.id.name'
+            }, // calls project.list
+            {
+              key: 'title',
+              required: true,
+              label: 'Title',
+              helpText: 'What is the name of the issue?'
+            }
+          ]
+        }
+      }
+    }
+  }
+};
+
+```  
 
 ### Search-Powered Fields
 
@@ -1235,9 +1415,53 @@ If you don't define a trigger for the `dynamic` property, the search connector w
 
 ### Computed Fields
 
-In OAuth and Session Auth, you might want to store fields in `bundle.authData` (other than `access_token`, `refresh_token` — for OAuth —, or `sessionKey` — for Session Auth), that you don't want the user to fill in.
+In OAuth and Session Auth, you may want to use fields from your API call response other than `access_token` or `refresh_token` for OAuth and `sessionKey` for Session auth. If you want to use data from those fields and need Zapier to confirm that they exist, you need to use Computed Fields.
 
-For those situations, you need a computed field. It's just like another field, but with a `computed: true` property (don't forget to also make it `required: false`). You can see examples in the [OAuth2](#oauth2) or [Session Auth](#session) example sections.
+Zapier stores every value from an integration's test API call in `bundle.authData` as _Computed Fields_. You can reference these fields in any subsequent API call as needed. If you define a computed field in your integration, Zapier will check to make sure those fields exist when it runs the authentication test API call.
+
+Computed fields work like any other field, though with `computed: true` property, and `required: false` as user can not enter computed fields themselves. Reference computed fields in API calls as `{{bundle.authData.field}}`, replacing `field` with that field's name from your test API call response.
+
+You can see examples of computed fields in the [OAuth2](#oauth2) or [Session Auth](#session) example sections.
+
+### Nested & Children (Line Item) Fields
+
+When your action needs to accept an array of items, you can include an input field with the `children` attribute. The `children` attribute accepts a list of [fields](https://zapier.github.io/zapier-platform-schema/build/schema.html#fieldschema) that can be input for each item in this array.  
+
+```js
+const App = {
+  //...
+  operation: {
+    //...
+    inputFields: [
+      {
+        key: 'lineItems',
+        required: true,
+        children: [
+          {
+            key: 'lineItemId',
+            type: 'integer',
+            label: 'Line Item ID',
+            required: true
+          },
+          {
+            key: 'name',
+            type: 'string',
+            label: 'Name',
+            required: true
+          },
+          {
+            key: 'description',
+            type: 'string',
+            label: 'Description'
+          }
+        ]
+      }
+    ]
+    // ...
+  }
+};
+
+```
 
 ## Output Fields
 
@@ -2839,7 +3063,7 @@ The Zapier platform and its tools are under active development. While you don't 
 Barring unforseen circumstances, all released platform versions will continue to work for the forseeable future. While you never *have* to upgrade your app's `platform-core` dependency, we recommend keeping an eye on the [changelog](https://github.com/zapier/zapier-platform-cli/blob/master/CHANGELOG.md) to see what new features and bux fixes are available.
 
 <!-- TODO: if we decouple releases, change this -->
-The most recently released version of `cli` and `core` is `8.0.1`. You can see the versions you're working with by running `zapier -v`.
+The most recently released version of `cli` and `core` is `8.1.0`. You can see the versions you're working with by running `zapier -v`.
 
 To update `cli`, run `npm install -g zapier-platform-cli`.
 
@@ -2871,4 +3095,4 @@ This section is only relevant if you're editing the `zapier-platform-cli` packag
 
 ## Get Help!
 
-You can get help by either emailing partners@zapier.com or by joining our Slack channel https://zapier-platform-slack.herokuapp.com.
+You can get help by either emailing partners@zapier.com or by [joining our Slack team here](https://join.slack.com/t/zapier-platform/shared_invite/enQtNTg1MjM5NjMzNTI3LWVhZjk3NjFlNWFiMTBmMDExMzI5NDZiZmFiOTJjYmI3NmY2MzEwZDUxNzQ3MTliMTM5N2M3NGM2MmQ2Y2VkODE).
