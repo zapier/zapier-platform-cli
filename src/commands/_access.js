@@ -75,7 +75,7 @@ const makeAccess = (command, recordType) => {
         if (data && data.invite_url) {
           context.line();
           context.line(
-            'You can invite users to this app more broadly by sharing this URL:\n\n  ' +
+            'You can invite users to all versions of this app (current and future) using this URL:\n\n  ' +
               colors.bold(data.invite_url)
           );
         }
