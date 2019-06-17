@@ -918,7 +918,6 @@ npm install
 };
 
 <span class="hljs-built_in">module</span>.exports = App;
-
 </code></pre>
     </div>
   </div>
@@ -1118,7 +1117,6 @@ zapier convert 1234 my-app
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Your CLI app will be created and you can continue working on it.</p><blockquote>
 <p>Since v3.3.0, <code>zapier convert</code> has been improved a lot. But this is still in an alpha state - you&apos;ll likely have to edit the code to make it work.</p>
-</blockquote><blockquote>
 <p>Note - there is no way to convert a CLI app to a Web Builder app and we do not plan on implementing this.</p>
 </blockquote><p>Coming soon, you will also be able to convert new integrations built in Zapier Platform UI to CLI.</p>
     </div>
@@ -1160,7 +1158,6 @@ zapier convert 1234 my-app
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>Useful if your app requires two pieces of information to authentication: <code>username</code> and <code>password</code> which only the end user can provide. By default, Zapier will do the standard Basic authentication base64 header encoding for you (via an automatically registered middleware).</p><blockquote>
 <p>Example App: check out <a href="https://github.com/zapier/zapier-platform-example-app-basic-auth">https://github.com/zapier/zapier-platform-example-app-basic-auth</a> for a working example app for basic auth.</p>
-</blockquote><blockquote>
 <p>Note: if you do the common API Key pattern like <code>Authorization: Basic APIKEYHERE:x</code> you should look at the &quot;Custom&quot; authentication method instead.</p>
 </blockquote>
     </div>
@@ -1180,7 +1177,6 @@ zapier convert 1234 my-app
   authentication: authentication
   <span class="hljs-comment">// ...</span>
 };
-
 </code></pre>
     </div>
   </div>
@@ -1198,7 +1194,6 @@ zapier convert 1234 my-app
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p><em>New in v7.4.0.</em></p><p>The setup and user experience of Digest Auth is identical to Basic Auth. Users will provide Zapier their username and password and Zapier will handle all the nonce and quality of protection details automatically.</p><blockquote>
 <p>Example App: check out <a href="https://github.com/zapier/zapier-platform-example-app-digest-auth">https://github.com/zapier/zapier-platform-example-app-digest-auth</a> for a working example app for digest auth.</p>
-</blockquote><blockquote>
 <p>Limitation: Currently, MD5-sess and SHA are not implemented. Only the MD5 algorithm is supported. In addition, server nonces are not reused. That means for every <code>z.request</code> call, Zapier will sends an additional request beforehand to get the server nonce.</p>
 </blockquote>
     </div>
@@ -1218,7 +1213,6 @@ zapier convert 1234 my-app
   authentication: authentication
   <span class="hljs-comment">// ...</span>
 };
-
 </code></pre>
     </div>
   </div>
@@ -1275,7 +1269,6 @@ zapier convert 1234 my-app
   <span class="hljs-attr">beforeRequest</span>: [addApiKeyToHeader]
   <span class="hljs-comment">// ...</span>
 };
-
 </code></pre>
     </div>
   </div>
@@ -1370,7 +1363,6 @@ zapier convert 1234 my-app
   <span class="hljs-attr">afterResponse</span>: [sessionRefreshIf401]
   <span class="hljs-comment">// ...</span>
 };
-
 </code></pre>
     </div>
   </div>
@@ -1506,7 +1498,6 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
 };
 
 <span class="hljs-built_in">module</span>.exports = App;
-
 </code></pre>
     </div>
   </div>
@@ -1624,7 +1615,6 @@ $ CLIENT_ID=1234 CLIENT_SECRET=abcd zapier <span class="hljs-built_in">test</spa
 };
 
 <span class="hljs-built_in">module</span>.exports = App;
-
 </code></pre>
     </div>
   </div>
@@ -1669,7 +1659,6 @@ read, and search operations on that resource.</p>
     <span class="hljs-comment">//...</span>
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -1732,7 +1721,6 @@ For now, let&apos;s focus on two:</p><ul>
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -1767,7 +1755,6 @@ For now, let&apos;s focus on two:</p><ul>
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -1823,7 +1810,6 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -1833,11 +1819,8 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
       <p>You can find more details on the definition for each by looking at the <a href="https://zapier.github.io/zapier-platform-schema/build/schema.html#triggerschema">Trigger Schema</a>,
 <a href="https://zapier.github.io/zapier-platform-schema/build/schema.html#searchschema">Search Schema</a>, and <a href="https://zapier.github.io/zapier-platform-schema/build/schema.html#createschema">Create Schema</a>.</p><blockquote>
 <p>Example App: check out <a href="https://github.com/zapier/zapier-platform-example-app-trigger">https://github.com/zapier/zapier-platform-example-app-trigger</a> for a working example app using triggers.</p>
-</blockquote><blockquote>
 <p>Example App: check out <a href="https://github.com/zapier/zapier-platform-example-app-rest-hooks">https://github.com/zapier/zapier-platform-example-app-rest-hooks</a> for a working example app using REST hook triggers.</p>
-</blockquote><blockquote>
 <p>Example App: check out <a href="https://github.com/zapier/zapier-platform-example-app-search">https://github.com/zapier/zapier-platform-example-app-search</a> for a working example app using searches.</p>
-</blockquote><blockquote>
 <p>Example App: check out <a href="https://github.com/zapier/zapier-platform-example-app-create">https://github.com/zapier/zapier-platform-example-app-create</a> for a working example app using creates.</p>
 </blockquote>
     </div>
@@ -1937,7 +1920,6 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -1964,7 +1946,6 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>In some cases, it might be necessary to provide fields that are dynamically generated - especially for custom fields. This is a common pattern for CRMs, form software, databases and more. Basically - you can provide a function instead of a field and we&apos;ll evaluate that function - merging the dynamic fields with the static fields.</p><blockquote>
 <p>You should see <code>bundle.inputData</code> partially filled in as users provide data - even in field retrieval. This allows you to build hierarchical relationships into fields (EG: only show issues from the previously selected project).</p>
-</blockquote><blockquote>
 <p>A function that returns a list of dynamic fields cannot include additional functions in that list to call for dynamic fields.</p>
 </blockquote>
     </div>
@@ -2001,7 +1982,6 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2038,7 +2018,6 @@ new records in your system (add a recipe to the catalog).</p><p>The definition f
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2092,7 +2071,6 @@ issue: {
     }
   }
 }
-
 </code></pre>
     </div>
   </div>
@@ -2112,7 +2090,6 @@ issue: {
   { <span class="hljs-attr">id</span>: <span class="hljs-string">&apos;3&apos;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&apos;Third Option&apos;</span>, <span class="hljs-attr">dateCreated</span>: <span class="hljs-string">&apos;01/01/2000&apos;</span> },
   { <span class="hljs-attr">id</span>: <span class="hljs-string">&apos;4&apos;</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&apos;Fourth Option&apos;</span>, <span class="hljs-attr">dateCreated</span>: <span class="hljs-string">&apos;01/01/2000&apos;</span> }
 ];
-
 </code></pre>
     </div>
   </div>
@@ -2162,7 +2139,6 @@ issue: {
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2193,7 +2169,6 @@ issue: {
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2212,7 +2187,6 @@ issue: {
     })
     .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> z.JSON.parse(response.content));
 };
-
 </code></pre>
     </div>
   </div>
@@ -2251,7 +2225,6 @@ issue: {
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2306,7 +2279,6 @@ issue: {
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2366,7 +2338,6 @@ issue: {
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2391,7 +2362,7 @@ issue: {
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>In OAuth and Session Auth, you may want to use fields from your API call response other than <code>access_token</code> or <code>refresh_token</code> for OAuth and <code>sessionKey</code> for Session auth. If you want to use data from those fields and need Zapier to confirm that they exist, you need to use Computed Fields.</p><p>Zapier stores every value from an integration&apos;s test API call in <code>bundle.authData</code> as <em>Computed Fields</em>. You can reference these fields in any subsequent API call as needed. If you define a computed field in your integration, Zapier will check to make sure those fields exist when it runs the authentication test API call.</p><p>Computed fields work like any other field, though with <code>computed: true</code> property, and <code>required: false</code> as user can not enter computed fields themselves. Reference computed fields in API calls as <code>{{bundle.authData.field}}</code>, replacing <code>field</code> with that field&apos;s name from your test API call response.</p><p>You can see examples of computed fields in the <a href="#oauth2">OAuth2</a> or <a href="#session">Session Auth</a> example sections.</p>
+      <p>In OAuth and Session Auth, Zapier automatically stores every value from an integration&#x2019;s auth API response i.e. that&#x2019;s <code>getAccessToken</code> and <code>refreshAccessToken</code> for OAuth and <code>getSessionKey</code> for session auth.</p><p>You can return additional fields in these responses, on top of the expected <code>access_token</code> or <code>refresh_token</code> for OAuth and <code>sessionKey</code> for Session auth. They will be saved in <code>bundle.authData</code>. You can reference these fields in any subsequent API call as needed.</p><p>If you want Zapier to validate that these additional fields exist, you need to use Computed Fields. If you define computed fields in your integration, Zapier will check to make sure those fields exist when it runs the authentication test API call.</p><p>Computed fields work like any other field, though with <code>computed: true</code> property, and <code>required: false</code> as user can not enter computed fields themselves. Reference computed fields in API calls as <code>{{bundle.authData.field}}</code>, replacing <code>field</code> with that field&apos;s name from your test API call response.</p><p>You can see examples of computed fields in the <a href="#oauth2">OAuth2</a> or <a href="#session">Session Auth</a> example sections.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
@@ -2444,7 +2415,6 @@ issue: {
     <span class="hljs-comment">// ...</span>
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -2564,7 +2534,6 @@ issue: {
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -3134,7 +3103,6 @@ should(<span class="hljs-string">&apos;some tests&apos;</span>, () =&gt; {
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p>This is a popular way to provide <code>process.env.ACCESS_TOKEN || bundle.authData.access_token</code> for convenient testing.</p>
-</blockquote><blockquote>
 <p><strong>NOTE</strong> Variables defined via <code>zapier env</code> will <em>always</em> be uppercased. For example, you would access the variable defined by <code>zapier env 1.0.0 foo_bar 1234</code> with <code>process.env.FOO_BAR</code>.</p>
 </blockquote>
     </div>
@@ -3193,7 +3161,6 @@ zapier env 1.0.0
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -3275,7 +3242,6 @@ zapier env 1.0.0
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -3336,7 +3302,6 @@ zapier env 1.0.0
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -3386,7 +3351,6 @@ zapier env 1.0.0
     }
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -3441,7 +3405,6 @@ zapier env 1.0.0
   <span class="hljs-attr">afterResponse</span>: [mustBe200, autoParseJson]
   <span class="hljs-comment">// ...</span>
 };
-
 </code></pre>
     </div>
   </div>
@@ -3622,7 +3585,6 @@ zapier env 1.0.0
 };
 
 <span class="hljs-built_in">module</span>.exports = App;
-
 </code></pre>
     </div>
   </div>
@@ -3750,7 +3712,6 @@ z.stashFile(fileRequest) <span class="hljs-comment">// knownLength and filename 
 };
 
 <span class="hljs-built_in">module</span>.exports = App;
-
 </code></pre>
     </div>
   </div>
@@ -4074,7 +4035,6 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     });
   });
 });
-
 </code></pre>
     </div>
   </div>
@@ -4158,7 +4118,6 @@ describe(<span class="hljs-string">&apos;triggers&apos;</span>, () =&gt; {
     });
   });
 });
-
 </code></pre>
     </div>
   </div>
@@ -4228,7 +4187,6 @@ zapier.tools.env.inject(); <span class="hljs-comment">// inject() can take a fil
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <blockquote>
 <p><code>.env</code> is the new recommended name for the environment file since v5.1.0. The old name <code>.environment</code> is depreated but will continue to work for backward compatibility.</p>
-</blockquote><blockquote>
 <p>Remember: <strong>NEVER</strong> add your secrets file to version control!</p>
 </blockquote><p>Additionally, you can provide them dynamically at runtime:</p>
     </div>
@@ -4354,7 +4312,6 @@ zapier <span class="hljs-built_in">test</span>
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
       <p>During the <code>zapier build</code> or <code>zapier push</code> step - we&apos;ll copy all your code to <code>/tmp</code> folder and do a fresh re-install of modules.</p><blockquote>
 <p>Note: If your package isn&apos;t being pushed correctly (IE: you get &quot;Error: Cannot find module &apos;whatever&apos;&quot; in production), try adding the <code>--disable-dependency-detection</code> flag to <code>zapier push</code>.</p>
-</blockquote><blockquote>
 <p>Note 2: You can also try adding a &quot;includeInBuild&quot; array property (with paths to include, which will be evaluated to RegExp, with a case insensitive flag) to your <code>.zapierapprc</code> file, to make it look like:</p>
 </blockquote>
     </div>
@@ -4367,7 +4324,6 @@ zapier <span class="hljs-built_in">test</span>
     <span class="hljs-string">&quot;testing.json&quot;</span>
   ]
 }
-
 </code></pre>
     </div>
   </div>
@@ -4627,7 +4583,6 @@ npm run zapier-push
   ]
   <span class="hljs-comment">// ...</span>
 };
-
 </code></pre>
     </div>
   </div>
@@ -4693,7 +4648,6 @@ npm run zapier-push
     <span class="hljs-attr">perform</span>: performPaging
   }
 };
-
 </code></pre>
     </div>
   </div>
@@ -4742,7 +4696,6 @@ npm run zapier-push
 
   <span class="hljs-keyword">return</span> results;
 };
-
 </code></pre>
     </div>
   </div>
@@ -4855,7 +4808,6 @@ npm run zapier-push
 
   <span class="hljs-keyword">return</span> response.items;
 };
-
 </code></pre>
     </div>
   </div>
@@ -5135,7 +5087,7 @@ curl https://raw.githubusercontent.com/zapier/zapier-platform-cli/master/goodies
 </div><div class="row">
   <div class="row-height">
     <div class="col-md-5 col-sm-12 col-height  docs-primary">
-      <p>You can get help by either emailing <a href="mailto:partners@zapier.com">partners@zapier.com</a> or by <a href="https://join.slack.com/t/zapier-platform/shared_invite/enQtNTg1MjM5NjMzNTI3LWVhZjk3NjFlNWFiMTBmMDExMzI5NDZiZmFiOTJjYmI3NmY2MzEwZDUxNzQ3MTliMTM5N2M3NGM2MmQ2Y2VkODE">joining our Slack team here</a>.</p>
+      <p>You can get help by either emailing partners@zapier.com or by <a href="https://join.slack.com/t/zapier-platform/shared_invite/enQtNTg1MjM5NjMzNTI3LWVhZjk3NjFlNWFiMTBmMDExMzI5NDZiZmFiOTJjYmI3NmY2MzEwZDUxNzQ3MTliMTM5N2M3NGM2MmQ2Y2VkODE">joining our Slack team here</a>.</p>
     </div>
     <div class="col-md-7 col-sm-12 col-height is-empty docs-code">
       
