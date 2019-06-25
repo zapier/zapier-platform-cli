@@ -450,7 +450,7 @@ $ zapier collaborate user@example.com --remove
       <blockquote>
 <p>Converts a Legacy Web Builder or Visual Builder app to a CLI app.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier convert appid path</code></p><p>Creates a new CLI app from an existing app.</p><p>If you&apos;re converting a <strong>Legacy Web Builder</strong> app: the new app contains code stubs only. It is supposed to get you started - it isn&apos;t going to create a complete app!</p><p>After running this, you&apos;ll have a new app in your directory, with stubs for your trigger and actions.  If you re-run this command on an existing directory it will leave existing files alone and not clobber them.</p><p>Once you&apos;ve run the command, make sure to run <code>zapier push</code> to see it in the editor.</p><p>If you&apos;re converting a <strong>Visual Builder</strong> app, then it will be identical and ready to push and use immediately! You&apos;ll need to do a <code>zapier push</code> before the new version is visible in the editor, but otherwise you&apos;re good to go.</p><p><strong>Arguments</strong></p><ul>
-<li><code>appid [value]</code> -- <strong>required</strong>, Get the appid from &quot;<a href="https://zapier.com/app/developer">https://zapier.com/app/developer</a>&quot;, clicking on an integration, and taking the number after &quot;/app&quot; in the url.</li>
+<li><code>appid [value]</code> -- <strong>required</strong>, Get the appid from &quot;<a href="https://zapier.com/app/developer&quot;">https://zapier.com/app/developer&quot;</a>, clicking on an integration, and taking the number after &quot;/app&quot; in the url.</li>
 <li><code>location [value]</code> -- <strong>required</strong>, Relative to your current path - IE: <code>.</code> for current directory</li>
 <li><code>--version=1.0.0</code> -- <em>optional</em>, Convert a specific version. Required when converting a Visual Builder app</li>
 </ul>
@@ -947,7 +947,7 @@ All personal keys deactivated - now try `zapier login` to login again.
 <li><code>--status={any,success,error}</code> -- <em>optional</em>, display only success logs (status code &lt; 400 / info) or error (status code &gt; 400 / tracebacks). Default is <code>any</code></li>
 <li><code>--type={console,bundle,http}</code> -- <em>optional</em>, display only console, bundle, or http logs. Default is <code>console</code></li>
 <li><code>--detailed</code> -- <em>optional</em>, show detailed logs (like request/response body and headers)</li>
-<li><code>--user=user@example.com</code> -- <em>optional</em>, display only this user&apos;s logs. Default is <code>me</code></li>
+<li><a href="mailto:`--user=user@example.com">`--user=user@example.com</a><code>-- _optional_, display only this user&apos;s logs. Default is</code>me`</li>
 <li><code>--limit=50</code> -- <em>optional</em>, control the maximum result size. Default is <code>50</code></li>
 <li><code>--format={plain,json,raw,row,table,small}</code> -- <em>optional</em>, display format. Default is <code>table</code></li>
 <li><code>--help</code> -- <em>optional</em>, prints this help text</li>
@@ -997,12 +997,13 @@ $ zapier logs --<span class="hljs-built_in">type</span>=http
 <p>Migrate users from one version of your app to another.</p>
 </blockquote><p>  <strong>Usage:</strong> <code>zapier migrate 1.0.0 1.0.1 [10%]</code></p><p>Starts a migration to move users between different versions of your app. You may also &quot;revert&quot; by simply swapping the from/to verion strings in the command line arguments (IE: <code>zapier migrate 1.0.1 1.0.0</code>).</p><p>Only migrate users between non-breaking versions, use <code>zapier deprecate</code> if you have breaking changes!</p><p>Migrations can take between 5-10 minutes, so be patient and check <code>zapier history</code> to track the status</p><p>Note: since a migration is only for non-breaking changes, users are not emailed about the update/migration. It will be a transparent process for them.</p><blockquote>
 <p>Tip! We recommend migrating a small subset of users first, then watching error logs of the new version for any sort of odd behavior. When you feel confident there are no bugs, go ahead and migrate everyone. If you see unexpected errors, you can revert.</p>
+</blockquote><blockquote>
 <p>Tip 2! You can migrate a single user by using <code>--user</code> (IE: <code>zapier migrate 1.0.0 1.0.1 --user=user@example.com</code>).</p>
 </blockquote><p><strong>Arguments</strong></p><ul>
 <li><code>fromVersion [1.0.0]</code> -- <strong>required</strong>, the version <strong>from</strong> which to migrate users</li>
 <li><code>toVersion [1.0.1]</code> -- <strong>required</strong>, the version <strong>to</strong> which to migrate users</li>
 <li><code>percent [100%]</code> -- <em>optional</em>, percent of users to migrate. Default is <code>100%</code></li>
-<li><code>--user=user@example.com</code> -- <em>optional</em>, migrate only this user</li>
+<li><a href="mailto:`--user=user@example.com">`--user=user@example.com</a>` -- <em>optional</em>, migrate only this user</li>
 </ul>
     </div>
     <div class="col-md-7 col-sm-12 col-height  docs-code">
@@ -1077,6 +1078,7 @@ $ zapier logs --<span class="hljs-built_in">type</span>=http
 <li>Go to 1 and repeat.</li>
 </ol><blockquote>
 <p>Note: this is always a safe operation as live/production apps are protected from pushes. You must use <code>zapier promote</code> or <code>zapier migrate</code> to impact live users.</p>
+</blockquote><blockquote>
 <p>Note: this command will create (or overwrite) an AppVersion that matches the ones listed in your <code>package.json</code>. If you want to push to a new version, increment the &quot;version&quot; key in <code>package.json</code>.</p>
 </blockquote><p>If you have not yet registered your app, this command will prompt you for your app title and to register the app.</p>
     </div>
