@@ -18,7 +18,7 @@
     "node": ">=8.10.0"
   },
   "scripts": {
-    "docs": "ZAPIER_BASE_ENDPOINT='' node src/bin/docs.js",
+    "docs": "echo docs are gone, do not run here && exit 1",
     "preversion": "git pull && npm run validate",
     "version": "npm run docs && npm run gen-completions && git add docs/* goodies/* README.md",
     "postversion": "git push && git push --tags",
